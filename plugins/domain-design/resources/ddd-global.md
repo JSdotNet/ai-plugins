@@ -39,6 +39,18 @@ Classify each subdomain to guide investment and design effort:
 - Do not reference specific frameworks, databases, or infrastructure in domain model documentation.
 - Technology decisions belong in architecture documentation, not domain design.
 
+## Prose
+
+Domain artifacts are read by domain experts, not only by developers.
+
+- Write sentences a domain expert would say out loud. Prefer the business word over the DDD
+  term wherever both fit; keep pattern names for the structural sections that need them.
+- Short sentences, active voice, present tense. No filler, no hedging, no restating the
+  heading in the first line under it.
+- Say each thing once. Link to the chapter that already defines a term, rule, or context
+  instead of repeating it.
+- Drop a section that has nothing to say rather than writing that it has nothing.
+
 ## Quality Standards
 
 - Every bounded context must have a clearly defined purpose and responsibility.

@@ -5,6 +5,8 @@ description: Defines rules, notation standards, and quality gates for C4 archite
 
 # C4 Model — Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## What is the C4 Model?
 
 The C4 model was created by Simon Brown as a simple, hierarchical notation for communicating software architecture to different audiences. It defines four levels of abstraction, each serving a different stakeholder group. C4 stands for **Context**, **Containers**, **Components**, and **Code**.

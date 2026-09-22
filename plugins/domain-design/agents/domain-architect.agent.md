@@ -59,11 +59,6 @@ anything under `agents/`, `resources/`, or `skills/`. The `spec-builder` agent o
 | Integration across context boundaries | `domain-interaction-model` | `domain-interaction-diagram` |
 | Tactical design inside a context | `domain-model-design` | `aggregate-diagram` |
 
-Context relationships use explicit DDD semantics — shared kernel, customer-supplier,
-conformist, anti-corruption layer, open host service, published language — and integration
-work specifies the events, commands, queries, ACL translations, and communication pattern that
-cross each boundary.
-
 Validate every model against `resources/ddd-checklist.md` and `resources/ddd-anti-patterns.md`.
 
 ## Diagrams
@@ -74,11 +69,9 @@ one after a design step where a visual would aid review.
 
 ## Output
 
-Follow `resources/domain-documentation-structure.md`. When the
-repository has a domain devbook folder — `.domain/` at the root, or `.devbook/domain/` — that
-folder's own convention owns the layout and
-the metadata — one folder per bounded context, a fenced `meta` block per file and per
-addressable chapter, and `_meta/` never hand-edited.
+`resources/domain-documentation-structure.md` owns where artifacts land and which convention
+owns their layout. `resources/ddd-global.md` owns the prose: plain business language a domain
+expert can read, said once, linked rather than repeated.
 
 ## Handoffs
 

@@ -19,6 +19,7 @@ and an arc42 document already carries what a blueprint did.
   - `skills/state-diagram-generator/SKILL.md`
   - `skills/deployment-diagram-generator/SKILL.md`
 - Instructions:
+  - `resources/prose.md`
   - `resources/adr-global.md`
   - `resources/tdr-global.md`
   - `resources/c4-global.md`

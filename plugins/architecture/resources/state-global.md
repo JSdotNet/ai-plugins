@@ -5,6 +5,8 @@ description: Defines rules, notation standards, and quality gates for state mach
 
 # State Machine Diagrams — Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## Purpose
 
 State machine diagrams model the lifecycle of a stateful entity by showing its possible states, the events that trigger transitions between them, and any actions taken on entry, exit, or transition. They are used in arc42 Section 6 (Runtime View) for behavioural scenarios and Section 8 (Crosscutting Concepts) for shared lifecycle patterns.

@@ -5,6 +5,8 @@ description: Defines required structure and governance metadata for technical de
 
 # TDR Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## Purpose
 
 - Standardize Technical Debt Records for consistent prioritization and remediation planning.
