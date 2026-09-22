@@ -70,3 +70,4 @@ Validation checklist for domain design artifacts. Use during and after design se
 - [ ] Each bounded context file has the required frontmatter.
 - [ ] All required sections are present in each file.
 - [ ] Cross-references between files use relative Markdown links.
+- [ ] Prose follows the `Prose` section of `ddd-global.md`.
