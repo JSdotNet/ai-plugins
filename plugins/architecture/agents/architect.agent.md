@@ -40,6 +40,7 @@ Load the global contract for the work in hand before writing — `resources/arc4
 `resources/adr-global.md`, `resources/tdr-global.md`, `resources/c4-global.md`,
 `resources/sequence-global.md`, `resources/state-global.md`, `resources/deployment-global.md` —
 plus `resources/arc42-section-NN.md` for the arc42 section in hand.
+Always load `resources/prose.md`: it owns how every artifact is written.
 
 ## Custom Instructions
 

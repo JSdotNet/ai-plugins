@@ -5,6 +5,8 @@ description: Defines rules, notation standards, and quality gates for deployment
 
 # Deployment Diagrams — Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## Purpose
 
 Deployment diagrams model the physical and logical infrastructure on which a system runs: nodes (servers, containers, cloud services), artifacts deployed to them, and the network relationships between them. They are the primary tool for documenting arc42 Section 7 (Deployment View).

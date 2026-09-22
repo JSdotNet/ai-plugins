@@ -5,6 +5,8 @@ description: 'Defines global rules and quality standards for arc42 architecture 
 
 # arc42 Architecture Documentation - Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## What is arc42?
 
 arc42 is a proven, open-source template for software architecture documentation created by Dr. Gernot Starke and Dr. Peter Hruschka in 2005. Used successfully in thousands of projects worldwide, it provides a pragmatic, tool-agnostic approach to documenting software architectures.
@@ -168,7 +170,7 @@ arc42 is a proven, open-source template for software architecture documentation 
 
 ### Formal Requirements
 5. **Referenceable** - Numbered sections, diagrams, tables; provide TOC
-6. **Proper Language** - Grammatically correct, concise (15-20 word sentences), active voice
+6. **Proper Language** - As `resources/prose.md` requires
 7. **Maintainable** - Structure optimized for easy updates
 
 ### Process Requirements
@@ -195,11 +197,6 @@ arc42 is a proven, open-source template for software architecture documentation 
 - Use fixed structures (like arc42) for findability
 - Organize top-down
 - Use cross-references and hyperlinks liberally
-
-### Avoid Redundancy
-- Single source of truth principle
-- Use references instead of duplication
-- Link between related sections
 
 ## Resources
 

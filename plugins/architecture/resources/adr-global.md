@@ -5,6 +5,8 @@ description: Defines required ADR content and decision-traceability quality gate
 
 # ADR Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## Purpose
 
 - Standardize Architecture Decision Records across this plugin workflow.

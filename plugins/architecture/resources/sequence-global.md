@@ -5,6 +5,8 @@ description: Defines rules, notation standards, and quality gates for sequence d
 
 # Sequence Diagrams — Global Instructions
 
+Prose follows `resources/prose.md`.
+
 ## Purpose
 
 Sequence diagrams model the runtime behavior of a system by showing how participants exchange messages over time. They are the primary tool for documenting arc42 Section 6 (Runtime View) scenarios.
