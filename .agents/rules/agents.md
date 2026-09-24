@@ -29,9 +29,9 @@ paths:
 - A contract in `resources/` reaches Claude only when something references its path — neither
   host auto-applies a file from inside a plugin. Reference every one the agent depends on, per
   [plugin-contracts.md](plugin-contracts.md).
-- An agent that writes into a devbook folder names both layouts — `.arc42/` and
-  `.devbook/arc42/`, and their siblings — and defers to that folder's own rules for structure
-  and metadata.
+- An agent that writes into a devbook folder names its `.devbook/<folder>/` path only —
+  `.devbook/arc42/`, `.devbook/domain/`, and their siblings — and defers to that folder's own
+  rule for structure and metadata. A root-level `.arc42/` is not a layout.
 
 Body budget 80 lines: `plugins/spec-builder/resources/spec-conciseness.md`.
 `node tools/check-assets.mjs` enforces the frontmatter and tool rules above.
