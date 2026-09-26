@@ -10,12 +10,12 @@
       "materialized": {
         ".devbook/_tools/devbook-meta": {
           "from": "1.9.0",
-          "hash": "sha256:eaf2887b36527ec1a7f013e1980ebd7ecf35137707d8e07e52226394c56cc2b8",
+          "hash": "sha256:8f669268a767a8b11108e0b12f4d1e4411e4cb89d018f494dec10d18c55f28d2",
           "managed": true
         },
         ".devbook/_tools/devbook-tech": {
           "from": "1.9.0",
-          "hash": "sha256:1ca02dd9613667bbb0be6b9bd299ef158cc1be397e9979079ad0452d839dc59d",
+          "hash": "sha256:84149fe529cd154cec227441a9d132c5e23b02633c3d6d8e1b6a20b31eba293e",
           "managed": true
         },
         ".github/workflows/devbook-meta.yml": {
@@ -30,7 +30,7 @@
         },
         ".agents/rules/devbook-ai.md": {
           "from": "1.9.0",
-          "hash": "sha256:746411ce3aed9a32901e853b563d47edf248e762024a11164ba7867af58264cc",
+          "hash": "sha256:0c149deefa37aaee2ebe5ffbbc4a9cca051f840fbf3ebc6efc798a801065875f",
           "managed": true
         },
         ".claude/rules/devbook-ai.md": {
@@ -45,7 +45,7 @@
         },
         ".agents/rules/devbook-annotations.md": {
           "from": "1.9.0",
-          "hash": "sha256:dbe5bc5fd0d4fa32b949c8bb03d64d5eede89ab52aa8437de45d7126748f0c5a",
+          "hash": "sha256:00895fbb2be30d3af877b568d3ec6d7bd98a80bddf91d3883a330e576b781136",
           "managed": true
         },
         ".claude/rules/devbook-annotations.md": {
@@ -60,7 +60,7 @@
         },
         ".agents/rules/devbook-chapter-metadata.md": {
           "from": "1.9.0",
-          "hash": "sha256:161ddfaea00d75f4a239bdc9a9bd68d9b30ed9ea4b4d1e290d5ed569872d2de1",
+          "hash": "sha256:40b2f26ef9dbb98b929934996090653cd639321b6fed3dbc25a0cffd165bce7c",
           "managed": true
         },
         ".claude/rules/devbook-chapter-metadata.md": {
@@ -75,7 +75,7 @@
         },
         ".agents/rules/devbook-naming.md": {
           "from": "1.9.0",
-          "hash": "sha256:780980263bea05a257c700eaf0f204038377f701a66a48ae903a8db01a1907aa",
+          "hash": "sha256:4477a7268cd6e7039db1ae1b505e5067b58e3b49ade443be77ece7918457f2b0",
           "managed": true
         },
         ".claude/rules/devbook-naming.md": {
@@ -90,7 +90,7 @@
         },
         ".agents/rules/devbook-tech.md": {
           "from": "1.9.0",
-          "hash": "sha256:0ec9537b79896bb4416b84546a079dd70e608d783ff63b5c3853db9847064862",
+          "hash": "sha256:43ae3cf30c12cf35a599f6c37b37b6b3a3156ba90b1d7a2b3df4f927714e48ee",
           "managed": true
         },
         ".claude/rules/devbook-tech.md": {
