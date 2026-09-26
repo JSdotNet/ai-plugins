@@ -99,19 +99,27 @@ changed without one — the backstop for an agent-authored change that left the 
 ## Scheduled Routines
 
 ```meta
-status: candidate
+status: trial
 type: workflow
 stage: [operate, monitor]
-depends-on: [".devbook/tech/tooling.md#claude-code"]
+depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/hosts.md#claude-desktop"]
 date: 2026-09-26
 ```
 
-Unattended agent routines from `delivery-schedule` — issue sweep, merge review, devbook
-validate, instruction review — run on a cron from the Claude desktop app.
+Unattended agent routines from `delivery-schedule`, run on a cron as local scheduled tasks in
+the Claude desktop app. Each run makes its own detached worktree off `origin/main` in the
+`D:\Repos\Copilot` clone.
 
-- **Used for** — nothing in this repository yet.
-- **Adopted by** — nobody here: all eleven routines scheduled on 2026-09-26 target
-  JSdotNet/Backlog, and none targets ai-plugins.
-- **Evidence** — none yet. Promotion to `trial` needs one routine pointed at this repository.
+- **Used for** — seven routines against JSdotNet/ai-plugins: devbook-validate (daily),
+  devbook-verify (Monday), tech-update (Sunday), prose-check (Wednesday), merge-review
+  (weekdays), instruction-review (Thursday), and weekly-update (Friday).
+- **Adopted by** — the maintainer's desktop app. The seven were created on 2026-09-26 and are
+  recorded under `components.schedule` in `.devbook/config.json`. The eleven JSdotNet/Backlog
+  routines are unchanged.
+- **Evidence** — no run yet; the first is devbook-validate on 2026-09-27. Promotion to
+  `adopted` needs runs that published something a person acted on.
 - **Limits** — the nightly version bump is a CI schedule, not an agent routine, and is recorded
-  on its own.
+  on its own. The routines run only while the desktop app is open on the maintainer's machine;
+  one that comes due while it is closed runs on the next launch. They are not cloud routines
+  because a cloud session needs a committed `.claude/settings.json` enabling the plugins, and
+  this repository has none.

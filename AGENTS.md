@@ -118,6 +118,7 @@ task-scoped context, never baseline context: load the chapters a task names, wal
 
 | Folder | Holds | Rules |
 | --- | --- | --- |
+| `.devbook/arc42/` | Structure, decisions, and technical debt | `devbook-arc42.md` |
 | `.devbook/tech/` | The technology graph and its ratings | `devbook-tech.md` |
 | `.devbook/ai/` | How the team works with AI, stage by stage; it records a way of working and never instructs one | `devbook-ai.md` |
 

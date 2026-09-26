@@ -52,12 +52,12 @@ flowchart LR
     test -.- validate["claude plugin validate · candidate"]
     release -.- pr["pr-jsdotnet Skill · adopted"]
     release -.- bump["Nightly Version Bump · hold"]
-    operate -.- routines["Scheduled Routines · candidate"]
+    operate -.- routines["Scheduled Routines · trial"]
     monitor -.- routines
 ```
 
 `build` and `deploy` are empty: nothing here is compiled or deployed. `operate` and `monitor`
-hold only a candidate — no agent routine watches this repository yet.
+hold one usage on trial: the local scheduled routines, not yet run.
 
 Not recorded: `claude plugin eval`. No plugin here has an eval suite and no session has run one,
 so it gets a chapter when one does.
