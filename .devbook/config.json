@@ -171,6 +171,29 @@
           "result": "not-applicable"
         }
       ]
+    },
+    "devbook-procedures": {
+      "pluginVersion": "1.9.0",
+      "adopted": [
+        "estimate"
+      ],
+      "materialized": {
+        ".agents/skills/estimate.md": {
+          "from": "1.9.0",
+          "hash": "sha256:1ec1eb40f13561840e2c6c8b785eac82db64924ee2bb3f38722bb1a7d973f6a9",
+          "managed": true
+        },
+        ".claude/skills/estimate/SKILL.md": {
+          "from": "1.9.0",
+          "hash": "sha256:d212a7d5fd773047598ef7f586588d6f879dd585734a9b6f3b0e1aa4bce604c7",
+          "managed": true
+        },
+        ".github/skills/estimate/SKILL.md": {
+          "from": "1.9.0",
+          "hash": "sha256:d212a7d5fd773047598ef7f586588d6f879dd585734a9b6f3b0e1aa4bce604c7",
+          "managed": true
+        }
+      }
     }
   }
 }
