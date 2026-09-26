@@ -46,6 +46,20 @@ The runtime every checker and script in the repository runs on, dependency-free.
   under `.devbook/_tools/`.
 - **Why** — both hosts already need it, so the checkers add no install.
 
+## PowerShell
+
+```meta
+status: adopted
+type: tool
+version: "7"
+```
+
+`pwsh`, the shell for the scripts that are not checkers.
+
+- **Used for** — `scripts/Build-DesktopExtension.ps1`, the version-bump step of
+  `nightly-plugin-version-bump.yml`, and the `scripts/*.ps1` the architecture, domain-design,
+  and fincent plugins run from their own root. The checkers stay on Node.js.
+
 ## GitHub Actions
 
 ```meta
