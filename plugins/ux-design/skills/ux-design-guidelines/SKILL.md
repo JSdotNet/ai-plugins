@@ -28,7 +28,7 @@ Ask for the following when not already provided:
 - **Platform** — web, mobile, or multi-platform?
 - **Scope** — full design system, tokens only, or specific sections to add or update?
 - **Output location** — where should the guidelines be saved? (default: the repository's
-  design devbook folder — `.design/` or `.devbook/design/` — when it has one, else
+  `.devbook/design/` folder when it has one, else
   `docs/design/design-guidelines.md`)
 
 ## Required Resources

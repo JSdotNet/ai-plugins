@@ -85,8 +85,7 @@ Document reusable UI components with:
 
 ## File Naming and Storage
 
-- When the repository has a design devbook folder — `.design/` at the root, or nested as
-  `.devbook/design/` — write guidelines there as one chapter
+- When the repository has a `.devbook/design/` folder, write guidelines there as one chapter
   per topic — `design-principles.md`, `color-scheme.md`, `typography-and-layout.md`,
   `interaction-guidelines.md`, `accessibility.md`, `component-libraries.md` — each opening with
   a fenced `meta` block, and `README.md` as the entry point. Follow that folder's own
