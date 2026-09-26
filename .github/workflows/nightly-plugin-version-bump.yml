@@ -30,33 +30,27 @@ jobs:
           Set-StrictMode -Version Latest
           $ErrorActionPreference = "Stop"
 
-          $defaultBranch = "${{ github.event.repository.default_branch }}"
-          if ([string]::IsNullOrWhiteSpace($defaultBranch)) {
-              $defaultBranch = "main"
-          }
+          # Compare each plugin's own history: a plugin is due a bump when a commit touched its
+          # plugins/<name>/ tree after the last commit that changed its manifest version. A
+          # squash merge that carries its own bump therefore needs none.
+          $plugins = @()
+          foreach ($dir in (Get-ChildItem -Directory plugins | Sort-Object Name)) {
+              $name = $dir.Name
+              $manifest = "plugins/$name/.claude-plugin/plugin.json"
+              if (-not (Test-Path -LiteralPath $manifest)) { $manifest = "plugins/$name/.github/plugin/plugin.json" }
+              if (-not (Test-Path -LiteralPath $manifest)) { continue }
 
-          git fetch origin $defaultBranch --quiet
-          $base = git merge-base "origin/$defaultBranch" HEAD
-
-          $changedFiles = @(git diff --name-only $base HEAD)
-          if (-not $changedFiles -or $changedFiles.Count -eq 0) {
-              Write-Host "No changed files detected."
-              "updated=false" >> $env:GITHUB_OUTPUT
-              exit 0
-          }
-
-          $plugins = @{}
-          foreach ($file in $changedFiles) {
-              if ($file -match '^plugins/([^/]+)/') {
-                  $name = $Matches[1]
-                  if ((Test-Path -LiteralPath "plugins/$name/.github/plugin/plugin.json") -or (Test-Path -LiteralPath "plugins/$name/.claude-plugin/plugin.json")) {
-                      $plugins[$name] = $true
-                  }
+              $versionCommit = git log -1 --format=%H -G '"version"' -- $manifest
+              if ([string]::IsNullOrWhiteSpace($versionCommit)) { continue }
+              $since = [int](git rev-list --count "$versionCommit..HEAD" -- "plugins/$name/")
+              if ($since -gt 0) {
+                  Write-Host "$name - $since commit(s) since version commit $($versionCommit.Substring(0, 7))"
+                  $plugins += $name
               }
           }
 
           if ($plugins.Count -eq 0) {
-              Write-Host "No plugin manifests to update."
+              Write-Host "No plugin changed since its last version bump."
               "updated=false" >> $env:GITHUB_OUTPUT
               exit 0
           }
@@ -64,7 +58,7 @@ jobs:
           # A version lives in four places - both manifests, the marketplace entry, and the
           # copilot-plugins.md row - and nothing generates one from another. bump-version.mjs
           # writes the same value into all four; check-assets.mjs then fails if any disagree.
-          foreach ($name in ($plugins.Keys | Sort-Object)) {
+          foreach ($name in $plugins) {
               node tools/bump-version.mjs $name patch
               if ($LASTEXITCODE -ne 0) { throw "bump failed for $name" }
           }
@@ -81,6 +75,6 @@ jobs:
           body: |
             Automated nightly plugin version bump.
 
-            This PR increments the patch version - in both manifests, the marketplace entry, and the `copilot-plugins.md` row - of every plugin whose `plugins/<name>/` tree changed.
+            This PR increments the patch version - in both manifests, the marketplace entry, and the `copilot-plugins.md` row - of every plugin whose `plugins/<name>/` tree changed since its version last changed.
           branch: chore/nightly-plugin-version-bump
           delete-branch: true
