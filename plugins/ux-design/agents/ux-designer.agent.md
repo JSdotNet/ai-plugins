@@ -83,9 +83,8 @@ severity-rated findings.
 ## Output
 
 Guideline-level content — principles, tokens, typography and layout, interaction rules,
-accessibility, component libraries — belongs in the repository's design devbook folder when
-it has one (`.design/` at the root, or `.devbook/design/`), one chapter per topic, each
-carrying a `meta` block. See
+accessibility, component libraries — belongs in the repository's `.devbook/design/` folder
+when it has one, one chapter per topic, each carrying a `meta` block. See
 `resources/design-guidelines.md`.
 
 Concrete artifacts produced *from* those guidelines never go there: wireframes, user flows,

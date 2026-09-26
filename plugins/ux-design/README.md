@@ -78,7 +78,7 @@ Invoke a specific skill to start a guided workflow:
 
 | Artifact | Default Path |
 |---|---|
-| Design guidelines | `.design/` (or `.devbook/design/`) when the repository has it, else `docs/design/` |
+| Design guidelines | `.devbook/design/` when the repository has it, else `docs/design/` |
 | Wireframes | `docs/design/wireframes/` |
 | User flows | `docs/design/flows/` |
 | Design reviews | `docs/design/reviews/` |

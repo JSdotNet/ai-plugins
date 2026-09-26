@@ -2,7 +2,7 @@
 
 Domain-Driven Design: bounded contexts, ubiquitous language, domain models, and context maps. Fills the `domain` role a flow consults, and is usable on its own.
 
-Writes to the repository's domain devbook folder when it has one — `.domain/` at the root, or `.devbook/domain/` — following that folder's own structure and metadata rules; otherwise it follows `resources/domain-documentation-structure.md`.
+Writes to the repository's `.devbook/domain/` folder when it has one, following that folder's own structure and metadata rules; otherwise it follows `resources/domain-documentation-structure.md`.
 
 ## Includes
 

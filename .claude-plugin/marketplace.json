@@ -39,7 +39,7 @@
       "name": "domain-design",
       "source": "./plugins/domain-design",
       "description": "Domain-Driven Design through the `domain-architect` agent: bounded context discovery, ubiquitous language, domain model and interaction design, context mapping, and aggregate, domain-event-flow, and subdomain diagrams. Fills the `domain` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.3.1"
+      "version": "0.3.2"
     },
     {
       "name": "fincent",
@@ -75,7 +75,7 @@
       "name": "react-coding",
       "source": "./plugins/react-coding",
       "description": "React and TypeScript implementation through the `frontend` agent: components, hooks, routes, typed API clients bound to a .NET API contract, and component tests, with the build, typecheck, lint, and test commands detected from the repository rather than assumed. Fills the `implement` and `verify` services a flow runs its frontend stages through, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "name": "review",
@@ -93,7 +93,7 @@
       "name": "ux-design",
       "source": "./plugins/ux-design",
       "description": "UX design through the `ux-designer` agent: wireframes, user flows, design guidelines, and UI reviews, as SVG or Mermaid artifacts and structured Markdown. Fills the `ux` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.4.0"
+      "version": "0.4.1"
     },
     {
       "name": "wip-convention",
