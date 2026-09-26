@@ -14,36 +14,19 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-// Knowledge folders carry their own prefix; everything else is code. The order here is also
-// the tie-break rank: a run that wrote the same number of files to two destinations is named
-// after the rarer one, because "this session touched the domain model" is the more surprising
-// fact and the one worth finding again.
-const FOLDER_PREFIXES = [
-    [".domain", "domain"],
-    [".arc42", "arc42"],
-    [".tech", "tech"],
-    [".design", "design"],
-    [".ai", "ai"],
-    [".backlog", "backlog"],
-];
-
-// The devbook convention keeps its folders either flat at the root (`.arc42/`) or nested under
-// `.devbook/` (`.devbook/arc42/`). Both spell the same folder, so the nested form is folded
-// onto the flat one before any prefix or boundary lookup.
+// Knowledge folders live under `.devbook/` and carry their own prefix, which is the folder's
+// name; everything else is code. The order here is also the tie-break rank: a run that wrote the
+// same number of files to two destinations is named after the rarer one, because "this session
+// touched the domain model" is the more surprising fact and the one worth finding again.
 const DEVBOOK_ROOT = ".devbook";
-function foldDevbook(segments) {
-    if (segments.length > 1 && segments[0] === DEVBOOK_ROOT) {
-        return [`.${segments[1]}`, ...segments.slice(2)];
-    }
-    return segments;
-}
+const FOLDER_PREFIXES = ["domain", "arc42", "tech", "design", "ai", "backlog"];
 
 const DOMAIN_PREFIX = "domain";
 const CODE_PREFIX = "code";
 const ARTIFACT_PREFIX = "artifact";
 
 // Rank by declaration order, code last.
-const PREFIX_RANK = new Map([...FOLDER_PREFIXES.map(([, prefix]) => prefix), CODE_PREFIX].map((p, i) => [p, i]));
+const PREFIX_RANK = new Map([...FOLDER_PREFIXES, CODE_PREFIX].map((p, i) => [p, i]));
 
 // Tools whose input names a file this run produced. Bash-driven writes are deliberately not
 // tracked: there is no reliable way to tell `git status` from `sed -i` by inspecting a command
@@ -76,7 +59,7 @@ function toSegments(filePath, cwd) {
             return null;
         }
     }
-    const segments = foldDevbook(normalized.split("/").filter((s) => s && s !== "."));
+    const segments = normalized.split("/").filter((s) => s && s !== ".");
     return segments.length ? segments : null;
 }
 
@@ -116,21 +99,17 @@ function matchContext(segment, contexts) {
 }
 
 // The bounded contexts this repository actually declares. Read once per run and cached on it,
-// so a code-only run — which never writes a `.domain/` path — can still resolve a boundary.
+// so a code-only run — which never writes a `.devbook/domain/` path — can still resolve a boundary.
 async function knownContexts(run, cwd) {
     const destinations = run.destinations;
     if (Array.isArray(destinations.contexts)) return destinations.contexts;
     let contexts = [];
     if (typeof cwd === "string" && cwd) {
-        for (const folder of [".domain", path.join(DEVBOOK_ROOT, "domain")]) {
-            try {
-                const entries = await readdir(path.join(cwd, folder), { withFileTypes: true });
-                contexts = entries.filter((e) => e.isDirectory() && !e.name.startsWith("_")).map((e) => e.name);
-                break;
-            } catch {
-                // Not this spelling, or unreadable. Try the other; boundaries stay unresolved otherwise.
-                contexts = [];
-            }
+        try {
+            const entries = await readdir(path.join(cwd, DEVBOOK_ROOT, DOMAIN_PREFIX), { withFileTypes: true });
+            contexts = entries.filter((e) => e.isDirectory() && !e.name.startsWith("_")).map((e) => e.name);
+        } catch {
+            // No domain folder, or unreadable: boundaries stay unresolved.
         }
     }
     destinations.contexts = contexts;
@@ -138,16 +117,15 @@ async function knownContexts(run, cwd) {
 }
 
 function prefixFor(segments) {
-    const head = segments[0];
-    for (const [folder, prefix] of FOLDER_PREFIXES) {
-        if (head === folder) return prefix;
+    if (segments.length > 1 && segments[0] === DEVBOOK_ROOT && FOLDER_PREFIXES.includes(segments[1])) {
+        return segments[1];
     }
     return CODE_PREFIX;
 }
 
 function boundaryFor(segments, prefix, contexts) {
-    // A `.domain/<context>/` write names its context outright.
-    if (prefix === DOMAIN_PREFIX) return segments.length > 1 ? segments[1] : null;
+    // A `.devbook/domain/<context>/` write names its context outright.
+    if (prefix === DOMAIN_PREFIX) return segments.length > 2 ? segments[2] : null;
     if (!contexts.length) return null;
     // Anywhere else, a path segment matching a declared context is the boundary. The
     // convention asks that context folders and code module names be kept aligned, which is
@@ -183,7 +161,7 @@ export async function recordDestination(run, { toolName, input, cwd }) {
 
     const prefix = prefixFor(segments);
     // Boundaries are tallied per prefix, not globally: the boundary shown has to belong to the
-    // files that won the prefix. A run that edited one `.domain/billing/` chapter and two
+    // files that won the prefix. A run that edited one `.devbook/domain/billing/` chapter and two
     // unrelated source files is `code`, and calling it `code:billing` would overclaim.
     const bucket = destinations.prefixes[prefix] || (destinations.prefixes[prefix] = { files: 0, boundaries: {} });
     bucket.files += 1;

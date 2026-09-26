@@ -207,13 +207,12 @@ rename the session to.
 
 | Where the run wrote | Prefix |
 | --- | --- |
-| `.domain/<context>/**` | `domain:<context>` |
-| `.arc42/**` | `arc42` |
-| `.tech/**` | `tech` |
-| `.design/**` | `design` |
-| `.ai/**` | `ai` |
-| `.backlog/**` | `backlog` |
-| `.devbook/<folder>/**` | the same as `.<folder>/**` — the nested devbook layout folds onto the flat one |
+| `.devbook/domain/<context>/**` | `domain:<context>` |
+| `.devbook/arc42/**` | `arc42` |
+| `.devbook/tech/**` | `tech` |
+| `.devbook/design/**` | `design` |
+| `.devbook/ai/**` | `ai` |
+| `.devbook/backlog/**` | `backlog` |
 | anywhere else in the worktree | `code` |
 | published as a Claude Artifact | `artifact` |
 
@@ -226,7 +225,7 @@ usual folder is labelled by what it actually did. The rules:
 - **A published artifact outranks the file tally.** It is the run's shareable deliverable and
   the one output that cannot be found again by browsing the repository.
 - **A bounded context is appended** as `<prefix>:<context>` when exactly one is involved —
-  read from the `.domain/` folder name directly, or matched against the declared context list
+  read from the `.devbook/domain/` folder name directly, or matched against the declared context list
   from a code path (`src/Acme.Billing/` → `billing`), which is what the knowledge convention's
   "keep context and module names aligned" rule buys. Two contexts means none is shown.
 - **Nothing observed means no name.** `computeSessionTitle` returns `null` until a write lands,
