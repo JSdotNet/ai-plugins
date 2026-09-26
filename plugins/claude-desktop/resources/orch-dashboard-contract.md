@@ -108,20 +108,19 @@ dominant destination is established, so the rename is normally a one-time event 
 
 | Where the run wrote | Prefix |
 | --- | --- |
-| `.domain/<context>/**` | `domain:<context>` |
-| `.arc42/**` | `arc42` |
-| `.tech/**` | `tech` |
-| `.design/**` | `design` |
-| `.ai/**` | `ai` |
-| `.devbook/<folder>/**` | the same as `.<folder>/**` |
-| `.backlog/**` | `backlog` |
+| `.devbook/domain/<context>/**` | `domain:<context>` |
+| `.devbook/arc42/**` | `arc42` |
+| `.devbook/tech/**` | `tech` |
+| `.devbook/design/**` | `design` |
+| `.devbook/ai/**` | `ai` |
+| `.devbook/backlog/**` | `backlog` |
 | anywhere else in the worktree | `code` |
 | published as a Claude Artifact | `artifact` |
 
 A bounded context is appended as `<prefix>:<context>` whenever exactly one is involved —
-resolved from the `.domain/` folder names directly, or matched against them from a code path,
-which is what the convention's "keep context and module names aligned" rule buys. Generated
-`_meta/` files never count, an artifact publish outranks the folder tally, and the session's
+resolved from the `.devbook/domain/` folder names directly, or matched against them from a code
+path, which is what the convention's "keep context and module names aligned" rule buys.
+Generated `_meta/` files never count, an artifact publish outranks the folder tally, and the session's
 git branch and worktree are unaffected: they are fixed when the session is created.
 
 ### Surfacing the Dashboard
