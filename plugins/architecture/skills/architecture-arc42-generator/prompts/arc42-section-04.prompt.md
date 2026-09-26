@@ -74,7 +74,7 @@ Create arc42 Section 4 for:
    - Context: [Why needed]
    - Decision: [What chosen]
    - Consequences: ✅ [Benefits] ❌ [Drawbacks]
-   - See also: ADR-001 (Section 9)
+   - See also: `adr/<concern>.md`
 
 2. **[Decision Name]**
    [Continue for key decisions]

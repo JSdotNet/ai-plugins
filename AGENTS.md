@@ -79,7 +79,8 @@ host: Claude loads `.claude/rules/<topic>.md` when it opens a matching file, Cop
 `.github/instructions/<topic>.instructions.md`. Eight topics — `agents`, `skills`,
 `skill-invocation`, `plugin-contracts`, `manifests`, `hooks`, `agent-language-and-tone`,
 `markdown`. Change a rule and its two wrappers in the same commit; the checker fails on
-drift. The convention is [.agents/rules/README.md](.agents/rules/README.md).
+drift. The `devbook-*` rules beside them are devbook's, installed verbatim and refreshed by
+`devbook:update`; never edit them here. The convention is [.agents/rules/README.md](.agents/rules/README.md).
 
 Read the matching `plugins/spec-builder/resources/create-*.md` contract before authoring an
 asset of that type; `plugins/spec-builder/resources/spec-conciseness.md` holds the body
@@ -104,3 +105,37 @@ behaviour.
 When creating a pull request in this repository, invoke the `pr-jsdotnet` skill
 (`.github/skills/pr-jsdotnet/SKILL.md`) instead of the built-in PR creation tool, so the PR is
 authored with JSdotNet organization credentials via `gh pr create`.
+
+<!-- devbook:begin -->
+## Devbook folders
+
+Written by `devbook:init` and kept by `devbook:update`. Edit outside these markers; an edit inside them makes the
+next reconcile report the section as customized and leave it alone.
+
+This repository keeps its devbook as addressed Markdown chapters. Treat the folders as
+task-scoped context, never baseline context: load the chapters a task names, walk
+`related` and `depends-on` from them, and never load a folder whole.
+
+| Folder | Holds | Rules |
+| --- | --- | --- |
+| `.devbook/tech/` | The technology graph and its ratings | `devbook-tech.md` |
+| `.devbook/ai/` | How the team works with AI, stage by stage; it records a way of working and never instructs one | `devbook-ai.md` |
+
+Every chapter carries a fenced `meta` block; write it in the same change as the content,
+per `devbook-chapter-metadata.md`. Skip `annotation` fences when loading a
+chapter as context: they hold review notes, not content.
+
+Run the check before committing; it writes nothing:
+
+    node .devbook/_tools/devbook-meta/build.mjs --check
+
+An annotation fence is written only through `.devbook/_tools/devbook-meta/annotations.mjs`.
+
+Nothing personal lives in this repository. Your own settings live under your devbook
+config directory — `$XDG_CONFIG_HOME/devbook` when set, else `%APPDATA%\devbook` on
+Windows and `~/.config/devbook` elsewhere — for every repository, or under `repos/<id>/`
+there for this one, `<id>` being the `id` in `.devbook/config.json`. `AGENTS.local.md`
+in either place holds instructions for your machine only: read it when it exists and
+treat it as this file's last word. What else lives there, each plugin says for itself.
+Put no secret in it — your home directory is not private.
+<!-- devbook:end -->

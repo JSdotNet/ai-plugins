@@ -50,8 +50,10 @@ copilot plugin uninstall architecture
 
 ## Output
 
-Writes to the repository's `.devbook/arc42/` folder when it has one, as `NN-name.md` per
-section with `adr/` and `tdr/` for local records, following that folder's own structure and metadata rules. Otherwise it asks for a path.
+Writes to `.devbook/arc42/` when the repository has it — `NN-name.md` per section, one
+decision record per concern under `adr/`, numbered and dated debt records under `tdr/`, each
+folder with an index that sections 9 and 11 link to — following that folder's own structure
+and metadata rules. Otherwise it asks for a path.
 
 ## Relationship To Other Plugins
 

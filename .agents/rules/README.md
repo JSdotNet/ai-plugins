@@ -27,6 +27,13 @@ and defines no globs; [agents.md#179](https://github.com/agentsmd/agents.md/issu
 open proposal for glob-scoped rules, and its `name` / `description` / `paths` shape is what
 this convention uses. It is the same convention `JSdotNet/ai-agent-stack` holds its plugins to.
 
+## Rules devbook installs
+
+`devbook-*.md` here is devbook's, copied verbatim by `devbook:init` and refreshed by
+`devbook:update`, so it carries no `paths`: its Claude wrapper holds the globs from devbook's
+`rules.json`, and the checker reads them there for any rule `.devbook/config.json` lists. Never
+edit one by hand — an edit makes the next update report it customized and stop refreshing it.
+
 ## One exception, deliberate
 
 **A plugin cannot ship rules.** There is no rules component and no `rules` key in
