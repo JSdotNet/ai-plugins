@@ -1,8 +1,8 @@
 // Unit check for session naming: destination classification, boundary resolution, precedence,
 // and the cases that must NOT produce a rename.
 //
-// Runs against a temporary worktree with a `.devbook/domain/` folder, because boundary resolution for
-// code paths reads the declared bounded contexts off disk.
+// Runs against a temporary worktree with a `.devbook/domain/` folder, because boundary
+// resolution for code paths reads the declared bounded contexts off disk.
 import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -35,8 +35,8 @@ check("arc42", await titleFor("Runtime view refresh", [write(".devbook/arc42/06-
 check("tech", await titleFor("Pin Aspire 9", [edit(".devbook/tech/backend.md")]), "tech — Pin Aspire 9");
 check("design", await titleFor("Dense table tokens", [edit(".devbook/design/color-scheme.md")]), "design — Dense table tokens");
 check("ai", await titleFor("Record review agent", [edit(".devbook/ai/review.md")]), "ai — Record review agent");
-check("the flat layout is code", await titleFor("Old layout", [write(".arc42/01-intro.md")]), "code — Old layout");
 check("backlog", await titleFor("Split checkout epic", [edit(".devbook/backlog/epic-checkout.md")]), "backlog — Split checkout epic");
+check("a flat devbook folder is code", await titleFor("Runtime view refresh", [write(".arc42/06-runtime-view.md")]), "code — Runtime view refresh");
 check("anything else is code", await titleFor("Rounding fix", [edit("src/Shipping/Rate.cs")]), "code — Rounding fix");
 
 console.log("\n— bounded context —");

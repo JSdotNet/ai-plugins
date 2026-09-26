@@ -118,9 +118,9 @@ dominant destination is established, so the rename is normally a one-time event 
 | published as a Claude Artifact | `artifact` |
 
 A bounded context is appended as `<prefix>:<context>` whenever exactly one is involved —
-resolved from the `.devbook/domain/` folder names directly, or matched against them from a code path,
-which is what the convention's "keep context and module names aligned" rule buys. Generated
-`_meta/` files never count, an artifact publish outranks the folder tally, and the session's
+resolved from the `.devbook/domain/` folder names directly, or matched against them from a code
+path, which is what the convention's "keep context and module names aligned" rule buys.
+Generated `_meta/` files never count, an artifact publish outranks the folder tally, and the session's
 git branch and worktree are unaffected: they are fixed when the session is created.
 
 ### Surfacing the Dashboard

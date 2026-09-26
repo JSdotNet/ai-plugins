@@ -225,9 +225,9 @@ usual folder is labelled by what it actually did. The rules:
 - **A published artifact outranks the file tally.** It is the run's shareable deliverable and
   the one output that cannot be found again by browsing the repository.
 - **A bounded context is appended** as `<prefix>:<context>` when exactly one is involved —
-  read from the `.devbook/domain/` folder name directly, or matched against the declared context list
-  from a code path (`src/Acme.Billing/` → `billing`), which is what the knowledge convention's
-  "keep context and module names aligned" rule buys. Two contexts means none is shown.
+  read from the `.devbook/domain/` folder name directly, or matched against the declared
+  context list from a code path (`src/Acme.Billing/` → `billing`), which is what the knowledge
+  convention's "keep context and module names aligned" rule buys. Two contexts means none is shown.
 - **Nothing observed means no name.** `computeSessionTitle` returns `null` until a write lands,
   because renaming earlier would replace the host's own summary of the opening prompt with an
   unprefixed copy of the run title.

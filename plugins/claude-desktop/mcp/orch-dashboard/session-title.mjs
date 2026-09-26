@@ -14,19 +14,26 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-// Knowledge folders live under `.devbook/` and carry their own prefix, which is the folder's
-// name; everything else is code. The order here is also the tie-break rank: a run that wrote the
-// same number of files to two destinations is named after the rarer one, because "this session
-// touched the domain model" is the more surprising fact and the one worth finding again.
+// Devbook folders (`.devbook/<folder>/`) carry their own prefix; everything else is code. The
+// order here is also the tie-break rank: a run that wrote the same number of files to two
+// destinations is named after the rarer one, because "this session touched the domain model" is
+// the more surprising fact and the one worth finding again.
 const DEVBOOK_ROOT = ".devbook";
-const FOLDER_PREFIXES = ["domain", "arc42", "tech", "design", "ai", "backlog"];
+const FOLDER_PREFIXES = [
+    ["domain", "domain"],
+    ["arc42", "arc42"],
+    ["tech", "tech"],
+    ["design", "design"],
+    ["ai", "ai"],
+    ["backlog", "backlog"],
+];
 
 const DOMAIN_PREFIX = "domain";
 const CODE_PREFIX = "code";
 const ARTIFACT_PREFIX = "artifact";
 
 // Rank by declaration order, code last.
-const PREFIX_RANK = new Map([...FOLDER_PREFIXES, CODE_PREFIX].map((p, i) => [p, i]));
+const PREFIX_RANK = new Map([...FOLDER_PREFIXES.map(([, prefix]) => prefix), CODE_PREFIX].map((p, i) => [p, i]));
 
 // Tools whose input names a file this run produced. Bash-driven writes are deliberately not
 // tracked: there is no reliable way to tell `git status` from `sed -i` by inspecting a command
@@ -106,10 +113,10 @@ async function knownContexts(run, cwd) {
     let contexts = [];
     if (typeof cwd === "string" && cwd) {
         try {
-            const entries = await readdir(path.join(cwd, DEVBOOK_ROOT, DOMAIN_PREFIX), { withFileTypes: true });
+            const entries = await readdir(path.join(cwd, DEVBOOK_ROOT, "domain"), { withFileTypes: true });
             contexts = entries.filter((e) => e.isDirectory() && !e.name.startsWith("_")).map((e) => e.name);
         } catch {
-            // No domain folder, or unreadable: boundaries stay unresolved.
+            // No domain folder, or unreadable. Boundaries stay unresolved.
         }
     }
     destinations.contexts = contexts;
@@ -117,8 +124,9 @@ async function knownContexts(run, cwd) {
 }
 
 function prefixFor(segments) {
-    if (segments.length > 1 && segments[0] === DEVBOOK_ROOT && FOLDER_PREFIXES.includes(segments[1])) {
-        return segments[1];
+    if (segments.length < 2 || segments[0] !== DEVBOOK_ROOT) return CODE_PREFIX;
+    for (const [folder, prefix] of FOLDER_PREFIXES) {
+        if (segments[1] === folder) return prefix;
     }
     return CODE_PREFIX;
 }
