@@ -69,11 +69,9 @@ Mermaid v11+, falling back to `graph TD`.
 
 ## Output
 
-When the repository has an arc42 devbook folder — `.arc42/` at the root, or nested as
-`.devbook/arc42/` — write there: `NN-name.md` per section, local decision records under its
-`adr/` and debt records under its `tdr/`, each linked
-from `09-architecture-decisions.md` and `11-risks-and-technical-debt.md` rather than restated
-in them. Every file carries a fenced `meta` block, and nothing under `_meta/` is hand-edited.
+When the repository has a `.devbook/arc42/` folder, write there: `NN-name.md` per section,
+local decision records under its `adr/` and debt records under its `tdr/`, each linked from
+`09-architecture-decisions.md` and `11-risks-and-technical-debt.md` rather than restated in them. Every file carries a fenced `meta` block, and nothing under `_meta/` is hand-edited.
 Follow that folder's own instruction file for structure and status. Otherwise ask for a path.
 
 Diagrams live inside the chapter they document, in Mermaid fences — never as standalone files.
