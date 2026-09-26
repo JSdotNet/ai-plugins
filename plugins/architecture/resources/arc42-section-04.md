@@ -117,7 +117,7 @@ Detailed explanation of system structure:
 
 List of architecturally significant decisions:
 - Each decision with context and consequences
-- Reference to detailed ADRs in Section 9
+- A link to the decision record for the concern under `adr/`
 - Grouped by category (technology, structure, patterns)
 
 ## Output Format
@@ -162,7 +162,7 @@ List of architecturally significant decisions:
    - **Context:** <Why this decision was needed>
    - **Decision:** <What was chosen>
    - **Consequences:** <Impact on architecture>
-   - **See also:** ADR-xxx (Section 9)
+   - **See also:** `adr/<concern>.md`
 
 2. **<Decision Name>**
    [Same structure]

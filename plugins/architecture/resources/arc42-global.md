@@ -91,7 +91,7 @@ arc42 is a proven, open-source template for software architecture documentation 
 ### 9. Architecture Decisions
 **Important decisions with rationale**
 - Architecturally significant decisions
-- Use ADR (Architecture Decision Record) format
+- One decision record per concern under `adr/`; the section links to the `adr/` index
 - Document WHY, not just WHAT
 
 ### 10. Quality Requirements
