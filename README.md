@@ -91,13 +91,22 @@ providers are reported, remove stale user-scope copies from `%USERPROFILE%\.copi
 ai-plugins
 |- AGENTS.md                    the standing rules; CLAUDE.md imports it,
 |                               .github/copilot-instructions.md points at it
-|- .agents/rules/               path-scoped rules, one copy each
-|- .devbook/                    arc42/ (architecture, dual-host model), tech/, ai/
-|- .claude/rules/               Claude wrappers, one per rule
+|- .agents/
+|  |- rules/                    path-scoped rules, one copy each; devbook-* are devbook's
+|  \- skills/                   procedure skills (estimate), devbook-procedures'
+|- .devbook/
+|  |- arc42/                    architecture: decisions, building blocks, dual-host model
+|  |- tech/                     the technology graph
+|  |- ai/                       how this repository is built with AI
+|  |- _tools/                   devbook-meta and devbook-tech, devbook's
+|  \- config.json               the stack config: bindings, policy, component stamps
+|- .claude/
+|  |- rules/                    Claude wrappers, one per rule
+|  \- skills/                   Claude wrappers, one per procedure skill
 |- .github/
 |  |- instructions/             Copilot wrappers, one per rule
-|  |- skills/                   repository-local skills
-|  \- workflows/                check-assets.yml, nightly-plugin-version-bump.yml
+|  |- skills/                   repository-local skills and Copilot procedure wrappers
+|  \- workflows/                check-assets.yml, devbook-meta.yml, nightly-plugin-version-bump.yml
 |- .claude-plugin/marketplace.json   the marketplace, one entry per plugin
 |- plugins/<name>/              one folder per plugin, each installable on its own
 |- docs/copilot/                Copilot reference and inventories
@@ -134,21 +143,26 @@ names `tools/tool-map.json` derives from them, no host-specific tool names in pr
    node tools/bump-version.mjs <plugin> [patch|minor|major]
    ```
 
-3. Run the checker:
+3. Run both checks; neither writes anything:
 
    ```bash
    node tools/check-assets.mjs
+   node .devbook/_tools/devbook-meta/build.mjs --check
    ```
 
-   It fails on a version that disagrees across the four places, on an agent shape a host
-   rejects, on a Claude hook that drifted from its Copilot twin, on a rule whose wrappers
-   drifted, and on a plugin with an `instructions/` folder; it writes nothing.
-   `.github/workflows/check-assets.yml` runs it on every pull request.
+   The first fails on a version that disagrees across the four places, on an agent shape a
+   host rejects, on a Claude hook that drifted from its Copilot twin, on a rule whose wrappers
+   drifted, and on a plugin with an `instructions/` folder. The second fails on a devbook
+   chapter whose `meta` block or references do not resolve.
+   `.github/workflows/check-assets.yml` and `.github/workflows/devbook-meta.yml` run them on
+   pull requests.
 4. Reinstall the plugin and exercise the agent or skill.
-5. Commit one logical change per commit; leave nothing uncommitted.
+5. Update the `.devbook/` chapter the change makes untrue in the same pull request.
+6. Commit one logical change per commit; leave nothing uncommitted.
 
 Rules for the assets themselves — frontmatter, body budgets, tone, Markdown baseline — are the
-eight topics under `.agents/rules/`, each wrapped once per host; the convention is
+eight topics under `.agents/rules/`, each wrapped once per host, beside the `devbook-*` rules
+devbook installs; the convention is
 [.agents/rules/README.md](.agents/rules/README.md). Read the matching
 `plugins/spec-builder/resources/create-*.md` contract before authoring an asset of that type.
 

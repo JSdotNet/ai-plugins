@@ -56,6 +56,18 @@ plugin's `resources/`, reached by an explicit path reference — see
 | `agent-language-and-tone` | agents and skills — output language and tone |
 | `markdown` | every Markdown file |
 
+devbook's trios — each a rule here plus its two wrappers, listed under `components.devbook`
+in `.devbook/config.json` — govern the devbook folders:
+
+| Topic | Governs |
+| --- | --- |
+| `devbook-arc42` | `.devbook/arc42/**` — chapters, decision and debt records |
+| `devbook-tech` | `.devbook/tech/**` — the technology graph |
+| `devbook-ai` | `.devbook/ai/**` — the AI adoption record |
+| `devbook-chapter-metadata` | every devbook chapter's `meta` block |
+| `devbook-annotations` | `annotation` fences in a devbook chapter |
+| `devbook-naming` | file and chapter names under `.devbook/` |
+
 A rule fires when a host **reads** a matching file, so authoring one from scratch may not
 trigger it. Open a sibling first, or read the rule directly.
 
