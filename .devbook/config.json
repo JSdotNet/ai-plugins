@@ -197,6 +197,18 @@
     },
     "delivery": {
       "pluginVersion": "1.9.0"
+    },
+    "schedule": {
+      "pluginVersion": "1.9.0",
+      "enabled": [
+        "devbook-validate",
+        "devbook-verify",
+        "tech-update",
+        "prose-check",
+        "merge-review",
+        "instruction-review",
+        "weekly-update"
+      ]
     }
   }
 }
