@@ -1,6 +1,6 @@
 {
   "name": "claude-desktop",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills plus the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
   "author": {
     "name": "Job Schepers"
