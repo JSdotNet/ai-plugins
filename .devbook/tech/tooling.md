@@ -16,7 +16,7 @@ loads every plugin.
 
 - **Used for** — authoring and reviewing assets in worktree sessions, and loading each
   plugin through `.claude-plugin/plugin.json` to confirm it works in Claude.
-- **Why** — one of the two hosts the marketplace serves; `docs/copilot/claude-code-compatibility.md`
+- **Why** — one of the two hosts the marketplace serves; `.devbook/arc42/08-crosscutting-concepts.md`
   explains how one file serves both.
 
 ## GitHub Copilot

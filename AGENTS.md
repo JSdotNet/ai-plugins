@@ -84,7 +84,7 @@ drift. The `devbook-*` rules beside them are devbook's, installed verbatim and r
 
 Read the matching `plugins/spec-builder/resources/create-*.md` contract before authoring an
 asset of that type; `plugins/spec-builder/resources/spec-conciseness.md` holds the body
-budgets. `docs/copilot/claude-code-compatibility.md` explains how one file serves both hosts.
+budgets. `.devbook/arc42/08-crosscutting-concepts.md` explains how one file serves both hosts.
 
 ## Writing
 

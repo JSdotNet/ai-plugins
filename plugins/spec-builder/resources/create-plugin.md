@@ -59,7 +59,7 @@ author cannot look up in the repository.
   `.claude-plugin/plugin.json` with `hooks/`, plus the repo-root marketplace entry and the
   `copilot-plugins.md` row. Nothing is generated; `node tools/check-assets.mjs` fails when
   the two sides or the four versions disagree. Full rules:
-  [Claude Code Compatibility](../../../../docs/copilot/claude-code-compatibility.md).
+  [Crosscutting Concepts](../../../../.devbook/arc42/08-crosscutting-concepts.md).
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and
   the 60-line budget.
 

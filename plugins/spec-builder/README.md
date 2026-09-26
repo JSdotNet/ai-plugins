@@ -48,7 +48,7 @@ node tools/check-assets.mjs
 ```
 
 Canvas extensions are the one Copilot-only asset type. Full rules:
-[Claude Code Compatibility](../../docs/copilot/claude-code-compatibility.md).
+[Crosscutting Concepts](../../.devbook/arc42/08-crosscutting-concepts.md).
 
 ## Install
 

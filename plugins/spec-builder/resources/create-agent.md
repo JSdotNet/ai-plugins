@@ -27,7 +27,7 @@ agent needs them. An empty or restating section is a section to delete.
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and
   the 80-line body budget.
 - The dual-host rules behind the `model`, `tools`, and `handoffs` items above are in
-  [Claude Code Compatibility](../../../../docs/copilot/claude-code-compatibility.md).
+  [Crosscutting Concepts](../../../../.devbook/arc42/08-crosscutting-concepts.md).
 
 ## Validation Checklist
 

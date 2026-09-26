@@ -21,7 +21,7 @@ explicitly, skills, command hooks, `mcpServers`, and the marketplace in
 
 - **Used for** — every plugin's Claude manifest, and the `SessionStart` command hooks that
   print a sidecar in place of a prompt hook.
-- **Why** — one of the two hosts; `docs/copilot/claude-code-compatibility.md` records where
+- **Why** — one of the two hosts; `.devbook/arc42/08-crosscutting-concepts.md` records where
   the contracts differ, and `tools/check-assets.mjs` fails when they drift.
 
 ## Copilot CLI plugin API

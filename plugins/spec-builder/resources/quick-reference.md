@@ -19,7 +19,7 @@ Concise decision guide and troubleshooting checklist for authoring customization
 
 Plugin assets in this repository load in both GitHub Copilot and Claude Code from one copy.
 The rules, the generated-file list, and the tool translation table are in
-[Claude Code Compatibility](../../../docs/copilot/claude-code-compatibility.md), and the
+[Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md), and the
 always-on summary is in this plugin's `hooks.json` `sessionStart` prompt.
 
 ## Troubleshooting: Asset Not Being Picked Up

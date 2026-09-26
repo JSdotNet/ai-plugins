@@ -45,7 +45,7 @@ conversation and delegates asset-specific rules to the plugin `create-*` skills.
 - Keep every asset within its size budget and free of duplicated rules — see
   [spec-conciseness.md](../resources/spec-conciseness.md).
 - Author every asset to load in both GitHub Copilot and Claude Code from a single copy. The
-  rules are in [Claude Code Compatibility](../../../docs/copilot/claude-code-compatibility.md)
+  rules are in [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md)
   and in this plugin's `sessionStart` hook.
 - For canvas extensions, scaffold with `extensions_manage` and verify with `extensions_reload`.
   Canvas is Copilot-only; say so before building one.
@@ -92,4 +92,4 @@ named after it: `create-agent`, `create-instruction`, `create-plugin`, `create-s
 
 - [Plugin README](../README.md)
 - [Quick Reference](../resources/quick-reference.md)
-- [Claude Code Compatibility](../../../docs/copilot/claude-code-compatibility.md)
+- [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md)

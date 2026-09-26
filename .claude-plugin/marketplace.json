@@ -21,7 +21,7 @@
       "name": "claude-desktop",
       "source": "./plugins/claude-desktop",
       "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills plus the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
-      "version": "0.12.2"
+      "version": "0.12.3"
     },
     {
       "name": "csharp-coding",
@@ -87,7 +87,7 @@
       "name": "spec-builder",
       "source": "./plugins/spec-builder",
       "description": "Copilot plugin focused on GitHub customization asset authoring workflows.",
-      "version": "0.5.1"
+      "version": "0.5.2"
     },
     {
       "name": "ux-design",

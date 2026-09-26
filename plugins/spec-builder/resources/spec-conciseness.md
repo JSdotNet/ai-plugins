@@ -13,7 +13,7 @@ description: Pruning rules and size budgets that keep authored customization ass
 ## Single Source Of Truth
 
 - State each rule in exactly one file. Everywhere else, link to that file by relative path.
-- Canonical sources: `docs/copilot/claude-code-compatibility.md` for dual-host rules, root
+- Canonical sources: `.devbook/arc42/08-crosscutting-concepts.md` for dual-host rules, root
   `.agents/rules/` for repository-wide standards, and the matching
   `resources/create-*.md` for asset-specific rules.
 - Prefer a one-line pointer over a summary. A summary is a second copy that drifts.
