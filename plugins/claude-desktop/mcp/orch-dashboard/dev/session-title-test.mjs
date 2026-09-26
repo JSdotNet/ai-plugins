@@ -34,6 +34,7 @@ check("knowledge folder wins its own prefix", await titleFor("Add Fulfilment agg
 check("arc42", await titleFor("Runtime view refresh", [write(".devbook/arc42/06-runtime-view.md")]), "arc42 — Runtime view refresh");
 check("tech", await titleFor("Pin Aspire 9", [edit(".devbook/tech/backend.md")]), "tech — Pin Aspire 9");
 check("design", await titleFor("Dense table tokens", [edit(".devbook/design/color-scheme.md")]), "design — Dense table tokens");
+check("ai", await titleFor("Record review agent", [edit(".devbook/ai/review.md")]), "ai — Record review agent");
 check("backlog", await titleFor("Split checkout epic", [edit(".devbook/backlog/epic-checkout.md")]), "backlog — Split checkout epic");
 check("a flat devbook folder is code", await titleFor("Runtime view refresh", [write(".arc42/06-runtime-view.md")]), "code — Runtime view refresh");
 check("anything else is code", await titleFor("Rounding fix", [edit("src/Shipping/Rate.cs")]), "code — Rounding fix");
