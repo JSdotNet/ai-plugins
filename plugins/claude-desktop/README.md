@@ -6,7 +6,7 @@ rather than to a delivery engine — `start`, `session-handoff`, and `create-pul
 
 This is the Claude counterpart of [`copilot-app`](../copilot-app/README.md). Every other
 plugin in this repository is authored once and read by both hosts (see
-[Claude Code compatibility](../../docs/copilot/claude-code-compatibility.md)); the two host
+[Crosscutting Concepts](../../.devbook/arc42/08-crosscutting-concepts.md)); the two host
 plugins are the exception, because each is built on its host's own rendering surface.
 
 The orchestration lane this plugin used to carry — the `orch-*` skills, the `phase-*`
@@ -55,7 +55,7 @@ in which host.
   emitter that hands it to Claude as `additionalContext`. A `prompt` hook cannot do this
   job: Claude Code rejects prompt hooks on `SessionStart` and records the refusal as a
   non-blocking error, so the guidance would vanish silently. See
-  [Claude Code Compatibility](../../docs/copilot/claude-code-compatibility.md).
+  [Crosscutting Concepts](../../.devbook/arc42/08-crosscutting-concepts.md).
 - `hooks.json` (plugin root) — a Copilot-only guard. Claude Code ignores a plugin's root
   `hooks.json` and reads `hooks/hooks.json`; Copilot reads the root file and falls back to
   `hooks/` only when it is absent. So this file reaches Copilot alone, where it says the plugin

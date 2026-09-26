@@ -33,5 +33,5 @@ description: Create or refine a Copilot plugin package with valid manifest paths
 ## References
 
 - [create-plugin.md](../../resources/create-plugin.md)
-- [Claude Code Compatibility](../../../../docs/copilot/claude-code-compatibility.md) — which
+- [Crosscutting Concepts](../../../../.devbook/arc42/08-crosscutting-concepts.md) — which
   files are authored, which are generated, and how a Copilot-only plugin is excluded.

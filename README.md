@@ -92,6 +92,7 @@ ai-plugins
 |- AGENTS.md                    the standing rules; CLAUDE.md imports it,
 |                               .github/copilot-instructions.md points at it
 |- .agents/rules/               path-scoped rules, one copy each
+|- .devbook/                    arc42/ (architecture, dual-host model), tech/, ai/
 |- .claude/rules/               Claude wrappers, one per rule
 |- .github/
 |  |- instructions/             Copilot wrappers, one per rule
@@ -99,7 +100,7 @@ ai-plugins
 |  \- workflows/                check-assets.yml, nightly-plugin-version-bump.yml
 |- .claude-plugin/marketplace.json   the marketplace, one entry per plugin
 |- plugins/<name>/              one folder per plugin, each installable on its own
-|- docs/copilot/                dual-host reference and inventories
+|- docs/copilot/                Copilot reference and inventories
 |- tools/                       check-assets.mjs, bump-version.mjs, tool-map.json
 |- scripts/                     Build-DesktopExtension.ps1, generate-diagram-svgs.ps1
 \- copilot-plugins.md           the plugin table
@@ -120,7 +121,7 @@ the keys it does not know. There is no generator: every file is hand-authored, a
 one copy possible — no `model` pins, one tools list with Copilot ids first and the Claude
 names `tools/tool-map.json` derives from them, no host-specific tool names in prose, a
 `sessionStart` prompt hook twinned by a Claude command hook plus sidecar — are in
-[docs/copilot/claude-code-compatibility.md](docs/copilot/claude-code-compatibility.md).
+[.devbook/arc42/08-crosscutting-concepts.md](.devbook/arc42/08-crosscutting-concepts.md).
 
 ## Working on the repository
 
@@ -156,7 +157,7 @@ eight topics under `.agents/rules/`, each wrapped once per host; the convention 
 - [copilot-plugins.md](copilot-plugins.md) — plugin table with versions and install strings
 - [docs/copilot/copilot-skills.md](docs/copilot/copilot-skills.md) — skill inventory
 - [docs/copilot/copilot-reference.md](docs/copilot/copilot-reference.md) — Copilot CLI reference
-- [docs/copilot/claude-code-compatibility.md](docs/copilot/claude-code-compatibility.md) — how one file serves both hosts
+- [.devbook/arc42/08-crosscutting-concepts.md](.devbook/arc42/08-crosscutting-concepts.md) — how one file serves both hosts
 - [AGENTS.md](AGENTS.md) — standing rules
 
 ## License

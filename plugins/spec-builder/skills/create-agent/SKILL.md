@@ -31,5 +31,5 @@ description: Create or refine an agent file with correct frontmatter, scope, too
 ## References
 
 - [create-agent.md](../../resources/create-agent.md)
-- [Claude Code Compatibility](../../../../docs/copilot/claude-code-compatibility.md) — why
+- [Crosscutting Concepts](../../../../.devbook/arc42/08-crosscutting-concepts.md) — why
   `model`, `tools`, and `handoffs` are handled the way step 3 and step 5 require.
