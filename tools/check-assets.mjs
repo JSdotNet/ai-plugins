@@ -20,7 +20,8 @@
 //                 prints hooks/session-start-context.md holding the same text
 //   rules         every .agents/rules/<topic>.md has a wrapper per host, the wrappers'
 //                 globs and description are derived from it, and neither wrapper has
-//                 grown a rule of its own
+//                 grown a rule of its own; a rule devbook installed verbatim (listed in
+//                 .devbook/config.json) takes its globs from its Claude wrapper instead
 //   contracts     every plugins/*/resources/*.md with frontmatter carries name (equal to
 //                 its filename) and description, and never applyTo or paths; no plugin
 //                 has an instructions/ folder
@@ -277,6 +278,12 @@ for (const folder of folders) {
 
 function yamlPaths(fm) { return yamlList(fm, "paths"); }
 
+// devbook installs its rules verbatim, without paths; its stamp lists each one, and its
+// Claude wrapper carries the globs from devbook's rules.json.
+const devbookStamp = path.join(ROOT, ".devbook", "config.json");
+const devbookRules = new Set(Object.keys((await exists(devbookStamp)) ? (await json(devbookStamp)).components?.devbook?.materialized ?? {} : {})
+    .filter((key) => key.startsWith(".agents/rules/")));
+
 const topics = new Set();
 if (await exists(SHARED_RULES)) {
     for (const entry of (await readdir(SHARED_RULES)).filter((f) => f.endsWith(".md") && f !== "README.md").sort()) {
@@ -287,10 +294,11 @@ if (await exists(SHARED_RULES)) {
         if (scalar(fm, "name") !== topic) error(`${shared}: frontmatter name must equal the filename "${topic}"`);
         const description = scalar(fm, "description");
         if (!description) error(`${shared}: description is required; the Copilot wrapper copies it`);
-        const paths = yamlPaths(fm);
+        const claudeWrapper = path.join(CLAUDE_RULES, `${topic}.md`);
+        let paths = yamlPaths(fm);
+        if (!paths && devbookRules.has(shared) && (await exists(claudeWrapper))) paths = yamlPaths(frontmatter(await readFile(claudeWrapper, "utf8")).fm);
         if (!paths || !paths.length) { error(`${shared}: needs a paths list; without one neither wrapper can be derived`); continue; }
 
-        const claudeWrapper = path.join(CLAUDE_RULES, `${topic}.md`);
         if (!(await exists(claudeWrapper))) error(`${shared}: no .claude/rules/${topic}.md, so Claude applies this rule nowhere`);
         else {
             const { fm: cfm, body } = frontmatter(await readFile(claudeWrapper, "utf8"));
