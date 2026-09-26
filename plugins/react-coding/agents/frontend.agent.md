@@ -50,8 +50,8 @@ and prove them with the project's own build, typecheck, lint, and test commands.
 
 - The specification, plan, or request the caller hands over, with its `## API Contract`
   and `## UX Requirements` sections when it has them. When it has neither, read the API
-  types from the .NET API layer and the design guidelines from the repository's design
-  devbook folder (`.design/` or `.devbook/design/`) when it exists, and say so.
+  types from the .NET API layer and the design guidelines from the repository's
+  `.devbook/design/` folder when it exists, and say so.
 
 ## Stack Detection
 
