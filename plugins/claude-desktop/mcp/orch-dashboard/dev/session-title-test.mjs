@@ -1,8 +1,8 @@
 // Unit check for session naming: destination classification, boundary resolution, precedence,
 // and the cases that must NOT produce a rename.
 //
-// Runs against a temporary worktree with a `.devbook/domain/` folder, because boundary resolution for
-// code paths reads the declared bounded contexts off disk.
+// Runs against a temporary worktree with a `.devbook/domain/` folder, because boundary
+// resolution for code paths reads the declared bounded contexts off disk.
 import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -33,10 +33,10 @@ console.log("— destination to prefix —");
 check("knowledge folder wins its own prefix", await titleFor("Add Fulfilment aggregate", [write(".devbook/domain/order-management/domain.md")]), "domain:order-management — Add Fulfilment aggregate");
 check("domain file outside a context names none", await titleFor("Redraw the map", [write(".devbook/domain/context-map.md")]), "domain — Redraw the map");
 check("arc42", await titleFor("Runtime view refresh", [write(".devbook/arc42/06-runtime-view.md")]), "arc42 — Runtime view refresh");
-check("a root-level folder is code, not devbook", await titleFor("Runtime view refresh", [write(".arc42/06-runtime-view.md")]), "code — Runtime view refresh");
 check("tech", await titleFor("Pin Aspire 9", [edit(".devbook/tech/backend.md")]), "tech — Pin Aspire 9");
 check("design", await titleFor("Dense table tokens", [edit(".devbook/design/color-scheme.md")]), "design — Dense table tokens");
 check("backlog", await titleFor("Split checkout epic", [edit(".devbook/backlog/epic-checkout.md")]), "backlog — Split checkout epic");
+check("a flat devbook folder is code", await titleFor("Runtime view refresh", [write(".arc42/06-runtime-view.md")]), "code — Runtime view refresh");
 check("anything else is code", await titleFor("Rounding fix", [edit("src/Shipping/Rate.cs")]), "code — Rounding fix");
 
 console.log("\n— bounded context —");

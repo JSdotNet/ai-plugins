@@ -14,10 +14,10 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-// Knowledge folders live under `.devbook/<folder>/` and carry their own prefix; everything else
-// is code. The order here is also the tie-break rank: a run that wrote the same number of files
-// to two destinations is named after the rarer one, because "this session touched the domain
-// model" is the more surprising fact and the one worth finding again.
+// Devbook folders (`.devbook/<folder>/`) carry their own prefix; everything else is code. The
+// order here is also the tie-break rank: a run that wrote the same number of files to two
+// destinations is named after the rarer one, because "this session touched the domain model" is
+// the more surprising fact and the one worth finding again.
 const DEVBOOK_ROOT = ".devbook";
 const FOLDER_PREFIXES = [
     ["domain", "domain"],
@@ -116,7 +116,7 @@ async function knownContexts(run, cwd) {
             const entries = await readdir(path.join(cwd, DEVBOOK_ROOT, "domain"), { withFileTypes: true });
             contexts = entries.filter((e) => e.isDirectory() && !e.name.startsWith("_")).map((e) => e.name);
         } catch {
-            // No domain folder, or unreadable: boundaries stay unresolved.
+            // No domain folder, or unreadable. Boundaries stay unresolved.
         }
     }
     destinations.contexts = contexts;
