@@ -133,7 +133,7 @@ function prefixFor(segments) {
 
 function boundaryFor(segments, prefix, contexts) {
     // A `.devbook/domain/<context>/` write names its context outright.
-    if (prefix === DOMAIN_PREFIX) return segments.length > 2 ? segments[2] : null;
+    if (prefix === DOMAIN_PREFIX) return segments.length > 3 ? segments[2] : null;
     if (!contexts.length) return null;
     // Anywhere else, a path segment matching a declared context is the boundary. The
     // convention asks that context folders and code module names be kept aligned, which is
