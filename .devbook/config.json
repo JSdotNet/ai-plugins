@@ -1,4 +1,25 @@
 {
+  "id": "ai-plugins",
+  "bindings": {
+    "delivery.tracker": {
+      "provider": "backlog"
+    },
+    "delivery.roles": {
+      "architecture": "architecture",
+      "docs": "documentation"
+    }
+  },
+  "extensions": {
+    "session.start": [
+      "devbook:validate"
+    ],
+    "app.start": null,
+    "verify": "devbook:verify-change"
+  },
+  "policy": {
+    "qa.depth": "skipped",
+    "pr.base": "main"
+  },
   "components": {
     "devbook": {
       "pluginVersion": "1.9.0",
