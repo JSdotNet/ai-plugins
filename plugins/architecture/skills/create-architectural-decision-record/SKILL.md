@@ -1,31 +1,33 @@
 ---
 name: create-architectural-decision-record
-description: 'Create an Architectural Decision Record (ADR) document for AI-optimized decision documentation.'
+description: 'Record, change, or propose an architectural decision in its one record per concern, which always states the standing choice with its reasons, rejected alternatives, and history. Use when: a choice would cost a migration to reverse (storage, API style, hosting, a runtime, an aggregate boundary), an existing decision changes, or a change to one is proposed. DO NOT USE FOR: naming, folder layout, process, ownership, or how a document is written — those stay a sentence where they are stated.'
 ---
 
 # Create Architectural Decision Record
 
-Use this skill to produce structured ADRs with clear context, decision rationale, alternatives, and consequences.
-
-## Trigger Conditions
-
-Use when the user requests a decision record for an architectural choice, trade-off, or standard.
+Apply `resources/adr-global.md` and `resources/prose.md`.
 
 ## Inputs
 
-- Decision statement and scope
-- Constraints, assumptions, and quality goals
-- Candidate alternatives
+- The concern and the choice: new, changed, or proposed.
+- The reasons, the alternatives considered, and the date.
 
 ## Workflow
 
-1. Apply `resources/adr-global.md`.
-2. Capture context, problem statement, and decision drivers.
-3. Record selected option and rejected alternatives with rationale.
-4. Document consequences, risks, and rollback/mitigation notes.
-5. Link the ADR to impacted arc42 sections and related TDR entries.
-6. Save as Markdown in the repository ADR location.
+1. Test the choice against "What earns a record". If it does not earn one, say where the
+   sentence belongs and stop.
+2. Find the records folder: `.devbook/arc42/adr/` when it exists, and read that folder's rule;
+   otherwise ask for a path.
+3. Read the `adr/` index and find the record whose concern covers the choice.
+4. Covered concern:
+   - a decision — rewrite the standing choice, `## Why`, and `## Rejected`, and add a history
+     row;
+   - a proposal — set `status: proposed` and add `## Proposed`.
+5. No record covers it: create `adr/<concern>.md` in the contract's shape, with its first
+   history row.
+6. Update the index line for the concern, creating the index with `index: root` if it is
+   missing. Leave `09-architecture-decisions.md` linking to the index.
 
 ## Output
 
-Create ADRs in the repository ADR location with standardized metadata and sections.
+The changed record and index, and one line naming the concern and what changed.

@@ -2,7 +2,7 @@
 
 ## System Prompt
 
-You are an expert for arc42 Section 11 (Risks and Technical Debt). Document known technical risks and technical debt with mitigation strategies. Be transparent about problems.
+You are an expert for arc42 Section 11 (Risks and Technical Debt). Document known technical risks with mitigation strategies, and link to the technical debt records. Be transparent about problems.
 
 ## Rules
 
@@ -10,7 +10,8 @@ You are an expert for arc42 Section 11 (Risks and Technical Debt). Document know
   contingency, owner, and review date.
 - Prioritize with the risk matrix (probability × impact) rather than marking everything
   critical.
-- Record technical debt alongside the risks, with a remediation plan.
+- Link to the `tdr/` index for technical debt and restate no debt item. Log a new one with
+  the `create-technical-debt-record` skill.
 - Keep probability and impact specific enough to compare, and refresh the assessment on its
   review dates.
 
@@ -22,9 +23,7 @@ Create arc42 Section 11 for:
 - Known Risks: [Technical, organizational, external risks]
 - Risk Assessment: [Probability and impact for each]
 - Mitigation Plans: [How to prevent/reduce/handle]
-- Technical Debt: [Known shortcuts/compromises]
-- Debt Origin: [Why was shortcut taken?]
-- Remediation Plans: [Fix now / later / accept?]
+- Debt records folder: [Path to tdr/]
 - Detail Level: [LEAN/ESSENTIAL/THOROUGH]
 ```
 
@@ -34,7 +33,7 @@ Create arc42 Section 11 for:
 # 11. Risks and Technical Debt
 
 ## Overview
-[Risk management approach and technical debt policy]
+[Risk management approach]
 
 **Last Updated:** YYYY-MM-DD
 **Next Review:** YYYY-MM-DD
@@ -81,54 +80,7 @@ Create arc42 Section 11 for:
 
 ## Technical Debt
 
-### Technical Debt Register
-
-| ID | Debt Item | Impact | Effort to Fix | Target | Status |
-|----|-----------|--------|---------------|--------|--------|
-| TD-001 | [Item] | High | 5 days | 2025-Q1 | Scheduled |
-| TD-002 | [Item] | Medium | 10 days | 2025-Q2 | Identified |
-
-### TD-001: [Technical Debt Item]
-
-**Category:** [Code Quality / Architecture / Documentation / Testing / Infrastructure]
-
-**Description:** [What is the shortcut/compromise?]
-
-**Origin:**
-- Created: [Date]
-- Reason: [Why taken]
-- Decision: [Who approved]
-
-**Current Impact:**
-- Maintainability: [Impact]
-- Performance: [Impact]
-- Security: [Impact]
-- Development Velocity: [Impact]
-
-**Cost to Fix:**
-- Effort: [Story points/days]
-- Risk: [What could break]
-
-**Cost of Not Fixing:**
-[Consequences if left]
-
-**Remediation Plan:**
-- **Decision:** [Fix now / later / accept]
-- **Timeline:** [When]
-- **Approach:** [How]
-
-**Responsible:** [Name/Role]
-
-**Status:** [Identified / Scheduled / In Progress / Resolved / Accepted]
-
----
-
-## Risk & Debt Trends
-
-### This Quarter:
-**New:** R-005, TD-008
-**Resolved:** R-002, TD-003
-**Ongoing:** R-001, TD-002
+See [the technical debt records](tdr/README.md).
 ```
 
 ## Risk Assessment Matrix
