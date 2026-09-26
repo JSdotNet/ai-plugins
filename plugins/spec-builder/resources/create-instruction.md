@@ -36,8 +36,9 @@ Shared text a skill or an agent reads by path — a rule of the craft, a templat
   nothing in either host. A rule that must apply with no reference is promoted to the plugin's
   `hooks.json` `sessionStart` prompt instead.
 - Name the file for what it governs, and cross-reference a sibling by bare filename.
-- Carry every layout the contract supports when it names a path in the consuming repository —
-  `.arc42/` and `.devbook/arc42/` alike.
+- Name only the `.devbook/<folder>/` path when the contract names a devbook folder in the
+  consuming repository — `.devbook/arc42/`, never a root-level `.arc42/` — and defer to that
+  folder's own rule for structure and metadata.
 
 ## Either way
 

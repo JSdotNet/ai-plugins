@@ -22,9 +22,9 @@ Shared text a skill or an agent reads by path is a **contract** and lives in
   silently does nothing. A rule that must apply with no reference is promoted to the plugin's
   `hooks.json` `sessionStart` prompt instead.
 - Name the file for what it governs and cross-reference a sibling by bare filename.
-- When it names a path in the consuming repository, carry every layout the convention supports
-  — `.arc42/` and `.devbook/arc42/`, `.domain/` and `.devbook/domain/`, and so on. A layout
-  the contract does not name is a layout the agent will not write to.
+- When it names a devbook folder in the consuming repository, name the `.devbook/<folder>/`
+  path only — `.devbook/arc42/`, `.devbook/domain/`, and so on — and defer to that folder's
+  own rule for structure and metadata. A root-level `.arc42/` is not a layout.
 
 A rule for people working *in this repository* is different: it is authored once in
 `.agents/rules/` and wrapped per host — see [README.md](README.md). A rule a plugin wants
