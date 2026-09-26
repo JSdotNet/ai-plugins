@@ -25,6 +25,7 @@
       "pluginVersion": "1.9.0",
       "contractVersion": 18,
       "adopted": [
+        "arc42",
         "tech",
         "ai"
       ],
@@ -41,12 +42,12 @@
         },
         ".github/workflows/devbook-meta.yml": {
           "from": "1.9.0",
-          "hash": "sha256:0c1ecf4b359591a37ba3cd3a9a0f72611ed89c726edfeb2ff233a656d4fd2bb4",
+          "hash": "sha256:408265b93c705a83f923197aa75fb800fd069a0775a541a5159894ca13c7cb5e",
           "managed": true
         },
         "AGENTS.md#devbook": {
           "from": "1.9.0",
-          "hash": "sha256:ed8834a3113527149a94ac3911e70f5c8a98603fa451c3c8a4200e96440606c4",
+          "hash": "sha256:da90ca7b7b7c06e8e08e0ccefb8d83ca768cebfd8bf0229be53455058a6cafc0",
           "managed": true
         },
         ".agents/rules/devbook-ai.md": {
@@ -122,6 +123,21 @@
         ".github/instructions/devbook-tech.instructions.md": {
           "from": "1.9.0",
           "hash": "sha256:b5e876e4851849a2f9dc75fabb595cde1fb1a9e7eeb5d509a5bfa7fc0586ec97",
+          "managed": true
+        },
+        ".agents/rules/devbook-arc42.md": {
+          "from": "1.9.0",
+          "hash": "sha256:ffb9f56427a52f873e9af13011e1721db879193a24f2d11c292955862e601147",
+          "managed": true
+        },
+        ".claude/rules/devbook-arc42.md": {
+          "from": "1.9.0",
+          "hash": "sha256:a8a60911deea32f3e0e33bb7d81aef93d3c2db7cb6e06d637b9e2014b16e9af9",
+          "managed": true
+        },
+        ".github/instructions/devbook-arc42.instructions.md": {
+          "from": "1.9.0",
+          "hash": "sha256:52047a3e078a538a6be9becb04605244c6bcc5fba45e1a71f8e5fcc1ae35d188",
           "managed": true
         }
       },

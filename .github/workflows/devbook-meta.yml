@@ -15,6 +15,7 @@ on:
     branches:
       - main
     paths:
+      - '.devbook/arc42/**'
       - '.devbook/tech/**'
       - '.devbook/ai/**'
       - '.devbook/_tools/devbook-meta/**'
@@ -23,6 +24,7 @@ on:
     branches:
       - main
     paths:
+      - '.devbook/arc42/**'
       - '.devbook/tech/**'
       - '.devbook/ai/**'
       - '.devbook/_tools/devbook-meta/**'
