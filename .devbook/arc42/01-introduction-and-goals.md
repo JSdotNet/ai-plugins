@@ -11,9 +11,9 @@ per plugin under `plugins/`, each installable on its own, in GitHub Copilot and 
 Code alike.
 
 The delivery flows themselves are not built here. They ship as `delivery`,
-`delivery-schedule`, `fleet`, and `devbook` in the `jsdotnet` marketplace
-(`JSdotNet/ai-agent-stack`); a specialist here fills a role for that engine, or for a person
-working without it, and holds no flow control.
+`delivery-schedule`, and `fleet` in the `jsdotnet` marketplace (`JSdotNet/ai-agent-stack`),
+beside the `devbook` folder convention; a specialist here fills a role for that engine, or for
+a person working without it, and holds no flow control.
 
 The people it serves are the maintainer, who authors every asset, and whoever installs a
 plugin — in practice the same maintainer across their own repositories.
