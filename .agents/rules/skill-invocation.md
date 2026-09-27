@@ -62,7 +62,7 @@ This convention applies only to skills that cross the specification/code boundar
 
 `disable-model-invocation` is honored by Claude Code. GitHub Copilot ignores unknown frontmatter keys, so a user-invoked skill stays model-invocable there. This is a safe degradation rather than a break, and it is the reason the shortened description must still be accurate prose: it remains the model's only signal on the Copilot side.
 
-This is the one sanctioned exception to the "stick to `name` and `description`" rule in `plugins/spec-builder/instructions/authoring/create-skill.instructions.md`.
+This is the one sanctioned exception to the "stick to `name` and `description`" rule in `plugins/spec-builder/resources/create-skill.md`.
 
 ## Validation Checklist
 
