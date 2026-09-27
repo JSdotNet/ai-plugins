@@ -23,19 +23,28 @@ plugins remain: `claude-desktop` (an MCP dashboard, `start`, `session-handoff`,
 
 ## Validating a change
 
-Before committing, run the checker:
+Before changing a plugin, read the chapters the change touches: `.devbook/arc42/adr/` for why
+the marketplace works the way it does, `.devbook/arc42/building-blocks/` for what a plugin
+owns, and `.devbook/arc42/08-crosscutting-concepts.md` for the vocabulary every plugin shares.
+A chapter and the repository never stay silently apart: a change that makes a chapter untrue
+updates the chapter in the same pull request, or says in the pull request why it does not.
+
+Before committing, run both checks; each writes nothing:
 
 ```bash
 node tools/check-assets.mjs
+node .devbook/_tools/devbook-meta/build.mjs --check
 ```
 
-It fails on a manifest, marketplace entry, or table row whose version disagrees with the
+`check-assets.mjs` fails on a manifest, marketplace entry, or table row whose version disagrees with the
 others; on an agent shape a host rejects — a missing description, an unloadable model pin, a
 tools list that does not match `tools/tool-map.json`, a flow-control tool on a specialist; on
 a Claude `SessionStart` hook that is not a command hook or a sidecar that no longer says what
 the Copilot prompt says; on a repository rule whose wrappers drifted; and on a plugin that
-grew an `instructions/` folder. It reports body budgets and writes nothing.
-`.github/workflows/check-assets.yml` runs it on every pull request.
+grew an `instructions/` folder, and it reports body budgets. The devbook check fails on a
+`meta` block or a chapter reference that does not resolve.
+`.github/workflows/check-assets.yml` and `.github/workflows/devbook-meta.yml` run them on
+pull requests.
 
 ## Committing
 
@@ -79,8 +88,15 @@ host: Claude loads `.claude/rules/<topic>.md` when it opens a matching file, Cop
 `.github/instructions/<topic>.instructions.md`. Eight topics — `agents`, `skills`,
 `skill-invocation`, `plugin-contracts`, `manifests`, `hooks`, `agent-language-and-tone`,
 `markdown`. Change a rule and its two wrappers in the same commit; the checker fails on
-drift. The `devbook-*` rules beside them are devbook's, installed verbatim and refreshed by
-`devbook:update`; never edit them here. The convention is [.agents/rules/README.md](.agents/rules/README.md).
+drift. The convention is [.agents/rules/README.md](.agents/rules/README.md).
+
+Two sets of files here belong to plugins, not to this repository. The `devbook-*` trios — a
+rule in `.agents/rules/`, its `.claude/rules/` wrapper, its `.github/instructions/` wrapper —
+are devbook's, refreshed by `devbook:update`. The procedure skills under `.agents/skills/`,
+with a wrapper each in `.claude/skills/` and `.github/skills/`, are devbook-procedures', and
+`devbook-procedures:update` refreshes the wrappers and every body still unedited; the body is
+the repository's to edit, the wrapper never is. `.devbook/config.json` lists what each owns.
+Never edit a devbook trio or a procedure wrapper here.
 
 Read the matching `plugins/spec-builder/resources/create-*.md` contract before authoring an
 asset of that type; `plugins/spec-builder/resources/spec-conciseness.md` holds the body

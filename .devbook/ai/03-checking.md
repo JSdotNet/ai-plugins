@@ -64,10 +64,12 @@ date: 2026-09-26
 ```
 
 `node .devbook/_tools/devbook-meta/build.mjs --check` validates every `meta` block and reference
-in `.devbook/tech/` and `.devbook/ai/`, and `devbook-meta.yml` runs it on a devbook change.
+in `.devbook/arc42/`, `.devbook/tech/`, and `.devbook/ai/`, and `devbook-meta.yml` runs it on a
+devbook change.
 
-- **Used for** — the chapters in this folder and `tech/`, written by agent sessions.
-- **Adopted by** — the session that installed devbook here on 2026-09-26.
+- **Used for** — the chapters in this folder, `tech/`, and `arc42/`, written by agent sessions.
+- **Adopted by** — the session that installed devbook here on 2026-09-26; since 2026-09-27
+  `AGENTS.md` requires it beside `check-assets.mjs` before every commit.
 - **Evidence** — it passed on the install; promotion needs it to have held a later chapter
   change to the schema.
 - **Limits** — it checks the schema and the references, not whether a chapter is true.
