@@ -4,9 +4,8 @@
 related: [".devbook/tech/hosts.md", ".devbook/arc42/adr/manifests.md"]
 ```
 
-The concepts every plugin shares. Each one is checked by `node tools/check-assets.mjs`,
-which reports, exits non-zero on any error, and writes nothing; `check-assets.yml` runs it on
-every pull request.
+Each concept below is checked by `node tools/check-assets.mjs`, which reports, exits non-zero
+on any error, and writes nothing; `check-assets.yml` runs it on every pull request.
 
 ## One File, Two Hosts
 
@@ -22,7 +21,7 @@ manifest and the hook shape — is one hand-authored file per host, checked agai
 | Path | Read by |
 | --- | --- |
 | `skills/<name>/SKILL.md`, `agents/<role>.agent.md` | both |
-| `resources/`, `prompts/` | both, by explicit path reference |
+| `resources/` | both, by explicit path reference |
 | `.github/plugin/plugin.json`, root `hooks.json` | Copilot |
 | `.claude-plugin/plugin.json`, `hooks/hooks.json` and its sidecar | Claude |
 | `.claude-plugin/marketplace.json` | Claude |

@@ -94,10 +94,11 @@ version: "1.9.0"
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#claude-code"]
 ```
 
-The devbook convention from the `jsdotnet` marketplace: the `tech/` and `ai/` folders, their
-rules, and the checker copied to `.devbook/_tools/`.
+The devbook convention from the `jsdotnet` marketplace: the `arc42/`, `tech/`, and `ai/`
+folders, their rules, and the checker copied to `.devbook/_tools/`.
 
-- **Used for** — this folder and `.devbook/ai/`, installed by `devbook:init` on 2026-09-26.
+- **Used for** — this folder, `.devbook/arc42/`, and `.devbook/ai/`, installed by `devbook:init`
+  on 2026-09-26 and extended to `arc42/` the same day.
 - **Why** — the marketplace's specialists write devbook chapters in other repositories;
   keeping its own record in the same shape is how the convention gets exercised here.
 
