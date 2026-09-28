@@ -52,9 +52,13 @@ Guide tactical domain model design within a bounded context.
 
 ## Invariant Documentation
 
-For each aggregate, document:
+Write each rule an aggregate guarantees as its own `### Invariant: <name>` chapter under the
+aggregate's `## <AggregateName>` chapter in the invariants subpage of its domain page, per
+`domain-documentation-structure.md`:
 
-1. **Invariant name** — short description of the business rule.
-2. **Rule** — precise statement of what must always be true.
-3. **Enforcement** — which method or constructor enforces it.
-4. **Violation response** — what happens when the invariant is violated (domain exception, event, or rejection).
+- One sentence stating a claim that is true or false, in the domain's words, with the rejection
+  code in parentheses where the type has one — ``(`order-already-confirmed`)``.
+- An `Enforced at:` line: `constructor`, a named transition (`Confirm()`), `all mutations`, or
+  `open` for a rule nobody has settled.
+- No `#### Scenario:` — the `unit` test in its `tests` proves it; Given/When/Then belongs to
+  `requirements.md`.
