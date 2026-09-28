@@ -31,6 +31,29 @@ before doing anything.
   item after a crash ran the landed-check and redid nothing.
 - **Limits** — a one-session change is asked for directly, with no plan.
 
+## Estimate Procedure
+
+```meta
+status: candidate
+type: skill
+stage: [plan]
+related: [".devbook/ai/02-carrying-a-change.md#backlog-plan-items"]
+date: 2026-09-28
+```
+
+The `estimate` skill sizes a plan entry or an issue in story points by comparing it with one
+reference row per value in `.agents/skills/estimate.md`. Every row is a merged pull request
+from this repository.
+
+- **Used for** — giving a plan entry its `effort:` and naming the reference it was compared
+  with.
+- **Adopted by** — nobody yet. The skill was adopted in `0910a42` on 2026-09-26, but its table
+  held the seed's web-application examples until 2026-09-28. The `ai-plugins-devbook-adoption`
+  efforts were set without it.
+- **Evidence** — none yet. It moves to `trial` once a plan is sized against the table, and a
+  row is replaced when finished work shows its size was wrong.
+- **Limits** — rows 1, 13, and 21 were sized after their pull requests merged, not before.
+
 ## Worktree Sessions
 
 ```meta
