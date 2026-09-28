@@ -6,9 +6,7 @@ goal: "Return a story-point estimate off the 1/2/3/5/8/13/21 scale for each unit
 
 # Estimate Work
 
-Size each unit against finished work, never on its own. **Edit this file** — the reference
-table below is an example to replace with this repository's own landed work; the scale and
-what comes back are fixed by the wrapper's goal.
+Size each unit against finished work, never on its own.
 
 Points size work — the amount, the uncertainty, the number of places touched — never time. A
 caller divides them by a pace it measures, which only works while a 3 means the same thing in
@@ -16,18 +14,18 @@ every plan.
 
 ## Reference
 
-<!-- One finished unit per value. Replace every example row with a merged pull request or a
-     finished backlog item from this repository, linked, and one line on why it is that size. -->
+One landed unit per value. Rows 2 to 8 are `ai-plugins-devbook-adoption` plan entries that
+carried their `effort:` before they ran; rows 1, 13, and 21 were sized after they merged.
 
 | Points | Reference | Why it is this size |
 | --- | --- | --- |
-| 1 | Example: a typo or a copy change in one file | One place, no decision, nothing to test beyond a glance |
-| 2 | Example: a new field passed through one layer, with its test | One path, known pattern |
-| 3 | Example: a validation rule added to an existing form and its endpoint | Two layers, one decision |
-| 5 | Example: a new endpoint with its handler, persistence, and tests | Several layers, a new pattern instance |
-| 8 | Example: a feature spanning UI, API, and storage, following an existing one | Many places, some unknowns |
-| 13 | Example: a new integration with an external service | New dependency, real unknowns |
-| 21 | Example: a new module with its own model and wiring | The largest unit this repository finishes in one piece |
+| 1 | [#93](https://github.com/JSdotNet/ai-plugins/pull/93): the dashboard shows the model badge before the agent badge | One line moved in one plugin file, no decision, checked by reading the render |
+| 2 | [#158](https://github.com/JSdotNet/ai-plugins/pull/158): validate the new chapters and fix what the checks report | Two checks run, four small findings fixed across three chapters, every fix known in kind |
+| 3 | [#156](https://github.com/JSdotNet/ai-plugins/pull/156): point `AGENTS.md`, the README, and the rules index at the devbook | Four root documents rewritten against chapters that already existed, one decision on what each says |
+| 5 | [#155](https://github.com/JSdotNet/ai-plugins/pull/155): building-block whiteboxes for `copilot-app`, `spec-builder`, and `qa` | Three new chapters, each read out of a plugin folder, plus the index and the chapter 5 links |
+| 8 | [#154](https://github.com/JSdotNet/ai-plugins/pull/154): the arc42 core chapters and the decision records | Seven chapters, five decision records, three debt records, and references repointed across two plugins with their bumps |
+| 13 | [#131](https://github.com/JSdotNet/ai-plugins/pull/131): deliver `SessionStart` guidance in Claude Code | A host behaviour found by diagnosis, a new twin-hook pattern, and the same change in every plugin that ships the hook |
+| 21 | [#95](https://github.com/JSdotNet/ai-plugins/pull/95): load the plugins in Claude Code from a single source | A second host for the whole marketplace — manifests, agent frontmatter, hooks, a sync check, the docs — in one piece |
 
 ## Compare
 
