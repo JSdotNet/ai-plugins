@@ -18,7 +18,7 @@ dev half carries almost everything: `code` is authoring an asset, `test` is chec
 | File | Covers |
 | --- | --- |
 | [01-authoring.md](01-authoring.md) | Writing an asset in the host that loads it, with spec-builder's contracts and the rule trio |
-| [02-carrying-a-change.md](02-carrying-a-change.md) | Backlog plans, worktree sessions, the pull request, the version, and scheduled routines |
+| [02-carrying-a-change.md](02-carrying-a-change.md) | Backlog plans and their estimates, worktree sessions, the pull request, the version, and scheduled routines |
 | [03-checking.md](03-checking.md) | `check-assets.mjs`, `claude plugin validate`, and the devbook check |
 
 ## Adoption Picture
@@ -40,6 +40,7 @@ flowchart LR
     plan --> code --> build --> test --> release --> deploy --> operate --> monitor --> plan
 
     plan -.- backlog["Backlog Plan Items · adopted"]
+    plan -.- estimate["Estimate Procedure · candidate"]
     code -.- backlog
     code -.- host["Authoring in the Loading Host · adopted"]
     code -.- create["spec-builder Create Skills · trial"]
