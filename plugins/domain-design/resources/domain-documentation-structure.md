@@ -14,7 +14,7 @@ chapter set, and the metadata, and a second spec here would only drift from it.
 ## When The Repository Has A Domain Folder
 
 Write there, and follow the folder's own rule for everything else. The layout, as of devbook
-1.5.0 (contract 16):
+1.9.0 (contract 18):
 
 ```
 .devbook/domain/
@@ -23,24 +23,29 @@ Write there, and follow the folder's own rule for everything else. The layout, a
     context.md          # the boundary, feature flags, settings, deployment values;
                         # actors and dependencies until they outgrow it
     domain.md           # aggregates, domain services, events; terms under Ubiquitous Language
+    domain.invariants.md  # what the aggregates on domain.md enforce, one rule per chapter
     features.md         # what a user can do, in business language — or skills.md, never both
     requirements.md     # one SHALL sentence per chapter, with the scenarios that prove it
-    invariants.md       # one rule per chapter, where it is enforced, and its proof
     model.md            # structural model only
     flow.md             # optional: lifecycle and process flows
     actors.md           # optional: split out of context.md once it is too small for them
     dependencies.md     # optional: same, for the dependency tables
     <base>.<name>.md    # optional: one chapter split out of the file it is named after
+    domain.<name>.invariants.md  # beside a split domain.<name>.md, for its aggregate
 ```
 
-Four things follow from that convention and are the ones most often got wrong:
+Five things follow from that convention and are the ones most often got wrong:
 
 - One **folder** per bounded context. A new context starts with `context.md`, `domain.md`,
-  `model.md`, one of `features.md` or `skills.md`, `requirements.md`, and `invariants.md`.
+  `domain.invariants.md`, `model.md`, one of `features.md` or `skills.md`, and `requirements.md`.
 - There is no `naming.md` and no glossary file: a term that is already a chapter carries its
   surface names in `aliases`; any other term is a `term` chapter in `domain.md`.
-- Every rule that is kept or broken lives in `requirements.md` or `invariants.md`, not in prose.
-  A deployment or environment value is a `setting` chapter in `context.md`, not a flag.
+- Every rule that is kept or broken lives in `requirements.md` or an invariants subpage, not
+  in prose, and there is no separate `invariants.md`. A deployment or environment value is a
+  `setting` chapter in `context.md`, not a flag.
+- An `### Invariant:` is one claim with an `Enforced at:` line and no `#### Scenario:`; the
+  `unit` test in its `tests` proves it. Behaviour files are titled by kind — `# Requirements`,
+  `# Invariants` — never by the context.
 - `status` follows `devbook-chapter-metadata.md`: absent reads as `active`, so a settled chapter
   omits it. There is no `done` — a domain model is the current agreed model, not a task queue.
 

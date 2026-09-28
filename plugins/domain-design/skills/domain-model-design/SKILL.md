@@ -33,10 +33,13 @@ Use when the user needs to design aggregates, entities, value objects, domain ev
 4. Validate the design against `resources/ddd-checklist.md`.
 5. Check for anti-patterns using `resources/ddd-anti-patterns.md`.
 6. Document domain services for logic that spans multiple aggregates or does not belong to a single entity.
-7. Update the bounded context file following `resources/domain-documentation-structure.md`.
+7. Update the bounded context following `resources/domain-documentation-structure.md`: the
+   aggregates, events, and services on its domain page, and each invariant as its own
+   `### Invariant:` chapter in that page's invariants subpage, per "Invariant Documentation" in
+   `resources/tactical-design.md`.
 
 ## Output
 
-- Updated bounded context file with aggregate designs, invariants, domain events, and domain services.
-- Invariant documentation table for each aggregate.
+- Updated domain page with aggregate designs, domain events, and domain services.
+- Updated invariants subpage with one `### Invariant:` chapter per rule, each with its `Enforced at:` line.
 - Flagged anti-patterns or design concerns.
