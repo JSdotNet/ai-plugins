@@ -22,8 +22,8 @@
   },
   "components": {
     "devbook": {
-      "pluginVersion": "1.10.0",
-      "contractVersion": 19,
+      "pluginVersion": "1.13.0",
+      "contractVersion": 24,
       "adopted": [
         "arc42",
         "tech",
@@ -31,8 +31,8 @@
       ],
       "materialized": {
         ".devbook/_tools/devbook-meta": {
-          "from": "1.10.0",
-          "hash": "sha256:955f222cce49b875b26183318483df2fde26ff5325558addf896abf7ba8fdc8d",
+          "from": "1.13.0",
+          "hash": "sha256:d2d89ed550eadb63415c95c4fd3382c98303a9e0b0759821c642669ba5d39849",
           "managed": true
         },
         ".devbook/_tools/devbook-tech": {
@@ -41,8 +41,8 @@
           "managed": true
         },
         ".github/workflows/devbook-meta.yml": {
-          "from": "1.9.0",
-          "hash": "sha256:408265b93c705a83f923197aa75fb800fd069a0775a541a5159894ca13c7cb5e",
+          "from": "1.13.0",
+          "hash": "sha256:9844037658eca49af22254609ee8bd31d01bd47d6cd2f6e051b6bf11307ed8d1",
           "managed": true
         },
         "AGENTS.md#devbook": {
@@ -51,8 +51,8 @@
           "managed": true
         },
         ".agents/rules/devbook-ai.md": {
-          "from": "1.10.0",
-          "hash": "sha256:0e0cc41d517438b94629527bf23919db9a6ebbacbb32191a7f5eca1e85adcd1d",
+          "from": "1.13.0",
+          "hash": "sha256:64a72409b2570648e9aa4654511d33e86014edcc950033a171a143dc7b81595d",
           "managed": true
         },
         ".claude/rules/devbook-ai.md": {
@@ -66,8 +66,8 @@
           "managed": true
         },
         ".agents/rules/devbook-annotations.md": {
-          "from": "1.10.0",
-          "hash": "sha256:d1979bf1d643fc3a18013db130fb1ca0f275ffe0fe9754caa72ebfa4092e18c5",
+          "from": "1.13.0",
+          "hash": "sha256:fce8bf2f71a09e072ae2cf6e7b678a0fa653422646b10fec3ce4aacb37ac865c",
           "managed": true
         },
         ".claude/rules/devbook-annotations.md": {
@@ -81,8 +81,8 @@
           "managed": true
         },
         ".agents/rules/devbook-chapter-metadata.md": {
-          "from": "1.10.0",
-          "hash": "sha256:7e787ac1dd6d1e1f39a12884615c75492e86f4e09da3f907e064652e674325c4",
+          "from": "1.13.0",
+          "hash": "sha256:895626d76145df89b809be2385c1daae48785c6c8998305225398bace52a5c29",
           "managed": true
         },
         ".claude/rules/devbook-chapter-metadata.md": {
@@ -96,8 +96,8 @@
           "managed": true
         },
         ".agents/rules/devbook-naming.md": {
-          "from": "1.10.0",
-          "hash": "sha256:b7bd0529ae7182a70e3af9f9b89f7eff908bf245bb17ca1ca5423cd8b80a6600",
+          "from": "1.13.0",
+          "hash": "sha256:c1e38d72cb1b2bc2c7da20507c3839bdc278a9f3cec344f538defd793580abc0",
           "managed": true
         },
         ".claude/rules/devbook-naming.md": {
@@ -111,8 +111,8 @@
           "managed": true
         },
         ".agents/rules/devbook-tech.md": {
-          "from": "1.10.0",
-          "hash": "sha256:3cab462825249c06fa4dc01d8089bcdbcbc956fce19d30aad511b83d14b026eb",
+          "from": "1.13.0",
+          "hash": "sha256:8dcf5b411350ef9ebf0f3a280cd8ad483ad3c8611bd7a952a26ed650aec048df",
           "managed": true
         },
         ".claude/rules/devbook-tech.md": {
@@ -126,8 +126,8 @@
           "managed": true
         },
         ".agents/rules/devbook-arc42.md": {
-          "from": "1.9.0",
-          "hash": "sha256:ffb9f56427a52f873e9af13011e1721db879193a24f2d11c292955862e601147",
+          "from": "1.13.0",
+          "hash": "sha256:028e6835f14e1cd14aa803699c2e4132eeb9c8e5b430d80465d8ebf196d64287",
           "managed": true
         },
         ".claude/rules/devbook-arc42.md": {
@@ -138,6 +138,21 @@
         ".github/instructions/devbook-arc42.instructions.md": {
           "from": "1.9.0",
           "hash": "sha256:52047a3e078a538a6be9becb04605244c6bcc5fba45e1a71f8e5fcc1ae35d188",
+          "managed": true
+        },
+        ".agents/rules/devbook-writing.md": {
+          "from": "1.13.0",
+          "hash": "sha256:25ba4223bc70d1692da1bb24e304285136464961dfe4edc9891ca73d9ac2b80f",
+          "managed": true
+        },
+        ".claude/rules/devbook-writing.md": {
+          "from": "1.13.0",
+          "hash": "sha256:1308b407b5129fa3d13921b1569e84afc85bd05b1579a847a000a06f71f4f33c",
+          "managed": true
+        },
+        ".github/instructions/devbook-writing.instructions.md": {
+          "from": "1.13.0",
+          "hash": "sha256:3c74067c8d5371f83eeb6741989d2af9e4dc6bec35d8681d1fa211ff67abe086",
           "managed": true
         }
       },
@@ -169,6 +184,10 @@
         {
           "id": "018-behaviour-titles",
           "result": "not-applicable"
+        },
+        {
+          "id": "021-no-review-triad",
+          "applied": "2026-09-30"
         }
       ]
     },
