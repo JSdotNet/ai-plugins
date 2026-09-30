@@ -58,7 +58,7 @@ Both read the same agents, skills, and contracts; how one file satisfies both is
 | Delivery engine — `delivery`, `delivery-schedule`, `fleet` in `JSdotNet/ai-agent-stack` | Staged flows, gates, the pull-request lane, schedules, cross-session fan-out, model selection | Consults a specialist by role (`architecture`, `docs`, …) through the repository's `bindings`; a specialist never names the engine. |
 | devbook, in `JSdotNet/ai-agent-stack` | The `.devbook/` folder convention, its rules, and the `devbook-meta` check | The specialists write `arc42/`, `domain/`, and `design/` chapters to its rules; this repository adopts it for its own `arc42/`, `tech/`, and `ai/`. |
 | Backlog | Plans and work items for changes to this repository | Items are pasted into a session and run by `backlog-run-plan-item`; nothing in a plugin depends on it. |
-| GitHub | The repository, pull requests, CI | `check-assets.yml` gates every pull request; the nightly workflow bumps changed plugins' versions. |
+| GitHub | The repository, pull requests, CI | `check-assets.yml` gates every pull request; `auto-merge.yml` merges a non-draft pull request once every other check on its head commit is green; the nightly workflow bumps changed plugins' versions. |
 
 The flow control that used to ship here moved to the engine on 2026-09-14; see
 [the flow-control decision](adr/flow-control.md).
