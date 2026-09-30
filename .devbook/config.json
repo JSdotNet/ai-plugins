@@ -218,7 +218,7 @@
       "pluginVersion": "1.13.0"
     },
     "schedule": {
-      "pluginVersion": "1.10.0",
+      "pluginVersion": "1.13.0",
       "enabled": [
         "devbook-validate",
         "devbook-verify",
