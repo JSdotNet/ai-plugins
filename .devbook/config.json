@@ -192,7 +192,7 @@
       ]
     },
     "devbook-procedures": {
-      "pluginVersion": "1.10.0",
+      "pluginVersion": "1.13.0",
       "adopted": [
         "estimate"
       ],
@@ -200,7 +200,7 @@
         ".agents/skills/estimate.md": {
           "from": "1.9.0",
           "hash": "sha256:1ec1eb40f13561840e2c6c8b785eac82db64924ee2bb3f38722bb1a7d973f6a9",
-          "managed": true
+          "managed": false
         },
         ".claude/skills/estimate/SKILL.md": {
           "from": "1.9.0",
