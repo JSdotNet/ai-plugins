@@ -20,7 +20,7 @@ Sequence diagrams model the runtime behavior of a system by showing how particip
 
 ## Scope Guidance
 
-- One diagram per scenario; do not combine unrelated flows in a single diagram.
+- One diagram per scenario.
 - Prefer 3–8 participants per diagram; split complex flows into sub-scenarios.
 - Cover the happy path first; add error and edge-case flows as separate diagrams only when architecturally significant.
 
