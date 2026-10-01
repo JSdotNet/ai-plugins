@@ -14,7 +14,7 @@ Define shared UX design principles that apply to all design artifacts produced b
 1. **User-centred design.** Every design decision must serve the user's goals, context, and mental model. Start with user needs, not features.
 2. **Clarity over cleverness.** Prefer obvious, conventional UI patterns over novel interactions unless novelty directly benefits usability.
 3. **Consistent language and layout.** Use the same terminology, labels, icons, and layout patterns throughout a product. Inconsistency is a usability defect.
-4. **Accessibility by default.** Design for WCAG 2.1 AA compliance as a baseline. Accessibility is not an afterthought.
+4. **Accessibility by default.** Design for WCAG 2.1 AA compliance as a baseline.
 5. **Progressive disclosure.** Show only what is needed at each step. Reveal complexity on demand, not up front.
 6. **Feedback and status.** Always give users clear, timely feedback about system status and the result of their actions.
 
