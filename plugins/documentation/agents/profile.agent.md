@@ -56,7 +56,6 @@ caller's decision.
   `documentation` agent as the place it belongs.
 - If the request involves creating or adjusting agent or instruction files, name the
   `spec-builder` agent as the place it belongs.
-- If details are missing, ask targeted clarifying questions before drafting.
 
 ### Available Instruction Files
 
