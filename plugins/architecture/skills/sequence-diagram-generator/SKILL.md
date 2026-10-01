@@ -5,8 +5,6 @@ description: Generate sequence diagrams for runtime scenarios, integration flows
 
 # Sequence Diagram Generator
 
-Use this skill to produce Mermaid sequence diagrams that document runtime behaviour and message flows between participants.
-
 ## Trigger Conditions
 
 Use when the user asks to:
