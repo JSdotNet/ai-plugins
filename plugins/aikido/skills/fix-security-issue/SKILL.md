@@ -108,7 +108,6 @@ targeted re-scan.
 ## Notes
 
 - Never commit a fix that introduces a new Aikido finding.
-- Always provide secret rotation steps when removing a `leaked_secret`.
 - For `sast` fixes involving user input validation or cryptography, request a peer review.
 - If a fix requires a significant refactoring, name `csharp-coding:coding` as its owner and
   say why; whether the work moves is the caller's decision.
