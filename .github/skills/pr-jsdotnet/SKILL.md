@@ -164,7 +164,6 @@ Create a PR to fix the issue:
 - **GitHub Copilot App** keeps the normal Copilot account active for chat and coding.
 - **`gh` CLI** creates the PR with JSdotNet credentials for that command only.
 - **Copilot CLI** syncs PR information to session context after successful creation.
-- **Product Owner plugin** can be used with GitHub Issues workflows.
 - **Any JSdotNet repository** can use the same PR creation pattern.
 
 ## Guardrails
@@ -176,7 +175,3 @@ Create a PR to fix the issue:
 - If no JSdotNet credential source works, stop and surface exactly which sources were checked.
 - If organization authorization or SSO is missing for the JSdotNet token, surface the exact `gh` error and stop.
 - Always unset `GH_TOKEN` after the PR creation command to avoid credential leakage.
-
-## Reference
-
-Source skill location: `plugins/copilot-app/skills/pr-jsdotnet/SKILL.md`
