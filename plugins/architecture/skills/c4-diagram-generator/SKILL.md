@@ -5,8 +5,6 @@ description: Generate C4 model architecture diagrams (System Context, Container,
 
 # C4 Diagram Generator
 
-Use this skill to produce C4 model diagrams at any abstraction level as Mermaid diagrams embedded in Markdown documents.
-
 ## Trigger Conditions
 
 Use when the user asks to:
