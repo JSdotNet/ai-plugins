@@ -12,4 +12,4 @@ Use this skill to write or improve story artifacts only.
 
 - Load `resources/stories.md` before writing.
 - Keep output focused on backlog clarity and testability.
-- Keep Jira synchronization as a separate step handled by the Jira agent.
+- Keep Jira synchronization as a separate step handled by the `jira` plugin's skills.
