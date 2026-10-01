@@ -16,8 +16,6 @@ Requires the **Atlassian MCP server** (`mcp_atlassian`) to be connected. The fol
 
 Use this skill only to update a Jira issue that already exists.
 The source Markdown file must contain an `Issue Key` in the `## Jira Fields` section.
-Apply correct field mapping: do not repeat the title, do not include `## Jira Fields` or
-`## Acceptance Criteria` or `## Test Instructions` in the description.
 
 ## Hard Constraints
 
