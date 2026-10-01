@@ -284,10 +284,7 @@ name or only a single sprint-report row.
 - Always run phase 0 first; never start a reporting phase without the required dataset file.
 - Run phases sequentially: collect release → collect sprints per team → sprint-report →
   release-report → demo-presentation.
-- Treat the datasets as the single source of truth; do not query Jira directly at any point.
-- Take counts, points, completion rates, epic order, and sprint order verbatim from the datasets.
 - Never read sprint numbers from the release dataset or release numbers from a sprint dataset.
-- Treat this skill as orchestration only: it coordinates, passes context, and saves artifacts.
 - Save every phase result as a file — never only display in chat.
 - Save one sprint-report file per team per sprint; do not merge multiple sprint reports into a
   single per-sprint artifact.
@@ -296,8 +293,6 @@ name or only a single sprint-report row.
 - Pass report artifacts forward to `demo-presentation`; do not force it to rebuild those
   inputs from Jira.
 - Use Dutch language for slide content (the Fincent Review template is Dutch).
-- After all phases finish, always present the artifact table plus sprint/release snapshot
-  tables with links to all artifacts, and include every `datasetHash`.
 - Preserve the detailed reporting signal from the generated reports: include labels,
   story points, carry-over, and sprint-by-sprint totals in the final chat summary.
 - If a phase fails, report the error in the summary table and continue with subsequent phases where possible.
