@@ -8,11 +8,6 @@ paths:
 
 # Agent Language and Tone Behavior Instructions
 
-## Purpose
-
-- Define one shared standard for language and tone in agent behavior.
-- Keep agent and instruction assets consistent and easy to maintain.
-
 ## Project Language Configuration
 
 - Expected result language: English.
@@ -28,10 +23,4 @@ paths:
 
 - Use a concise, direct, and friendly tone.
 - Be actionable first: lead with clear next steps and decisions.
-- Avoid unnecessary verbosity and avoid slang.
-- Keep wording professional and collaborative.
-
-## Quick Compliance Check
-
-- [ ] Default output language follows the configured expected result language.
-- [ ] Output tone is concise, direct, friendly, and actionable.
+- Use standard vocabulary, no slang.
