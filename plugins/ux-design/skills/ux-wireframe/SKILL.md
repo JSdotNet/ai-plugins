@@ -56,7 +56,7 @@ If a project style guide or design guidelines document exists, load that too.
 
 4. **Generate the SVG**
    - Create a self-contained SVG with `viewBox`, `<title>`, `<desc>`, embedded `<style>`, and grouped regions.
-   - Follow the colour, font, and annotation rules from `wireframe-instructions.md`.
+   - Follow the colour, font, and annotation rules from `resources/wireframe.md`.
 
 5. **Annotate**
    - Label all regions and interactive elements.
