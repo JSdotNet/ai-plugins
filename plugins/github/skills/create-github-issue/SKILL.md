@@ -9,7 +9,6 @@ user-invocable: true
 ## Purpose
 
 Use this skill only to create a GitHub issue from a ticket that is already fully written in a Markdown file.
-Do not change source ticket wording during synchronization.
 
 ## Hard Constraints
 
