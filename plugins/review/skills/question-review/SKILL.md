@@ -33,4 +33,3 @@ The calling agent provides the domain knowledge about the review target; this sk
 - Every input question is answered or explicitly marked unresolved.
 - Evidence is cited from the reviewed artifact.
 - Confidence levels are provided for each answer.
-- Follow-up actions are clear and scoped.
