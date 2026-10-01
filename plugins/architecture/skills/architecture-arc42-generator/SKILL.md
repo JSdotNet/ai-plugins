@@ -5,8 +5,6 @@ description: Interactive arc42 documentation generator for drafting, validating,
 
 # Architecture arc42 Generator
 
-Use this skill for iterative arc42 architecture documentation workflows.
-
 ## Scope
 
 - Section-by-section drafting and refinement
@@ -23,10 +21,3 @@ Use this skill for iterative arc42 architecture documentation workflows.
 5. Reconcile cross-section consistency for scope, constraints, risks, and quality goals.
 6. Produce review-ready Markdown output.
 
-## Prompt pack
-
-This plugin includes arc42 section prompts under `skills/architecture-arc42-generator/prompts/`.
-
-## Reference
-
-Section prompts are stored in this plugin under `skills/architecture-arc42-generator/prompts/`.
