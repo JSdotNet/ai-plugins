@@ -92,13 +92,6 @@ Load and apply these files before generating the infographic:
    - Save the SVG to the agreed location.
    - Tell the user where it was saved and note any assumptions or TODO placeholders.
 
-## Library Strategy
-
-- **Version 1 uses no required runtime rendering library.**
-- Generate the SVG directly through the skill workflow and guidance files.
-- **Mermaid** is optional inspiration for simple flow-style sections, but it is not the default renderer or output format.
-- **D3** and **Markvis-like** workflows are future options if the plugin later needs executable, data-heavy rendering.
-
 ## Output
 
 - One infographic SVG file ready to commit or embed
