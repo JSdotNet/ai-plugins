@@ -23,8 +23,7 @@ This skill acts on remarks. `pr-review-architecture`, `pr-review-domain`, and
 - A review round finished and the remarks need to be turned into commits and replies.
 - Re-review after a push left new remarks that still need answering.
 
-Do not use for failing CI checks — that is `fix-pr-checks`. Do not use for a base-branch
-conflict — that is `update-pr-branch`.
+Failing CI checks go to `fix-pr-checks`; a base-branch conflict goes to `update-pr-branch`.
 
 ## Inputs
 
