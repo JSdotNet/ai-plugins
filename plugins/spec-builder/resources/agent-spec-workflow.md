@@ -13,7 +13,7 @@ description: Defines the single-agent authoring workflow for GitHub customizatio
 ## Required Sequence
 
 Scope, Plan, Build, Verify, Report — in that order, as expanded in the agent's `## Workflow`
-section in [spec-builder.agent.md](../../agents/spec-builder.agent.md).
+section in [spec-builder.agent.md](../agents/spec-builder.agent.md).
 
 ## Role Boundaries
 
