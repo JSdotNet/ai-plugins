@@ -54,12 +54,12 @@ If the `impeccable` skill is installed, invoke `/impeccable` before drafting des
    - If not, use accessible neutral defaults and mark with `[TODO: define brand tokens]`.
 
 3. **Draft or update the document**
-   - Follow the document structure template from `design-guidelines-instructions.md`.
+   - Follow the document structure template from `resources/design-guidelines.md`.
    - For each section, apply the quality rules from that instruction file.
    - Mark missing content with `[TODO: define]` rather than inventing values.
 
 4. **Validate completeness**
-   - Run through the quality checklist from `design-guidelines-instructions.md`.
+   - Check the document against "What a Design Guideline Document Must Cover" in `resources/design-guidelines.md`.
    - Flag any missing required sections explicitly.
 
 5. **Save and confirm**
