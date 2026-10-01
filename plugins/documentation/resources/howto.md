@@ -18,7 +18,7 @@ description: Rules for writing How-To guides — step-by-step, developer-focused
 
 ## Recommended Structure (Guideline)
 
-Use this section order when it improves clarity. It is a guideline, not a strict requirement.
+Use this section order when it improves clarity.
 
 1. `# Title`
 2. `## Overview` — short goal statement and target audience.
@@ -42,7 +42,6 @@ Use this section order when it improves clarity. It is a guideline, not a strict
 - Keep each step actionable and observable.
 - Put commands, paths, environment variables, and file names in backticks.
 - If required information is missing, use explicit placeholders like `[TODO: add script URL]`.
-- Use bullets for lists and numbered lists for procedure steps.
 
 ## Step Quality Checklist
 
