@@ -117,9 +117,6 @@ Pre-existing workspace findings (not in this PR): N total
 
 ## Notes
 
-- This skill scans the full workspace; changed-file filtering is post-processing.
-  If a finding exists in an unchanged file, it is reported as pre-existing context,
-  not as a PR blocker.
 - Critical and High PR-relevant findings should block the PR until resolved or
   explicitly accepted by the team.
 - Run this skill as part of every PR review that touches security-sensitive code.
