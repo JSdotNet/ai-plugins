@@ -7,9 +7,6 @@ description: Dedicated rules for creating and refining Copilot plugin package as
 
 ## Purpose
 
-- Standardize plugin bundle composition so plugins stay installable and maintainable.
-- Keep plugin assets modular and discoverable.
-
 Over the 60-line budget by design: the Copilot CLI manifest contract below is reference the
 author cannot look up in the repository.
 
@@ -59,7 +56,7 @@ author cannot look up in the repository.
   `.claude-plugin/plugin.json` with `hooks/`, plus the repo-root marketplace entry and the
   `copilot-plugins.md` row. Nothing is generated; `node tools/check-assets.mjs` fails when
   the two sides or the four versions disagree. Full rules:
-  [Crosscutting Concepts](../../../../.devbook/arc42/08-crosscutting-concepts.md).
+  [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md).
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and
   the 60-line budget.
 
@@ -79,4 +76,3 @@ author cannot look up in the repository.
 - [ ] Agents and skills reference resources instead of duplicating content.
 - [ ] Local install test was executed (`copilot plugin install <path>`).
 - [ ] `node tools/check-assets.mjs` passes.
-- [ ] Every line changes behavior versus the model default, and no meaning appears twice.
