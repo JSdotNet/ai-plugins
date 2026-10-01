@@ -59,7 +59,7 @@ Official reference: <https://c4model.com>
 
 - Label every relationship with a verb phrase (e.g., "reads data from", "sends events to").
 - Specify protocol or technology when relevant (e.g., HTTPS, gRPC, AMQP, SQL).
-- Use directional arrows; avoid bidirectional arrows unless the interaction is truly symmetric.
+- Use directional arrows; draw a bidirectional arrow only when the interaction is truly symmetric.
 - Do not draw inferred relationships — only model what is architecturally significant.
 
 ### Naming Conventions
@@ -81,8 +81,6 @@ Apply this palette consistently across every C4 diagram using Mermaid's `UpdateE
 | `Container` | `#438DD5` | `#2E6295` | `#FFFFFF` | Runnable/deployable unit |
 | `ContainerDb` | `#438DD5` | `#2E6295` | `#FFFFFF` | Data store container |
 | `Component` | `#85BBF0` | `#5D82A8` | `#000000` | Logical component inside a container |
-
-Apply the same palette to every level so a reader can tell in-scope vs. external elements at a glance regardless of which C4 level they are viewing.
 
 Note: Mermaid's C4 renderer emits no per-element ids/classes in its SVG output, so C4 diagrams are not interactively clickable in any Mermaid-based viewer (Mermaid `click` directives do not work on C4 elements). Colour is therefore the primary way to convey element type/scope at a glance for C4 diagrams regardless of how they are viewed.
 
