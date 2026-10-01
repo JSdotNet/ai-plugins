@@ -95,7 +95,4 @@ the discovered Jira skill. Never reproduce that knowledge in this skill.
 
 ## Notes
 
-- Run this automation before a refinement session to get the full batch into shape.
 - For architecture and domain review, use the corresponding automation skills.
-- If no Jira query skill is installed, fall back to a single-story run by pasting
-  story content directly.

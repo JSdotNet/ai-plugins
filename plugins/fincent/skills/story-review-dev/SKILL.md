@@ -78,7 +78,6 @@ that must precede delivery.
 - The review focuses on architecture and feasibility — do not rewrite business acceptance criteria.
 - Enabler identification is always explicit; never assume the team will discover the need later.
 - Security and compliance implications are never skipped for Fincent stories.
-- If PO review result is ❌, the output is a gate failure — not an architectural review.
 
 ## References
 

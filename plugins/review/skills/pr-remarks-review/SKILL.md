@@ -38,5 +38,4 @@ The calling agent supplies domain knowledge about the code, story, or documentat
 - Fix items include the specific change required (file, section, or line reference where known).
 - Discuss items include the question or trade-off to resolve with the reviewer.
 - Decline and Defer items include a rationale that can be pasted directly as a reply.
-- Summary table is actionable and scannable at a glance.
 - No remark is left without a decision.

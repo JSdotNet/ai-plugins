@@ -88,4 +88,3 @@ a canvas cannot be made dual-host — unlike every other asset type this plugin 
 - [ ] No `console.log()` calls; `session.log()` used for user-facing messages.
 - [ ] Any local server binds to `127.0.0.1` with an OS-assigned port.
 - [ ] `extensions_reload` was run and `extensions_manage` (`list`/`inspect`) confirms the extension loaded successfully.
-- [ ] Every line changes behavior versus the model default, and no meaning appears twice.

@@ -111,8 +111,6 @@ Jira skill. Never reproduce that knowledge in this skill.
 
 ## Notes
 
-- Estimation is only reliable on stories that meet the Fincent DOR. Stories failing the
-  DOR pre-check are recorded but not estimated.
 - Jira integrations, regulatory APIs, and cross-team dependencies are automatically
   treated as uncertainty boosters (minimum Uncertainty score: 3).
 - Codebase inspection is not performed during estimation — that is reserved for the

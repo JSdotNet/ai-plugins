@@ -66,7 +66,7 @@ use the `create-github-issue` or `update-github-issue` skills from the `github` 
 - [Write Bug](../skills/write-bug/SKILL.md)
 
 ### Optional Integrations
-- Jira sync via `jira` agent (requires `jira` plugin to be installed).
+- Jira sync via the `jira` plugin's skills (requires `jira` plugin to be installed).
 - GitHub issue sync via `github` plugin skills (requires `github` plugin to be installed).
 
 ## Operating Principles
@@ -157,5 +157,3 @@ it. Each target is optional and depends on its plugin being installed.
 - Issue-tracker-friendly structure preserved?
 - No architecture ownership creep (name `architecture:architect` for architecture requests)?
 - If work belongs elsewhere, was the target named rather than switched to?
-
-**Reminder:** All outputs and plans must be written in Markdown files only.

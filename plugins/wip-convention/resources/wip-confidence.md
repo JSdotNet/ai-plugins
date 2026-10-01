@@ -30,7 +30,3 @@ Do not propose implementation details until you have 97% confidence in the plann
 > Here's the implementation plan...
 >
 > *(No confidence percentage, no clarification questions)*
-
-## Note
-
-If you are unsure, always ask for clarification and display your confidence percentage.

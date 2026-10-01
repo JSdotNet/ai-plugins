@@ -16,8 +16,7 @@ The description is the trigger — say when to use it, in the words a user would
 is not for. Keep host-specific tool names out of the prose: describe the action ("read the
 file", "search the codebase") so each host picks its own tool.
 
-Reference contracts in `resources/` by relative path. Neither host auto-applies a file from
-inside a plugin, so the explicit reference is what loads the guidance — in both. See
+Reference contracts in `resources/` by relative path, per
 [plugin-contracts.md](plugin-contracts.md).
 
 A skill names another plugin's asset as `<plugin>:<name>` and states what happens when that

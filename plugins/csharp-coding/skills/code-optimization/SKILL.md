@@ -5,7 +5,7 @@ description: 'Optimize C# .NET code for performance, readability, and maintainab
 
 # Code Optimization — C# .NET
 
-Identify and fix performance, readability, and maintainability issues. Always measure first — do not optimize without evidence.
+Identify and fix performance, readability, and maintainability issues.
 
 ## Principles
 

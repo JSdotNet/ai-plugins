@@ -61,7 +61,6 @@ there: whether to hand off is the caller's decision.
   `profiles/github/projects/`, name the `profile` agent as the place it belongs.
 - If the request involves creating or adjusting agent or instruction files, name the
   `spec-builder` agent as the place it belongs.
-- If details are missing, ask targeted clarifying questions before drafting or rendering.
 
 ### Available Instruction Files
 

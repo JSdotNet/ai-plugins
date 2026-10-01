@@ -18,7 +18,7 @@ description: Rules for writing blog posts and articles — narrative, audience-f
 
 ## Recommended Structure (Guideline)
 
-Use this section order when it improves clarity. It is a guideline, not a strict requirement.
+Use this section order when it improves clarity.
 
 1. `# Title`
 2. `## Hook` — short opening that frames the problem or opportunity.

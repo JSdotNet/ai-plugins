@@ -8,14 +8,12 @@ paths:
 # Global Markdown Rules
 
 ## Purpose
-- Apply these rules to every Markdown file in this repository.
-- Treat this file as the baseline for Markdown quality and lint safety.
 - Apply rules in this order when trade-offs exist: heading format, whitespace/newline safety, then list and code formatting.
 
 ## Required Formatting Rules
 - Use ATX headings only (`#`, `##`, `###`, ...) for all heading levels, ensuring one space after each `#`.
 - Keep exactly one top-level heading (`#`) per file.
-- Do not leave trailing whitespace.
+- Strip trailing whitespace.
 - End every file with exactly one newline.
 - Example: `## Section Title`.
 

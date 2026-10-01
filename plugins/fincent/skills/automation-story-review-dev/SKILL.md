@@ -103,6 +103,5 @@ Jira skill. Never reproduce that knowledge in this skill.
 ## Notes
 
 - Financial domain compliance (PSD2, GDPR, AML) checks are always included.
-- Architecture documentation is loaded once and shared across all stories in the batch.
 - If no architecture documentation is provided, the review uses best-effort reasoning and
   flags missing context explicitly per story.

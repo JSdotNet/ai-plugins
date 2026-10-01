@@ -37,7 +37,6 @@ The calling agent provides the domain knowledge about the review target; this sk
 
 ## Output Expectations and Quality Checks
 
-- Suggestions are concrete and relevant to the target.
 - Value, effort, and risk are provided for each suggestion.
 - Ranking is clear and justified.
 - Plan includes at least one quick win and one longer-term idea.

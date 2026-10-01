@@ -56,7 +56,7 @@ Load and apply before generating:
    - User journey map → Markdown table + optional SVG swimlane
 
 5. **Apply flow diagram rules**
-   - Follow the Mermaid conventions from `user-flow-instructions.md`.
+   - Follow the Mermaid conventions from `resources/user-flow.md`.
    - Label entry and exit nodes explicitly.
    - Annotate edges with user actions or system events.
 

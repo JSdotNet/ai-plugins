@@ -61,11 +61,3 @@ Render the same Markdown content the agent wrote to its file artifact.
   produced. Use all three together when installed: `orch-dashboard` for the run timeline,
   plus `diagram-canvas`/`markdown-canvas` for live previews of that run's diagrams and
   documents.
-
-## Quality Checks
-
-- [ ] Canvas calls are skipped gracefully when the extension is not installed.
-- [ ] The canvas never becomes the sole source of truth — file artifacts are always
-      produced regardless of canvas availability.
-- [ ] The content plugin whose agent produced the diagram/document is not modified to add
-      canvas awareness — that responsibility stays in this orchestration layer.

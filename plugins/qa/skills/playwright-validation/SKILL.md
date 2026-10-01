@@ -129,8 +129,6 @@ Playwright evidence was captured.
 
 ## Common Pitfalls
 
-- Don't guess CSS/XPath selectors from source code when `browser_snapshot` can give an
-  accurate accessible reference for the live DOM.
 - Don't skip the console/network check just because the visual result looks correct.
 - Don't stop Aspire log monitoring before finishing all scenarios.
 - Don't reuse a stale snapshot reference after the page has re-rendered — re-snapshot.

@@ -53,7 +53,7 @@ or modifying an existing file.
 - Name workflows descriptively: `build-and-test.yml`, `deploy-production.yml`.
 - Use `on.push.branches` and `on.pull_request.branches` to limit trigger scope.
 - Add `workflow_dispatch` for manual runs on any workflow that may need it.
-- Use `needs` to express job ordering; avoid implicit ordering.
+- Use `needs` to express job ordering.
 - Use `outputs` to pass data between jobs.
 - Cache dependencies with `actions/cache` keyed on lock file hash.
 

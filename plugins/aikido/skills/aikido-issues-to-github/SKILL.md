@@ -107,5 +107,3 @@ issue ID fingerprint to prevent duplicates on re-runs.
 - For Jira integration, replace the GitHub issue creation step with a Jira ticket
   using the Jira skill, keeping the same field mapping.
 - Run this skill after each security sprint to sync newly discovered findings.
-- Label `severity:critical` and `severity:high` issues automatically so they appear
-  in priority filters.

@@ -78,7 +78,7 @@ graph TD
 
 - One diagram per environment or per deployment tier when environments differ significantly.
 - Show production as the primary diagram; add staging or development diagrams only when they differ architecturally.
-- Do not duplicate the C4 Container diagram's logical detail; reference it instead.
+- Reference the C4 Container diagram for logical detail instead of repeating it.
 - Include network zones (VPC, subnet, DMZ) and security boundaries when they are architecturally relevant.
 
 ## Naming Conventions

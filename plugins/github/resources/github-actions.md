@@ -5,11 +5,6 @@ description: GitHub Actions security and authoring rules for workflow files.
 
 # GitHub Actions Instructions
 
-## Purpose
-
-- Enforce security-first defaults for all GitHub Actions workflow files.
-- Keep workflows concise, maintainable, and supply-chain safe.
-
 ## Security Rules
 
 - Always pin actions to a full-length commit SHA. Never use `@main`, `@latest`, or bare major tags.
@@ -23,7 +18,7 @@ description: GitHub Actions security and authoring rules for workflow files.
 
 - Use descriptive workflow file names: `build-and-test.yml`, `deploy-production.yml`.
 - Declare `on` triggers explicitly; avoid triggering on all events.
-- Use `needs` to declare job ordering. Do not rely on implicit sequencing.
+- Use `needs` to declare job ordering.
 - Use `concurrency` to cancel stale runs when a new run starts on the same ref.
 - Use `workflow_dispatch` for workflows that benefit from manual triggering.
 

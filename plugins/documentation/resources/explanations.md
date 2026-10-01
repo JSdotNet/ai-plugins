@@ -18,7 +18,7 @@ description: Rules for writing Explanations — conceptual, rationale-driven doc
 
 ## Recommended Structure (Guideline)
 
-Use this section order when it improves clarity. It is a guideline, not a strict requirement.
+Use this section order when it improves clarity.
 
 1. `# Title`
 2. `## Overview` — what concept is explained and for whom.

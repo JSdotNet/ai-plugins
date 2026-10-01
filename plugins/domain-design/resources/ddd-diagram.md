@@ -15,7 +15,6 @@ Define Mermaid diagram conventions for domain design artifacts produced by the `
 - Always use fenced code blocks with the `mermaid` language tag.
 - Keep diagrams focused: one diagram per concept or process.
 - Use domain language (ubiquitous language) for all node and participant labels.
-- Do not use technical identifiers (class names, variable names) as labels.
 - Do not embed hard-coded hex colours; use subgraph labels and annotations only so diagrams render correctly across light and dark themes. **Exception:** Aggregate class diagrams (`classDiagram`, `aggregate-diagram` skill) and Context Map diagrams (`flowchart LR`, `context-mapping` skill) use the hard-coded palettes documented below/in `resources/strategic-design.md`. In both cases colour is applied to nodes/classes only — never to lines/edges — and is always additive to existing text annotations (`<<AggregateRoot>>`, etc.) or labels, never a replacement for them.
 - Optionally add `click NodeId "tooltip text"` to `flowchart`/`classDiagram`/`stateDiagram`/`sequenceDiagram` nodes to surface extra detail in interactive Mermaid viewers without changing the diagram's visual layout.
 

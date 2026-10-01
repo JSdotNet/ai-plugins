@@ -57,4 +57,3 @@ description: Dedicated rules for creating and refining GitHub Actions workflow f
 - [ ] Secrets are only referenced via `${{ secrets.* }}` and never logged.
 - [ ] `pull_request_target` usage, if present, has documented justification.
 - [ ] YAML is syntactically valid.
-- [ ] Every line changes behavior versus the model default, and no meaning appears twice.

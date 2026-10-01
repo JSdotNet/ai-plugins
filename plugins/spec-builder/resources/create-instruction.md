@@ -43,7 +43,6 @@ Shared text a skill or an agent reads by path — a rule of the craft, a templat
 ## Either way
 
 - Write rules as actionable statements; separate mandatory rules from recommendations.
-- Keep each rule in the one file that owns it; point at the others by path.
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and the 60-line budget.
 
 ## Validation Checklist
@@ -52,4 +51,3 @@ Shared text a skill or an agent reads by path — a rule of the craft, a templat
 - [ ] Plugin contract: `name` + `description` only, referenced by path from at least one
       skill or agent, or promoted to `sessionStart`.
 - [ ] `description` is specific and discoverable.
-- [ ] Every line changes behavior versus the model default, and no meaning appears twice.

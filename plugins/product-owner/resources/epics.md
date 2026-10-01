@@ -15,7 +15,6 @@ description: Epic writing standards for Product Owner backlog artifacts.
 
 - Store epics in module folders under `.wip/work/`.
 - Use one module depth only: `.wip/work/<module>/epic-<short-title>.md`.
-- Do not use nested module folders.
 - Keep epic files in the same module folder as related story and bug files.
 
 ## Core Quality Standard

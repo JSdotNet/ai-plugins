@@ -85,4 +85,4 @@ purely on domain model correctness; infrastructure, API, and UI concerns are out
 
 ## References
 
-- `resources/dor.md` — Fincent Definition of Ready (domain section)
+- `resources/dor.md` — Fincent Definition of Ready

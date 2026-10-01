@@ -5,11 +5,6 @@ description: Dedicated rules for creating and refining GitHub Copilot skills.
 
 # Create Skill Instructions
 
-## Purpose
-
-- Define a consistent approach for skill authoring.
-- Ensure each skill is focused and easy for the model to discover.
-
 ## Minimum Structure
 
 Required: YAML frontmatter with `name` and `description`, a title, and the workflow steps.
@@ -55,4 +50,3 @@ still be accurate prose: on Copilot it remains the model's only signal.
 - [ ] No skill reached by an agent, a hook prompt, or another skill is marked user-invoked.
 - [ ] No host-specific tool names appear in the body.
 - [ ] Workflow is actionable and complete.
-- [ ] Every line changes behavior versus the model default, and no meaning appears twice.

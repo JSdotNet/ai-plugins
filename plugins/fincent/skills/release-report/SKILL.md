@@ -184,12 +184,9 @@ Example format:
 - **Delivered** means `isCompleted` is `true` in the dataset. These items appear in section 2
   with their actual `status` so readers can distinguish fully done from still-in-testing items.
 - **Deferred** means `isCompleted` is `false`.
-- Delivery rate comes from `release.totals.completionRatePercent`; do not recompute it.
 - Group every section by epic using `release.epicOrder` — never mix stories from different
   epics in the same table and never reorder the groups.
 - The **No epic** group is already last in `epicOrder`; keep that position.
-- Include labels in every issue row when present; use `-` when the list is empty.
-- Use `storyPoints` as-is; render `?` when it is `null`.
 - After producing the report, present a one-paragraph executive summary suitable for
   pasting into a release email or stakeholder update.
 - Quote `metadata.datasetHash` at the end of the report for reproducibility.

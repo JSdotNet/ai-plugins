@@ -90,19 +90,13 @@ Copilot session branch, keeping all in-progress work in sync with the trunk.
 ## Canvas Interface
 
 This skill reports progress through the `orch-dashboard` canvas extension
-(`plugins/copilot-app/extensions/orch-dashboard/`). If the extension is not
-installed, skip the canvas calls below and continue through standard chat
-interaction. Follow the shared **Dashboard Reporting Contract** in
-`resources/dashboard-contract.md` to resolve the dashboard provider;
-prefer `extensionId: "plugin:copilot-app:orch-dashboard"` when opening or inspecting the
-canvas.
+(`plugins/copilot-app/extensions/orch-dashboard/`). Follow the shared **Dashboard Reporting
+Contract** in `resources/dashboard-contract.md` to resolve the provider and for the
+availability fallback.
 
 - Open the dashboard per the shared contract, then call `start_run` with
   `skillId: "update-open-sessions"` and these stages: Discover Open Sessions,
   Update Each Session, Summary.
-- Before each phase, call `update_stage` with `status: "in_progress"`.
-- After each phase, call `update_stage` again with `status: "done"` (or
-  `"blocked"`/`"skipped"`) and an `output` summary of that phase's result.
 - Call `finish_run` with the final status and a summary once every session has
   been updated.
 
@@ -119,6 +113,5 @@ canvas action contract.
 
 - This automation only modifies local worktree branches; it does not push to remote.
   Push manually or via the session's normal PR workflow after reviewing the update.
-- Run this automation before submitting PRs to reduce merge conflicts at review time.
 - If worktrees are managed by the Copilot app rather than plain git, use the app's
   session management tools to list sessions and update branches instead of raw git commands.

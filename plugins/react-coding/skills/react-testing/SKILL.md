@@ -45,7 +45,7 @@ locks in the implementation and blocks refactoring.
 - Never assert immediately after an interaction that triggers a request.
 - Use fake timers only for code that owns a timer, and restore real timers afterwards.
 - Reset handlers, mocks, and any shared client between tests so order cannot matter.
-- Avoid a real network call: stub at the network boundary the repository already stubs at.
+- Stub at the network boundary the repository already stubs at, so no test makes a real network call.
 
 ## Hooks
 

@@ -17,5 +17,5 @@ description: Baseline markdown formatting rules for GitHub Issues plugin files.
 - Use ordered lists as `1.`, `2.`, `3.` when sequence matters.
 - Wrap inline commands, paths, env vars, and identifiers in backticks.
 - Use fenced code blocks with language tags when possible.
-- Do not leave trailing whitespace.
+- Strip trailing whitespace.
 - End every file with exactly one newline.

@@ -64,12 +64,6 @@ description: Rules for authoring SVG infographics — concise visual storytellin
 - Avoid flashing, rapid looping, or motion-only meaning.
 - If animation is used, keep it subtle and ensure the infographic still works without it.
 
-## Library Guidance
-
-- The preferred first implementation is **library-free SVG generation** driven by the skill instructions.
-- **Mermaid** may be used as a conceptual aid for simple flow patterns, but the final artifact should still be SVG.
-- **D3** or **Markvis-like** approaches are future options if the plugin later grows an executable rendering pipeline.
-
 ## Final Checklist
 
 - [ ] SVG is self-contained and portable.

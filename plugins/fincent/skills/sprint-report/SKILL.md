@@ -173,10 +173,6 @@ End with one short narrative paragraph suitable for a sprint retrospective or st
 - Group every section by epic using `epicOrder` — never mix stories from different epics in
   the same table and never reorder the groups.
 - The **No epic** group is already last in `epicOrder`; keep that position.
-- Include labels in every issue row when present; use `-` when the list is empty.
-- Use `storyPoints` as-is; render `?` when it is `null`.
-- Do not duplicate bugs: completed bugs appear only in section 2; section 5 lists only
-  bugs that are not yet completed.
 - If `metadata.goal` is available, include section 6 instead of dropping that context.
 - After producing the report, present section 7 as the final narrative summary.
 - Quote `metadata.datasetHash` at the end of the report for reproducibility.

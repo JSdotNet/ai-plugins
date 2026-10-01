@@ -15,7 +15,6 @@ description: Quality standards for bug reports in the .wip convention.
 
 - Store bugs in module folders under `.wip/work/`.
 - Use one module depth only: `.wip/work/<module>/bug-<short-title>.md`.
-- Do not use nested module folders.
 - Keep bug files in the same module folder as related epic and story files.
 
 ## Core Quality Standard
