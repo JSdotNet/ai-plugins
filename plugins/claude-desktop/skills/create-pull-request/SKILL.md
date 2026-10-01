@@ -149,18 +149,14 @@ and the right labels and reviewers — and creates the PR with `gh`.
 ## Dashboard Interface
 
 This skill reports progress through the `orch-dashboard` MCP server
-(`plugins/claude-desktop/mcp/orch-dashboard/`). If the server is not configured, skip the
-dashboard calls below and continue through standard chat interaction. Follow the shared
+(`plugins/claude-desktop/mcp/orch-dashboard/`). Follow the shared
 **Dashboard Reporting Contract** in `resources/orch-dashboard-contract.md`
-for the tool cadence.
+for availability and the tool cadence.
 
 - Open the dashboard per the shared contract, then call `start_run` with
   `skillId: "create-pull-request"` and these stages: Assess Branch State, Collect
   Change Context, Draft Title and Body, Push the Branch, Create the Pull Request,
   Report.
-- Before each phase, call `update_stage` with `status: "in_progress"`.
-- After each phase, call `update_stage` again with `status: "done"` (or
-  `"blocked"`/`"skipped"`) and an `output` summary of that phase's result.
 - Call `finish_run` with the final status and the PR URL once the pull request exists.
 
 See `plugins/claude-desktop/mcp/orch-dashboard/README.md` for the full dashboard tool
