@@ -1,7 +1,5 @@
 # Renderer and Layout Guide
 
-This resource explains how the infographic skill should select a layout and how it should think about rendering choices.
-
 ## Rendering Strategy
 
 ### Version 1 default
