@@ -47,7 +47,7 @@ If the `impeccable` skill is installed, invoke `/impeccable` as the first step o
    - Confirm whether a project design guideline document is available. If not, apply the global UX principles and design principles resource.
 
 2. **Evaluate against heuristics**
-   Apply Nielsen's 10 usability heuristics from `ux-global-instructions.md` as the primary evaluation lens.
+   Apply Nielsen's 10 usability heuristics from `resources/ux-global.md` as the primary evaluation lens.
 
 3. **Check accessibility**
    - Text contrast ratio (WCAG 2.1 AA minimum).
