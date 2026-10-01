@@ -64,8 +64,7 @@ Always load `resources/prose.md`: it owns how every artifact is written.
 | Infrastructure topology | `deployment-diagram-generator` | `deployment/` |
 
 Keep cross-section consistency between sections 1, 3, 4, 5, 6, 7, 9, 10, and 11. Ask for the
-C4 level when it is ambiguous, and prefer `architecture-beta` for deployment diagrams on
-Mermaid v11+, falling back to `graph TD`.
+C4 level when it is ambiguous.
 
 ## Output
 
