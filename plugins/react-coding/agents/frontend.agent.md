@@ -55,8 +55,7 @@ and prove them with the project's own build, typecheck, lint, and test commands.
 
 ## Stack Detection
 
-Never assume a framework version, package manager, or command. Detect the stack from the
-repository before the first edit, and report what was detected.
+Detect the stack from the repository before the first edit, and report what was detected.
 
 1. Apply the `frontend-stack-detect` skill and record its stack report.
 2. If detection is inconclusive for a value the work depends on, state the ambiguity, pick
