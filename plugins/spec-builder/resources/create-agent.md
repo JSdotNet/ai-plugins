@@ -5,11 +5,6 @@ description: Dedicated rules for creating and refining GitHub Copilot agent file
 
 # Create Agent Instructions
 
-## Purpose
-
-- Define a consistent standard for agent authoring.
-- Ensure agent files are discoverable, maintainable, and safe.
-
 ## Minimum Structure
 
 Required: YAML frontmatter with `name` and `description`, a title, and a purpose section.
@@ -27,7 +22,7 @@ agent needs them. An empty or restating section is a section to delete.
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and
   the 80-line body budget.
 - The dual-host rules behind the `model`, `tools`, and `handoffs` items above are in
-  [Crosscutting Concepts](../../../../.devbook/arc42/08-crosscutting-concepts.md).
+  [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md).
 
 ## Validation Checklist
 
@@ -37,4 +32,3 @@ agent needs them. An empty or restating section is a section to delete.
 - [ ] `node tools/check-assets.mjs` passes.
 - [ ] Role, scope, and constraints are explicit.
 - [ ] References point to existing files.
-- [ ] Every line changes behavior versus the model default, and no meaning appears twice.
