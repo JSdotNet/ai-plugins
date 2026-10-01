@@ -79,11 +79,3 @@ Render the same Markdown content the agent wrote to its file artifact.
   to a self-contained Markdown or HTML file. Use it when the user wants something to keep
   or share rather than a live view; it is also the natural source for publishing the run as
   an Artifact.
-
-## Quality Checks
-
-- [ ] Viewer calls are skipped gracefully when the dashboard is unavailable.
-- [ ] A rendered view never becomes the sole source of truth — file artifacts are always
-      produced regardless of viewer availability.
-- [ ] The content plugin whose agent produced the diagram/document is not modified to add
-      viewer awareness — that responsibility stays in this orchestration layer.
