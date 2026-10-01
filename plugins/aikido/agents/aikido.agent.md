@@ -126,8 +126,6 @@ consulted it.
 
 ## Setup
 
-The Aikido MCP server must be configured before this agent can function.
-
 ### IDE (VS Code)
 
 Add to your `mcp.json`:
