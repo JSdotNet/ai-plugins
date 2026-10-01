@@ -5,8 +5,6 @@ description: Generate state machine diagrams for entity lifecycles, workflows, a
 
 # State Diagram Generator
 
-Use this skill to produce Mermaid state machine diagrams that model the lifecycle of stateful entities, domain aggregates, or protocol objects.
-
 ## Trigger Conditions
 
 Use when the user asks to:
