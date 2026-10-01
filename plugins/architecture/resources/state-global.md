@@ -107,13 +107,13 @@ stateDiagram-v2
 ## Naming Conventions
 
 - Name states with a noun or noun phrase in PascalCase (e.g., `OrderPlaced`, `PaymentPending`).
-- Use the ubiquitous language of the domain; do not use technical status codes (e.g., prefer `Approved` over `STATUS_3`).
+- Name states in the domain's ubiquitous language (e.g., `Approved`, not `STATUS_3`).
 - Label transitions with the domain event or command that triggers them (e.g., `submit`, `paymentReceived`).
 - Add guard conditions in square brackets when the same event can lead to different states.
 
 ## Scope Guidance
 
-- One diagram per entity or protocol; do not combine the state machines of multiple entities.
+- One diagram per entity or protocol.
 - Limit to 10–15 states per diagram; extract sub-machines into separate diagrams if the state space grows larger.
 - Show only the states and transitions that are architecturally significant; omit internal implementation states.
 
