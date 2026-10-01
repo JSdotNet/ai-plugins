@@ -15,7 +15,6 @@ description: Quality standards for user stories in the .wip convention.
 
 - Store stories in module folders under `.wip/work/`.
 - Use one module depth only: `.wip/work/<module>/story-<short-title>.md`.
-- Do not use nested module folders.
 - Keep story files in the same module folder as related epic and bug files.
 
 ## Core Quality Standard
