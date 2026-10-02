@@ -9,97 +9,97 @@
       "name": "aikido",
       "source": "./plugins/aikido",
       "description": "Copilot plugin for Aikido Security — scan code for vulnerabilities and secrets, triage findings, fix security issues, and sync to GitHub Issues using the Aikido MCP server.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "architecture",
       "source": "./plugins/architecture",
       "description": "Architecture documentation through the `architect` agent: arc42 sections, architectural decision records, technical debt records, and C4, sequence, state-machine, and deployment diagrams. Fills the `architecture` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.6.0"
+      "version": "0.6.1"
     },
     {
       "name": "claude-desktop",
       "source": "./plugins/claude-desktop",
       "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills plus the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
-      "version": "0.12.3"
+      "version": "0.12.4"
     },
     {
       "name": "csharp-coding",
       "source": "./plugins/csharp-coding",
       "description": "C# .NET implementation through the `coding` agent: test-driven development, refactoring, code review and optimization, NuGet management, Aspire wiring, OpenTelemetry, and Azure SDK patterns. Fills the `implement` and `verify` services a flow runs its code stages through, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "documentation",
       "source": "./plugins/documentation",
       "description": "Documentation and profile artifacts through the `documentation` and `profile` agents: how-to guides, explanations, articles, proposals, ideas, and SVG infographics, plus GitHub, LinkedIn, and project profiles. Fills the `docs` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.5.0"
+      "version": "0.5.1"
     },
     {
       "name": "domain-design",
       "source": "./plugins/domain-design",
       "description": "Domain-Driven Design through the `domain-architect` agent: bounded context discovery, ubiquitous language, domain model and interaction design, context mapping, and aggregate, domain-event-flow, and subdomain diagrams. Fills the `domain` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.3.3"
+      "version": "0.3.4"
     },
     {
       "name": "fincent",
       "source": "./plugins/fincent",
       "description": "Copilot plugin for Fincent project story review, dev, domain alignment, story point estimation, PR review, PR remark resolution, sprint reporting, and demo presentation workflows.",
-      "version": "0.4.0"
+      "version": "0.4.1"
     },
     {
       "name": "github",
       "source": "./plugins/github",
       "description": "Copilot plugin for GitHub platform workflows — issue sync, pull requests, GitHub Actions CI/CD, and Dependabot configuration.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "jira",
       "source": "./plugins/jira",
       "description": "Copilot plugin for Jira issue synchronization workflows. Creates and updates Jira issues from approved Markdown backlog artifacts.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "name": "product-owner",
       "source": "./plugins/product-owner",
       "description": "Copilot plugin for product backlog authoring — epics, stories, and bugs as Markdown artifacts.",
-      "version": "0.3.0"
+      "version": "0.3.1"
     },
     {
       "name": "qa",
       "source": "./plugins/qa",
       "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive Playwright browser scenarios with evidence for each, and monitor Aspire logs/traces during the test session.",
-      "version": "0.4.0"
+      "version": "0.4.1"
     },
     {
       "name": "react-coding",
       "source": "./plugins/react-coding",
       "description": "React and TypeScript implementation through the `frontend` agent: components, hooks, routes, typed API clients bound to a .NET API contract, and component tests, with the build, typecheck, lint, and test commands detected from the repository rather than assumed. Fills the `implement` and `verify` services a flow runs its frontend stages through, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.1.1"
+      "version": "0.1.2"
     },
     {
       "name": "review",
       "source": "./plugins/review",
       "description": "Copilot plugin providing reusable review skills for any agent — supports TODO-driven, question-driven, and improvement-driven reviews of code, stories, documentation, architecture, and more.",
-      "version": "0.4.0"
+      "version": "0.4.1"
     },
     {
       "name": "spec-builder",
       "source": "./plugins/spec-builder",
       "description": "Copilot plugin focused on GitHub customization asset authoring workflows.",
-      "version": "0.5.2"
+      "version": "0.5.3"
     },
     {
       "name": "ux-design",
       "source": "./plugins/ux-design",
       "description": "UX design through the `ux-designer` agent: wireframes, user flows, design guidelines, and UI reviews, as SVG or Mermaid artifacts and structured Markdown. Fills the `ux` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.4.1"
+      "version": "0.4.2"
     },
     {
       "name": "wip-convention",
       "source": "./plugins/wip-convention",
       "description": "Encapsulates the .wip folder convention for storing work-in-progress artifacts. Provides skills and instructions to align agents with the .wip workflow.",
-      "version": "0.3.0"
+      "version": "0.3.1"
     }
   ]
 }
