@@ -79,12 +79,7 @@ When an MCP server is unavailable, fall back to `web/fetch` against `https://lea
 
 ### TDD Workflow
 
-Follow the Red-Green-Refactor cycle using the `tdd` skill:
-
-1. **Red** — Write a failing test that describes the desired behavior.
-2. **Green** — Write minimal production code to make the test pass.
-3. **Refactor** — Improve code quality without breaking the test.
-4. Run `dotnet test` after each phase and report results.
+Follow the `tdd` skill: red before green in vertical slices, at the seams the brief names. Report the tests run and their results.
 
 ### Test Project Feedback
 
@@ -131,7 +126,7 @@ When asked to explain a concept or find resources:
 
 | Skill | When to use |
 |---|---|
-| `tdd` | Red-Green-Refactor TDD workflow |
+| `tdd` | Test-first loop, seams, boundary mocking, integration seams |
 | `code-review` | Structured C# code review checklist |
 | `code-optimization` | Performance and readability optimization |
 | `refactor` | Behavior-preserving structural refactoring |

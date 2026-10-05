@@ -56,6 +56,8 @@ Perform a structured review of C# code. Report findings grouped by severity. Do 
 - [ ] New and changed public APIs have tests.
 - [ ] Tests follow AAA pattern and are independent.
 - [ ] Assertions are specific and cover edge cases.
+- [ ] No implementation-coupled test: no `Verify(…, Times.Once)` on an own collaborator, no assertion through `DbContext` or another side channel, no test of a private member (Important).
+- [ ] No tautological test: no expected value computed the way the code computes it (Important).
 - [ ] `dotnet test` passes.
 
 ### Naming and Readability

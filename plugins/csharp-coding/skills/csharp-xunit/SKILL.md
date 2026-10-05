@@ -18,8 +18,7 @@ Write effective unit tests with xUnit covering standard and data-driven approach
 - No class attribute required (unlike MSTest/NUnit).
 - Use `[Fact]` for single-behavior tests.
 - Use `[Theory]` + `[InlineData]` for parameterized tests.
-- Name tests: `MethodName_Scenario_ExpectedBehavior`.
-- Follow Arrange-Act-Assert (AAA) pattern.
+- Name tests and structure them per [../tdd/SKILL.md](../tdd/SKILL.md).
 - Use constructor for setup and `IDisposable.Dispose()` for teardown.
 - Use `IClassFixture<T>` for shared context within a class.
 - Use `ICollectionFixture<T>` for shared context across classes.
@@ -38,7 +37,7 @@ Write effective unit tests with xUnit covering standard and data-driven approach
 [Theory]
 [InlineData(1, 2, 3)]
 [InlineData(-1, 1, 0)]
-public void Add_TwoNumbers_ReturnsSum(int a, int b, int expected)
+public void Adding_two_numbers_gives_their_sum(int a, int b, int expected)
 {
     var result = Calculator.Add(a, b);
     Assert.Equal(expected, result);
@@ -49,9 +48,8 @@ For method-based or class-based data, use `[MemberData]` or `[ClassData]`.
 
 ## Mocking
 
-- Use **Moq** or **NSubstitute** (whichever is already in the solution).
-- Mock only external dependencies; never mock code under test.
-- Verify that mock outputs match real dependency outputs (write an explicit/skipped test if needed).
+- What to mock: the boundary-mocking rule in [../tdd/SKILL.md](../tdd/SKILL.md).
+- Use **Moq** or **NSubstitute**, whichever is already in the solution.
 
 ## Test Organization
 

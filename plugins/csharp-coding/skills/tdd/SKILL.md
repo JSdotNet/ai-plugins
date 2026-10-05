@@ -1,60 +1,43 @@
 ---
 name: tdd
-description: 'C# .NET Test-Driven Development workflow following Red-Green-Refactor with xUnit, NUnit, or MSTest. Use when writing new features or fixing bugs with tests first.'
+description: 'C# .NET test-driven development: red before green in vertical slices, testing behaviour through the public interface at agreed seams, with xUnit, NUnit, or MSTest. Use when building a C# feature or fixing a C# bug test-first, writing integration tests, or deciding what to mock. Not for frontend code.'
 ---
 
-# TDD — Test-Driven Development for C#
+# TDD — C# .NET
 
-Apply the Red-Green-Refactor cycle for all C# feature work.
+**Seams.** Test only at the seams the brief or the person names; with none named, ask "which public interface do we test?" before writing a test. Test behaviour through that public interface — never a `private` member, never through `InternalsVisibleTo`. A test survives any refactor that keeps behaviour.
 
-## Cycle
+**Loop.** One vertical slice per cycle: one failing test, then only the code that passes it. Run it and confirm it fails for the right reason — the assertion, not a compile error or a missing registration — before writing production code. Run the touched tests with `dotnet test --filter "FullyQualifiedName~<Class>"`, the whole suite once at the end. Refactoring and committing are not part of the loop.
 
-### 1. Red — Write a Failing Test
+**Defects.** Start from the failing test that reproduces the defect through the public interface; fix only once it is red.
 
-- Write a test that describes the desired behavior before any production code exists.
-- Use the test framework already in the project (xUnit, NUnit, or MSTest).
-- Test name: `MethodName_Scenario_ExpectedBehavior` (or `WhenX_ThenY` for BDD style).
-- Run `dotnet test` and confirm the test fails for the right reason.
+**Shape.**
+- Name the behaviour in the domain language — `Checkout_is_confirmed_for_a_valid_cart` — not `MethodName_Scenario_ExpectedBehavior`.
+- Arrange-Act-Assert, one behaviour per test, no `if`, loop, or `switch` in a test.
+- Take expected values from an independent source — a literal, a worked example, the spec.
 
-### 2. Green — Make It Pass
+**Mocking — the rule every C# skill points at.** Mock at system boundaries only: outbound HTTP (`HttpMessageHandler`), time (`TimeProvider` → `FakeTimeProvider`), randomness, queues and brokers, third-party SDKs. Never mock your own interfaces or collaborators — use the real ones. Prefer a real database through Testcontainers over a mocked repository.
 
-- Write the minimal production code to make the test pass.
-- Do not over-engineer: only implement what the test requires.
-- Run `dotnet test` and confirm the test now passes.
-- Do not proceed until all tests pass.
+**Anti-patterns** — rewrite on sight:
+- *Implementation-coupled*: `Verify(…, Times.Once)` on your own collaborator, asserting through `DbContext` instead of reading back through the interface, testing a private method. It breaks on a refactor that keeps behaviour.
+- *Tautological*: the expected value is computed the way the code computes it, so the test passes by construction.
 
-### 3. Refactor — Improve Without Breaking
+Good and bad xUnit examples: [tests.md](tests.md).
 
-- Apply the `refactor` skill to improve structure, naming, and duplication.
-- Run `dotnet test` after every change to confirm no regressions.
-- Commit clean, passing code.
+**Integration seams.**
 
-## Rules
+| Seam | Use |
+|---|---|
+| `WebApplicationFactory<TProgram>` | HTTP endpoints in-process; swap boundary services in `ConfigureTestServices` |
+| Testcontainers (`Testcontainers.PostgreSql`, `.MsSql`, …) | A real database or broker per test class via `IAsyncLifetime` |
+| `DistributedApplicationTestingBuilder` (`Aspire.Hosting.Testing`) | The whole AppHost; call resources with `app.CreateHttpClient("<resource>")` |
 
-- One test per behavior.
-- Tests must be independent and idempotent.
-- No branching or conditionals inside tests.
-- Follow the Arrange-Act-Assert (AAA) pattern.
-- Mock only external dependencies; never mock code under test.
+**Frameworks.** Use the one already in the solution.
 
-## Test Frameworks
-
-| Framework | Fact/Test | Theory/Parameterized | Setup/Teardown |
+| Framework | Test | Parameterized | Setup / Teardown |
 |---|---|---|---|
-| xUnit | `[Fact]` | `[Theory]` + `[InlineData]` | Constructor / `IDisposable` |
+| xUnit | `[Fact]` | `[Theory]` + `[InlineData]` | Constructor / `IDisposable`, `IAsyncLifetime` |
 | NUnit | `[Test]` | `[TestCase]` | `[SetUp]` / `[TearDown]` |
 | MSTest | `[TestMethod]` | `[DataRow]` | `[TestInitialize]` / `[TestCleanup]` |
 
-## Validation
-
-Run after each phase:
-
-```bash
-dotnet test
-```
-
-Or with coverage:
-
-```bash
-dotnet-coverage collect -f cobertura -o coverage.cobertura.xml dotnet test
-```
+Adapted from [mattpocock/skills](https://github.com/mattpocock/skills) `skills/engineering/tdd`, MIT License, © 2026 Matt Pocock.
