@@ -27,7 +27,7 @@
       "name": "csharp-coding",
       "source": "./plugins/csharp-coding",
       "description": "C# .NET implementation through the `coding` agent: test-driven development, refactoring, code review and optimization, NuGet management, Aspire wiring, OpenTelemetry, and Azure SDK patterns. Fills the `implement` and `verify` services a flow runs its code stages through, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     {
       "name": "documentation",
