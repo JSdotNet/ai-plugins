@@ -3,18 +3,59 @@
   "bindings": {
     "delivery.tracker": {
       "provider": "backlog"
-    },
-    "delivery.roles": {
-      "architecture": "architecture",
-      "docs": "documentation"
     }
   },
-  "extensions": {
-    "session.start": [
-      "devbook:validate"
-    ],
-    "app.start": null,
-    "verify": "devbook:verify-change"
+  "phases": {
+    "flow-code": {
+      "phase-update-base": {
+        "before": [
+          "devbook:validate"
+        ]
+      },
+      "phase-scope": {
+        "agent": "architecture:architect"
+      },
+      "phase-plan": {
+        "agent": "architecture:architect"
+      },
+      "phase-implement": {},
+      "phase-review": {},
+      "phase-build-test": {},
+      "phase-verify": {
+        "app": null
+      },
+      "phase-spec-check": {
+        "skill": "devbook:verify-change"
+      },
+      "phase-create-pr": {},
+      "phase-report-back": {},
+      "phase-summary": {}
+    },
+    "flow-spec": {
+      "phase-update-base": {
+        "before": [
+          "devbook:validate"
+        ]
+      },
+      "phase-scope": {
+        "agent": "architecture:architect"
+      },
+      "phase-drafting:arc42": {
+        "agent": "architecture:architect"
+      },
+      "phase-drafting:domain": {},
+      "phase-drafting:tech": {
+        "agent": "architecture:architect"
+      },
+      "phase-drafting:design": {},
+      "phase-drafting:ai": {
+        "agent": "documentation:documentation"
+      },
+      "phase-check-review": {},
+      "phase-create-pr": {},
+      "phase-report-back": {},
+      "phase-summary": {}
+    }
   },
   "policy": {
     "qa.depth": "skipped",
@@ -232,7 +273,7 @@
       }
     },
     "delivery": {
-      "pluginVersion": "1.13.0"
+      "pluginVersion": "1.18.0"
     },
     "schedule": {
       "pluginVersion": "1.13.0",
