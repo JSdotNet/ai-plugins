@@ -3,12 +3,14 @@
 Checks the `meta` blocks embedded in the devbook folders under `.devbook/` —
 `arc42/`, `domain/`, `tech/`, `design/`, and `ai/`, at `.devbook/arc42/` and so
 on — plus a change's `proposal.md` and deltas under `openspec/changes/`, and,
-with `--write`, derives three machine-readable indexes from them:
+with `--write`, derives four machine-readable indexes from them:
 
 - **`graph.json`** — the reference graph between chapters and files.
 - **`index.json`** — the ordered reading outline of each area.
 - **`annotations.json`** — the open notes, from the `annotation` fences in the
   chapters themselves.
+- **`naming.json`** — the term register: `domain/`'s ubiquitous language as a
+  list, each term with its definition, its other names, and where it is worked out.
 
 Markdown stays canonical; these indexes are **derived output** — never edit
 them by hand. Placement and naming follow
@@ -22,6 +24,12 @@ The checker writes nothing unless asked:
 # Validate every reference and meta block, write nothing — the default; CI runs this
 node .devbook/_tools/devbook-meta/build.mjs --check
 
+# Every demo's managed region against .devbook/design/demo-template.html; build.mjs --check runs this
+node .devbook/_tools/devbook-meta/demo-template.mjs --check
+
+# Rewrite every demo's region from the template, after the template changed
+node .devbook/_tools/devbook-meta/demo-template.mjs --refresh
+
 # Refresh the derived indexes: the plugin that owns them runs this, never a session
 node .devbook/_tools/devbook-meta/build.mjs --write
 
@@ -30,6 +38,10 @@ node .devbook/_tools/devbook-meta/build.mjs --write --scope tech
 
 # Point at a repository other than the working directory
 node .devbook/_tools/devbook-meta/build.mjs --root ../other-repo
+
+# The sync units, or the groups the pull sweep picks up, as JSON
+node .devbook/_tools/devbook-meta/units.mjs
+node .devbook/_tools/devbook-meta/units.mjs --direction pull --groups --json
 
 # Resolve one change's deltas; merge them and archive the change
 node .devbook/_tools/devbook-meta/delta.mjs --check add-cache
@@ -74,11 +86,11 @@ both halves of the contract.
 
 ## Outputs
 
-Three artifacts per adopted scope, each co-located with what it describes:
+Four artifacts per adopted scope, each co-located with what it describes:
 
 | Path | Scope |
 |---|---|
-| `.devbook/_meta/graph.json`, `.devbook/_meta/index.json`, `.devbook/_meta/annotations.json` | repository-wide rollup across all adopted devbook folders |
+| `.devbook/_meta/graph.json`, `.devbook/_meta/index.json`, `.devbook/_meta/annotations.json`, `.devbook/_meta/naming.json` | repository-wide rollup across all adopted devbook folders |
 | `.devbook/arc42/_meta/*.json` | `arc42/` only |
 | `.devbook/domain/_meta/*.json` | `domain/` only |
 | `.devbook/tech/_meta/*.json` | `tech/` only |
@@ -100,11 +112,15 @@ followed, so a scoped graph stays about its own folder.
 | `statuses.mjs` | Reads the repository's own `status` ladder from `.devbook/statuses.json`, reports a configuration error once on the file, and resolves which rungs a block may hold; absent, the built-in ladders in `metadata.mjs` apply. The graph build and the canvas lint both call it. |
 | `outline.mjs` | Outline generation: root-document resolution (`index: root`, else the `DIRECTORY_CONVENTION` table), numbered ordering, and the per-file lede and diagram count a list view needs. |
 | `annotations-index.mjs` | Derives `annotations.json` from the fences: the open-note index every reader comes off, so no reader needs the writer and no reader parses Markdown twice. |
+| `naming.mjs` | Derives `naming.json` from the graph `buildGraph` already holds — its nodes and the chapter ledes it keeps beside them — so the register costs no second read of the corpus. |
 | `annotations.mjs` | The only writer of an annotation fence — `list`, `add`, `reply`, `resolve`, `sweep`, plus a CLI over the same five functions. Edits are surgical, so a field a later version adds survives a write by one that does not know it. `sweep` is the bulk half of `resolve --delete`: it takes every resolved fence in an addressed chapter, bottom-up, and no open one. |
-| `build.mjs` | CLI wrapper: writes all three artifacts per scope, prints stats, exits non-zero on errors. |
-| `delta.mjs` | The change folder's merge. `--check <change>` resolves every delta under `openspec/changes/<change>/devbook-delta/` to its target file and heading and lints each merged result; `--apply <change>` does the same, then writes the merges, stamps `change` on every chapter block it touched, and moves the folder to `archive/<date>-<name>/`. The graph build imports `checkDelta`, so an indexed delta is checked exactly as a merge would check it. `gateCheck` is the empty seam before the merge where a check that the change may be merged goes. |
-| `chapter-hash.mjs` | CLI over `metadata.mjs`'s `chapterHash`: prints the content fingerprint of an addressed chapter, the value `approved-hash` records. The approval gate calls it so the value written and the value checked come from one function. |
-| `*.test.mjs` | Self-contained checks, one per rule that was worth pinning: run one with `node <file>`, all of them with `node --test "*.test.mjs"`. Each prints `PASS`/`FAIL` per case and exits non-zero on the first failure, so no framework is installed to read them. `behaviour-files.test.mjs` covers the `requirements.md` and invariants-subpage types, the subpage naming and placement checks, the three coverage warnings, and the typed `related` pairing; `design-requirements.test.mjs` covers `design/`'s `requirement` type and its `e2e` level; `change-folder.test.mjs` runs a fixture change through the index, `--check`, and `--apply`. |
+| `build.mjs` | CLI wrapper: writes all four artifacts per scope, runs `demo-template.mjs`'s check, prints stats, exits non-zero on errors. |
+| `delta.mjs` | The change folder's merge. `--check <change>` resolves every delta under `openspec/changes/<change>/devbook-delta/` to its target file and heading and lints each merged result; `--apply <change>` does the same, then writes the merges, stamps `change` on every chapter block it touched, and moves the folder to `archive/<date>-<name>/`. A `*.demo.html` directly in a `devbook-delta/domain/<context>/` folder is the one other file allowed there: `--check` runs `demo.mjs`'s `demoFileIssues` over it and `--apply` replaces its target whole. The graph build imports `checkDelta`, so an indexed delta is checked exactly as a merge would check it. `gateCheck` is the empty seam before the merge where a check that the change may be merged goes. |
+| `chapter-hash.mjs` | CLI over `metadata.mjs`'s `chapterFingerprint`: prints the content fingerprint of an addressed chapter, the value `approved-hash` records, with every demo the block belongs to folded in — `<page>.demo.html` into `<page>.md`'s file block, the context's `demo.html` into `context.md`'s, and any demo a block's `demo` field names into that block — each without its managed region, so `demo-template.mjs --refresh` lifts no approval. The approval gate calls it so the value written and the value checked come from one function. Run it from the repository root. |
+| `demo.mjs` | The click demos. Lints each `*.demo.html` against the HTML contract in `devbook-domain.md`, pairs a page-named demo with its page, and resolves every `demo` address — on a chapter, a delta, a `proposal.md`, or a change's `solution.md` — against the demo's `demo-model`, per `resources/demo-address.md`. A change's address resolves against the demo the change lands when it carries one. The graph build calls `demoProblems` once the corpus is read. |
+| `demo-template.mjs` | Every demo's managed region against the repository's template at `.devbook/design/demo-template.html`. The region's begin marker carries `sha256:` over the text between the markers, CRLF read as LF, so a region whose text hashes to its own marker is a release of the template as it shipped and no list of past versions is kept. `--check` reports such a region on an earlier version than the template's as stale, a warning, and one whose text matches no version, its own marker's included, as hand-edited, an error. `--refresh` re-stamps the template's marker when an edit left it behind, then rewrites every demo's region from it, in the demo's line endings, leaving the demo's own parts byte for byte. `build.mjs` runs the check. |
+| `units.mjs` | Lists the sync units — an aggregate with what it owns and the rules that name it, a domain service, a feature, a switch, a building block, a design component, one shared-types unit per context — each with its chapters and its effective `sync` direction and the block it came from. `--groups` joins units a requirement naming two aggregates and no feature ties together, and sets aside a group of mixed directions or past `--max-group-chapters` (default 40); `--direction pull\|push\|report` keeps what one sweep picks up; `--json` prints it for a sweep. Orphans — an event naming no raiser, a term with two homes, a requirement naming nothing — and a stated direction no unit inherits are listed beside. The rules are "Sync direction" in `devbook-chapter-metadata.md`. Reads the graph and writes nothing. |
+| `*.test.mjs` | Self-contained checks, one per rule that was worth pinning: run one with `node <file>`, all of them with `node --test "*.test.mjs"`. Each prints `PASS`/`FAIL` per case and exits non-zero on the first failure, so no framework is installed to read them. `behaviour-files.test.mjs` covers the `requirements.md` and invariants-subpage types, the subpage naming and placement checks, the three coverage warnings, and the typed `related` pairing; `design-requirements.test.mjs` covers `design/`'s `requirement` type and its `e2e` level; `change-folder.test.mjs` runs a fixture change through the index, `--check`, and `--apply`; `naming.test.mjs` pins the term register's shape and what it counts as a term; `prose-links.test.mjs` covers the prose-link warnings; `demo.test.mjs` covers every demo rule and the fingerprint that folds a demo into its page; `demo-delta.test.mjs` covers a demo delta through `--check`, the fingerprint, and `--apply`, and the `demo-meta` rule. |
 
 This folder is self-contained — copy it into a repository as
 `.devbook/_tools/devbook-meta/` and it runs with no other files installed.
@@ -286,6 +302,7 @@ each expects, without building a command.
 | A block missing `type` where its folder defines a value set for that level | error |
 | A `type` value outside its folder's value set | error |
 | A reference pointing outside the devbook folders | warning |
+| A relative Markdown link in chapter prose whose file does not exist, or whose `#anchor` no heading in an indexed file renders — absolute URLs, code spans, fences, `annotation` fences, and the anchors of a file outside the indexed corpus are not checked | warning |
 | A `type` set in a folder that defines no value set | warning |
 | A literal `` `r`n `` / `\r\n` / `\n` escape sequence in body text | warning |
 | `tech/` still using the old `kind` field name | warning |
@@ -314,6 +331,26 @@ each expects, without building a command.
 | A delta naming a chapter or section its target lacks, adding one it has, or using a section other than `ADDED`, `MODIFIED`, `REMOVED` | error |
 | A delta whose merge would leave its target with a new error | error |
 | A `change` value that is not one lowercase kebab-case change name | error |
+| A page-named demo — `demo.html`, or `<page>.demo.html` for a page `domain/` prescribes — without its page beside it | error |
+| A demo with no page beside it that no `demo` field names | error |
+| A `demo` entry naming a file that does not exist or is no demo | error |
+| A `demo` address — in any chapter, a `proposal.md`, or a change's `solution.md` — whose screen, anchor, walkthrough, step, or panel key the demo's `demo-model` does not list | error |
+| A requirement's walkthrough address whose id matches no `#### Scenario:` slug under it | error |
+| A demo with no `demo-model`, or one that is not JSON | error |
+| A `demo-model` the template cannot read: a key it does not read, a screen without `id`, a role, flag, setting, viewport, or variant without `key`, a walkthrough without `id` and `steps`, or a step without `screen` — the shape the template's authoring reference states | error |
+| A screen id or `data-anchor` missing from `demo-model`, or repeated — an anchor is repeated within one screen — and a walkthrough step naming either | error |
+| A `<script>` outside the template's managed region (`template:begin` to `template:end`) other than `demo-model` and `demo-meta` | error |
+| Anything a demo fetches from the network: a remote `src`, `href`, `srcset`, CSS `url()` or `@import`, or a `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource`, or `sendBeacon` call | error |
+| A demo under `domain/`, or a change's copy landing there, with more than one variant | error |
+| A demo over 500 KB | warning |
+| A demo with no managed region, or more than one | error |
+| A demo whose region matches no template version — its text hashes to something other than its own begin marker's `hash` — because it was edited by hand | error |
+| A demo whose region is an earlier template version than `.devbook/design/demo-template.html`'s | warning |
+| A template whose begin marker does not carry its own region's hash | error |
+| Demos with no template at `.devbook/design/demo-template.html`, so only hand edits are checked | warning |
+| A `demo-meta` that is not JSON, has no `question`, or holds anything beside it | error |
+| A file under `devbook-delta/` that is neither a Markdown delta nor a `*.demo.html` | error |
+| A demo delta landing anywhere but directly in a `domain/<context>/` folder | error |
 
 ### Literal escape sequences
 
@@ -520,6 +557,64 @@ A `resolved` thread is still listed. It lives for the rest of the branch so a
 reviewer sees the exchange in the pull request that raised it — the sweep is
 what removes it, not the generator. A note that never gets swept is the smell
 this index makes visible; `devbook:annotation-sweep` is what removes it.
+
+## Output shape: `naming.json`
+
+The ubiquitous language of every `domain/` context in the scope, as a list. The
+graph's term nodes carry a label and nothing else, so a reader that wants to
+show what a term *means* would otherwise parse Markdown; this is that list.
+
+```jsonc
+{
+  // The register's own version, not the contract version the other three
+  // carry: a consumer outside this repository pins it. An added field leaves it
+  // at 1; a removed or redefined one raises it.
+  "schemaVersion": 1,
+  "generatedBy": ".devbook/_tools/devbook-meta/build.mjs",
+  "scope": ".",
+  "sources": [".devbook/domain"],
+  "stats": { "terms": 2, "aliases": 3 },
+  "problems": [],
+  // Sorted by name, case-insensitively.
+  "terms": [
+    {
+      "name": "Checkout",
+      // The chapter's lede: its first paragraph or blockquote, joined to one
+      // line, inline Markdown kept. "" when the chapter has none.
+      "description": "The step where a customer turns a basket into an `Order`.",
+      // <path>#<anchor>, the same id as the chapter's node in graph.json.
+      "id": ".devbook/domain/ordering/domain.md#checkout",
+      "path": ".devbook/domain/ordering/domain.md",
+      "anchor": "checkout",
+      // Plain strings from the chapter's `aliases` field; [] when it has none.
+      "aliases": ["Afrekenen"],
+      // The chapter's `related` references, verbatim.
+      "related": [".devbook/domain/ordering/domain.md#order"]
+    }
+  ]
+}
+```
+
+A term is one of two things, both in `domain/`:
+
+- a `term` chapter, which the domain rule places under `domain.md`'s
+  `## Ubiquitous Language`;
+- any other chapter carrying `aliases` — an aggregate, an entity, an event —
+  listed under its own title, because a modelled concept is its own glossary
+  entry.
+
+A `requirement` or `invariant` chapter is never a term: its `aliases` are the
+codes the rule is cited by, which rules split from one source row share, not
+names of a concept.
+
+`arc42/12-glossary.md` is not read: its "Also called" line is prose, not an
+`aliases` field, and the register reads fields only. A folder with no terms
+writes `{ "terms": [], "problems": [] }`, so every `_meta/` holds the same four
+files.
+
+`problems` uses the shape the other three documents use, and holds two warnings:
+a term with no lede, and a spelling — a name or an alias, compared
+case-insensitively — that two terms claim. Neither fails `--check`.
 
 ## Viewing
 

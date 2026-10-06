@@ -90,7 +90,7 @@ type: tool
 ```meta
 status: trial
 type: package
-version: "1.9.0"
+version: "1.19.0"
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#claude-code"]
 ```
 
@@ -98,7 +98,10 @@ The devbook convention from the `jsdotnet` marketplace: the `arc42/`, `tech/`, a
 folders, their rules, and the checker copied to `.devbook/_tools/`.
 
 - **Used for** — this folder, `.devbook/arc42/`, and `.devbook/ai/`, installed by `devbook:init`
-  on 2026-09-26 and extended to `arc42/` the same day.
+  on 2026-09-26 and extended to `arc42/` the same day. Since 2026-10-06 it is stamped at 1.19.0,
+  contract 29, with the `estimate` procedure recorded under `components.devbook`. The delivery
+  engine is stamped at 1.18.0 and reads the `phases` maps for `flow-code` and `flow-spec` in
+  `.devbook/config.json`, which replaced `extensions` and `delivery.roles`.
 - **Why** — the marketplace's specialists write devbook chapters in other repositories;
   keeping its own record in the same shape is how the convention gets exercised here.
 

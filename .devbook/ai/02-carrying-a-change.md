@@ -133,9 +133,10 @@ Unattended agent routines from `delivery-schedule`, run on a cron as local sched
 the Claude desktop app. Each run makes its own detached worktree off `origin/main` in the
 `D:\Repos\Copilot` clone.
 
-- **Used for** — seven routines against JSdotNet/ai-plugins: devbook-validate (daily),
-  devbook-verify (Monday), tech-update (Sunday), prose-check (Wednesday), merge-review
-  (weekdays), instruction-review (Thursday), and weekly-update (Friday).
+- **Used for** — seven routines against JSdotNet/ai-plugins: devbook-validate (daily) and
+  merge-review (weekdays), then on Sunday, one per hour, tech-update, devbook-verify,
+  prose-check, instruction-review, and weekly-update. They moved to Sunday on 2026-10-06 with
+  `delivery-schedule` 1.18.0.
 - **Adopted by** — the maintainer's desktop app. The seven were created on 2026-09-26 and are
   recorded under `components.schedule` in `.devbook/config.json`. The eleven JSdotNet/Backlog
   routines are unchanged.
