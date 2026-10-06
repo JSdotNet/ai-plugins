@@ -337,6 +337,9 @@ const COMMON_OPTIONAL_FIELDS = [
     // Provenance: the change whose merge last touched this chapter. Written by
     // the delta merge, never by hand, and valid in every folder.
     "change",
+    // The places in a click demo that show what the chapter claims. The
+    // addresses are resolved against each demo's `demo-model` by demo.mjs.
+    "demo",
 ];
 
 // A feature flag is a switch, so its `default` is one of two words. A setting's
@@ -518,11 +521,12 @@ const FOLDER_EXTRA_FIELDS = {
     domain: [
         "depends-on", "aliases", "feature-flag", "setting", "role", "key", "default", "scope",
         "deployment",
+        "sync",
         ...DECISION_FIELDS,
     ],
-    arc42: [],
+    arc42: ["sync"],
     tech: ["kind", "version", "depends-on", "alternatives"],
-    design: [],
+    design: ["sync"],
     ai: ["depends-on", "stage"],
     [CHANGES_FOLDER]: ["category", ...DECISION_FIELDS],
 };
@@ -618,6 +622,161 @@ const FILE_FIELD_TYPE_SCOPE = {
     },
 };
 
+// ---------------------------------------------------------------------------
+// Sync direction — which way changes flow between a chapter and its code
+// ---------------------------------------------------------------------------
+
+/**
+ * The values `sync` may take. `push` makes the agreed chapter the truth the
+ * code follows, `pull` the code the evidence the chapter follows, `sync` lets
+ * each verdict decide, `report` only reports drift, and `off` keeps the unit
+ * out of every sweep. Exported for the tools that list units by direction.
+ */
+export const SYNC_DIRECTIONS = ["push", "pull", "sync", "report", "off"];
+
+/** The direction of a unit nothing above it sets: report drift, write nothing. */
+export const DEFAULT_SYNC_DIRECTION = "report";
+
+// The root chapters of a sync unit in `.domain`, one per converter kind: an
+// aggregate, a domain service, a feature, the two switch chapters, and the two
+// actors code represents, a `user` and a `technical` actor. An `organisation`
+// is modelled and never authenticated, so it roots no unit.
+const SYNC_UNIT_TYPES = ["aggregate", "domain-service", "feature", "feature-flag", "setting", "user", "technical"];
+
+// Chapters a unit owns. They are captured and briefed with that unit, so a
+// direction of their own would let half a unit go one way and half the other.
+const SYNC_OWNED_TYPES = [
+    "entity",
+    "value-object",
+    "enum",
+    "domain-event",
+    "invariant",
+    "requirement",
+    "sub-feature",
+    "term",
+];
+
+// The folder overview whose file-level block sets a folder's default.
+const SYNC_FOLDER_FILES = {
+    domain: "context-map.md",
+    arc42: "05-building-block-view.md",
+    design: "component-libraries.md",
+};
+
+// Context pages whose file-level block sets a default for the units on them.
+// On `actors.md` those are its `user` and `technical` chapters; one holding
+// only organisations has none, and a value there is reported as inherited by
+// nothing rather than refused.
+const SYNC_PAGE_BASES = ["domain", "features", "skills", "actors"];
+
+// Pages that hold only chapters some unit on another page owns.
+const SYNC_OWNED_PAGE_BASES = ["requirements", "invariants"];
+
+/**
+ * Where a `sync` value on this block sits: `{ level }` with `folder`,
+ * `context`, `page`, or `unit`, or `{ refused }` with `owned`, `owned-page`,
+ * or `none` — a block that is no level at all. `blockLevel` is "file" for the
+ * level-1 block and "chapter" for every other heading; `headingLevel` is the
+ * chapter's heading depth, which `.design` needs because only a `##` chapter
+ * of `component-libraries.md` is a component.
+ */
+export function syncLevel(relPath, blockLevel, meta, headingLevel = blockLevel === "file" ? 1 : 2) {
+    const folder = folderKindForPath(relPath);
+    if (!SYNC_FOLDER_FILES[folder]) return { refused: "none" };
+    const subject = String(relPath).replace(/\\/g, "/").slice(DEVBOOK_PREFIX.length + folder.length + 1);
+    const type = resolveType(folder, meta);
+
+    if (folder === "domain") {
+        if (subject === SYNC_FOLDER_FILES.domain) return blockLevel === "file" ? { level: "folder" } : { refused: "none" };
+        if (subject.split("/").length !== 2) return { refused: "none" };
+        const { base } = domainFileName(relPath);
+        if (SYNC_OWNED_PAGE_BASES.includes(base)) return { refused: "owned-page" };
+        if (blockLevel === "file") {
+            if (base === "context") return { level: "context" };
+            return SYNC_PAGE_BASES.includes(base) ? { level: "page" } : { refused: "none" };
+        }
+        if (SYNC_UNIT_TYPES.includes(type)) return { level: "unit" };
+        return SYNC_OWNED_TYPES.includes(type) ? { refused: "owned" } : { refused: "none" };
+    }
+
+    if (folder === "arc42") {
+        if (blockLevel !== "file") return { refused: "none" };
+        if (subject === SYNC_FOLDER_FILES.arc42) return { level: "folder" };
+        const isBlock = /^building-blocks\/[^/]+\.md$/.test(subject) && indexRole(meta) !== "root";
+        return isBlock ? { level: "unit" } : { refused: "none" };
+    }
+
+    // `.design`: the component-libraries document, and its `##` components.
+    if (subject !== SYNC_FOLDER_FILES.design) return { refused: "none" };
+    if (blockLevel === "file") return { level: "folder" };
+    if (type === "requirement") return { refused: "owned" };
+    return headingLevel === 2 && type === null ? { level: "unit" } : { refused: "none" };
+}
+
+/**
+ * The blocks a unit's direction is read from, nearest first: the unit, its
+ * page, its context, its folder. The first that states `sync` wins, and none
+ * means `report`. `unitId` is a graph node id — a chapter's `<path>#<slug>`,
+ * or a building block's bare path. A page that is also the context (a switch
+ * chapter in `context.md`) appears once.
+ */
+export function syncSources(unitId) {
+    const relPath = String(unitId).split("#")[0];
+    const folder = folderKindForPath(relPath);
+    const overview = SYNC_FOLDER_FILES[folder];
+    if (!overview) return [unitId];
+    const sources = [unitId];
+    if (folder === "domain") {
+        const context = `${relPath.slice(0, relPath.lastIndexOf("/"))}/context.md`;
+        sources.push(relPath, context);
+    }
+    sources.push(`${DEVBOOK_PREFIX}${folder}/${overview}`);
+    return [...new Set(sources)];
+}
+
+/**
+ * Lint `sync`: one of `SYNC_DIRECTIONS`, on a block that is a sync level, and
+ * never on a chapter a unit owns or a page that holds only such chapters.
+ * Whether any unit actually inherits a value is the graph build's to say,
+ * since only it sees every page of a context at once.
+ */
+export function syncIssues(relPath, blockLevel, meta, headingLevel) {
+    if (!meta || !("sync" in meta)) return [];
+    if (meta.sync === null || (Array.isArray(meta.sync) && meta.sync.length === 0)) {
+        return [{
+            severity: "warning",
+            message: `sets \`sync\` to an empty/null value — omit the field instead to inherit the direction from above, or \`${DEFAULT_SYNC_DIRECTION}\` when nothing above sets one.`,
+        }];
+    }
+    const issues = [];
+    const value = meta.sync;
+    if (Array.isArray(value) || !SYNC_DIRECTIONS.includes(value)) {
+        issues.push({
+            severity: "error",
+            message: `has \`sync\` "${Array.isArray(value) ? value.join(", ") : value}", expected one of: ${SYNC_DIRECTIONS.join(", ")}.`,
+        });
+    }
+    const { refused } = syncLevel(relPath, blockLevel, meta, headingLevel);
+    const folder = folderKindForPath(relPath);
+    if (refused === "owned") {
+        issues.push({
+            severity: "error",
+            message: `has \`sync\` on a \`${resolveType(folder, meta)}\` chapter, which a unit owns and is captured and briefed with it — set the direction on the unit's root chapter or above it. See devbook-chapter-metadata.md.`,
+        });
+    } else if (refused === "owned-page") {
+        issues.push({
+            severity: "error",
+            message: `has \`sync\` on a page that holds only chapters a unit on another page owns — each follows its unit's direction. See devbook-chapter-metadata.md.`,
+        });
+    } else if (refused === "none") {
+        issues.push({
+            severity: "error",
+            message: `has \`sync\` on a block that is no sync level — it is set on a folder overview (\`domain/context-map.md\`, \`arc42/05-building-block-view.md\`, \`design/component-libraries.md\`), a \`context.md\`, a context page, or a unit's root chapter. See devbook-chapter-metadata.md.`,
+        });
+    }
+    return issues;
+}
+
 /** Determine which devbook folder a repo-relative path belongs to. */
 export function folderKindForPath(relPath) {
     if (changePathParts(relPath)) return CHANGES_FOLDER;
@@ -682,12 +841,33 @@ function parseScalar(raw) {
     if (value.startsWith("[") && value.endsWith("]")) {
         const inner = value.slice(1, -1).trim();
         if (inner === "") return [];
-        return inner
-            .split(",")
+        return splitListEntries(inner)
             .map((entry) => stripQuotes(entry.trim()))
             .filter((entry) => entry.length > 0);
     }
     return stripQuotes(value);
+}
+
+// A comma inside a quoted entry is part of it: a demo address carries
+// `flags=<key>,<key>`, so `["….demo.html#checkout?flags=a,b"]` is one entry.
+function splitListEntries(inner) {
+    const entries = [];
+    let quote = null;
+    let current = "";
+    for (const char of inner) {
+        if (quote) {
+            if (char === quote) quote = null;
+        } else if (char === '"' || char === "'") {
+            if (current.trim() === "") quote = char;
+        } else if (char === ",") {
+            entries.push(current);
+            current = "";
+            continue;
+        }
+        current += char;
+    }
+    entries.push(current);
+    return entries;
 }
 
 function stripQuotes(value) {
@@ -734,8 +914,20 @@ export function parseDocument(markdown) {
     const chapters = [];
     let fileTitle = null;
     let fileMeta = null;
+    // A `#` line inside a fenced block — a Markdown sample, a diagram — is
+    // content, not a chapter.
+    let fence = null;
 
     for (let i = 0; i < lines.length; i++) {
+        const marker = /^\s*(`{3,}|~{3,})/.exec(lines[i]);
+        if (fence) {
+            if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length) fence = null;
+            continue;
+        }
+        if (marker) {
+            fence = marker[1];
+            continue;
+        }
         const headingMatch = /^(#{1,6})\s+(.*)$/.exec(lines[i]);
         if (!headingMatch) continue;
 
@@ -1121,8 +1313,10 @@ export function behaviourIssues(type, meta, scenarios = 0, folder = "domain") {
 
     // Only a requirement is held to its scenarios. An invariant's claim is
     // already the case and its `unit` test names it, so one with none is
-    // complete — and one an older chapter still carries is left alone.
-    if (type === "requirement" && scenarios === 0) {
+    // complete — and one an older chapter still carries is left alone. A
+    // deprecated requirement is a withdrawn promise kept as a record, and a
+    // withdrawn promise has no case left to exercise.
+    if (type === "requirement" && scenarios === 0 && resolveStatus(folder, meta).status !== "deprecated") {
         issues.push({
             severity: "warning",
             message: `is a \`${type}\` chapter with no \`#### Scenario:\` under it — a promise with no case that exercises it is one nobody can tell has been broken, and a brief can derive no acceptance check from it.`,
@@ -1165,6 +1359,39 @@ export function behaviourIssues(type, meta, scenarios = 0, folder = "domain") {
  * outside backticks is still a known false positive; formatting paths as code
  * avoids it.
  */
+/**
+ * Every Markdown link target in a document's prose, with its line: inline
+ * links and images, `[label](target)`, and reference definitions,
+ * `[label]: target`.
+ *
+ * Fenced blocks are skipped whole — the `meta` block, an `annotation`, a
+ * diagram, a code sample — and so are code spans, so a chapter quoting link
+ * syntax is not read as linking. The target comes back as written, `<…>`
+ * brackets and a trailing title removed; resolving it is the caller's job.
+ */
+export function proseLinks(markdown) {
+    const links = [];
+    let fence = null;
+    markdown.split(/\r?\n/).forEach((line, index) => {
+        const marker = /^\s*(`{3,}|~{3,})/.exec(line);
+        if (fence) {
+            if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length) fence = null;
+            return;
+        }
+        if (marker) {
+            fence = marker[1];
+            return;
+        }
+        const prose = line.replace(/(`+)[^`]*?\1/g, (span) => " ".repeat(span.length));
+        const definition = /^\s{0,3}\[[^\]]+\]:\s*(<[^>]*>|\S+)/.exec(prose);
+        if (definition) links.push({ line: index + 1, target: definition[1].replace(/^<|>$/g, "") });
+        for (const match of prose.matchAll(/\]\(\s*(<[^>]*>|[^)\s]+)(?:\s+(?:"[^"]*"|'[^']*'))?\s*\)/g)) {
+            links.push({ line: index + 1, target: match[1].replace(/^<|>$/g, "") });
+        }
+    });
+    return links;
+}
+
 export function escapeSequenceIssues(markdown) {
     const issues = [];
     let inFence = false;
@@ -1647,7 +1874,7 @@ export function isStructuralDocument(relPath) {
  * statuses.mjs. Absent, or where it declares nothing for a block, the folder's
  * built-in ladder applies.
  */
-export function validateDocument(relPath, markdown, { ladder = null, changeHash: changeFingerprint = null } = {}) {
+export function validateDocument(relPath, markdown, { ladder = null, changeHash: changeFingerprint = null, demoText = null } = {}) {
     const kind = folderKindForPath(relPath);
     const named = domainFileName(relPath);
     const fileBase = named.base;
@@ -1809,6 +2036,12 @@ export function validateDocument(relPath, markdown, { ladder = null, changeHash:
 
         // Which of the folder's own fields this particular block may carry.
         for (const issue of fieldScopeIssues(kind, blockLevel, chapter.meta)) {
+            issues.push({ severity: issue.severity, message: `${label} ${issue.message}` });
+        }
+
+        // Which way the chapter and its code sync, and whether this block is
+        // one a direction may be set on.
+        for (const issue of syncIssues(relPath, blockLevel, chapter.meta, chapter.level)) {
             issues.push({ severity: issue.severity, message: `${label} ${issue.message}` });
         }
 
@@ -1998,11 +2231,17 @@ export function validateDocument(relPath, markdown, { ladder = null, changeHash:
         // A proposal's rungs are the whole change's, so its fingerprint covers
         // every delta too — `changeHash`, which only a caller that can read the
         // change folder supplies; without it the record is linted unhashed.
+        // A domain chapter's fingerprint folds in the demos it belongs to, read
+        // through `demoText` when the caller can reach the repository.
         if (kind === "domain" || kind === CHANGES_FOLDER) {
             const claimsHash =
                 chapter.meta[CONTENT_HASH_FIELD] != null || chapter.meta[ACCEPTED_HASH_FIELD] != null;
             const contentHash =
-                kind === CHANGES_FOLDER ? changeFingerprint : claimsHash ? chapterHash(markdown, chapter.line) : null;
+                kind === CHANGES_FOLDER
+                    ? changeFingerprint
+                    : claimsHash
+                      ? chapterFingerprint(relPath, markdown, chapter.line, demoText)
+                      : null;
             for (const issue of approvalIssues(chapter.meta, contentHash)) {
                 issues.push({ severity: issue.severity, message: `${label} ${issue.message}` });
             }
@@ -2039,6 +2278,7 @@ export function validateDocument(relPath, markdown, { ladder = null, changeHash:
         for (const [key, value] of Object.entries(chapter.meta)) {
             if (isExtensionField(key)) continue; // opaque by contract — never validated
             if (key === "status") continue; // recognized, and fully reported above
+            if (key === "sync") continue; // reported by syncIssues in every folder
             if (key in REMOVED_FIELDS) continue; // already reported above
             if (!optionalFields.has(key)) {
                 issues.push({
@@ -2368,6 +2608,102 @@ export function chapterHash(markdown, line = 1) {
 
 const digest = (text) => `sha256:${createHash("sha256").update(text, "utf8").digest("hex").slice(0, 8)}`;
 
+/** Whether a path names a click demo: `demo.html`, or any `*.demo.html`. */
+export function isDemoPath(relPath) {
+    const base = String(relPath).replace(/\\/g, "/").split("/").pop();
+    return base === "demo.html" || base.endsWith(".demo.html");
+}
+
+/**
+ * The page a demo is named for: `context.md` for `demo.html`, `<page>.md` for
+ * `<page>.demo.html`, beside it. Null for a path that is no demo. Any name a
+ * demo can carry is page-style, so a free-named demo is told apart by whether
+ * that page exists, not by its name.
+ */
+export function demoPagePath(relPath) {
+    const normalized = String(relPath).replace(/\\/g, "/");
+    if (!isDemoPath(normalized)) return null;
+    const slash = normalized.lastIndexOf("/");
+    const dir = slash === -1 ? "" : normalized.slice(0, slash + 1);
+    const base = normalized.slice(slash + 1);
+    return base === "demo.html" ? `${dir}context.md` : `${dir}${base.slice(0, -".demo.html".length)}.md`;
+}
+
+/**
+ * Whether a demo's name is page-style: `demo.html`, or `<page>.demo.html` whose
+ * first segment is a page `domain/` prescribes — `features.demo.html`,
+ * `features.checkout.demo.html`. Such a demo exists only beside its page. Any
+ * other name belongs to an additional page beside it when one exists, and
+ * otherwise to the chapters whose `demo` field names it.
+ */
+export function isPageNamedDemo(relPath) {
+    if (!isDemoPath(relPath)) return false;
+    const base = String(relPath).replace(/\\/g, "/").split("/").pop();
+    return base === "demo.html" || TYPE_BY_FOLDER.domain.file.includes(base.split(".")[0]);
+}
+
+/** The demo named for a page — the inverse of `demoPagePath`. */
+export function pageDemoPath(relPath) {
+    const normalized = String(relPath).replace(/\\/g, "/");
+    if (!normalized.endsWith(".md")) return null;
+    const slash = normalized.lastIndexOf("/");
+    const dir = slash === -1 ? "" : normalized.slice(0, slash + 1);
+    const base = normalized.slice(slash + 1, -".md".length);
+    return base === "context" ? `${dir}demo.html` : `${dir}${base}.demo.html`;
+}
+
+/**
+ * A demo's text as a fingerprint reads it: line endings normalised and every
+ * managed region — `template:begin` through `template:end`, both markers
+ * included — dropped. The region is the template's, checked against it by
+ * `demo-template.mjs`, so `--refresh` rewriting it lifts no approval; what a
+ * page's approval covers is the demo's own screens, model, and question.
+ */
+export function demoFingerprintText(text) {
+    return String(text)
+        .replace(/\r\n?/g, "\n")
+        .replace(/<!--\s*template:begin\b[^>]*?-->[\s\S]*?(?:<!--\s*template:end\b[^>]*?-->|$)/gi, "");
+}
+
+/**
+ * The fingerprint `approved-hash` and `accepted-hash` record: `chapterHash`,
+ * with every demo the block belongs to folded in, so editing a demo lifts an
+ * approval of what it shows exactly as editing the prose does. A demo's
+ * managed region is left out, per `demoFingerprintText`.
+ *
+ * A block's demos are the ones its `demo` field — or the field of any chapter
+ * nested in it — names by path, and for the file block also the demo named for
+ * the page: `<page>.demo.html` for `<page>.md`, `demo.html` for `context.md`.
+ * `demoText(path)` returns a demo's text, or null when it does not exist. A
+ * block with no demo hashes exactly as `chapterHash` does, so no approval
+ * recorded before demos existed changes value.
+ */
+export function chapterFingerprint(relPath, markdown, line = 1, demoText = null) {
+    const base = chapterHash(markdown, line);
+    if (!demoText) return base;
+    const { chapters } = parseDocument(markdown);
+    const index = chapters.findIndex((entry) => entry.line === line);
+    const level = index === -1 ? 1 : chapters[index].level;
+    const paths = new Set();
+    if (level === 1) {
+        const own = pageDemoPath(relPath);
+        if (own) paths.add(own);
+    }
+    for (let i = Math.max(index, 0); i < chapters.length; i++) {
+        if (i > index && index !== -1 && chapters[i].level <= level) break;
+        for (const ref of toList(chapters[i].meta?.demo)) {
+            const target = String(ref).split("#")[0];
+            if (isDemoPath(target)) paths.add(target);
+        }
+    }
+    const demos = [];
+    for (const demoPath of [...paths].sort()) {
+        const text = demoText(demoPath);
+        if (text != null) demos.push(`${demoPath}\n${demoFingerprintText(text)}`);
+    }
+    return demos.length ? digest([base, ...demos].join("\n")) : base;
+}
+
 /** Lines `from` to `end`, minus the fences labelled in `dropped`, whitespace-normalised. */
 function hashedText(lines, from, end, dropped) {
     const kept = [];
@@ -2407,12 +2743,17 @@ function hashedText(lines, from, end, dropped) {
  * fences, because in a delta they are content — the header says what kind of
  * change it is, and a `MODIFIED` block is the fields it sets — and drops only
  * its annotation fences. Each delta is keyed by the devbook file it targets,
- * so moving one to another target is an edit. `deltas` is a list of
+ * so moving one to another target is an edit. A demo delta is read as a page
+ * fingerprint reads a demo, its managed region left out. `deltas` is a list of
  * `{ target, markdown }`, in any order.
  */
 export function changeHash(proposalMarkdown, deltas) {
     const parts = [chapterHash(proposalMarkdown, parseDocument(proposalMarkdown).chapters.find((c) => c.level === 1)?.line ?? 1)];
     for (const delta of [...deltas].sort((a, b) => (a.target < b.target ? -1 : a.target > b.target ? 1 : 0))) {
+        if (isDemoPath(delta.target)) {
+            parts.push(`${delta.target}\n${demoFingerprintText(delta.markdown)}`);
+            continue;
+        }
         const lines = delta.markdown.split(/\r?\n/);
         parts.push(`${delta.target}\n${hashedText(lines, 0, lines.length, ["annotation"])}`);
     }
