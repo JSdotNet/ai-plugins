@@ -18,7 +18,7 @@ dev half carries almost everything: `code` is authoring an asset, `test` is chec
 | File | Covers |
 | --- | --- |
 | [01-authoring.md](01-authoring.md) | Writing an asset in the host that loads it, with spec-builder's contracts and the rule trio |
-| [02-carrying-a-change.md](02-carrying-a-change.md) | Backlog plans and their estimates, worktree sessions, the pull request, the version, and scheduled routines |
+| [02-carrying-a-change.md](02-carrying-a-change.md) | Backlog plans and their estimates, the delivery flows, worktree sessions, the pull request, the version, and scheduled routines |
 | [03-checking.md](03-checking.md) | `check-assets.mjs`, `claude plugin validate`, and the devbook check |
 
 ## Adoption Picture
@@ -48,6 +48,9 @@ flowchart LR
     code -.- worktree["Worktree Sessions · adopted"]
     code -.- gate["check-assets Gate · adopted"]
     code -.- devbook["Devbook Check · trial"]
+    plan -.- flows["Flow Skills · trial"]
+    code -.- flows
+    test -.- flows
     test -.- gate
     test -.- devbook
     test -.- validate["claude plugin validate · candidate"]
@@ -58,7 +61,7 @@ flowchart LR
 ```
 
 `build` and `deploy` are empty: nothing here is compiled or deployed. `operate` and `monitor`
-hold one usage on trial: the local scheduled routines, not yet run.
+hold one usage on trial: the local scheduled routines, of which one has published so far.
 
 Not recorded: `claude plugin eval`. No plugin here has an eval suite and no session has run one,
 so it gets a chapter when one does.

@@ -54,6 +54,33 @@ from this repository.
   row is replaced when finished work shows its size was wrong.
 - **Limits** — rows 1, 13, and 21 were sized after their pull requests merged, not before.
 
+## Flow Skills
+
+```meta
+status: trial
+type: skill
+stage: [plan, code, test]
+depends-on: [".devbook/tech/tooling.md#devbook-plugin"]
+date: 2026-10-06
+```
+
+A change routes to the delivery flow named for what it changes — `flow-code` for anything
+outside `.devbook/`, `flow-spec` for a devbook folder — which runs it phase by phase to a pull
+request behind a Personal Validation gate.
+
+- **Used for** — the phase maps in `.devbook/config.json`, one per flow: `devbook:validate`
+  before `phase-update-base` in both, `architecture:architect` for scope, plan, and the `arc42/`
+  and `tech/` drafting, `documentation:documentation` for the `ai/` drafting, and
+  `devbook:verify-change` as `flow-code`'s spec check. Every other phase runs on the session's
+  model.
+- **Adopted by** — nobody yet. The phase maps landed with the 1.19 update on 2026-10-06, and
+  every change before it was carried by hand under `AGENTS.md`.
+- **Evidence** — the pull request that wrote this chapter was the first change here carried by
+  `flow-spec` end to end, reporting into the Backlog surface. Promote to `adopted` once
+  `flow-code` has carried a change to a plugin the same way.
+- **Limits** — the Personal Validation gate needs a person, so a scheduled routine never runs a
+  flow.
+
 ## Worktree Sessions
 
 ```meta
@@ -140,8 +167,9 @@ the Claude desktop app. Each run makes its own detached worktree off `origin/mai
 - **Adopted by** — the maintainer's desktop app. The seven were created on 2026-09-26 and are
   recorded under `components.schedule` in `.devbook/config.json`. The eleven JSdotNet/Backlog
   routines are unchanged.
-- **Evidence** — no run yet; the first is devbook-validate on 2026-09-27. Promotion to
-  `adopted` needs runs that published something a person acted on.
+- **Evidence** — the instruction-review routine opened #166 on 2026-10-01, and it was merged
+  the same day: the first run that published something a person acted on. Promotion to
+  `adopted` needs the other routines to have done the same.
 - **Limits** — the nightly version bump is a CI schedule, not an agent routine, and is recorded
   on its own. The routines run only while the desktop app is open on the maintainer's machine;
   one that comes due while it is closed runs on the next launch. They are not cloud routines
