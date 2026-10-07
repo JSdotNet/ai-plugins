@@ -73,3 +73,10 @@ worktree.>
 ## Artifacts
 
 - `<absolute path>` — <what it is: plan, screenshot, QA report, exported run report.>
+
+## First Message
+
+```text
+<the paste-ready first message from step 6 of the skill, verbatim, its first line
+Title this session `<suggested title>`>
+```
