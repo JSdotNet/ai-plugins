@@ -1,6 +1,6 @@
 {
   "name": "claude-desktop-mods",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Claude Code function-hook mods: a /context-view pane showing what fills the session context (window, instructions loaded, Markdown read, and a devbook lens) with a ctx status line entry.",
   "author": {
     "name": "Job Schepers"

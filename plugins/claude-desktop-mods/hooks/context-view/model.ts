@@ -1,6 +1,6 @@
 // Pure logic of the context view: no `$`, so the tests exercise it directly.
 
-import type { ContextViewMdRead, ContextViewRule } from '../../types'
+import type { ContextViewMdRead, ContextViewReadEvent, ContextViewRule } from '../../types'
 
 export const DEVBOOK_FOLDERS = ['arc42', 'domain', 'tech', 'design', 'ai'] as const
 
@@ -157,13 +157,34 @@ export const devbookRoot = (rel: string, folder: string): string | undefined => 
   return at < 0 ? undefined : parts.slice(0, at + 1).join('/')
 }
 
+const MAX_EVENTS = 20
+const MAX_OUTLINE = 40
+
+/** The headings of a Markdown text, indented by level, outside code fences; capped. */
+export const outlineOf = (text: string): string[] => {
+  const out: string[] = []
+  let isFenced = false
+  for (const line of stripLineNumbers(text).split(/\r?\n/)) {
+    if (/^ *```/.test(line)) isFenced = !isFenced
+    const h = isFenced ? null : /^(#{1,6})\s+(.+?)\s*#*$/.exec(line)
+    if (h) out.push(`${'  '.repeat((h[1] ?? '#').length - 1)}${h[2] ?? ''}`)
+    if (out.length >= MAX_OUTLINE) break
+  }
+  return out
+}
+
+/** Appends to a capped history, newest last. */
+export const pushEvent = <T>(events: readonly T[] | undefined, event: T): T[] =>
+  [...(events ?? []), event].slice(-MAX_EVENTS)
+
 /** Records one read: a new entry, or one more read of a known path. */
 export const addRead = (
   reads: readonly ContextViewMdRead[],
-  read: Omit<ContextViewMdRead, 'count'>,
+  read: Omit<ContextViewMdRead, 'count' | 'events'>,
+  event: ContextViewReadEvent,
 ): ContextViewMdRead[] => {
   const known = reads.find(r => r.path === read.path)
-  if (!known) return [...reads, { ...read, count: 1 }]
+  if (!known) return [...reads, { ...read, count: 1, events: [event] }]
   return reads.map(r =>
     r === known
       ? {
@@ -172,6 +193,10 @@ export const addRead = (
           tokens: r.tokens + read.tokens,
           hasMeta: r.hasMeta || read.hasMeta,
           chapters: [...new Set([...r.chapters, ...read.chapters])],
+          outline: read.outline.length >= (r.outline?.length ?? 0) ? read.outline : r.outline,
+          rules: [...new Set([...(r.rules ?? []), ...read.rules])],
+          via: read.via,
+          events: pushEvent(r.events, event),
         }
       : r,
   )

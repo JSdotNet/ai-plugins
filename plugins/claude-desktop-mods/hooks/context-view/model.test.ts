@@ -9,6 +9,7 @@ import {
   isMostOfFolder,
   markdownReadByShell,
   memoryImports,
+  outlineOf,
   relativeTo,
   ruleGlobs,
   statusText,
@@ -91,10 +92,18 @@ describe('devbook lens', () => {
   })
 })
 
-test('addRead counts repeats and sums tokens', () => {
-  const one = { path: 'a.md', folder: '.', tokens: 10, hasMeta: false, chapters: [], via: 'Read' }
-  const twice = addRead(addRead([], one), { ...one, tokens: 5 })
-  expect(twice).toEqual([{ ...one, tokens: 15, count: 2 }])
+test('addRead counts repeats, sums tokens and keeps each read', () => {
+  const one = { path: 'a.md', folder: '.', tokens: 10, hasMeta: false, chapters: [], via: 'Read', outline: ['A'], rules: ['r1'] }
+  const first = { at: 1, turn: 1, via: 'Read', tokens: 10 }
+  const second = { at: 2, turn: 2, via: 'Bash', tokens: 5, range: 'lines 1–5' }
+  const twice = addRead(addRead([], one, first), { ...one, tokens: 5, via: 'Bash', outline: [], rules: ['r2'] }, second)
+  expect(twice).toEqual([
+    { ...one, tokens: 15, count: 2, via: 'Bash', outline: ['A'], rules: ['r1', 'r2'], events: [first, second] },
+  ])
+})
+
+test('outlineOf indents headings and skips code fences', () => {
+  expect(outlineOf('# T\n\n```md\n# not a heading\n```\n## Sub ##\n### Deep')).toEqual(['T', '  Sub', '    Deep'])
 })
 
 test('status text', () => {

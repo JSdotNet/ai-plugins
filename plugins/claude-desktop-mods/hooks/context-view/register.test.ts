@@ -16,6 +16,7 @@ const engine = (on: On, status: (string | undefined)[] = []) => {
     return { value: { isSet: true as const, version } }
   })
   on('session.cwd', () => ({ value: '/repo' }))
+  on('clock.now', () => ({ value: 5_000 }))
   on('session.usage', () => ({
     value: { startedAt: 0, context: { tokens: 50_000, window: 200_000, percent: 25 }, rateLimits: [] },
   }))
@@ -99,4 +100,35 @@ test('the pane draws every section on terminal and desktop', async ($, on) => {
     expect(await ui.find({ type: 'Markdown', text: /Devbook lens/ })).toBeDefined()
     await ui.unmount()
   }
+})
+
+test('zooming into a line shows its detail, and Back returns to the overview', async ($, on) => {
+  engine(on)
+  await $.tool.call({ tool: 'Read', file_path: '/repo/.devbook/arc42/a.md' })
+  await $.tool.call({ tool: 'Read', file_path: '/repo/.devbook/arc42/a.md', offset: 3, limit: 10 })
+
+  const pane = {
+    plugin: 'claude-desktop-mods',
+    surface: 'terminal' as const,
+    component: 'Pane' as const,
+    requestId: 'context-view',
+    props: { title: 'Context', isFocused: true, bodyColumns: 80, placement: 'dock' as const, scroll: { offset: 0, bodyRows: 40 }, view: {} },
+  }
+  const overview = await $.ui.mount(pane)
+  await overview.select({ key: 'zoom', value: 'md:.devbook/arc42/a.md' })
+  await overview.unmount()
+
+  const zoomed = await $.ui.mount(pane)
+  const page = await zoomed.find({ type: 'Markdown', key: 'detail' })
+  expect(page?.text).toMatch(/2 reads/)
+  expect(page?.text).toMatch(/lines 3–12/)
+  expect(page?.text).toMatch(/#hooks/)
+  expect(page?.text).toMatch(/Building blocks/)
+  await zoomed.press({ key: 'back' })
+  await zoomed.unmount()
+
+  const back = await $.ui.mount(pane)
+  expect(await back.find({ type: 'Markdown', key: 'detail' })).toBeUndefined()
+  expect(await back.find({ type: 'Markdown', text: /Markdown read/ })).toBeDefined()
+  await back.unmount()
 })
