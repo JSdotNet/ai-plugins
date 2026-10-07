@@ -14,7 +14,7 @@ import {
   ruleGlobs,
   statusText,
   stripLineNumbers,
-} from './model'
+} from '../hooks/context-view/model'
 
 describe('shell readers', () => {
   test('finds Markdown operands of reader verbs', () => {

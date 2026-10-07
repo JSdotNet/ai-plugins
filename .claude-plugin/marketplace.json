@@ -26,8 +26,8 @@
     {
       "name": "claude-desktop-mods",
       "source": "./plugins/claude-desktop-mods",
-      "description": "Claude Code function-hook mods: a /context-view pane showing what fills the session context (window, instructions loaded, Markdown read, and a devbook lens) with a ctx status line entry.",
-      "version": "0.3.0"
+      "description": "Claude Code mods for the Code tab and terminal: /handoff-to asks for a Markdown brief a session in another repository can act on, and a band copies any brief a reply holds or shows it in a pane; /context-view opens a pane showing what fills the session context (window, instructions loaded, Markdown read, a devbook lens) with a ctx status line entry. Writes nothing to disk. Claude-only.",
+      "version": "0.2.0"
     },
     {
       "name": "csharp-coding",
@@ -93,7 +93,7 @@
       "name": "spec-builder",
       "source": "./plugins/spec-builder",
       "description": "Copilot plugin focused on GitHub customization asset authoring workflows.",
-      "version": "0.5.2"
+      "version": "0.6.0"
     },
     {
       "name": "ux-design",

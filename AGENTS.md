@@ -19,8 +19,8 @@ and the knowledge-folder convention as `devbook` there. A specialist here fills 
 service for that engine and is usable on its own; it never names the engine, and it holds no
 flow control — it does not sequence stages, hold gates, spawn sessions, or delegate. Three host
 plugins remain: `claude-desktop` (an MCP dashboard, `start`, `session-handoff`,
-`create-pull-request`), `claude-desktop-mods` (Claude Code function-hook mods, starting with
-the `/context-view` pane), and `copilot-app` (`update-open-sessions` and three canvases).
+`create-pull-request`), `claude-desktop-mods` (Claude Code function hooks: cross-repository
+handoff briefs and the `/context-view` pane), and `copilot-app` (`update-open-sessions` and three canvases).
 
 ## Validating a change
 
@@ -64,7 +64,9 @@ plugins/<name>/
   resources/<name>.md             a contract an asset reads by path — name and description, no glob —
                                   or a template or prompt fragment, which carries no frontmatter
   hooks.json                      Copilot hooks (type: prompt)
-  hooks/                          Claude hooks; a sessionStart prompt's twin is a command hook plus its sidecar
+  hooks/                          Claude hooks; a sessionStart prompt's twin is a command hook plus its sidecar;
+                                  a function-hook module (.ts, under modules) is Claude-only
+  types/, tests/                  a function-hook module's state contract and its claude plugin tests
   mcp/<server>/                   an MCP server, declared under mcpServers (claude-desktop)
   extensions/<name>/              a Copilot canvas extension (copilot-app)
   scripts/                        executables a skill runs from the plugin itself

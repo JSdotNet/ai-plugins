@@ -1,4 +1,7 @@
 {
+  "modules": [
+    "./budget-status.ts"
+  ],
   "hooks": {
     "SessionStart": [
       {

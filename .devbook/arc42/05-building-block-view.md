@@ -77,7 +77,7 @@ related: [".devbook/arc42/tdr/3-dashboard-code-copied.md"]
 | Block | Responsibility | Exposes |
 | --- | --- | --- |
 | [`claude-desktop`](building-blocks/claude-desktop.md) | The run dashboard, diagram, and document viewers as an MCP server, plus the Claude-side session skills | `orch-dashboard` MCP server; skills `start`, `session-handoff`, `create-pull-request`; telemetry hooks. Claude manifest only |
-| `claude-desktop-mods` | Claude Code function-hook mods, apart from the dashboard so they install on their own | `/context-view` pane and its status line entry; a `$.state` contract. Claude manifest only |
+| `claude-desktop-mods` | Claude Code function hooks, kept apart from `claude-desktop` so each installs alone | `/handoff-to`, a band that copies a cross-repository handoff brief from a reply, and a pane that shows it; `/context-view`, a pane of what fills the context, and its status line entry; both registered from the one hooks module `modules` names. Claude manifest only |
 | [`copilot-app`](building-blocks/copilot-app.md) | The same viewers as Copilot canvas extensions, plus session upkeep | extensions `orch-dashboard`, `diagram-canvas`, `markdown-canvas`; skill `update-open-sessions`. Copilot manifest only |
 
 The two carry the same run model on different transports; their shared modules are copied

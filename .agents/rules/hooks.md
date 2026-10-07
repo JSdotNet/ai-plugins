@@ -6,6 +6,7 @@ paths:
   - "plugins/*/hooks/hooks.json"
   - "plugins/*/hooks/*.mjs"
   - "plugins/*/hooks/*.md"
+  - "plugins/*/hooks/*.ts"
 ---
 
 # Hooks
@@ -30,5 +31,9 @@ events (`sessionStart`, `preToolUse`) and `type: prompt` entries. Claude reads
   `hooks/hooks.json` only when the root file is absent, and would run the Claude commands.
 - `claude-desktop` is the exception: Claude-native, its `hooks/hooks.json` carries command
   hooks that read event payloads (telemetry), which have no Copilot counterpart, and its root
-  `hooks.json` reaches Copilot alone to say the plugin is Claude-only. `claude-desktop-mods`
-  follows it: its `hooks/hooks.json` names only a function-hook module under `modules`.
+  `hooks.json` reaches Copilot alone to say the plugin is Claude-only.
+- A Claude function-hook module is a `.ts` file `hooks/hooks.json` names under `modules`,
+  beside its command hooks; Copilot never reads that file, so a module is Claude-only by
+  construction and needs no twin. Its `$.state` contract is `types/index.d.ts`, named as
+  `types` in the Claude manifest; its tests are `tests/*.test.ts`. Run
+  `claude plugin validate` and `claude plugin test` on the plugin folder after changing one.

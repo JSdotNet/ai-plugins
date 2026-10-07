@@ -1,16 +1,40 @@
 # claude-desktop-mods
 
-Claude Code function-hook mods: live panes and status line entries written as a hooks module
-the engine loads in-process, rather than as command hooks or an MCP server. Its sibling
-[`claude-desktop`](../claude-desktop/README.md) keeps the dashboard MCP server and the session
-skills; this plugin holds only function hooks, so it can be installed without them.
+Claude Code mods: function hooks that run inside a Claude Code session, in the desktop app's
+Code tab and in the terminal. They ship apart from [`claude-desktop`](../claude-desktop/README.md)
+so each installs, and the hooks hot-reload, on their own.
 
-Claude Code only. Function hooks have no Copilot counterpart; the root `hooks.json` reaches
-Copilot alone and says the plugin is Claude-only.
+Claude-only. Copilot has no function hooks; the root `hooks.json` is empty so Copilot never
+falls back to `hooks/hooks.json`.
 
 ## Includes
 
-### context-view
+### Cross-repository handoff
+
+For the moment the work in this repository needs a change in another one. The session keeps
+going; the other repository gets a brief it can act on without this conversation.
+
+- `/handoff-to [repo and what to change]` asks for the brief as Markdown in the reply, fenced
+  `~~~markdown`: the target, why, the change, the context the target cannot read quoted
+  rather than linked, done-when, and open questions with their defaults, led by a
+  `Title this session` line. With no argument the target and change are inferred from the
+  session. Nothing is written to disk.
+- Any reply holding such a brief — from the command, or from asking for one in your own
+  words — raises a band above the prompt: "Handoff for <target>: <change>" with **Copy**,
+  **Show**, and **Dismiss**. **Copy** puts the whole brief on the clipboard, to paste wherever
+  you choose; **Show** opens it rendered in a pane, which falls back to plain text for
+  copying when the clipboard does not take it.
+
+| File | Holds |
+| --- | --- |
+| `hooks/hooks.json` | the one hooks module, `register.ts`, under `modules` |
+| `hooks/register.ts` | registers both mods; only `on` crosses into each mod's file |
+| `hooks/handoff.tsx` | the command, the band, and the pane |
+| `hooks/handoff-brief.ts` | the prompt, and finding the brief in a reply |
+| `types/index.d.ts` | the `$.state` values, named as `types` in the manifest |
+| `tests/handoff.test.tsx` | the tests |
+
+### Context view
 
 `/context-view` opens a pane showing, for the current session:
 
@@ -57,50 +81,41 @@ marked, but stay out of the by-tool totals, since they never reach this session'
 
 | File | Role |
 | --- | --- |
-| `hooks/hooks.json` | Names the hooks module under `modules` |
 | `hooks/context-view/register.tsx` | The hooks, the recorded state, and the pane's actions |
 | `hooks/context-view/pane.tsx` | The overview and the two designed zoom pages, as element trees |
 | `hooks/context-view/view.ts` | The text detail pages and the merged instruction list |
 | `hooks/context-view/model.ts` | The pure logic: shell-read parsing, rule globs, `@` imports, the devbook lens |
-| `hooks/context-view/*.test.ts` | Tests for `claude plugin test plugins/claude-desktop-mods` |
-| `types/index.d.ts` | The `$.state` contract the module keeps its data in |
+| `tests/context-view*.test.ts` | The tests |
 
-## Install
+## Develop
 
 ```bash
-/plugin marketplace add JSdotNet/ai-plugins
+claude plugin validate plugins/claude-desktop-mods
 ```
 
 ```bash
-/plugin install claude-desktop-mods@jsdotnet-ai-plugins
+claude plugin test plugins/claude-desktop-mods
 ```
-
-To try a working copy without installing, start Claude Code with the folder:
 
 ```bash
 claude --plugin-dir plugins/claude-desktop-mods
 ```
 
-## Verify Installation
+## Known issue
 
-- `/context-view` opens the Context pane
-- The status line shows `ctx <n>% · <k> md` after the first tool call
+Claude Code reserves plugin names that start with `claude-`, so `claude plugin validate`
+reports this plugin's name as an error. Its modules and `$.state` contract validate clean under
+any other name.
 
-## Known Issue
-
-Claude Code reserves plugin names that start with `claude-`, so
-`claude plugin validate plugins/claude-desktop-mods` reports the name as an error. The hooks
-module and its `$.state` contract validate clean under any other name.
-
-## Uninstall
+## Install
 
 ```bash
-/plugin uninstall claude-desktop-mods@jsdotnet-ai-plugins
+/plugin install claude-desktop-mods@jsdotnet-ai-plugins
 ```
 
 ## License
 
-MIT
+UNLICENSED
 
 ## Author
 

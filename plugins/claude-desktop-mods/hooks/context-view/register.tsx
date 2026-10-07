@@ -255,15 +255,17 @@ const readRange = (offset: unknown, limit: unknown): string | undefined => {
   return typeof limit === 'number' ? `lines ${from}–${from + limit - 1}` : `from line ${from}`
 }
 
+// The handoff module shares this plugin and hooks session.start and turn.complete without a
+// matcher; the engine allows one such hook per event, so this module matches interactive
+// sessions (the only ones with a pane to draw) and refreshes on each stored response instead.
 export const register: Register = on => {
-  on('session.start', async ($, e, next) => {
+  on('session.start', { isInteractive: true }, async ($, e, next) => {
     await $.command.register({
       name: 'context-view',
       description: 'Show what fills this session\'s context: window, instructions, Markdown read, devbook lens',
     })
-    const cwd = e.cwd
-    const memory = await scanMemory($, cwd)
-    const { scoped, always } = await scanRules($, cwd)
+    const memory = await scanMemory($, e.cwd)
+    const { scoped, always } = await scanRules($, e.cwd)
     await update($, rules, () => scoped)
     for (const entry of [...memory, ...always]) await putInstruction($, entry)
     await refresh($)
@@ -279,12 +281,6 @@ export const register: Register = on => {
     await update($, turnReads, () => ({}))
     await update($, turn, n => n + 1)
     return next(e)
-  })
-
-  on('turn.complete', async ($, e, next) => {
-    const done = await next(e)
-    await refresh($)
-    return done
   })
 
   on('tool.call', async ($, e, next) => {
@@ -335,6 +331,7 @@ export const register: Register = on => {
   on('session.append', async ($, e, next) => {
     const stored = await next(e)
     if (e.agentId) return stored
+    if (e.door === 'response') await refresh($)
     const text = blockText(e.message.content)
     if (!text) return stored
     const origin = e.origin

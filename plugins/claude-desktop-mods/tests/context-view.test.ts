@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import type { ContextViewInstruction, ContextViewMdRead } from '../../types'
+import type { ContextViewInstruction, ContextViewMdRead } from '../types'
 
 const CHAPTER = '# Building blocks\n\n```meta\nrelated: []\n```\n\n## Hooks\n\n```meta\nx: 1\n```\n'
 

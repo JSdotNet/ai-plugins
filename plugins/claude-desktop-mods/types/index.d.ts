@@ -1,5 +1,15 @@
-// The $.state contract of claude-desktop-mods' context-view hooks module
-// (hooks/context-view/register.tsx). Claude Code only.
+// The $.state contract of claude-desktop-mods: its two hooks modules, hooks/handoff.tsx and
+// hooks/context-view/register.tsx, keep their values under the one plugin name. Claude Code only.
+
+/** A cross-repository handoff brief found in a reply. */
+export type HandoffBrief = {
+  /** The change, from the brief's `# Handoff — <change>` heading. */
+  title: string
+  /** The brief's `**Target repository:**` value. */
+  target: string
+  /** The whole brief: what Copy puts on the clipboard. */
+  text: string
+}
 
 /** One read of a Markdown file. */
 export type ContextViewReadEvent = {
@@ -68,6 +78,12 @@ export type ContextViewRule = { path: string; globs: string[]; tokens: number; o
 declare module 'claude-code' {
   interface PluginState {
     'claude-desktop-mods': {
+      // hooks/handoff.tsx
+      /** The latest brief, until it is dismissed. */
+      brief: HandoffBrief | null
+      /** Whether the clipboard refused the brief, so the pane shows it as plain text. */
+      isCopyRefused: boolean
+      // hooks/context-view/register.tsx
       contextReads: ContextViewMdRead[]
       contextInstructions: ContextViewInstruction[]
       contextRules: ContextViewRule[]

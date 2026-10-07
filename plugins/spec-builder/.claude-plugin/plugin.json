@@ -1,6 +1,6 @@
 {
   "name": "spec-builder",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Copilot plugin focused on GitHub customization asset authoring workflows.",
   "author": {
     "name": "Job Schepers"
@@ -19,5 +19,6 @@
   ],
   "agents": [
     "./agents/spec-builder.agent.md"
-  ]
+  ],
+  "types": "./types/index.d.ts"
 }
