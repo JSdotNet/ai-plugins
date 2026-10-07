@@ -36,9 +36,7 @@ Code, where the agent opens the URL in the in-app browser.
 ```meta
 ```
 
-`start`, `session-handoff`, and `create-pull-request`. The function hooks around
-`session-handoff` — `/handoff`, a context-pressure band, and a `/handoffs` pane — ship
-separately as `claude-desktop-mods`, which depends on this plugin.
+`start`, `session-handoff`, and `create-pull-request`.
 
 ### Counterparts in copilot-app
 

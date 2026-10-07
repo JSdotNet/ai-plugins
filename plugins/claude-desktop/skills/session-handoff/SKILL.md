@@ -162,8 +162,6 @@ of the new session. It carries the essentials inline and points at the brief for
 it still works if the file moves or the paste is trimmed:
 
 ```text
-Title this session `<suggested title>`
-
 Continue work handed off from a previous session.
 
 Handoff brief: <absolute path to the brief>
@@ -195,10 +193,7 @@ Drop the last line when the user wants the next session to continue without a co
 step — but keep it by default: the new session cannot see this conversation, so a
 confirmation pass is cheap insurance against acting on a stale brief.
 
-The suggested title is the objective truncated to about 40 characters.
-
-Write the same block into the brief's `## First Message` section. The `/handoffs` pane copies
-it from there, and marks the brief picked up when a session opens with its title line or path.
+Suggest a session title: the objective truncated to about 40 characters.
 
 ### 7 — Hand back, or deliver
 
@@ -244,9 +239,7 @@ session.
   authority for run markers and resume behavior. This skill is the procedure around it, and
   also covers sessions with no run at all.
 - The 60% / 75% / 85% context-gauge warnings come from the plugin's telemetry hook. 75% means
-  prepare — persist decisions, start nothing heavy. 85% means run this skill. In Claude Code
-  `claude-desktop-mods` also shows them as a band above the prompt whose button runs
-  `/handoff`, which submits a prompt invoking this skill.
+  prepare — persist decisions, start nothing heavy. 85% means run this skill.
 - This skill reports through normal chat and opens no dashboard run of its own: a handoff is
   the end of a run, not one more.
 - Safe to run at any point; it only reads, writes one brief, and marks the run that already

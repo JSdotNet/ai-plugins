@@ -21,12 +21,12 @@
       "name": "claude-desktop",
       "source": "./plugins/claude-desktop",
       "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills plus the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
-      "version": "0.13.0"
+      "version": "0.12.3"
     },
     {
       "name": "claude-desktop-mods",
       "source": "./plugins/claude-desktop-mods",
-      "description": "Claude Code mods for the Code tab and terminal: function hooks around claude-desktop's session-handoff skill — a /handoff command, a context-pressure band at 75% and 85%, and a /handoffs pane that lists the handoff briefs and copies a brief's first message. Claude-only.",
+      "description": "Claude Code mods for the Code tab and terminal: /handoff-to asks for a Markdown brief a session in another repository can act on, and any reply holding one raises a band that copies it or shows it in a pane. Writes nothing to disk. Claude-only.",
       "version": "0.1.0"
     },
     {

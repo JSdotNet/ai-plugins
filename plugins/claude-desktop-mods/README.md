@@ -1,36 +1,35 @@
 # claude-desktop-mods
 
 Claude Code mods: function hooks that run inside a Claude Code session, in the desktop app's
-Code tab and in the terminal. They complement [`claude-desktop`](../claude-desktop/README.md)
-and repeat none of its procedures, which is why they ship apart from it: a session can take
-the skills without the hooks, and the hooks hot-reload on their own.
+Code tab and in the terminal. They ship apart from [`claude-desktop`](../claude-desktop/README.md)
+so each installs, and the hooks hot-reload, on their own.
 
 Claude-only. Copilot has no function hooks; the root `hooks.json` is empty so Copilot never
 falls back to `hooks/hooks.json`.
 
 ## Includes
 
-### Handoff
+### Cross-repository handoff
 
-Around `claude-desktop`'s `session-handoff` skill, which stays the only place the handoff
-procedure is written. Read-only towards repositories.
+For the moment the work in this repository needs a change in another one. The session keeps
+going; the other repository gets a brief it can act on without this conversation.
 
-- `/handoff [same-worktree|new-worktree|<repo>]` submits a prompt that runs the skill with
-  that target, `same-worktree` when none is given.
-- A band above the prompt at 75% (amber) and 85% (red) context, "Context <n>% — hand off?",
-  whose button runs `/handoff`. It hides below 75%, after a compaction, and after `/clear`.
-- `/handoffs` opens a pane over the skill's handoff store (`CLAUDE_HANDOFF_DIR`, else
-  `<CLAUDE_CONFIG_DIR or ~/.claude>/handoffs`), newest first: repo, branch, reason, age, and
-  whether a session picked the brief up. **Open** shows the brief; **Pick up** copies its
-  `## First Message`, or shows it for copying when the clipboard does not take it. A session
-  whose first message names the brief's path or its `Title this session` line marks it picked
-  up, in the plugin's own store.
+- `/handoff-to [repo and what to change]` asks for the brief as Markdown in the reply, fenced
+  `~~~markdown`: the target, why, the change, the context the target cannot read quoted
+  rather than linked, done-when, and open questions with their defaults, led by a
+  `Title this session` line. With no argument the target and change are inferred from the
+  session. Nothing is written to disk.
+- Any reply holding such a brief — from the command, or from asking for one in your own
+  words — raises a band above the prompt: "Handoff for <target>: <change>" with **Copy**,
+  **Show**, and **Dismiss**. **Copy** puts the whole brief on the clipboard, to paste wherever
+  you choose; **Show** opens it rendered in a pane, which falls back to plain text for
+  copying when the clipboard does not take it.
 
 | File | Holds |
 | --- | --- |
 | `hooks/hooks.json` | the hooks module, under `modules` |
-| `hooks/handoff.tsx` | the commands, the band, and the pane |
-| `hooks/handoff-briefs.ts` | parsing a brief and matching a first message to it |
+| `hooks/handoff.tsx` | the command, the band, and the pane |
+| `hooks/handoff-brief.ts` | the prompt, and finding the brief in a reply |
 | `types/index.d.ts` | the `$.state` values, named as `types` in the manifest |
 | `tests/handoff.test.tsx` | the tests |
 
@@ -53,8 +52,6 @@ claude --plugin-dir plugins/claude-desktop-mods
 ```bash
 /plugin install claude-desktop-mods@jsdotnet-ai-plugins
 ```
-
-It depends on `claude-desktop`, which brings the `session-handoff` skill.
 
 ## License
 
