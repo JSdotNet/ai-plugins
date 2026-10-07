@@ -1,7 +1,7 @@
 {
   "name": "claude-desktop-mods",
-  "version": "0.1.0",
-  "description": "Claude Code mods for the Code tab and terminal: /handoff-to asks for a Markdown brief a session in another repository can act on, and any reply holding one raises a band that copies it or shows it in a pane. Writes nothing to disk. Claude-only.",
+  "version": "0.2.0",
+  "description": "Claude Code mods for the Code tab and terminal: /handoff-to asks for a Markdown brief a session in another repository can act on, and a band copies any brief a reply holds or shows it in a pane; /context-view opens a pane showing what fills the session context (window, instructions loaded, Markdown read, a devbook lens) with a ctx status line entry. Writes nothing to disk. Claude-only.",
   "author": {
     "name": "Job Schepers"
   },
@@ -10,7 +10,10 @@
     "claude-code",
     "hooks",
     "handoff",
-    "cross-repo"
+    "cross-repo",
+    "context",
+    "pane",
+    "status-line"
   ],
   "types": "./types/index.d.ts"
 }

@@ -2,7 +2,7 @@
 
 A plugin marketplace named `jsdotnet-ai-plugins`: the specialist agents, skills, and contracts
 that fill the roles a delivery flow consults — architecture, coding, QA, domain, UX, docs,
-product, security — plus the two host plugins and the trackers. One folder per plugin under
+product, security — plus the three host plugins and the trackers. One folder per plugin under
 `plugins/`, each installable on its own.
 
 Assets are authored once and loaded by both GitHub Copilot and Claude Code — both hosts ignore
@@ -20,7 +20,7 @@ service for that engine and is usable on its own; it never names the engine, and
 flow control — it does not sequence stages, hold gates, spawn sessions, or delegate. Three host
 plugins remain: `claude-desktop` (an MCP dashboard, `start`, `session-handoff`,
 `create-pull-request`), `claude-desktop-mods` (Claude Code function hooks: cross-repository
-handoff briefs), and `copilot-app` (`update-open-sessions` and three canvases).
+handoff briefs and the `/context-view` pane), and `copilot-app` (`update-open-sessions` and three canvases).
 
 ## Validating a change
 
