@@ -1,4 +1,4 @@
-// The $.state contract of claude-desktop's context-view hooks module
+// The $.state contract of claude-desktop-mods' context-view hooks module
 // (hooks/context-view/register.tsx). Claude Code only.
 
 /** One Markdown file read in this session, by the Read tool or a shell reader. */
@@ -36,7 +36,7 @@ export type ContextViewRule = { path: string; globs: string[]; tokens: number }
 
 declare module 'claude-code' {
   interface PluginState {
-    'claude-desktop': {
+    'claude-desktop-mods': {
       contextReads: ContextViewMdRead[]
       contextInstructions: ContextViewInstruction[]
       contextRules: ContextViewRule[]

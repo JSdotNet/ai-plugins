@@ -2,7 +2,7 @@
 
 The `jsdotnet-ai-plugins` plugin marketplace for Claude Code and GitHub Copilot: the specialist
 agents, skills, and contracts that fill the roles a delivery flow consults — architecture,
-coding, QA, domain, UX, documentation, product, security — plus two host plugins and the issue
+coding, QA, domain, UX, documentation, product, security — plus three host plugins and the issue
 trackers. Every asset is authored once and loaded by both hosts.
 
 The flows themselves live elsewhere. Staged delivery, the pull-request lane, scheduled runs,
@@ -30,6 +30,7 @@ sessions, or delegate.
 | `github` | tracker | Issue sync, pull requests, Actions CI/CD, Dependabot |
 | `jira` | tracker | Jira issues from approved Markdown backlog artifacts |
 | `claude-desktop` | host | `orch-dashboard` MCP server plus `start`, `session-handoff`, `create-pull-request` |
+| `claude-desktop-mods` | host | Claude Code function-hook mods: the `/context-view` pane and its status line entry |
 | `copilot-app` | host | `update-open-sessions` plus three canvas extensions |
 | `wip-convention` | convention | Shared `.wip` work-in-progress artifact layout |
 | `fincent` | project | Fincent story review, estimation, PR review, sprint and demo reporting |

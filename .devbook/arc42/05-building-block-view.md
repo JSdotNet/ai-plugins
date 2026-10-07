@@ -22,7 +22,7 @@ flowchart TB
     end
     subgraph hosts[Host plugins — one host each]
         direction LR
-        cd[claude-desktop] & ca[copilot-app]
+        cd[claude-desktop] & cdm[claude-desktop-mods] & ca[copilot-app]
     end
     subgraph other[Convention and project]
         direction LR
@@ -76,7 +76,8 @@ related: [".devbook/arc42/tdr/3-dashboard-code-copied.md"]
 
 | Block | Responsibility | Exposes |
 | --- | --- | --- |
-| [`claude-desktop`](building-blocks/claude-desktop.md) | The run dashboard, diagram, and document viewers as an MCP server, plus the Claude-side session skills | `orch-dashboard` MCP server; skills `start`, `session-handoff`, `create-pull-request`; telemetry hooks; the `context-view` function-hook pane. Claude manifest only |
+| [`claude-desktop`](building-blocks/claude-desktop.md) | The run dashboard, diagram, and document viewers as an MCP server, plus the Claude-side session skills | `orch-dashboard` MCP server; skills `start`, `session-handoff`, `create-pull-request`; telemetry hooks. Claude manifest only |
+| `claude-desktop-mods` | Claude Code function-hook mods, apart from the dashboard so they install on their own | `/context-view` pane and its status line entry; a `$.state` contract. Claude manifest only |
 | [`copilot-app`](building-blocks/copilot-app.md) | The same viewers as Copilot canvas extensions, plus session upkeep | extensions `orch-dashboard`, `diagram-canvas`, `markdown-canvas`; skill `update-open-sessions`. Copilot manifest only |
 
 The two carry the same run model on different transports; their shared modules are copied

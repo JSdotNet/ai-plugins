@@ -33,15 +33,15 @@ type $ = EngineInterface
 const PANE = 'context-view'
 const MARKDOWN_LIMIT = 9500
 
-const reads = atom({ plugin: 'claude-desktop', key: 'contextReads' } as const, [])
-const instructions = atom({ plugin: 'claude-desktop', key: 'contextInstructions' } as const, [])
-const rules = atom({ plugin: 'claude-desktop', key: 'contextRules' } as const, [])
-const peak = atom({ plugin: 'claude-desktop', key: 'contextPeak' } as const, 0)
-const byTool = atom({ plugin: 'claude-desktop', key: 'contextByTool' } as const, {})
-const warnings = atom({ plugin: 'claude-desktop', key: 'contextWarnings' } as const, [])
-const turnReads = atom({ plugin: 'claude-desktop', key: 'contextTurnReads' } as const, {})
-const folderSizes = atom({ plugin: 'claude-desktop', key: 'contextFolderSizes' } as const, {})
-const pendingSkills = atom({ plugin: 'claude-desktop', key: 'contextPendingSkills' } as const, [])
+const reads = atom({ plugin: 'claude-desktop-mods', key: 'contextReads' } as const, [])
+const instructions = atom({ plugin: 'claude-desktop-mods', key: 'contextInstructions' } as const, [])
+const rules = atom({ plugin: 'claude-desktop-mods', key: 'contextRules' } as const, [])
+const peak = atom({ plugin: 'claude-desktop-mods', key: 'contextPeak' } as const, 0)
+const byTool = atom({ plugin: 'claude-desktop-mods', key: 'contextByTool' } as const, {})
+const warnings = atom({ plugin: 'claude-desktop-mods', key: 'contextWarnings' } as const, [])
+const turnReads = atom({ plugin: 'claude-desktop-mods', key: 'contextTurnReads' } as const, {})
+const folderSizes = atom({ plugin: 'claude-desktop-mods', key: 'contextFolderSizes' } as const, {})
+const pendingSkills = atom({ plugin: 'claude-desktop-mods', key: 'contextPendingSkills' } as const, [])
 
 const MEMORY_ROOTS = ['CLAUDE.md', '.claude/CLAUDE.md', 'CLAUDE.local.md']
 

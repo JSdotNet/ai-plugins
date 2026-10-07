@@ -20,8 +20,14 @@
     {
       "name": "claude-desktop",
       "source": "./plugins/claude-desktop",
-      "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills, the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline, and a /context-view function-hook pane showing what fills the session context. The orchestration lane it used to ship continues as delivery@jsdotnet.",
-      "version": "0.13.0"
+      "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills plus the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
+      "version": "0.12.3"
+    },
+    {
+      "name": "claude-desktop-mods",
+      "source": "./plugins/claude-desktop-mods",
+      "description": "Claude Code function-hook mods: a /context-view pane showing what fills the session context (window, instructions loaded, Markdown read, and a devbook lens) with a ctx status line entry.",
+      "version": "0.1.0"
     },
     {
       "name": "csharp-coding",

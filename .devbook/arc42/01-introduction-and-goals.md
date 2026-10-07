@@ -6,7 +6,7 @@ related: [".devbook/tech/technology-graph.md", ".devbook/arc42/03-context-and-sc
 
 `jsdotnet-ai-plugins` is a plugin marketplace: the specialist agents, skills, and contracts
 that fill the roles a delivery flow consults — architecture, coding, QA, domain, UX,
-documentation, product, security — plus two host plugins and the issue trackers. One folder
+documentation, product, security — plus three host plugins and the issue trackers. One folder
 per plugin under `plugins/`, each installable on its own, in GitHub Copilot and in Claude
 Code alike.
 

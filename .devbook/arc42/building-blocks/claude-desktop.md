@@ -5,8 +5,8 @@ related: [".devbook/arc42/05-building-block-view.md#host-plugins", ".devbook/tec
 ```
 
 The Claude host plugin. It owns the `orch-dashboard` MCP server — a live run dashboard, a
-Mermaid viewer, and a Markdown viewer — the hooks that feed it tool activity, the
-`context-view` function-hook module, and three session skills. It holds no flow: the staged flows that report to it are `delivery@jsdotnet`,
+Mermaid viewer, and a Markdown viewer — the hooks that feed it tool activity, and three
+session skills. It holds no flow: the staged flows that report to it are `delivery@jsdotnet`,
 which resolves this server as a delivery surface. Its Copilot counterpart is `copilot-app`.
 
 It ships a Claude manifest only. Its root `hooks.json` is a Copilot guard that tells a Copilot
@@ -63,19 +63,6 @@ A `SessionStart` command hook printing `hooks/session-start-context.md`, and
 `telemetry-hook.mjs` on `SessionStart`, `PreToolUse`, `PostToolUse`, `SubagentStop`,
 `PreCompact`, `Stop`, and `SessionEnd`.
 
-### context-view Hooks Module
-
-```meta
-```
-
-A Claude Code function-hook module, named under `modules` in `hooks/hooks.json`:
-`hooks/context-view/register.tsx`. It registers `/context-view`, a pane showing the context
-window (from `$.session.usage`), the instructions loaded, every Markdown file read, and a
-devbook lens that recognises devbook folders and `meta` fences by shape, with no dependency on
-devbook. It records through `tool.call`, `session.append`, and `prompt.compose`, keeps its
-data in `$.state` under the contract `types/index.d.ts`, and writes `ctx <n>% · <k> md` to the
-status line. Copilot has no counterpart.
-
 ## Structure
 
 ```meta
@@ -104,7 +91,6 @@ flowchart LR
 | `report.mjs` | Markdown and self-contained HTML reports of a run |
 | `session-title.mjs` | Derives a session title from where a run's output landed |
 | `idle.mjs` | Stamps an abandoned run idle so its elapsed time stops growing |
-| `hooks/context-view/` | The context-view hooks module: `register.tsx` hooks and draws, `model.ts` holds the pure logic its tests cover |
 
 `render.mjs`, `report.mjs`, `store.mjs`, and `insight.mjs` began as copies of `copilot-app`'s;
 they are not kept in step — [TDR 3](../tdr/3-dashboard-code-copied.md).
@@ -118,7 +104,6 @@ they are not kept in step — [TDR 3](../tdr/3-dashboard-code-copied.md).
 | --- | --- |
 | Node.js | Runs the server and every hook |
 | Claude Code plugin API | `mcpServers` in `.claude-plugin/plugin.json`, command hooks |
-| Claude Code function hooks | The `context-view` module, its `$.state` contract, `claude plugin test` |
 | MCP Apps | Inline rendering in Claude Desktop |
 | MCPB CLI | `scripts/Build-DesktopExtension.ps1` packs the server as a Desktop extension |
 

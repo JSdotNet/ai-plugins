@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "prompt",
+        "prompt": "The claude-desktop-mods plugin is loaded, but it is built for Claude Code and does nothing in GitHub Copilot CLI: it ships only Claude Code function-hook modules, such as the /context-view pane. Tell the user the plugin is Claude-only. Nothing else in this hook applies to Copilot."
+      }
+    ]
+  }
+}

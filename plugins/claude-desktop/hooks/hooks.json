@@ -1,7 +1,4 @@
 {
-  "modules": [
-    "./context-view/register.tsx"
-  ],
   "hooks": {
     "SessionStart": [
       {

@@ -33,9 +33,9 @@ const engine = (on: On, status: (string | undefined)[] = []) => {
   on('tool.call', { tool: 'Bash' }, () => ({ result: {}, text: '# Readme\nhello' }))
   on('tool.call', { tool: 'Agent' }, () => ({ result: {}, text: 'done' }))
   return {
-    reads: () => (state.get('claude-desktop.contextReads')?.value ?? []) as ContextViewMdRead[],
-    warnings: () => (state.get('claude-desktop.contextWarnings')?.value ?? []) as string[],
-    instructions: () => (state.get('claude-desktop.contextInstructions')?.value ?? []) as ContextViewInstruction[],
+    reads: () => (state.get('claude-desktop-mods.contextReads')?.value ?? []) as ContextViewMdRead[],
+    warnings: () => (state.get('claude-desktop-mods.contextWarnings')?.value ?? []) as string[],
+    instructions: () => (state.get('claude-desktop-mods.contextInstructions')?.value ?? []) as ContextViewInstruction[],
   }
 }
 
@@ -81,7 +81,7 @@ test('the pane draws every section on terminal and desktop', async ($, on) => {
 
   for (const surface of ['terminal', 'desktop'] as const) {
     const ui = await $.ui.mount({
-      plugin: 'claude-desktop',
+      plugin: 'claude-desktop-mods',
       surface,
       component: 'Pane',
       requestId: 'context-view',
