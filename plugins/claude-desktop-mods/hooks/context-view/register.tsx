@@ -35,8 +35,8 @@ import {
   statusText,
   stripLineNumbers,
 } from './model'
-import { clip, detail, overview, zoomOptions } from './view'
-import type { ViewData } from './view'
+import { Overview, Zoom } from './pane'
+import type { Actions, Els, PaneData } from './pane'
 
 type $ = EngineInterface
 
@@ -53,6 +53,7 @@ const folderSizes = atom({ plugin: 'claude-desktop-mods', key: 'contextFolderSiz
 const pendingSkills = atom({ plugin: 'claude-desktop-mods', key: 'contextPendingSkills' } as const, [])
 const turn = atom({ plugin: 'claude-desktop-mods', key: 'contextTurn' } as const, 0)
 const focus = atom({ plugin: 'claude-desktop-mods', key: 'contextFocus' } as const, '')
+const folded = atom({ plugin: 'claude-desktop-mods', key: 'contextFolded' } as const, {})
 
 const MEMORY_ROOTS = ['CLAUDE.md', '.claude/CLAUDE.md', 'CLAUDE.local.md']
 
@@ -213,6 +214,7 @@ const recordMarkdown = async (
   via: string,
   fired: string[],
   range?: string,
+  from?: number,
 ) => {
   const rel = relativeTo(cwd, file)
   const body = stripLineNumbers(text)
@@ -228,7 +230,8 @@ const recordMarkdown = async (
     outline: outlineOf(body),
     rules: fired,
   }
-  const event = { at: await $.clock.now(), turn: await read($, turn), via, tokens, ...(range ? { range } : {}) }
+  const lines = body.split('\n').length
+  const event = { at: await $.clock.now(), turn: await read($, turn), via, tokens, lines, ...(range ? { range } : {}), ...(from ? { from } : {}) }
   await update($, reads, list => addRead(list, entry, event))
   await devbookLens($, cwd, rel, hasMeta)
 }
@@ -299,7 +302,7 @@ export const register: Register = on => {
     if (e.tool === 'Read' && !ran.isError) {
       const fired = await firePathRules($, relativeTo(cwd, e.file_path))
       if (isMarkdown(e.file_path))
-        await recordMarkdown($, cwd, e.file_path, text, via, fired, readRange(e.offset, e.limit))
+        await recordMarkdown($, cwd, e.file_path, text, via, fired, readRange(e.offset, e.limit), typeof e.offset === 'number' ? e.offset : undefined)
     } else if ((tool === 'Bash' || tool === 'PowerShell') && !ran.isError) {
       const command = (e as { command?: unknown }).command
       const files = typeof command === 'string' ? markdownReadByShell(command) : []
@@ -395,15 +398,15 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
-    const elements = $.ui.resolve(e)
-    const { Box, Markdown, Button } = elements
+    const { Box, Text, Button, Markdown } = $.ui.resolve(e)
+    const els: Els = { Box, Text, Button, Markdown }
     let usage: SessionUsage | undefined
     try {
       usage = await $.session.usage({ breakdown: 'summary', columns: e.props.bodyColumns })
     } catch {
       usage = undefined
     }
-    const data: ViewData = {
+    const data: PaneData = {
       usage,
       cwd: await $.session.cwd(),
       reads: await read($, reads),
@@ -413,39 +416,17 @@ export const register: Register = on => {
       peak: await read($, peak),
       byTool: await read($, byTool),
       startedAt: usage?.startedAt ?? 0,
+      turn: await read($, turn),
+      folded: await read($, folded),
+      folderSizes: await read($, folderSizes),
+      columns: e.props.bodyColumns,
+    }
+    const actions: Actions = {
+      zoom: value => void update($, focus, () => value),
+      back: () => void update($, focus, () => ''),
+      toggle: section => void update($, folded, all => ({ ...all, [section]: !all[section] })),
     }
     const zoomed = await read($, focus)
-    const page = zoomed ? detail(data, zoomed) : undefined
-    const options = zoomOptions(data)
-    const Select = 'Select' in elements ? elements.Select : undefined
-    const picker =
-      Select && options.length > 0 ? (
-        <Select
-          key="zoom"
-          label="Zoom into…"
-          options={options}
-          {...(page ? { value: zoomed } : {})}
-          onSelect={value => void update($, focus, () => value)}
-        />
-      ) : null
-
-    if (page)
-      return (
-        <Box flexDirection="column" gap={1}>
-          <Button key="back" hotkey="b" autoFocus onPress={() => void update($, focus, () => '')}>
-            ← Overview
-          </Button>
-          <Markdown key="detail" text={clip(page)} />
-          {picker}
-        </Box>
-      )
-    return (
-      <Box flexDirection="column" gap={1}>
-        {picker}
-        {overview(data).map((text, i) => (
-          <Markdown key={`section-${i}`} text={clip(text)} />
-        ))}
-      </Box>
-    )
+    return (zoomed ? Zoom(els, actions, data, zoomed) : undefined) ?? Overview(els, actions, data)
   })
 }

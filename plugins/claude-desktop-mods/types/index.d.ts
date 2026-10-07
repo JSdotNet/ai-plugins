@@ -11,6 +11,10 @@ export type ContextViewReadEvent = {
   tokens: number
   /** `lines 40–120` for a partial Read; absent for a whole file. */
   range?: string
+  /** The first line it covered, 1-based. */
+  from?: number
+  /** How many lines it returned. */
+  lines?: number
 }
 
 /** One Markdown file read in this session, by the Read tool or a shell reader. */
@@ -83,6 +87,8 @@ declare module 'claude-code' {
       contextTurn: number
       /** The line the pane is zoomed into (`md:<path>`, `in:<kind>:<name>`, `cat:<name>`, `db:<folder>`); empty for the overview. */
       contextFocus: string
+      /** Folded sections of the overview, by id, and `instructions-all` when every instruction row shows. */
+      contextFolded: Record<string, boolean>
     }
   }
 }
