@@ -63,6 +63,14 @@ A `SessionStart` command hook printing `hooks/session-start-context.md`, and
 `telemetry-hook.mjs` on `SessionStart`, `PreToolUse`, `PostToolUse`, `SubagentStop`,
 `PreCompact`, `Stop`, and `SessionEnd`.
 
+The same `hooks/hooks.json` names a hooks module under `modules`: `hooks/handoff.tsx`, Claude
+Code function hooks that serve `session-handoff` without repeating its procedure. They add
+`/handoff`, which submits a prompt invoking the skill; a band above the prompt at 75% and 85%
+context; and `/handoffs`, a pane over the skill's handoff store that copies a brief's first
+message and marks a brief picked up when a session opens with it. Its `$.state` values are
+declared in `types/index.d.ts`, named as `types` in the Claude manifest. It reads the handoff
+store and writes only the plugin's own store, never a repository.
+
 ## Structure
 
 ```meta
@@ -103,7 +111,7 @@ they are not kept in step — [TDR 3](../tdr/3-dashboard-code-copied.md).
 | Depends on | Mechanism |
 | --- | --- |
 | Node.js | Runs the server and every hook |
-| Claude Code plugin API | `mcpServers` in `.claude-plugin/plugin.json`, command hooks |
+| Claude Code plugin API | `mcpServers` in `.claude-plugin/plugin.json`, command hooks, the function-hooks module |
 | MCP Apps | Inline rendering in Claude Desktop |
 | MCPB CLI | `scripts/Build-DesktopExtension.ps1` packs the server as a Desktop extension |
 
