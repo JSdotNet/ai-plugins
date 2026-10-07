@@ -53,6 +53,13 @@ conciseness rules, and its Claude twin is a command hook printing
 `hooks/session-start-context.md` —
 [SessionStart Twin Hook](../08-crosscutting-concepts.md#sessionstart-twin-hook).
 
+A Claude-only function-hook module, `hooks/budget-status.ts`, enforces nothing and reports
+the budgets as an author works: after every Write or Edit of a budgeted asset it pins the body
+count against `spec-conciseness.md`'s budget in the status line, amber within 10% and red
+over, `(exempt)` when the file states why, and toasts once when a file first crosses. It reads
+the asset by its filename, not by repository, so it serves every repository with the same
+budgets. Copilot has no counterpart; `check-assets.mjs --budgets` is the one both share.
+
 ## Structure
 
 ```meta
@@ -67,6 +74,7 @@ flowchart LR
     skills --> concise[resources/spec-conciseness.md]
     agent --> concise
     hook[hooks.json · hooks/] -. states the rules the contracts hold .-> contracts
+    budget[hooks/budget-status.ts] -. reports the budgets of .-> concise
 ```
 
 Each `create-*` skill reads its own contract and `spec-conciseness.md`, and nothing else in

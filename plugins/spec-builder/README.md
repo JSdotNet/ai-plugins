@@ -26,7 +26,31 @@ Claude Code from a single copy of every file.
 - Resources:
   - `resources/quick-reference.md`
 - Hooks:
-  - `hooks.json` (session-start authoring quality guardrail prompt)
+  - `hooks.json` (session-start authoring quality guardrail prompt), with its Claude twin in
+    `hooks/`
+  - `hooks/budget-status.ts` — Claude only, see [Body budget status](#body-budget-status)
+
+## Body budget status
+
+In Claude Code, after every Write or Edit the status line shows the edited asset's body lines
+against its budget from [`resources/spec-conciseness.md`](resources/spec-conciseness.md):
+
+| Asset | Budget |
+| --- | --- |
+| `SKILL.md` | 40 |
+| `*.agent.md` | 80 |
+| `rules/*.md`, `.agents/rules/*.md`, a `resources/*.md` contract (`name` + `description`) | 60 |
+
+Body lines are the non-blank lines after the frontmatter, as `tools/check-assets.mjs` counts
+them. `SKILL.md 37/40` is plain below 90% of the budget, 🟡 within 10% of it, 🔴 over it,
+and `(exempt)` when the file states why it exceeds it ("Over the 60-line budget by design:
+..."). A toast fires once per file per session when an edit first takes it over. Editing any
+other file clears the status. It matches by filename, so it works in any repository. Tests:
+
+```bash
+claude plugin validate plugins/spec-builder
+claude plugin test plugins/spec-builder
+```
 
 ## Scope
 
