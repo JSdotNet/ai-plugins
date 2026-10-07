@@ -139,6 +139,24 @@ describe('helpers', () => {
     expect(pickupText(parsed)).toContain(`Handoff brief: ${DIR}/${OLD}`)
   })
 
+  test('a brief older than the table reads its list lines and bold reason', () => {
+    const text = [
+      '# Handoff — #160 Move the tools table',
+      '',
+      '**Reason parked:** the change is a rendered-UI change. Neither surface is provable.',
+      '',
+      '- Branch: `feat/160-tools-table` (pushed)',
+      '- Worktree: `D:/Repos/Backlog/.claude/worktrees/160-tools-table`',
+    ].join('\n')
+    expect(parseBrief(`${DIR}/160.md`, '160.md', text, 5, new Set())).toMatchObject({
+      title: '#160 Move the tools table',
+      repo: 'Backlog',
+      branch: 'feat/160-tools-table',
+      reason: 'the change is a rendered-UI change.',
+      handedOffAt: 5,
+    })
+  })
+
   test('a first message matches by brief path or by title line', () => {
     const list = [
       parseBrief(`${DIR}/${NEW}`, NEW, NEW_TEXT, 0, new Set()),

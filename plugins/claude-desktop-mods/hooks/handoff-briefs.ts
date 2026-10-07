@@ -60,6 +60,16 @@ function rows(text: string): Map<string, string> {
   return found
 }
 
+/** The first backticked value of a `- <label>:` list line. */
+function listed(text: string, label: string): string | undefined {
+  return new RegExp(String.raw`^[-*]\s+${label}:\s*` + '`([^`]+)`', 'm').exec(text)?.[1]?.trim()
+}
+
+/** A `**Reason…:** text` line, up to its first sentence. */
+function boldReason(text: string): string | undefined {
+  return /^\*\*Reason[^*]*:\*\*\s*(.+)$/m.exec(text)?.[1]?.split(/(?<=\.)\s/)[0]?.trim()
+}
+
 /** The folder name of a repository path; a Claude worktree counts as its repository. */
 export function repoOf(path: string): string {
   const parts = path.split(/[\\/]+/).filter(Boolean)
@@ -97,15 +107,17 @@ export function parseBrief(
   const table = rows(text)
   const from = table.get('from') ?? ''
   const fromParts = /`([^`]+)`\s*on branch\s*`([^`]+)`/.exec(from)
+  // Briefs older than the template's table carry list lines and a bold reason instead.
+  const worktree = fromParts?.[1] ?? listed(text, 'Worktree') ?? listed(text, 'Repository')
   const firstMessage = firstMessageOf(text)
   return {
     path,
     file,
     title: /^#\s+Handoff\s*[—–-]\s*(.+)$/m.exec(text)?.[1]?.trim() ?? file.replace(/\.md$/, ''),
     sessionTitle: (firstMessage && TITLE_LINE.exec(firstMessage)?.[1]?.trim()) || null,
-    repo: fromParts?.[1] ? repoOf(fromParts[1]) : strip(from) || 'unknown',
-    branch: fromParts?.[2] ?? 'unknown',
-    reason: strip(table.get('reason') ?? '') || 'no reason given',
+    repo: worktree ? repoOf(worktree) : strip(from) || 'unknown',
+    branch: fromParts?.[2] ?? listed(text, 'Branch') ?? 'unknown',
+    reason: strip(table.get('reason') ?? '') || boldReason(text) || 'no reason given',
     target: strip(table.get('to') ?? '') || 'unknown',
     handedOffAt: handedOffAtOf(file, table.get('handed off'), mtimeMs),
     firstMessage,
