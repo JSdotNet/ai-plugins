@@ -2,10 +2,33 @@
   "servers": {
     "aikido": {
       "command": "npx",
-      "args": ["-y", "@aikidosec/mcp"],
+      "args": [
+        "-y",
+        "@aikidosec/mcp"
+      ],
       "env": {
         "AIKIDO_API_KEY": "${env:AIKIDO_API_KEY}"
       }
+    },
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "aspire": {
+      "type": "stdio",
+      "command": "aspire",
+      "args": [
+        "mcp",
+        "start"
+      ]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
     }
   }
 }
