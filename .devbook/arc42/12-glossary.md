@@ -11,7 +11,7 @@
 | devbook | The `.devbook/` folder convention and its check, from `JSdotNet/ai-agent-stack`. |
 | Flow control | Sequencing stages, holding a gate, spawning a session, or delegating. A specialist holds none of it. |
 | Host | A program that loads a plugin: GitHub Copilot, or Claude Code with Claude Desktop. |
-| Host plugin | A plugin built on one host's rendering surface, which ships only that host's manifest: `claude-desktop`, `copilot-app`. |
+| Host plugin | A plugin built on one host's rendering surface, which ships only that host's manifest: `claude-desktop`, `claude-desktop-mods`, `copilot-app`. |
 | Marketplace | `jsdotnet-ai-plugins`, the set of plugins listed in `.claude-plugin/marketplace.json`. Each plugin is installed from it separately. |
 | Role | A seat a flow consults, such as `architecture`, `docs`, `domain`, or `ux`. The repository's `bindings` map each role to a specialist agent. |
 | Rule | `.agents/rules/<topic>.md`, applied when a host reads a file that matches its `paths`. |

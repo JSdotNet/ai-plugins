@@ -1,7 +1,4 @@
 {
-  "modules": [
-    "./handoff.tsx"
-  ],
   "hooks": {
     "SessionStart": [
       {

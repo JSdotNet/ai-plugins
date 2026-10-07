@@ -56,22 +56,6 @@ in which host.
   job: Claude Code rejects prompt hooks on `SessionStart` and records the refusal as a
   non-blocking error, so the guidance would vanish silently. See
   [Crosscutting Concepts](../../.devbook/arc42/08-crosscutting-concepts.md).
-- `hooks/handoff.tsx` — a Claude Code hooks module of function hooks, named under `modules`
-  in the same `hooks/hooks.json` beside the command hooks (Claude Code only; Copilot never
-  reads that file). It starts and lists handoffs and never writes to a repository:
-  - `/handoff [same-worktree|new-worktree|<repo>]` submits a prompt that runs the
-    `session-handoff` skill with that target (`same-worktree` when none is given).
-  - A band above the prompt at 75% (amber) and 85% (red) context, "Context <n>% — hand off?",
-    whose button runs `/handoff`. It hides below 75% and after a compaction.
-  - `/handoffs` opens a pane over the skill's handoff store, newest first: repo, branch,
-    reason, age, and whether a session picked the brief up. **Open** shows the brief; **Pick
-    up** copies its `## First Message`, or shows it for copying when the clipboard does not
-    take it. A session whose first message names the brief's path or its `Title this session`
-    line marks it picked up, in the plugin's own store.
-
-  `hooks/handoff-briefs.ts` holds the parsing and matching, `types/index.d.ts` declares the
-  `$.state` values, and `tests/handoff.test.tsx` runs under `claude plugin test
-  plugins/claude-desktop`.
 - `hooks.json` (plugin root) — a Copilot-only guard. Claude Code ignores a plugin's root
   `hooks.json` and reads `hooks/hooks.json`; Copilot reads the root file and falls back to
   `hooks/` only when it is absent. So this file reaches Copilot alone, where it says the plugin
@@ -99,7 +83,8 @@ in which host.
   [`resources/session-handoff-template.md`](resources/session-handoff-template.md)), marks
   the dashboard run handed off when there is one, and hands back the paste-ready first
   message. Run it when the 85% context warning fires, or before a stage known to be
-  expensive.
+  expensive. [`claude-desktop-mods`](../claude-desktop-mods/README.md) adds `/handoff`, a
+  context-pressure band, and a `/handoffs` pane around it.
 - `skills/create-pull-request/` — open a PR for the current branch, body grounded in the
   diff and the linked issue. The rest of the pull-request lane lives in `delivery@jsdotnet`.
 

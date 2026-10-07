@@ -1,0 +1,22 @@
+{
+  "name": "claude-desktop-mods",
+  "version": "0.1.0",
+  "description": "Claude Code mods for the Code tab and terminal: function hooks around claude-desktop's session-handoff skill — a /handoff command, a context-pressure band at 75% and 85%, and a /handoffs pane that lists the handoff briefs and copies a brief's first message. Claude-only.",
+  "author": {
+    "name": "Job Schepers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "hooks",
+    "handoff",
+    "session"
+  ],
+  "dependencies": [
+    {
+      "name": "claude-desktop",
+      "marketplace": "jsdotnet-ai-plugins"
+    }
+  ],
+  "types": "./types/index.d.ts"
+}

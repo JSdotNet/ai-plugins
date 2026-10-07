@@ -1,8 +1,8 @@
-// Claude-only function hooks around the session-handoff skill: the /handoff command, a
-// context-pressure band above the prompt, and the /handoffs pane over the skill's handoff
-// store. The procedure stays in skills/session-handoff/SKILL.md; this module only starts it
-// and lists what it wrote. Read-only towards repositories: it reads the handoff store and
-// keeps the picked-up marks in the plugin's own store.
+// Claude-only function hooks around claude-desktop's session-handoff skill: the /handoff
+// command, a context-pressure band above the prompt, and the /handoffs pane over the skill's
+// handoff store. The procedure stays in the skill; this module only starts it and lists what
+// it wrote. Read-only towards repositories: it reads the handoff store and keeps the
+// picked-up marks in the plugin's own store.
 
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register, RenderSurface } from 'claude-code'
@@ -25,12 +25,12 @@ const PANE = 'handoffs'
 const PICKED_UP = 'handoff.pickedUp'
 const SHOWN_MAX = 9000
 
-const briefs = atom({ plugin: 'claude-desktop', key: 'briefs' } as const, [])
-const handoffDir = atom({ plugin: 'claude-desktop', key: 'handoffDir' } as const, '')
-const contextPercent = atom({ plugin: 'claude-desktop', key: 'contextPercent' } as const, null)
-const opened = atom({ plugin: 'claude-desktop', key: 'opened' } as const, null)
-const pickup = atom({ plugin: 'claude-desktop', key: 'pickup' } as const, null)
-const hasFirstPrompt = atom({ plugin: 'claude-desktop', key: 'hasFirstPrompt' } as const, false)
+const briefs = atom({ plugin: 'claude-desktop-mods', key: 'briefs' } as const, [])
+const handoffDir = atom({ plugin: 'claude-desktop-mods', key: 'handoffDir' } as const, '')
+const contextPercent = atom({ plugin: 'claude-desktop-mods', key: 'contextPercent' } as const, null)
+const opened = atom({ plugin: 'claude-desktop-mods', key: 'opened' } as const, null)
+const pickup = atom({ plugin: 'claude-desktop-mods', key: 'pickup' } as const, null)
+const hasFirstPrompt = atom({ plugin: 'claude-desktop-mods', key: 'hasFirstPrompt' } as const, false)
 
 async function storeDir($: EngineInterface): Promise<string | null> {
   return handoffDirOf({

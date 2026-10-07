@@ -55,8 +55,8 @@ const FLOW_CONTROL_TOOLS = new Set([
     "list_sessions_and_chats", "get_session", "list_projects",
 ]);
 const RUNNER_PLUGINS = new Set([]);
-// The two host plugins are built on one host's rendering surface and ship one manifest each.
-const HOST_ONLY = { "claude-desktop": "claude", "copilot-app": "copilot" };
+// The host plugins are built on one host's surface and ship one manifest each.
+const HOST_ONLY = { "claude-desktop": "claude", "claude-desktop-mods": "claude", "copilot-app": "copilot" };
 
 const errors = [];
 const notes = [];

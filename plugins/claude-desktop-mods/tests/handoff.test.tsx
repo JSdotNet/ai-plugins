@@ -172,7 +172,7 @@ for (const [percent, color] of [[80, 'yellow'], [90, 'red']] as const) {
     await $.session.start({ cwd: '.', surface: 'terminal', isInteractive: true })
     await $.turn.complete(turn)
     for (const surface of ['terminal', 'desktop'] as const) {
-      const ui = await $.ui.mount({ plugin: 'claude-desktop', surface, component: 'AbovePrompt', props: bandProps() })
+      const ui = await $.ui.mount({ plugin: 'claude-desktop-mods', surface, component: 'AbovePrompt', props: bandProps() })
       const text = await ui.find({ type: 'Text', text: /hand off\?/ })
       expect(text?.text).toContain(`Context ${percent}% — hand off?`)
       expect(text?.props.color).toBe(color)
@@ -190,7 +190,7 @@ test('the band hides below 75%', async ($, on) => {
   handoffStore(on, [], [], 60)
   await $.session.start({ cwd: '.', surface: 'terminal', isInteractive: true })
   await $.turn.complete(turn)
-  const ui = await $.ui.mount({ plugin: 'claude-desktop', surface: 'terminal', component: 'AbovePrompt', props: bandProps() })
+  const ui = await $.ui.mount({ plugin: 'claude-desktop-mods', surface: 'terminal', component: 'AbovePrompt', props: bandProps() })
   expect(await ui.find({ type: 'Text', text: /hand off\?/ })).toBe(undefined)
 })
 
@@ -200,7 +200,7 @@ test('/handoffs lists briefs newest first, opens one and picks one up', async ($
   await $.session.start({ cwd: '.', surface: 'terminal', isInteractive: true })
   await $.command.run(typed('handoffs'))
   for (const surface of ['terminal', 'desktop'] as const) {
-    const ui = await $.ui.mount({ plugin: 'claude-desktop', surface, ...PANE, props: paneProps })
+    const ui = await $.ui.mount({ plugin: 'claude-desktop-mods', surface, ...PANE, props: paneProps })
     const rows = await metaRows(ui)
     expect(rows[0]).toBe('Copilot · claude/labels · 24h ago · not picked up')
     expect(rows[1]).toBe('api · spike/x · 6d ago · not picked up')
@@ -222,7 +222,7 @@ test('a session whose first message carries a brief marks it picked up', async (
     wait: false,
   })
   await $.command.run(typed('handoffs'))
-  const ui = await $.ui.mount({ plugin: 'claude-desktop', surface: 'terminal', ...PANE, props: paneProps })
+  const ui = await $.ui.mount({ plugin: 'claude-desktop-mods', surface: 'terminal', ...PANE, props: paneProps })
   const rows = await metaRows(ui)
   expect(rows[0]).toEndWith(' ago · picked up')
   expect(rows[1]).toEndWith(' ago · not picked up')

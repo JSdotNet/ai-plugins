@@ -245,7 +245,7 @@ session.
   also covers sessions with no run at all.
 - The 60% / 75% / 85% context-gauge warnings come from the plugin's telemetry hook. 75% means
   prepare — persist decisions, start nothing heavy. 85% means run this skill. In Claude Code
-  the plugin's hooks module also shows them as a band above the prompt whose button runs
+  `claude-desktop-mods` also shows them as a band above the prompt whose button runs
   `/handoff`, which submits a prompt invoking this skill.
 - This skill reports through normal chat and opens no dashboard run of its own: a handoff is
   the end of a run, not one more.

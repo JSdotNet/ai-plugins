@@ -20,6 +20,5 @@
         "${CLAUDE_PLUGIN_ROOT}/mcp/orch-dashboard/mcp-server.mjs"
       ]
     }
-  },
-  "types": "./types/index.d.ts"
+  }
 }

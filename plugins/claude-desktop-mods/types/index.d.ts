@@ -1,4 +1,4 @@
-// The $.state contract of claude-desktop's hooks module (hooks/handoff.tsx).
+// The $.state contract of claude-desktop-mods' hooks module (hooks/handoff.tsx).
 
 /** One brief in the session-handoff skill's store, as the /handoffs pane lists it. */
 export type HandoffBrief = {
@@ -31,7 +31,7 @@ export type HandoffShown = { path: string; text: string }
 
 declare module 'claude-code' {
   interface PluginState {
-    'claude-desktop': {
+    'claude-desktop-mods': {
       /** The briefs the pane lists, newest first. */
       briefs: HandoffBrief[]
       /** The directory those briefs were read from. */

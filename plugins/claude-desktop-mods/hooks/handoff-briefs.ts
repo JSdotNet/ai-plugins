@@ -1,6 +1,6 @@
 // Pure helpers for hooks/handoff.tsx: reading a session-handoff brief and matching a
-// session's first message to it. The brief's shape is
-// resources/session-handoff-template.md; where briefs live is
+// session's first message to it. The brief's shape is claude-desktop's
+// resources/session-handoff-template.md; where briefs live is its
 // skills/session-handoff/SKILL.md, step 4.
 
 import type { HandoffBrief } from '../types'
