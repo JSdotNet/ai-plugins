@@ -7,9 +7,9 @@ related: [".devbook/arc42/03-context-and-scope.md", ".devbook/arc42/05-building-
 
 A specialist holds no flow control. It does not sequence stages, hold a gate, spawn a
 session, or delegate. Sequencing, approval, and delegation belong to whatever consults it:
-the delivery engine in `JSdotNet/ai-agent-stack` (`delivery`, `delivery-schedule`, `fleet`),
-or a person. `tools/check-assets.mjs` fails on a specialist agent that carries a
-session-spawning or delegation tool.
+the delivery engine in `JSdotNet/devbook` (`delivery`, `delivery-schedule`), or a person.
+`tools/check-assets.mjs` fails on a specialist agent that carries a session-spawning or
+delegation tool.
 
 ## Why
 
@@ -20,8 +20,10 @@ session-spawning or delegation tool.
   control of its own stages and gates, and two gates can claim the same approval.
 - A specialist with no flow control is usable on its own. A person, a flow from any engine,
   or another host can consult it.
-- The engine now lives in `ai-agent-stack` (its ADR 19: a role plugin holds no flow
-  control). Keeping flow control here would split the engine across two marketplaces.
+- The engine now lives in `JSdotNet/devbook` (its
+  [plugin boundaries](https://github.com/JSdotNet/devbook/blob/main/.devbook/arc42/adr/plugin-boundaries.md)
+  decision: a role plugin holds no flow control). Keeping flow control here would split the
+  engine across two marketplaces.
 
 ## Rejected
 
@@ -32,8 +34,8 @@ session-spawning or delegation tool.
   Every specialist could start sessions and hold approvals. In practice the gates
   duplicated the flow's own gate and fought it.
 - **Keep an orchestrator agent and the `orch-*` flows here.** They moved to `ai-agent-stack`
-  as `delivery`, `delivery-schedule`, and `fleet`. The host plugins kept only what is
-  specific to a host.
+  as `delivery`, `delivery-schedule`, and `fleet`; the engine now ships from `JSdotNet/devbook`,
+  without `fleet`. The host plugins kept only what is specific to a host.
 
 ## History
 
