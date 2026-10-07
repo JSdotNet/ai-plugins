@@ -1,8 +1,9 @@
 # claude-desktop
 
 A Claude Code host plugin: a live run dashboard, Mermaid diagram viewer and Markdown
-document viewer served by its own MCP server, plus the three skills that belong to a host
-rather than to a delivery engine — `start`, `session-handoff`, and `create-pull-request`.
+document viewer served by its own MCP server, a `/context-view` pane that shows what fills the
+session's context, plus the three skills that belong to a host rather than to a delivery
+engine — `start`, `session-handoff`, and `create-pull-request`.
 
 This is the Claude counterpart of [`copilot-app`](../copilot-app/README.md). Every other
 plugin in this repository is authored once and read by both hosts (see
@@ -60,6 +61,34 @@ in which host.
   `hooks.json` and reads `hooks/hooks.json`; Copilot reads the root file and falls back to
   `hooks/` only when it is absent. So this file reaches Copilot alone, where it says the plugin
   is Claude-only and points at `copilot-app` instead. Nothing in it is generated.
+
+### context-view (function hooks)
+
+`/context-view` opens a pane showing, for the current session:
+
+1. **Context window** — used / limit, the peak, and the largest categories, from the engine's
+   usage API; when it has no breakdown, tool-result tokens by tool.
+2. **Instructions loaded** — `CLAUDE.md` and every file its `@` imports pull in (`AGENTS.md`
+   here), `.claude/rules/*.md` rules that fired because a read path matched their `paths`,
+   skill bodies (Skill calls), agent bodies (Agent calls with `subagent_type`), the output
+   style, and hook context such as `SessionStart`'s — each with an approximate token cost.
+3. **Markdown read** — every `.md` file read through Read, or `cat`/`sed`/`head`/`Get-Content`
+   through a shell, grouped by folder, with token cost and read count.
+4. **Devbook lens**, only when a read file sits under `.devbook/` or carries a fenced `meta`
+   block — grouped by folder (`arc42`, `domain`, `tech`, `design`, `ai`) and chapter address,
+   with a warning when most of a folder loads in one turn and when a `_meta/` file is read.
+
+The status line shows `ctx <n>% · <k> md`. Token costs are estimates at four characters a
+token, except where the engine's breakdown counts a memory file itself. The lens recognises
+devbook by shape and does not need devbook installed. Reads inside a subagent are listed and
+marked, but stay out of the by-tool totals, since they never reach this session's window.
+
+- `hooks/context-view/register.tsx` — the hooks module, named under `modules` in
+  `hooks/hooks.json`; `model.ts` holds its pure logic, and the `*.test.ts` files beside them
+  run under `claude plugin test plugins/claude-desktop`.
+- `types/index.d.ts` — the `$.state` contract the module keeps its data in.
+
+Claude Code only: function hooks have no Copilot counterpart.
 
 ### Instructions
 
@@ -124,6 +153,8 @@ its URL.
 ## Verify Installation
 
 - In Claude Desktop: asking for the dashboard renders a panel inline in the conversation
+- In Claude Code: `/context-view` opens the Context pane, and the status line shows
+  `ctx <n>% · <k> md`
 - In Claude Code: `start`, `session-handoff`, and `create-pull-request` appear in the skill
   list, and `mcp__plugin_claude-desktop_orch-dashboard__open_dashboard` returns a
   `http://127.0.0.1:<port>/` URL whose page shows the run list and updates without a refresh

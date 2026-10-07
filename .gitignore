@@ -1,2 +1,5 @@
 # Built Claude Desktop extension bundles (scripts/Build-DesktopExtension.ps1).
 dist/
+
+# Type declarations Claude Code lays beside a plugin loaded with --plugin-dir.
+plugins/*/.claude-plugin/types/

@@ -29,5 +29,6 @@ events (`sessionStart`, `preToolUse`) and `type: prompt` entries. Claude reads
 - Every plugin with a `hooks/` folder also has a root `hooks.json`: Copilot falls back to
   `hooks/hooks.json` only when the root file is absent, and would run the Claude commands.
 - `claude-desktop` is the exception: Claude-native, its `hooks/hooks.json` carries command
-  hooks that read event payloads (telemetry), which have no Copilot counterpart, and its root
+  hooks that read event payloads (telemetry) and a `modules` entry naming its function-hook
+  module, neither of which has a Copilot counterpart, and its root
   `hooks.json` reaches Copilot alone to say the plugin is Claude-only.
