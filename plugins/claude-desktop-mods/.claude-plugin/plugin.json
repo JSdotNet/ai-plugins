@@ -1,0 +1,16 @@
+{
+  "name": "claude-desktop-mods",
+  "version": "0.1.0",
+  "description": "Claude Code mods for the Code tab and terminal: /handoff-to asks for a Markdown brief a session in another repository can act on, and any reply holding one raises a band that copies it or shows it in a pane. Writes nothing to disk. Claude-only.",
+  "author": {
+    "name": "Job Schepers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "hooks",
+    "handoff",
+    "cross-repo"
+  ],
+  "types": "./types/index.d.ts"
+}

@@ -17,9 +17,10 @@ and the cross-session fan-out that used to ship here continue as `delivery`, `de
 and `fleet` in the `jsdotnet` marketplace ([JSdotNet/ai-agent-stack](https://github.com/JSdotNet/ai-agent-stack)),
 and the knowledge-folder convention as `devbook` there. A specialist here fills a role or a
 service for that engine and is usable on its own; it never names the engine, and it holds no
-flow control — it does not sequence stages, hold gates, spawn sessions, or delegate. Two host
+flow control — it does not sequence stages, hold gates, spawn sessions, or delegate. Three host
 plugins remain: `claude-desktop` (an MCP dashboard, `start`, `session-handoff`,
-`create-pull-request`) and `copilot-app` (`update-open-sessions` and three canvases).
+`create-pull-request`), `claude-desktop-mods` (Claude Code function hooks: cross-repository
+handoff briefs), and `copilot-app` (`update-open-sessions` and three canvases).
 
 ## Validating a change
 

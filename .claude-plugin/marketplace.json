@@ -24,6 +24,12 @@
       "version": "0.12.3"
     },
     {
+      "name": "claude-desktop-mods",
+      "source": "./plugins/claude-desktop-mods",
+      "description": "Claude Code mods for the Code tab and terminal: /handoff-to asks for a Markdown brief a session in another repository can act on, and any reply holding one raises a band that copies it or shows it in a pane. Writes nothing to disk. Claude-only.",
+      "version": "0.1.0"
+    },
+    {
       "name": "csharp-coding",
       "source": "./plugins/csharp-coding",
       "description": "C# .NET implementation through the `coding` agent: test-driven development, refactoring, code review and optimization, NuGet management, Aspire wiring, OpenTelemetry, and Azure SDK patterns. Fills the `implement` and `verify` services a flow runs its code stages through, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
