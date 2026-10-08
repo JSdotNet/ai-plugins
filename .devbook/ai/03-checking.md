@@ -45,7 +45,7 @@ date: 2026-09-26
 `claude plugin validate --strict` over the marketplace and every plugin manifest, which catches
 a manifest Claude Code would refuse to load.
 
-- **Used for** — nothing in this repository yet. The sibling ai-agent-stack repository runs it
+- **Used for** — nothing in this repository yet. The sibling `JSdotNet/devbook` repository runs it
   beside its own checks.
 - **Adopted by** — nobody here; no workflow or instruction in this repository runs it.
 - **Evidence** — none yet. Promotion to `trial` needs it run over this marketplace and its

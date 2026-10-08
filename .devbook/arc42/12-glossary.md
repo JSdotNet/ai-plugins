@@ -7,8 +7,8 @@
 | --- | --- |
 | Agent | An `agents/<role>.agent.md` file: a persona with a description and a tool list, loaded by both hosts. |
 | Contract | `plugins/<name>/resources/<name>.md`, with `name` and `description` and no glob. Assets load it by referencing its path. |
-| Delivery engine | `delivery`, `delivery-schedule`, and `fleet` in the `jsdotnet` marketplace. They run the staged flows that consult a specialist. |
-| devbook | The `.devbook/` folder convention and its check, from `JSdotNet/ai-agent-stack`. |
+| Delivery engine | `delivery` and `delivery-schedule` in the `jsdotnet-devbook` marketplace. They run the staged flows that consult a specialist. |
+| devbook | The `.devbook/` folder convention and its check, from `JSdotNet/devbook`. |
 | Flow control | Sequencing stages, holding a gate, spawning a session, or delegating. A specialist holds none of it. |
 | Host | A program that loads a plugin: GitHub Copilot, or Claude Code with Claude Desktop. |
 | Host plugin | A plugin built on one host's rendering surface, which ships only that host's manifest: `claude-desktop`, `claude-desktop-mods`, `copilot-app`. |

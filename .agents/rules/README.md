@@ -25,7 +25,7 @@ read it.
 `.agents/rules/` is not a ratified standard. `AGENTS.md` is the standard for the *root* file
 and defines no globs; [agents.md#179](https://github.com/agentsmd/agents.md/issues/179) is the
 open proposal for glob-scoped rules, and its `name` / `description` / `paths` shape is what
-this convention uses. It is the same convention `JSdotNet/ai-agent-stack` holds its plugins to.
+this convention uses. It is the same convention `JSdotNet/devbook` holds its plugins to.
 
 ## Rules devbook installs
 

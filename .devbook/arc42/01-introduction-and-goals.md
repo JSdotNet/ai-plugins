@@ -10,9 +10,9 @@ documentation, product, security — plus three host plugins and the issue track
 per plugin under `plugins/`, each installable on its own, in GitHub Copilot and in Claude
 Code alike.
 
-The delivery flows themselves are not built here. They ship as `delivery`,
-`delivery-schedule`, and `fleet` in the `jsdotnet` marketplace (`JSdotNet/ai-agent-stack`),
-beside the `devbook` folder convention; a specialist here fills a role for that engine, or for
+The delivery flows themselves are not built here. They ship as `delivery` and
+`delivery-schedule` in the `jsdotnet-devbook` marketplace (`JSdotNet/devbook`), beside the
+`devbook` folder convention; a specialist here fills a role for that engine, or for
 a person working without it, and holds no flow control.
 
 The people it serves are the maintainer, who authors every asset, and whoever installs a
