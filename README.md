@@ -6,11 +6,10 @@ coding, QA, domain, UX, documentation, product, security — plus three host plu
 trackers. Every asset is authored once and loaded by both hosts.
 
 The flows themselves live elsewhere. Staged delivery, the pull-request lane, scheduled runs,
-cross-session fan-out, and the knowledge-folder convention ship as `delivery`,
-`delivery-schedule`, `fleet`, and `devbook` in the `jsdotnet` marketplace
-([JSdotNet/ai-agent-stack](https://github.com/JSdotNet/ai-agent-stack)). A specialist here is
-usable on its own and holds no flow control: it does not sequence stages, hold gates, spawn
-sessions, or delegate.
+and the knowledge-folder convention ship as `delivery`, `delivery-schedule`, and `devbook` in
+the `jsdotnet-devbook` marketplace ([JSdotNet/devbook](https://github.com/JSdotNet/devbook)).
+A specialist here is usable on its own and holds no flow control: it does not sequence stages,
+hold gates, spawn sessions, or delegate.
 
 ## Plugins
 
@@ -30,7 +29,7 @@ sessions, or delegate.
 | `github` | tracker | Issue sync, pull requests, Actions CI/CD, Dependabot |
 | `jira` | tracker | Jira issues from approved Markdown backlog artifacts |
 | `claude-desktop` | host | `orch-dashboard` MCP server plus `start`, `session-handoff`, `create-pull-request` |
-| `claude-desktop-mods` | host | Claude Code function-hook mods: the `/context-view` pane and its status line entry |
+| `claude-desktop-mods` | host | Claude Code function-hook mods: `/handoff-to` cross-repository briefs and the `/context-view` pane with its status line entry |
 | `copilot-app` | host | `update-open-sessions` plus three canvas extensions |
 | `wip-convention` | convention | Shared `.wip` work-in-progress artifact layout |
 | `fincent` | project | Fincent story review, estimation, PR review, sprint and demo reporting |
