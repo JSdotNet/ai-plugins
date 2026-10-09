@@ -1,7 +1,7 @@
 {
   "name": "copilot-app",
   "description": "GitHub Copilot App host plugin: the update-open-sessions skill plus the orch-dashboard, diagram-canvas, and markdown-canvas extensions that render run progress, Mermaid diagrams, and Markdown previews inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": {
     "name": "Job Schepers"
   },
