@@ -71,7 +71,8 @@ depends-on: [".devbook/tech/tooling.md#nodejs"]
 CI for this repository.
 
 - **Used for** — `check-assets.yml` on every pull request, `devbook-meta.yml` on a devbook
-  change, and the nightly `nightly-plugin-version-bump.yml`.
+  change, `auto-merge.yml`, which merges a pull request that is not a draft once every other
+  check on its head commit is green, and the nightly `nightly-plugin-version-bump.yml`.
 
 ## GitHub CLI
 
@@ -90,18 +91,19 @@ type: tool
 ```meta
 status: trial
 type: package
-version: "1.19.0"
+version: "1.20.1"
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#claude-code"]
 ```
 
-The devbook convention from the `jsdotnet` marketplace: the `arc42/`, `tech/`, and `ai/`
-folders, their rules, and the checker copied to `.devbook/_tools/`.
+The devbook convention from the `jsdotnet-devbook` marketplace (`JSdotNet/devbook`, which it
+moved to from `JSdotNet/ai-agent-stack`): the `arc42/`, `tech/`, and `ai/` folders, their
+rules, and the checker copied to `.devbook/_tools/`.
 
 - **Used for** — this folder, `.devbook/arc42/`, and `.devbook/ai/`, installed by `devbook:init`
-  on 2026-09-26 and extended to `arc42/` the same day. Since 2026-10-06 it is stamped at 1.19.0,
-  contract 29, with the `estimate` procedure recorded under `components.devbook`. The delivery
-  engine is stamped at 1.18.0 and reads the `phases` maps for `flow-code` and `flow-spec` in
-  `.devbook/config.json`, which replaced `extensions` and `delivery.roles`.
+  on 2026-09-26 and extended to `arc42/` the same day. It is stamped at 1.20.1, contract 29,
+  with the `estimate` procedure recorded under `components.devbook`. The delivery engine and
+  `delivery-schedule` are stamped at 1.20.1; the engine reads the `phases` maps for `flow-code`
+  and `flow-spec` in `.devbook/config.json`, which replaced `extensions` and `delivery.roles`.
 - **Why** — the marketplace's specialists write devbook chapters in other repositories;
   keeping its own record in the same shape is how the convention gets exercised here.
 
