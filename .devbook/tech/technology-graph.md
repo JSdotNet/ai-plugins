@@ -15,7 +15,7 @@ status: adopted
 | File | Covers |
 | --- | --- |
 | [shared.md](shared.md) | The formats assets are written in, the protocols a plugin reaches a tool server through, and the MCP servers the manifests declare |
-| [hosts.md](hosts.md) | The plugin contracts of Claude Code and GitHub Copilot, and the two apps the host plugins render in |
+| [hosts.md](hosts.md) | The plugin contracts of Claude Code and GitHub Copilot, the two apps the host plugins render in, and the function hooks the Claude mods run as |
 | [tooling.md](tooling.md) | The agents that author and load the assets, the runtime and shell the scripts run on, CI, and the plugins and apps a change is carried with |
 
 ## Graph
@@ -35,6 +35,7 @@ graph LR
         copilot-api[Copilot CLI plugin API]
         claude-desktop[Claude Desktop]
         copilot-sdk[Copilot app extension SDK]
+        claude-hooks[Claude Code function hooks]
     end
     subgraph tooling
         claude-code[Claude Code]
@@ -62,6 +63,7 @@ graph LR
     claude-desktop --> node
     copilot-sdk --> copilot
     copilot-sdk --> node
+    claude-hooks --> claude-code
     actions --> node
     devbook --> node
     devbook --> claude-code

@@ -69,3 +69,21 @@ depends-on: [".devbook/tech/tooling.md#github-copilot", ".devbook/tech/tooling.m
   pinning it in its own `package.json` and lock file, and the orch-dashboard canvas, which
   imports it without a `package.json` of its own.
 - **Why** — the only way a canvas reaches a Copilot app session.
+
+## Claude Code function hooks
+
+```meta
+status: trial
+type: platform
+depends-on: [".devbook/tech/tooling.md#claude-code"]
+```
+
+Claude Code mods: TypeScript and TSX modules a plugin names under `modules` in
+`hooks/hooks.json`, run inside a session to add commands, panes, bands above the prompt, and
+status line entries. Copilot has no equivalent.
+
+- **Used for** — the `claude-desktop-mods` plugin's `/handoff-to` band and pane and its
+  `/context-view` pane, registered from `hooks/register.ts`, typed against the manifest's
+  `types` and tested with the `claude-code/testing` runner.
+- **Why** — the only way a plugin draws its own interface inside a Claude Code session; it
+  ships apart from `claude-desktop` so the hooks hot-reload on their own.
