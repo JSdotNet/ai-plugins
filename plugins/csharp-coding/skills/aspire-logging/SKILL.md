@@ -1,7 +1,6 @@
 ---
 name: aspire-logging
-description: 'Retrieve and analyze structured logs from running Aspire applications via the Aspire MCP server. Use when diagnosing errors, investigating slow requests, or reviewing service output during local development.'
-compatibility: Requires Aspire MCP server (`aspire mcp start` with CLI 13.1+).
+description: 'Retrieve and analyze structured logs, console output, and traces from a running Aspire application through the Aspire MCP server. Use when: diagnosing errors, investigating a slow or failing request, or reviewing service output during local development. DO NOT USE FOR: watching logs for a whole QA session (qa:aspire-log-monitor), wiring telemetry into a service (open-telemetry).'
 ---
 
 # Aspire Logging — Retrieve Logs via Aspire MCP
@@ -10,17 +9,22 @@ Query structured logs, traces, and resource state from a running Aspire applicat
 
 ## Prerequisites
 
-The Aspire CLI MCP server must be running:
+This skill needs the Aspire MCP server. Without it, read logs and traces in the Aspire
+dashboard and say that the MCP tools were not available.
+
+Start the server:
 
 ```bash
-aspire mcp start
+aspire agent mcp
 ```
 
 Or configure it for your AI assistant:
 
 ```bash
-aspire mcp init
+aspire agent init
 ```
+
+Older Aspire CLIs spell these `aspire mcp start` and `aspire mcp init`.
 
 ## Available MCP Tools
 

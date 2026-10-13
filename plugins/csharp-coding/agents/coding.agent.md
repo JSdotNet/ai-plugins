@@ -44,10 +44,10 @@ Use these MCP servers to ground responses in official documentation:
 | MCP Server | When to use |
 |---|---|
 | **Microsoft Learn** (`microsoft-learn`) | Look up .NET/C# API docs, code samples, and best practices from official sources. |
-| **Aspire MCP** (`aspire-mcp`) | Query Aspire orchestration docs, integrations, and AppHost patterns. |
+| **Aspire MCP** (`aspire`, started by `aspire agent mcp`) | Query Aspire orchestration docs, integrations, and AppHost patterns. |
 | **JSdotNet Project Guideline MCP** (`jsdotnet-guidelines`) | Retrieve project-specific coding standards and conventions. |
 
-When an MCP server is unavailable, fall back to `web/fetch` against `https://learn.microsoft.com` or `https://aspire.dev`.
+When an MCP server is unavailable, fetch the pages at `https://learn.microsoft.com` or `https://aspire.dev` directly.
 
 ## Workflow
 
@@ -117,7 +117,7 @@ When asked to explain a concept or find resources:
 - Modern C# features: file-scoped namespaces, primary constructors, record types, switch expressions.
 - Async end-to-end: no sync-over-async.
 - Use `ArgumentNullException.ThrowIfNull(x)` for null guards; `string.IsNullOrWhiteSpace(x)` for strings.
-- No silent catches: log and rethrow or let bubble.
+- No silent catches: handle the exception, or let it bubble to the boundary that logs it once.
 - Tests use xUnit + FluentAssertions (if already in project); match framework already in solution.
 - Least-exposure rule: `private` > `internal` > `protected` > `public`.
 - Comments explain *why*, not *what*.

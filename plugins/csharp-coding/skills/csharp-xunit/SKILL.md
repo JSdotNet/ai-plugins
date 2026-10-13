@@ -1,6 +1,6 @@
 ---
 name: csharp-xunit
-description: 'xUnit best practices for C# .NET unit testing, including data-driven tests, fixtures, and assertions. Use when writing or reviewing xUnit tests.'
+description: 'xUnit (v3 and v2) practice for C# .NET tests — project setup, facts and theories, fixtures, assertions, cancellation, skipping, and filtering by runner. Use when: writing or reviewing xUnit tests, or setting up or running an xUnit test project. DO NOT USE FOR: the test-first loop, seams, and what to mock (tdd).'
 ---
 
 # xUnit Best Practices for C#
@@ -10,7 +10,10 @@ Write effective unit tests with xUnit covering standard and data-driven approach
 ## Project Setup
 
 - Separate test project: `[ProjectName].Tests`
-- Required packages: `Microsoft.NET.Test.Sdk`, `xunit`, `xunit.runner.visualstudio`
+- Use the xUnit version already in the solution. A new project uses xUnit v3: `xunit.v3`,
+  `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`, and `<OutputType>Exe</OutputType>`;
+  set `<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>` to run it on
+  Microsoft.Testing.Platform. xUnit v2 is the `xunit` package.
 - Run tests: `dotnet test`
 
 ## Test Structure
@@ -22,6 +25,8 @@ Write effective unit tests with xUnit covering standard and data-driven approach
 - Use constructor for setup and `IDisposable.Dispose()` for teardown.
 - Use `IClassFixture<T>` for shared context within a class.
 - Use `ICollectionFixture<T>` for shared context across classes.
+- xUnit v3: pass `TestContext.Current.CancellationToken` to every async call, so a cancelled or
+  timed-out run stops the test.
 
 ## Assertion Guidelines
 
@@ -29,7 +34,9 @@ Write effective unit tests with xUnit covering standard and data-driven approach
 - `Assert.Same(expected, actual)` — reference equality.
 - `Assert.Throws<T>(() => ...)` / `await Assert.ThrowsAsync<T>(...)` — exception testing.
 - `Assert.Contains` / `Assert.DoesNotContain` — collection membership.
-- Prefer **FluentAssertions** or **AwesomeAssertions** if already used in the project.
+- Use the fluent assertion library already in the project. For a new one, choose
+  **AwesomeAssertions** (Apache-2.0) over **FluentAssertions** 8+, which needs a paid commercial
+  licence.
 
 ## Data-Driven Tests
 
@@ -56,11 +63,14 @@ For method-based or class-based data, use `[MemberData]` or `[ClassData]`.
 - Group by feature or component.
 - Use `[Trait("Category", "...")]` for categorization.
 - Use `ITestOutputHelper` for diagnostic output.
-- Skip tests conditionally: `[Fact(Skip = "reason")]`.
+- Skip unconditionally with `[Fact(Skip = "reason")]`; skip at runtime with `Assert.Skip("reason")` (xUnit v3).
 
 ## Validation
 
 ```bash
 dotnet test
+# Filter by trait, VSTest runner:
 dotnet test --filter "Category=Unit"
+# Filter by trait, xUnit v3 on Microsoft.Testing.Platform (drop the -- when the SDK runs MTP natively):
+dotnet test -- --filter-trait "Category=Unit"
 ```

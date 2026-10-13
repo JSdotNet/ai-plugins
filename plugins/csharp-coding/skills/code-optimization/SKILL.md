@@ -1,6 +1,6 @@
 ---
 name: code-optimization
-description: 'Optimize C# .NET code for performance, readability, and maintainability. Use when profiling reveals hot paths, or when code has excessive allocations, sync-over-async, or unnecessary complexity.'
+description: 'Optimize C# .NET code for performance, readability, and maintainability. Use when profiling reveals hot paths, or when code has excessive allocations, sync-over-async, or unnecessary complexity. DO NOT USE FOR: structural cleanup with no performance goal (refactor).'
 ---
 
 # Code Optimization — C# .NET

@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: 'Surgical code refactoring to improve maintainability without changing behavior. Covers extracting methods, renaming variables, breaking down large functions, improving type safety, eliminating code smells, and applying design patterns.'
+description: 'Behaviour-preserving refactoring of C# .NET code in small, tested steps — extract method, rename, break up large methods, remove code smells, improve type safety, apply a design pattern. Use when: restructuring or cleaning up code without changing what it does, or preparing code for a change. DO NOT USE FOR: performance work (code-optimization), new behaviour or a bug fix (tdd).'
 ---
 
 # Refactor
@@ -22,7 +22,7 @@ Split large methods into smaller, named helpers with a single responsibility.
 
 ### Rename for Clarity
 
-Update variable, method, or class names to reflect intent and domain language. Use IDE rename (F2) to avoid missing references.
+Update variable, method, or class names to reflect intent and domain language. Rename through a symbol-aware rename refactoring (the IDE or language server), not a text replace, so every reference updates.
 
 ### Remove Code Smells
 
@@ -50,10 +50,8 @@ Update variable, method, or class names to reflect intent and domain language. U
 
 ## Validation
 
-Run after every change:
+Run after every change, and keep a step only when it passes:
 
 ```bash
 dotnet test
 ```
-
-Commit after each passing refactor step.

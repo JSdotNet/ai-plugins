@@ -1,6 +1,6 @@
 ---
 name: open-telemetry
-description: 'Set up OpenTelemetry in .NET for distributed tracing, metrics, and logging. Use when adding observability to a C# service — covers SDK setup, exporters (OTLP, Console, Azure Monitor), and integration with Aspire.'
+description: 'Set up OpenTelemetry in .NET for distributed tracing, metrics, and logging — SDK setup, instrumentation, custom spans and meters, exporters (OTLP, Console, Azure Monitor), and Aspire service defaults. Use when: adding observability, tracing, or metrics to a C# service. DO NOT USE FOR: reading the logs or traces of a running Aspire app (aspire-logging), SLOs and alerting (sre).'
 ---
 
 # OpenTelemetry for .NET
@@ -17,6 +17,7 @@ dotnet add package OpenTelemetry.Extensions.Hosting
 # Instrumentation
 dotnet add package OpenTelemetry.Instrumentation.AspNetCore
 dotnet add package OpenTelemetry.Instrumentation.Http
+dotnet add package OpenTelemetry.Instrumentation.Runtime
 dotnet add package OpenTelemetry.Instrumentation.EntityFrameworkCore  # if using EF Core
 
 # Exporters — choose one or more
@@ -31,27 +32,26 @@ dotnet add package Azure.Monitor.OpenTelemetry.AspNetCore        # Azure Applica
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing
         .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation()
-        .AddOtlpExporter())          // sends to Aspire dashboard or collector
+        .AddHttpClientInstrumentation())
     .WithMetrics(metrics => metrics
         .AddAspNetCoreInstrumentation()
-        .AddRuntimeInstrumentation()
-        .AddOtlpExporter())
-    .WithLogging(logging => logging
-        .AddOtlpExporter());
+        .AddRuntimeInstrumentation())
+    .WithLogging()
+    .UseOtlpExporter();   // one OTLP exporter for all three signals: Aspire dashboard or a collector
 ```
+
+`UseOtlpExporter()` reads `OTEL_EXPORTER_OTLP_ENDPOINT` and replaces the per-signal `AddOtlpExporter()` calls; the SDK throws when both are registered.
 
 ## Aspire Integration
 
-When running under Aspire, use the `Aspire.OpenTelemetry` defaults extension — it configures OTLP endpoints automatically from Aspire environment variables:
-
-```bash
-dotnet add package Aspire.OpenTelemetry
-```
+Under Aspire, the wiring lives in the solution's ServiceDefaults project (created by the Aspire
+templates or `aspire init`), not in a package. Reference that project and call:
 
 ```csharp
-builder.AddServiceDefaults(); // includes OTel wiring from Aspire ServiceDefaults project
+builder.AddServiceDefaults(); // ConfigureOpenTelemetry: instrumentation + UseOtlpExporter() when OTEL_EXPORTER_OTLP_ENDPOINT is set
 ```
+
+Aspire sets `OTEL_EXPORTER_OTLP_ENDPOINT` for every resource it runs.
 
 The Aspire dashboard displays traces, metrics, and logs without additional exporter config.
 

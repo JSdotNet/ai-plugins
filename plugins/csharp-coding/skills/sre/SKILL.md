@@ -1,6 +1,6 @@
 ---
 name: sre
-description: 'SRE practices for .NET services — error budgets, SLOs, runbooks, incident context, and reliability improvements. Use when diagnosing incidents, reviewing service reliability, or implementing SRE patterns in C# code.'
+description: 'SRE practices for .NET services — SLIs and SLOs, error budgets and burn-rate alerts, health probes, resilience pipelines, runbooks, and incident context. Use when: diagnosing an incident, reviewing service reliability, defining an SLO, or adding health checks or retries to C# code. DO NOT USE FOR: pulling logs and traces (aspire-logging), OpenTelemetry setup (open-telemetry).'
 ---
 
 # SRE — Site Reliability Engineering for .NET Services
@@ -48,22 +48,24 @@ Register the meter and export to Aspire dashboard or Azure Monitor (see `open-te
 
 ## Health Checks
 
-Add health and readiness endpoints for Kubernetes/Aspire probes:
-
-```bash
-dotnet add package Microsoft.Extensions.Diagnostics.HealthChecks
-```
+Add liveness and readiness endpoints for Kubernetes/Aspire probes. Health checks ship in the
+ASP.NET Core shared framework, so a web project needs no package. Tag each check and filter per
+endpoint, so the two probes answer different questions:
 
 ```csharp
 builder.Services.AddHealthChecks()
-    .AddCheck("database", () => HealthCheckResult.Healthy())
-    .AddCheck("dependency", () => /* check downstream */ HealthCheckResult.Healthy());
+    .AddCheck("self", () => HealthCheckResult.Healthy(), tags: ["live"])
+    .AddCheck("database", () => /* check the database */ HealthCheckResult.Healthy(), tags: ["ready"])
+    .AddCheck("dependency", () => /* check downstream */ HealthCheckResult.Healthy(), tags: ["ready"]);
 
-app.MapHealthChecks("/health");
-app.MapHealthChecks("/ready");
+// Liveness: the process responds. Dependency checks stay out, so an outage does not restart every instance.
+app.MapHealthChecks("/alive", new HealthCheckOptions { Predicate = r => r.Tags.Contains("live") });
+// Readiness: dependencies are reachable. A failure takes the instance out of rotation.
+app.MapHealthChecks("/ready", new HealthCheckOptions { Predicate = r => r.Tags.Contains("ready") });
 ```
 
-Aspire automatically wires health checks when using `AddServiceDefaults()`.
+Aspire's `AddServiceDefaults()` registers a `live`-tagged `self` check, and `MapDefaultEndpoints()`
+maps `/health` (every check) and `/alive` (`live` only) in Development.
 
 ## Resilience Patterns (Microsoft.Extensions.Resilience)
 
@@ -144,10 +146,12 @@ records the current tool names and how to resolve their `mcp__` prefix.
 
 ## Error Budget Burn Tracking
 
-Monitor burn rate in dashboards (Azure Monitor, Grafana):
+Alert on burn rate with multiwindow thresholds (Google SRE workbook, 30-day SLO window), in
+dashboards such as Azure Monitor or Grafana:
 
-- **Fast burn** (>14× budget in 1 hour) → page on-call immediately.
-- **Slow burn** (>1× budget over 6 hours) → create ticket, investigate next sprint.
+- **Fast burn** — 14.4× the budget rate over 1 hour (2% of the budget) → page on-call.
+- **Medium burn** — 6× over 6 hours (5% of the budget) → page on-call.
+- **Slow burn** — 1× over 3 days (10% of the budget) → open a ticket.
 - **Within budget** → no action required.
 
 ## Reference
@@ -155,3 +159,4 @@ Monitor burn rate in dashboards (Azure Monitor, Grafana):
 - Resilience in .NET: `https://learn.microsoft.com/en-us/dotnet/core/resilience/`
 - Health checks: `https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks`
 - SRE book (Google): `https://sre.google/sre-book/table-of-contents/`
+- Alerting on SLOs (SRE workbook): `https://sre.google/workbook/alerting-on-slos/`

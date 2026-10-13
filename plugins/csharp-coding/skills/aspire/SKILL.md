@@ -1,39 +1,30 @@
 ---
 name: aspire
-description: '.NET Aspire orchestration for distributed C# applications. Use when adding Aspire to a project, wiring AppHost resources, configuring service discovery, or working with Aspire integrations.'
-compatibility: Works best with Aspire MCP server (`aspire mcp start`). Falls back to web/fetch against https://aspire.dev.
+description: 'Aspire orchestration for distributed C# applications: AppHost wiring, service discovery, integrations, and AppHost integration tests. Use when: adding Aspire to a solution, wiring services, databases, or queues in the AppHost, adding an Aspire integration (Redis, Postgres, Service Bus), or testing against a running AppHost. DO NOT USE FOR: reading logs or traces of a running app (aspire-logging), OpenTelemetry setup (open-telemetry).'
 ---
 
 # .NET Aspire — Distributed App Orchestration
 
 Orchestrate distributed .NET applications with Aspire AppHost.
 
-## When to Use
-
-- Adding Aspire to an existing solution.
-- Wiring services, databases, or queues in AppHost.
-- Configuring service discovery between services.
-- Using Aspire integrations (Redis, Postgres, Azure Service Bus, etc.).
-- Writing integration tests against a running AppHost.
-
 ## Using the Aspire MCP Server
 
-When the `aspire-mcp` server is available, use it to query official docs:
+When the Aspire MCP server is available (`aspire agent mcp`), query the official docs through it:
 
 ```
-list_integrations          — list all available Aspire hosting integrations
-get_integration_docs       — get docs for a specific integration package
-search_docs                — search indexed aspire.dev documentation (CLI 13.2+)
-get_doc                    — retrieve a doc by slug (CLI 13.2+)
+list_integrations                  — list the Aspire hosting integrations
+get_integration_docs               — docs for one integration package
+list_docs / search_docs / get_doc  — browse, search, and read aspire.dev pages
 ```
 
-Fallback: `web/fetch` against `https://aspire.dev` or `https://learn.microsoft.com/dotnet/aspire/`.
+The tool set differs between Aspire CLI versions — take the names from your tool list. Without
+the server, fetch the pages at `https://aspire.dev` directly.
 
 ## Quick Start
 
 ```bash
-# Install Aspire CLI
-irm https://aspire.dev/install.ps1 | iex
+# Install the Aspire CLI as a .NET global tool (WinGet, Homebrew, and npm: see "Install Aspire CLI" on aspire.dev)
+dotnet tool install -g Aspire.Cli
 
 # Add Aspire to existing solution
 aspire init
@@ -89,13 +80,20 @@ dotnet add package Aspire.Hosting.Testing
 
 ```csharp
 [Fact]
-public async Task Api_ReturnsHealthy()
+public async Task Api_reports_healthy()
 {
-    await using var app = await DistributedApplicationTestingBuilder
-        .CreateAsync<Projects.AppHost>();
-    await using var client = app.CreateHttpClient("api");
+    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+    var ct = cts.Token;
 
-    var response = await client.GetAsync("/health");
+    var appHost = await DistributedApplicationTestingBuilder
+        .CreateAsync<Projects.AppHost>(ct);
+    await using var app = await appHost.BuildAsync(ct);
+    await app.StartAsync(ct);
+
+    await app.ResourceNotifications.WaitForResourceHealthyAsync("api", ct);
+    using var client = app.CreateHttpClient("api");
+
+    using var response = await client.GetAsync("/health", ct); // MapDefaultEndpoints maps it in Development
     response.EnsureSuccessStatusCode();
 }
 ```

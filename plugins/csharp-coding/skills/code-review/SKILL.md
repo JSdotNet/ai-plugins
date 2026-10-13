@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: 'Structured C# .NET code review checklist. Use when reviewing pull requests or code changes for correctness, SOLID compliance, async patterns, security, and test coverage.'
+description: 'C# .NET code review checklist that reports findings by severity and changes nothing. Use when: reviewing a C# pull request, diff, or file for correctness, SOLID, async/await, error handling, security, and tests. DO NOT USE FOR: non-C# code or a language-agnostic bug hunt over a diff (the built-in code review), applying the fixes (refactor).'
 ---
 
 # Code Review — C# .NET
@@ -28,7 +28,7 @@ Perform a structured review of C# code. Report findings grouped by severity. Do 
 - [ ] Open/Closed: open for extension, closed for modification.
 - [ ] Liskov Substitution: derived types are substitutable for base types.
 - [ ] Interface Segregation: interfaces are focused, not fat.
-- [ ] Dependency Inversion: high-level modules depend on abstractions.
+- [ ] Dependency Inversion: code depends on abstractions at boundaries and seams (I/O, external services, time); elsewhere on concrete types.
 
 ### Async/Await
 
@@ -41,7 +41,7 @@ Perform a structured review of C# code. Report findings grouped by severity. Do 
 ### Error Handling
 
 - [ ] Specific exception types used (not base `Exception`).
-- [ ] No silent catches — log and rethrow or let bubble.
+- [ ] No silent catches — handle the exception, or let it bubble to the boundary that logs it once; a log-and-rethrow logs it twice.
 - [ ] External calls have timeout and retry where appropriate.
 
 ### Security
@@ -69,7 +69,7 @@ Perform a structured review of C# code. Report findings grouped by severity. Do 
 
 ### Design
 
-- [ ] No unnecessary interfaces or abstractions.
+- [ ] Interfaces and abstractions only at the boundaries and seams Dependency Inversion names; none for a single in-process implementation.
 - [ ] No new layers introduced without clear need.
 - [ ] Least-exposure rule: `private` > `internal` > `protected` > `public`.
 - [ ] Auto-generated files are not manually edited.

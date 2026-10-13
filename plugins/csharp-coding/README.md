@@ -31,7 +31,7 @@ A focused, single-agent plugin for writing, reviewing, optimizing, and testing C
 | Aspire MCP | Aspire orchestration and integration docs |
 | JSdotNet Project Guideline MCP | Project-specific coding standards |
 
-The agent works without MCP servers using `web/fetch` as a fallback.
+The agent works without MCP servers by fetching the official docs directly.
 
 ## What the Coding Agent Can Do
 

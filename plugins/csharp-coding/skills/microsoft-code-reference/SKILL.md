@@ -1,7 +1,6 @@
 ---
 name: microsoft-code-reference
-description: 'Verify Microsoft .NET/Azure API signatures and retrieve official code samples before implementing. Works best with Microsoft Learn MCP Server. Use when working with .NET libraries, Azure SDKs, or any Microsoft API to avoid hallucinated methods, wrong signatures, or deprecated patterns.'
-compatibility: Works best with Microsoft Learn MCP Server (https://learn.microsoft.com/api/mcp). Falls back to web/fetch against learn.microsoft.com.
+description: 'Verify Microsoft .NET and Azure API signatures and pull official code samples from Microsoft Learn before writing code against them. Use when: calling an unfamiliar .NET, ASP.NET Core, EF Core, or Azure SDK API, checking that a method or overload exists or is deprecated, finding the right NuGet package, or confirming the C# version a language feature needs. DO NOT USE FOR: Aspire docs (aspire).'
 ---
 
 # Microsoft Code Reference
@@ -17,31 +16,27 @@ Verify Microsoft API signatures and retrieve official code samples before genera
 
 ## Using Microsoft Learn MCP Server
 
-When the `microsoft-learn` MCP server is available:
+Use the `microsoft-learn` MCP server (`https://learn.microsoft.com/api/mcp`) when it is
+available; without it, fetch the pages under Fallback.
 
 ```
 Tool: microsoft_docs_search
-Query: "<type/method name> <context>" language:csharp
+query: "<type/method name> <context>"
 ```
 
 ```
 Tool: microsoft_code_sample_search
-Query: "<SDK method or pattern>" language:csharp
+query: "<SDK method or pattern>"
+language: "csharp"
 ```
 
-## Fallback: Web Fetch
+Fetch a full page from a search result with `microsoft_docs_fetch`.
 
-When MCP is unavailable, use `web/fetch` against official sources:
+## Fallback: Fetch the Docs
+
+When the MCP server is unavailable, fetch these official pages directly:
 
 - .NET API browser: `https://learn.microsoft.com/en-us/dotnet/api/`
 - Azure SDK docs: `https://learn.microsoft.com/en-us/dotnet/azure/`
 - What's new in .NET: `https://learn.microsoft.com/en-us/dotnet/core/whats-new`
 - What's new in C#: `https://learn.microsoft.com/en-us/dotnet/csharp/whats-new`
-
-## Key Use Cases
-
-- Verifying a method signature before use.
-- Finding the correct NuGet package for a feature.
-- Checking for deprecated APIs and their replacements.
-- Getting working code samples for Azure SDK integrations.
-- Confirming C# version requirements for new language features.

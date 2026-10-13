@@ -1,13 +1,13 @@
 ---
 name: tdd
-description: 'C# .NET test-driven development: red before green in vertical slices, testing behaviour through the public interface at agreed seams, with xUnit, NUnit, or MSTest. Use when building a C# feature or fixing a C# bug test-first, writing integration tests, or deciding what to mock. Not for frontend code.'
+description: 'C# .NET test-driven development: red before green in vertical slices, testing behaviour through the public interface at agreed seams, with xUnit, NUnit, or MSTest. Use when building a C# feature or fixing a C# bug test-first, writing integration tests, or deciding what to mock. DO NOT USE FOR: frontend code, or xUnit project setup and filtering (csharp-xunit).'
 ---
 
 # TDD — C# .NET
 
 **Seams.** Test only at the seams the brief or the person names; with none named, ask "which public interface do we test?" before writing a test. Test behaviour through that public interface — never a `private` member, never through `InternalsVisibleTo`. A test survives any refactor that keeps behaviour.
 
-**Loop.** One vertical slice per cycle: one failing test, then only the code that passes it. Run it and confirm it fails for the right reason — the assertion, not a compile error or a missing registration — before writing production code. Run the touched tests with `dotnet test --filter "FullyQualifiedName~<Class>"`, the whole suite once at the end. Refactoring and committing are not part of the loop.
+**Loop.** One vertical slice per cycle: one failing test, then only the code that passes it. Run it and confirm it fails for the right reason — the assertion, not a compile error or a missing registration — before writing production code. Run the touched tests with the filter syntax of the solution's runner — VSTest: `dotnet test --filter "FullyQualifiedName~<Class>"`; xUnit v3 on Microsoft.Testing.Platform: `dotnet test -- --filter-class "*.<Class>"` (no `--` when the SDK runs MTP natively) — and the whole suite once at the end. Refactoring and committing are not part of the loop.
 
 **Defects.** Start from the failing test that reproduces the defect through the public interface; fix only once it is red.
 
