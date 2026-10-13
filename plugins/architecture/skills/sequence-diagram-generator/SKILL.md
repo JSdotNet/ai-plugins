@@ -1,18 +1,9 @@
 ---
 name: sequence-diagram-generator
-description: Generate sequence diagrams for runtime scenarios, integration flows, and API call chains using Mermaid sequenceDiagram notation.
+description: 'Generate Mermaid sequence diagrams of runtime scenarios, integration flows, and API call chains. Use when: documenting a runtime scenario, use-case flow, or call chain, adding a runtime view to arc42 section 6, or making ordering, timing, or error handling explicit. DO NOT USE FOR: a lifecycle of states (state-diagram-generator) or static structure (c4-diagram-generator).'
 ---
 
 # Sequence Diagram Generator
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- Document a runtime scenario, use case flow, or API call chain.
-- Illustrate how components or services interact during a specific operation.
-- Add runtime views to arc42 Section 6 or complement a C4 diagram with a dynamic perspective.
-- Make implicit ordering, timing, or error handling behaviour explicit.
 
 ## Inputs
 

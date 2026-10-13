@@ -48,7 +48,7 @@ sequenceDiagram
 
 - Use `actor` for human participants and `participant` for automated systems.
 - Use `->>` for synchronous calls and `-->>` for replies.
-- Use `-x` for async fire-and-forget messages (no reply expected).
+- Use `-)` for async fire-and-forget messages (no reply expected); reserve `-x` for a failed or rejected message.
 - Use `activate` / `deactivate` to show processing time on a participant.
 - Wrap conditional branches in `alt` / `else` / `end`.
 - Wrap optional steps in `opt` / `end`.

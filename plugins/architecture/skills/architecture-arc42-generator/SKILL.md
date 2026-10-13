@@ -1,6 +1,6 @@
 ---
 name: architecture-arc42-generator
-description: Interactive arc42 documentation generator for drafting, validating, and iterating sections using reusable prompt and instruction assets.
+description: 'Draft, update, or check arc42 sections 1-12, one chapter per section, consistent across scope, constraints, risks, and quality goals. Use when: writing or refreshing an arc42 section, or checking sections against each other. DO NOT USE FOR: a decision record (create-architectural-decision-record), a debt record (create-technical-debt-record), or a diagram on its own (the *-diagram-generator skills).'
 ---
 
 # Architecture arc42 Generator
@@ -14,10 +14,12 @@ description: Interactive arc42 documentation generator for drafting, validating,
 
 ## Workflow
 
-1. Load `resources/arc42-global.md`.
-2. For each target section, load `resources/arc42-section-XX.md`.
-3. Use section prompts from `skills/architecture-arc42-generator/prompts/`.
-4. Draft or update section content with explicit assumptions and decision traceability.
-5. Reconcile cross-section consistency for scope, constraints, risks, and quality goals.
-6. Produce review-ready Markdown output.
+1. Find the target folder: `.devbook/arc42/` when it exists, one `NN-name.md` chapter per
+   section, and read that folder's rule; otherwise ask for a path.
+2. Load `resources/arc42-global.md`.
+3. For each target section, load `resources/arc42-section-XX.md`.
+4. Use section prompts from `skills/architecture-arc42-generator/prompts/`.
+5. Draft or update each section's chapter in the target folder with explicit assumptions and decision traceability.
+6. Reconcile cross-section consistency for scope, constraints, risks, and quality goals.
+7. Report the changed chapters and the open assumptions.
 

@@ -1,20 +1,11 @@
 ---
 name: deployment-diagram-generator
-description: Generate deployment and infrastructure diagrams showing cloud or on-premises hosting topology using Mermaid architecture-beta or graph notation.
+description: 'Generate deployment diagrams of cloud, on-premises, or hybrid hosting topology in Mermaid. Use when: documenting how the system is hosted, per-environment topology (production, staging, development), mapping containers to cloud services, VMs, or Kubernetes, or network zones and security boundaries for arc42 section 7. DO NOT USE FOR: logical containers without infrastructure (c4-diagram-generator).'
 ---
 
 # Deployment Diagram Generator
 
 Use this skill to produce deployment diagrams that show the physical and logical infrastructure hosting a system, complementing the C4 Level 2 Container diagram with an infrastructure perspective.
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- Document how the system is hosted on cloud, on-premises, or hybrid infrastructure.
-- Show environment-specific topology (production, staging, development).
-- Map containers or services to cloud services, VMs, or Kubernetes resources.
-- Visualise network zones, load balancers, or security boundaries for arc42 Section 7.
 
 ## Inputs
 

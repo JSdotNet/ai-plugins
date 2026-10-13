@@ -43,8 +43,10 @@ Use `actor` for human participants and `participant` for systems, services, or c
 | --- | --- |
 | `->>` | Synchronous call (solid line, open arrowhead) |
 | `-->>` | Synchronous reply (dashed line, open arrowhead) |
-| `-x` | Asynchronous message (solid line, X arrowhead) |
-| `--x` | Failed / error reply |
+| `-)` | Asynchronous message (solid line, open arrowhead) |
+| `--)` | Asynchronous reply or event (dashed line, open arrowhead) |
+| `-x` | Failed or rejected message (solid line, cross at the end) |
+| `--x` | Failed / error reply (dashed line, cross at the end) |
 
 ### Activation Bars
 

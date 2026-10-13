@@ -1,18 +1,9 @@
 ---
 name: state-diagram-generator
-description: Generate state machine diagrams for entity lifecycles, workflows, and protocol states using Mermaid stateDiagram-v2 notation.
+description: 'Generate Mermaid stateDiagram-v2 state machines for entity lifecycles, workflows, and protocol states. Use when: documenting an aggregate or entity lifecycle (Order, Subscription, Payment), an approval workflow with explicit transitions, clarifying complex transitions, or a protocol state machine (circuit breaker, connection). DO NOT USE FOR: message ordering between participants (sequence-diagram-generator).'
 ---
 
 # State Diagram Generator
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- Document the lifecycle of a domain aggregate or entity (e.g., `Order`, `Subscription`, `Payment`).
-- Model a workflow or approval process with explicit state transitions.
-- Clarify ambiguous or complex state transitions for developers or reviewers.
-- Describe a protocol-level state machine (e.g., circuit-breaker states, connection states).
 
 ## Inputs
 

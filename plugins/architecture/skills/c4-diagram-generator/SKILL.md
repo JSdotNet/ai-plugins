@@ -1,18 +1,9 @@
 ---
 name: c4-diagram-generator
-description: Generate C4 model architecture diagrams (System Context, Container, Component, Code) as Mermaid-embedded Markdown artifacts.
+description: 'Generate C4 diagrams (System Context, Container, Component, Code) as Mermaid in Markdown. Use when: creating or refreshing a C4 diagram, showing system boundaries, containers, or component relationships, adding a diagram to arc42 sections 3, 5, 6, or 7, or an architecture overview for one audience. DO NOT USE FOR: a runtime flow (sequence-diagram-generator) or hosting topology (deployment-diagram-generator).'
 ---
 
 # C4 Diagram Generator
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- Create or refresh a C4 System Context, Container, Component, or Code diagram.
-- Visualise system boundaries, major containers, or component relationships.
-- Add architecture diagrams to arc42 sections 3, 5, 6, or 7.
-- Produce an architecture overview suitable for a specific stakeholder audience.
 
 ## Inputs
 

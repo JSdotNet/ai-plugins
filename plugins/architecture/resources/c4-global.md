@@ -169,7 +169,6 @@ C4Component
   UpdateElementStyle(repo, $bgColor="#85BBF0", $fontColor="#000000", $borderColor="#5D82A8")
   UpdateElementStyle(db, $bgColor="#438DD5", $fontColor="#FFFFFF", $borderColor="#2E6295")
 ```
-```
 
 ## Scope Guidelines
 
