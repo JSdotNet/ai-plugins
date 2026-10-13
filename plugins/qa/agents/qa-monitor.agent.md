@@ -60,20 +60,9 @@ checkpoints to be communicated to it (see [Coordination](#coordination)).
 
 ## Required Access
 
-- **Resolve the MCP tool prefix from the tool list you actually have.** The Aspire server
-  ships with this plugin, so its tools normally surface as `mcp__plugin_qa_aspire__<tool>`;
-  the same server registered directly in a repository's own MCP configuration surfaces as
-  `mcp__aspire__<tool>`. This document names tools bare (`list_resources`); prepend whichever
-  prefix your tool list shows rather than assuming one.
-- **Use the tool names the installed server exposes, not remembered ones.** Aspire renamed
-  its query tools from `get_*` to `list_*` (`list_resources`, `list_structured_logs`,
-  `list_console_logs`, `list_traces`, `list_trace_structured_logs`) and exposes no metrics
-  tool at all. A name from this document that is missing from your tool list means look up
-  the current one, not that the server is unavailable.
-- **Aspire MCP server** — this agent is unusable without it. If unavailable, stop and
-  name the missing Aspire MCP tool family. If Aspire MCP is configured for normal sessions
-  but absent here, report it as a child-agent tool exposure problem instead of asking the
-  user to rerun the same validation.
+- **Aspire MCP server** — this agent is unusable without it. Tool names here are bare;
+  resolve prefixes, current names, and what to do when the server is missing per
+  [mcp-tools.md](../resources/mcp-tools.md).
 
 ## Scope
 
@@ -88,12 +77,9 @@ checkpoints to be communicated to it (see [Coordination](#coordination)).
 
 Apply the `aspire-log-monitor` skill as this agent's core loop:
 
-1. **Baseline** — call `list_resources` and `list_structured_logs` for every resource in
-   scope; record the baseline timestamp and any pre-existing warnings.
-2. **Continuous watch** — repeatedly poll `list_structured_logs` / `list_traces` /
-   `list_console_logs` for new entries since the last check. Do not wait until the end
-   of the session to look — check frequently enough to catch errors tied to specific
-   scenario checkpoints.
+1. **Baseline** — the skill's baseline steps, for every resource in scope.
+2. **Continuous watch** — the skill's watch loop, checking often enough to tie each error to
+   a scenario checkpoint.
 3. **Flag immediately** — the moment a new Error/Critical log entry or a failed trace
    appears, record it with its timestamp and the most recent scenario checkpoint
    received (see below), even if no one has asked for a report yet.
@@ -122,14 +108,13 @@ Produce a summary containing:
 2. New Error/Critical log entries, with resource, timestamp, message, and the closest
    known scenario checkpoint.
 3. Failed or abnormally slow traces, with correlated scenario checkpoint.
-4. Metric anomalies, if a metrics source was available — the current Aspire MCP server
-   exposes no metrics tool, so say so rather than implying metrics were reviewed.
-5. Or explicitly: "No new errors observed in Aspire logs/traces during this session."
+4. The rest of the `aspire-log-monitor` summary: metrics only when a source existed, or its
+   exact "no new errors observed" line.
 
 ## Constraints
 
-- Do not fabricate log or trace content — report only what the Aspire MCP tools
-  actually returned.
+- Report only what the Aspire MCP tools returned, per
+  [qa-evidence.md](../resources/qa-evidence.md).
 - Do not stop monitoring just because the UI under test looked correct — that
   correlation is exactly what this agent exists to check independently. This is about not
   concluding early, not about running forever: when run as a background agent, the session
@@ -160,4 +145,4 @@ Produce a summary containing:
 ## References
 
 - The repository's root instruction file: `AGENTS.md`, or `.github/copilot-instructions.md`
-- `plugins/qa/skills/aspire-log-monitor/SKILL.md`
+- [aspire-log-monitor](../skills/aspire-log-monitor/SKILL.md)

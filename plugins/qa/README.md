@@ -22,6 +22,9 @@ Two agent personas are included: `qa` drives the browser and produces the report
   - `skills/feature-test-from-issue/SKILL.md` — derive test scenarios from a GitHub issue or Jira ticket (reads the issue with the session's issue tooling or a pasted body; no GitHub/Jira-specific content here)
   - `skills/deployed-environment-validation/SKILL.md` — validate against a specific already-deployed test environment (staging/QA/UAT) instead of a local Aspire run
   - `skills/playwright-e2e-authoring/SKILL.md` — turn a validated scenario into a durable, committed Playwright test
+- Contracts:
+  - `resources/mcp-tools.md` — Aspire and Playwright MCP tool-name resolution and gaps
+  - `resources/qa-evidence.md` — the evidence policy every validation follows
 - Hooks:
   - `hooks.json` (session-start reminder to always run, monitor, and record evidence)
 
@@ -32,8 +35,8 @@ Two agent personas are included: `qa` drives the browser and produces the report
 | Aspire MCP (`aspire agent mcp`) | Run the distributed app; query resource state, logs, and traces (no metrics tool) |
 | Playwright MCP (`@playwright/mcp`) | Drive a real browser: navigate, interact, snapshot, screenshot |
 
-If either server is unavailable, the agent stops and asks the user to configure it —
-see the [Setup](./agents/qa.agent.md#setup) section in the agent file.
+If either server is unavailable, the agent stops and names the missing server —
+see [resources/mcp-tools.md](./resources/mcp-tools.md).
 
 ## What the QA Agent Can Do
 

@@ -40,6 +40,15 @@ The caller settles monitoring ownership before `qa` starts: caller-owned means t
 `aspire-run`, `aspire-log-monitor`, `playwright-validation`, `feature-test-from-issue`,
 `deployed-environment-validation`, and `playwright-e2e-authoring`.
 
+### Contracts
+
+```meta
+```
+
+Two `resources/` contracts the skills and agents read by path: `qa-evidence.md`, the evidence
+policy every validation follows, and `mcp-tools.md`, how a bare tool name resolves to the
+plugin-namespaced or the bare server spelling and what each server does not expose.
+
 ### MCP Servers
 
 ```meta
