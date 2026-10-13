@@ -1,13 +1,9 @@
 ---
 name: suggestion-review
-description: Run a future-improvement review that proposes practical suggestions to improve, extend, or harden any artifact (code, stories, documentation, architecture, etc.).
+description: "Propose ranked improvements to any artifact — code, stories, documentation, architecture — each with benefit, effort, and risk, in a phased plan. Use when: the user asks for future improvements, extension ideas, hardening, or 'what could be better' beyond current scope. DO NOT USE FOR: answering specific questions (question-review) or reviewer remarks on a PR (pr-remarks-review)."
 ---
 
 # Suggestion Review Skill
-
-## Purpose and Trigger Conditions
-
-Use this skill when the user asks for future improvements, extension ideas, or practical suggestions beyond current scope for any artifact — including source code, user stories, documentation, architecture documents, configuration files, or any other review target.
 
 The calling agent provides the domain knowledge about the review target; this skill drives the suggestion-focused review workflow.
 

@@ -1,13 +1,9 @@
 ---
 name: todo-review
-description: Run a review based on TODO items and open checklist entries in any artifact (code, stories, documentation, architecture, etc.), then convert them into prioritized findings and next actions.
+description: "Turn the TODO notes, open checklist items, and unresolved placeholders in any artifact — code, stories, documentation, architecture — into prioritized findings and next actions. Use when: reviewing TODOs, open checklist entries, backlog bullets, or placeholders left in a file or document set. DO NOT USE FOR: improvement ideas beyond what is written down (suggestion-review)."
 ---
 
 # TODO Review Skill
-
-## Purpose and Trigger Conditions
-
-Use this skill when the user asks to review TODO notes, backlog bullets, open checklist items, or unresolved placeholders in any artifact — including source code, user stories, documentation, architecture documents, configuration files, or any other review target.
 
 The calling agent provides the domain knowledge about the review target; this skill drives the TODO-based review workflow.
 

@@ -1,13 +1,9 @@
 ---
 name: pr-remarks-review
-description: Work through pull request review remarks systematically — triage, address, and close out each comment with evidence, a resolution decision, and a follow-up action when needed.
+description: "Triage pull request review remarks one by one — classify each as fix, discuss, decline, or defer, and draft a reply the user can post. Drafts only: posts nothing and changes no code. Use when: working through PR review comments or open review threads, 'address the review', or a pasted list of reviewer remarks. DO NOT USE FOR: reviewing the pull request's code yourself."
 ---
 
 # PR Remarks Review Skill
-
-## Purpose and Trigger Conditions
-
-Use this skill when the user wants to process open pull request review comments or review threads. It drives a structured triage-and-response workflow so that no remark is missed or left ambiguous.
 
 The calling agent supplies domain knowledge about the code, story, or documentation being reviewed; this skill drives the remark-by-remark processing workflow.
 
@@ -39,3 +35,4 @@ The calling agent supplies domain knowledge about the code, story, or documentat
 - Discuss items include the question or trade-off to resolve with the reviewer.
 - Decline and Defer items include a rationale that can be pasted directly as a reply.
 - No remark is left without a decision.
+- Nothing is posted to the pull request: the user posts the drafted replies.

@@ -1,13 +1,9 @@
 ---
 name: question-review
-description: Run a structured review driven by explicit user questions against any artifact (code, stories, documentation, architecture, etc.) and provide direct answers with evidence and follow-up actions.
+description: "Answer the user's explicit review questions about any artifact — code, stories, documentation, architecture — each with a direct answer, evidence, and a confidence level. Use when: the user brings specific questions to review an artifact against, 'review this and tell me whether…', 'does this handle X?'. DO NOT USE FOR: open-ended improvement ideas (suggestion-review) or a TODO sweep (todo-review)."
 ---
 
 # Question Review Skill
-
-## Purpose and Trigger Conditions
-
-Use this skill when the user provides a set of review questions and wants direct, evidence-backed answers about any artifact — including source code, user stories, documentation, architecture documents, configuration files, or any other review target.
 
 The calling agent provides the domain knowledge about the review target; this skill drives the question-driven review workflow.
 
