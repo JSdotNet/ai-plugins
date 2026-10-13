@@ -1,6 +1,6 @@
 ---
 name: create-pull-request
-description: "Open a pull request for the current branch — push it, derive title and body from the commits and the linked issue, apply the repository PR template, and set labels, reviewers, and issue links. Use when: opening a PR, raising a PR for a finished branch, or turning a draft PR ready for review."
+description: "Open a pull request for the current branch — push it, derive title and body from the commits and the linked issue, apply the repository PR template, and set labels, reviewers, and issue links. Use when: opening a PR, raising a PR for a finished branch, or turning a draft PR ready for review. DO NOT USE FOR: updating or fixing a PR that is already open for review (delivery:update-pr-branch, delivery:fix-pr-checks)."
 ---
 
 # Create Pull Request
@@ -46,9 +46,11 @@ and the right labels and reviewers — and creates the PR with `gh`.
    gh pr view --json number,state,isDraft,url
    ```
 
-   If one exists and is open, stop and report the URL — use `update-pr-branch` or
-   `fix-pr-checks` instead. If it exists and is a draft the user wants to publish, skip to
-   Phase 5.
+   - Open and `isDraft: true`: report the URL and ask whether to publish it. On yes, skip to
+     step 16; on no, stop.
+   - Open and not a draft: stop and report the URL — use `update-pr-branch` or
+     `fix-pr-checks` instead.
+   - None, or closed or merged: continue.
 
 ### Phase 2 — Collect Change Context
 
@@ -138,19 +140,22 @@ and the right labels and reviewers — and creates the PR with `gh`.
 ### Phase 6 — Report
 
 17. Output the PR number, URL, base, draft state, and linked issue.
-18. Report the initial check status once CI has been triggered:
+18. Report the initial check status:
 
     ```bash
     gh pr checks <number>
     ```
 
-    If checks are already failing, hand off to `fix-pr-checks`.
+    Right after creation the checks have usually not started yet, so an empty result means
+    pending — report it as pending, not as passing. If checks are already failing, hand off
+    to `fix-pr-checks`.
 
 ## Dashboard Interface
 
 This skill reports progress through the `orch-dashboard` MCP server
 (`plugins/claude-desktop/mcp/orch-dashboard/`). Follow the shared
-**Dashboard Reporting Contract** in `resources/orch-dashboard-contract.md`
+**Dashboard Reporting Contract** in
+[`resources/orch-dashboard-contract.md`](../../resources/orch-dashboard-contract.md)
 for availability and the tool cadence.
 
 - Open the dashboard per the shared contract, then call `start_run` with
@@ -174,6 +179,8 @@ contract.
 - `fix-pr-checks` (plugin: `delivery`) — diagnose and fix failing PR checks.
 - `pr-merge-ready` (plugin: `delivery`) — score one pull request against the merge-ready checklist and clear its blockers, one PR per pass.
 - `pr-remarks-review` (plugin: `review`) — work through reviewer comments.
+
+When the plugin a hand-off names is not installed, report the state and the URL and stop.
 
 ## Notes
 

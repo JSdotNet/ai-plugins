@@ -133,9 +133,10 @@ cross-repo target, and never appears in `git status`:
 Honor `CLAUDE_CONFIG_DIR` when it is set, and `CLAUDE_HANDOFF_DIR` to override the directory
 outright. Use a UTC timestamp and a short kebab-case slug derived from the objective.
 
-Write it into the repository instead — `.wip/handoffs/handoff-<slug>.md`, per the `.wip`
-convention — only when the user wants the brief shared with the team or committed. Never
-write it there when the target is another repository.
+Write it into the repository instead — `.wip/handoffs/handoff-<slug>.md` — only when the user
+wants the brief shared with the team or committed. Place it per `wip-convention:wip-align` when
+that plugin is installed; without it, use that path as written. Never write it there when the
+target is another repository.
 
 ### 5 — Mark the dashboard run, when there is one
 
