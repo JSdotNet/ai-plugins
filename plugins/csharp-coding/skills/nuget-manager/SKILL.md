@@ -5,77 +5,22 @@ description: 'Add, remove, update, and list NuGet packages in .NET projects and 
 
 # NuGet Manager
 
-Manage NuGet packages safely using the `dotnet` CLI.
-
-## Rules
-
-- Add and remove packages with the CLI, never by hand-editing a new reference. .NET 10 SDK and
-  later: `dotnet package add` / `dotnet package remove`; every SDK: `dotnet add package` /
-  `dotnet remove package`.
-- When the solution has a `Directory.Packages.props` (Central Package Management), versions
-  live only there: the CLI writes `<PackageVersion>` there and a version-less
-  `<PackageReference>` in the project. Bump a version in `Directory.Packages.props`, never in a
-  `.csproj`.
-- Without CPM, bump a version by re-adding the package with `--version`, or by editing the
-  `Version` attribute of its `<PackageReference>` in the `.csproj`.
-- Always run `dotnet restore` after version changes to validate the dependency graph.
-
-## Common Operations
-
-The noun-first form needs the .NET 10 SDK; the verb-first form works on every SDK.
-
-### Add a Package
-
-```bash
-dotnet package add <PackageName> --version <version> --project <project>
-dotnet add <project> package <PackageName> --version <version>
-```
-
-### Remove a Package
-
-```bash
-dotnet package remove <PackageName> --project <project>
-dotnet remove <project> package <PackageName>
-```
-
-### List Outdated Packages
-
-```bash
-dotnet package list --outdated
-dotnet list package --outdated
-```
-
-### Update a Package Without CPM
-
-```bash
-dotnet package update <PackageName>                       # .NET 10 SDK and later
-dotnet add <project> package <PackageName> --version <version>
-```
-
-Or edit `<PackageReference Include="..." Version="..." />` in the `.csproj`, then:
-
-```bash
-dotnet restore
-dotnet build
-dotnet test
-```
-
-### Central Package Management (`Directory.Packages.props`)
-
-If the solution uses CPM, update the version in `Directory.Packages.props`, not in individual `.csproj` files:
-
-```xml
-<PackageVersion Include="PackageName" Version="x.y.z" />
-```
-
-## Validation
-
-After any package change:
-
-```bash
-dotnet restore
-dotnet build
-dotnet test
-```
-
-Resolve all warnings about deprecated or incompatible packages before finalizing.
+1. Detect Central Package Management (CPM): a `Directory.Packages.props` at or above the
+   project. Under CPM, versions live only there.
+2. Add and remove packages with the CLI, never by hand-editing a new reference:
+   `dotnet package add <Id> --version <v> --project <project>` and
+   `dotnet package remove <Id> --project <project>` on the .NET 10 SDK and later;
+   `dotnet add <project> package <Id> --version <v>` and `dotnet remove <project> package <Id>`
+   on every SDK. Under CPM the CLI writes `<PackageVersion>` to `Directory.Packages.props` and a
+   version-less `<PackageReference>` to the project.
+3. Bump a version under CPM in `<PackageVersion Include="<Id>" Version="x.y.z" />` in
+   `Directory.Packages.props`, never in a `.csproj`. Without CPM, re-add the package with
+   `--version`, run `dotnet package update <Id>` (.NET 10 SDK), or edit the `Version` attribute
+   of its `<PackageReference>`.
+4. List outdated packages with `dotnet package list --outdated` (.NET 10 SDK) or
+   `dotnet list package --outdated`.
+5. After every change run, in order, stopping at the first failure: `dotnet restore`, then
+   `dotnet build`, then `dotnet test`.
+6. Resolve every NuGet warning restore and build report — a downgrade (`NU1605`), a
+   vulnerable package (`NU1901`–`NU1904`), a deprecated or incompatible one — before reporting
+   the change done.

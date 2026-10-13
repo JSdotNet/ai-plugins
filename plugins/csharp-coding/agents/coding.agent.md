@@ -58,24 +58,17 @@ When an MCP server is unavailable, fetch the pages at `https://learn.microsoft.c
 3. Query Microsoft Learn MCP (when available) or official docs for API signatures before implementing unfamiliar APIs.
 4. Write clean, idiomatic C# following project conventions and the `.NET Quick Checklist` below.
 5. Apply SOLID principles, async/await patterns, proper error handling, and structured logging.
-6. Propose tests or write them alongside implementation (prefer TDD — see `tdd` skill).
+6. Propose tests or write them alongside implementation (prefer TDD — [../skills/tdd/SKILL.md](../skills/tdd/SKILL.md); test rules in [../resources/testing-contract.md](../resources/testing-contract.md)).
 7. Run `dotnet build` (or `dotnet test` if tests exist) and resolve any warnings or errors.
 8. Report: what was implemented, what tests cover it, and any follow-up recommendations.
 
 ### Review Code
 
-1. Load the file(s) to review.
-2. Apply the `code-review` skill checklist.
-3. Check: correctness, SOLID violations, async/await correctness, null safety, error handling, security, test coverage, naming consistency.
-4. Report findings grouped by severity: Blocking → Important → Suggestion.
-5. Do NOT make changes; report only. Whether a finding is fixed, and by whom, is the caller's decision.
+Load the file(s) to review and apply [../skills/code-review/SKILL.md](../skills/code-review/SKILL.md): its house checks, its severities, its report format, and report only.
 
 ### Optimize Code
 
-1. Identify hot paths or code smells using the `code-optimization` skill.
-2. Measure before suggesting: reference benchmarks or profiling context when available.
-3. Propose changes for performance (allocations, async, Span/Memory), readability (naming, structure), and maintainability (complexity, duplication).
-4. Keep behavior unchanged; apply the `refactor` skill for structural changes.
+Apply [../skills/code-optimization/SKILL.md](../skills/code-optimization/SKILL.md) for measured performance work; structure and readability go through [../skills/refactor/SKILL.md](../skills/refactor/SKILL.md).
 
 ### TDD Workflow
 
@@ -84,22 +77,17 @@ Follow the `tdd` skill: red before green in vertical slices, at the seams the br
 ### Test Project Feedback
 
 1. Load the test project files.
-2. Evaluate: coverage gaps, naming consistency, assertion quality, isolation (no shared state), and test structure (AAA pattern).
-3. Apply the `csharp-xunit` skill for xUnit-specific guidance.
+2. Evaluate coverage gaps and isolation (no shared state), and check shape, mocking, and anti-patterns against [../resources/testing-contract.md](../resources/testing-contract.md).
+3. Apply [../skills/csharp-xunit/SKILL.md](../skills/csharp-xunit/SKILL.md) for xUnit-specific guidance.
 4. Provide concrete improvement suggestions with code examples.
 
 ### Feature Proposals
 
-Apply the `feature-proposal` skill:
-
-1. Describe the proposed feature with context and motivation.
-2. Identify affected areas (domain, application, infrastructure, tests).
-3. Estimate effort and list assumptions.
-4. Store the proposal under `.wip/proposals/` and report the path, then stop. Implementing it is a separate request from whoever consulted you.
+Apply [../skills/feature-proposal/SKILL.md](../skills/feature-proposal/SKILL.md): it stores the proposal under `.wip/proposals/`, reports the path, and stops. Implementing it is a separate request from whoever consulted you.
 
 ### Package Management
 
-Use the `nuget-manager` skill for all NuGet operations.
+Use [../skills/nuget-manager/SKILL.md](../skills/nuget-manager/SKILL.md) for all NuGet operations.
 
 ### Learning Resources
 
@@ -116,10 +104,8 @@ When asked to explain a concept or find resources:
 - Repo config: `Directory.Build.*`, `Directory.Packages.props`.
 - Modern C# features: file-scoped namespaces, primary constructors, record types, switch expressions.
 - Async end-to-end: no sync-over-async.
-- Use `ArgumentNullException.ThrowIfNull(x)` for null guards; `string.IsNullOrWhiteSpace(x)` for strings.
-- No silent catches: handle the exception, or let it bubble to the boundary that logs it once.
-- Tests use xUnit + FluentAssertions (if already in project); match framework already in solution.
-- Least-exposure rule: `private` > `internal` > `protected` > `public`.
+- House conventions — null guards, exception handling, least exposure: [../skills/code-review/SKILL.md](../skills/code-review/SKILL.md).
+- Test framework and libraries: the ones already in the solution, per [../skills/csharp-xunit/SKILL.md](../skills/csharp-xunit/SKILL.md).
 - Comments explain *why*, not *what*.
 
 ## Skills Reference
@@ -128,8 +114,8 @@ When asked to explain a concept or find resources:
 |---|---|
 | `tdd` | Test-first loop, seams, boundary mocking, integration seams |
 | `code-review` | Structured C# code review checklist |
-| `code-optimization` | Performance and readability optimization |
-| `refactor` | Behavior-preserving structural refactoring |
+| `code-optimization` | Measured performance optimization |
+| `refactor` | Behavior-preserving structure and readability |
 | `nuget-manager` | NuGet package add, remove, and update |
 | `csharp-xunit` | xUnit test writing best practices |
 | `microsoft-code-reference` | Official API verification via Microsoft Learn MCP |

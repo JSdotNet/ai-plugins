@@ -22,6 +22,9 @@ A focused, single-agent plugin for writing, reviewing, optimizing, and testing C
   - `skills/open-telemetry/SKILL.md`
   - `skills/aspire-logging/SKILL.md`
   - `skills/sre/SKILL.md`
+- Resources:
+  - `resources/testing-contract.md` — test shape, mocking, anti-patterns, seams, runner filters
+  - `resources/runbook-template.md` — the runbook the `sre` skill writes
 
 ## MCP Servers (optional, enhance capabilities)
 
@@ -37,10 +40,10 @@ The agent works without MCP servers by fetching the official docs directly.
 
 - **Write code** — idiomatic C# with SOLID, async/await, and proper error handling.
 - **Review code** — structured review with Blocking / Important / Suggestion severity levels.
-- **Optimize code** — performance, allocation, and readability improvements.
+- **Optimize code** — measured performance and allocation improvements.
 - **TDD** — Red-Green-Refactor cycle with test framework detection.
 - **Test feedback** — review and improve existing test projects.
-- **Refactor** — behavior-preserving structural improvements.
+- **Refactor** — behavior-preserving structure and readability improvements.
 - **Package management** — NuGet add, remove, and update via dotnet CLI.
 - **Feature proposals** — scoped proposals stored under `.wip/proposals/`.
 - **Learning resources** — official docs via Microsoft Learn MCP or web fetch.
