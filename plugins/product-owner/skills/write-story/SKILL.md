@@ -9,6 +9,8 @@ Use this skill to write or improve story artifacts only.
 
 ## Rules
 
-- Load [`resources/stories.md`](../../resources/stories.md) before writing.
+- Load [stories.md](../../resources/stories.md) before writing.
+- Store the file per `wip-convention:wip-align` when that plugin is installed; without it, at
+  `.wip/work/<module>/story-<short-title>.md`.
 - Keep output focused on backlog clarity and testability.
 - Keep Jira synchronization as a separate step handled by the `jira` plugin's skills.

@@ -9,6 +9,8 @@ Use this skill to write or improve epic artifacts only.
 
 ## Rules
 
-- Load [`resources/epics.md`](../../resources/epics.md) before writing.
+- Load [epics.md](../../resources/epics.md) before writing.
+- Store the file per `wip-convention:wip-align` when that plugin is installed; without it, at
+  `.wip/work/<module>/epic-<short-title>.md`.
 - Keep epics outcome-oriented and decomposable into stories.
 - Keep Jira synchronization as a separate step handled by the `jira` plugin's skills.
