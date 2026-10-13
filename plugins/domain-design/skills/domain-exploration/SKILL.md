@@ -1,15 +1,11 @@
 ---
 name: domain-exploration
-description: 'Discover domain events, commands, actors, subdomains, and ubiquitous language through guided Event Storming-style exploration.'
+description: 'Discover domain events, commands, actors, subdomains, and ubiquitous language through guided Event Storming-style exploration. Use when: exploring a business domain, identifying its key concepts, or starting domain modelling from scratch. DO NOT USE FOR: fixing boundaries between known contexts (context-mapping) or designing aggregates (domain-model-design).'
 ---
 
 # Domain Exploration
 
 Use this skill to start domain discovery for a new or existing project.
-
-## Trigger Conditions
-
-Use when the user wants to explore a business domain, identify key domain concepts, or start from scratch with domain modelling.
 
 ## Inputs
 
@@ -39,7 +35,8 @@ Use when the user wants to explore a business domain, identify key domain concep
 
 ## Output
 
-- Initial `domain.md` with subdomain overview and ubiquitous language.
+- Initial `context-map.md` with the subdomain overview.
+- Each discovered term under `## Ubiquitous Language` in its candidate context's `domain.md`, or as the `aliases` of the chapter that models it.
 - Candidate bounded contexts with preliminary boundaries.
 - List of open questions and areas needing domain expert validation.
 

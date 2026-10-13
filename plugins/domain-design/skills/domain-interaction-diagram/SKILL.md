@@ -1,25 +1,21 @@
 ---
 name: domain-interaction-diagram
-description: 'Generate Mermaid flowchart diagrams that visualise integration contracts, communication patterns, and anti-corruption layer mappings between bounded contexts.'
+description: 'Generate Mermaid flowcharts of integration contracts, communication patterns, and anti-corruption layer mappings between bounded contexts. Use when: visualising cross-context interactions once their contracts are defined, or refreshing them after a contract changes. DO NOT USE FOR: defining the contracts (domain-interaction-model).'
 ---
 
 # Domain Interaction Diagram
 
 Use this skill to produce integration diagrams that show how bounded contexts communicate — what crosses each boundary, by which mechanism, and through which integration pattern.
 
-## Trigger Conditions
-
-Use after `domain-interaction-model` has defined integration contracts, or when the user wants to visualise existing cross-context interactions.
-
 ## Inputs
 
-- Bounded context files with Integration Contracts sections populated by `domain-interaction-model`.
+- Each bounded context's dependency tables (`## Dependencies` in `context.md`, or `dependencies.md`) as `domain-interaction-model` records them. If none exist, report that and stop.
 - Context map (from `context-mapping`) to confirm relationship patterns.
 
 ## Workflow
 
 1. Apply `resources/ddd-global.md` and `resources/ddd-diagram.md`.
-2. Read all Integration Contracts sections across the bounded context files and extract for each integration point:
+2. Read the dependency tables of every bounded context and extract for each integration point:
    - The two participating contexts.
    - The integration pattern (ACL, Customer-Supplier, Published Language, Open Host Service, Shared Kernel, Conformist).
    - The mechanism: integration event, command, query, or shared data.
@@ -33,11 +29,11 @@ Use after `domain-interaction-model` has defined integration contracts, or when 
 4. For each anti-corruption layer, produce a dedicated **ACL Translation** diagram using `flowchart LR` following `resources/ddd-diagram.md`:
    - Show the upstream concept, the ACL translator, and the downstream concept as three nodes.
    - Label the upstream edge with the upstream term and the downstream edge with the translated term.
-5. Insert the Domain Interaction Overview diagram into `domain.md` under a **Domain Interaction Overview** section.
-6. Insert each ACL Translation diagram into the relevant bounded context file under its Integration Contracts section.
+5. Insert the Domain Interaction Overview diagram into `context-map.md` under a **Domain Interaction Overview** section.
+6. Insert each ACL Translation diagram beside the relationship it translates in the downstream context's dependency tables.
 7. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-output-file>` from the plugin root to generate SVG files alongside the Markdown output.
 
 ## Output
 
-- `domain.md` updated with a Domain Interaction Overview `flowchart LR` diagram.
-- Relevant bounded context files updated with ACL Translation `flowchart LR` diagrams where anti-corruption layers exist.
+- `context-map.md` updated with a Domain Interaction Overview `flowchart LR` diagram.
+- Downstream contexts' dependency tables updated with ACL Translation `flowchart LR` diagrams where anti-corruption layers exist.

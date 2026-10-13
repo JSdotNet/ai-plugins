@@ -1,19 +1,15 @@
 ---
 name: domain-model-design
-description: 'Design tactical domain models within a bounded context — aggregate roots, entities, value objects, domain events, and invariants.'
+description: 'Design the tactical domain model of one bounded context: aggregate roots, entities, value objects, domain events, domain services, and invariants. Use when: designing aggregates, entities, value objects, domain events, or domain services within a context. DO NOT USE FOR: the class diagram of the result (aggregate-diagram) or boundaries between contexts (context-mapping).'
 ---
 
 # Domain Model Design
 
 Use this skill to design the tactical domain model for a specific bounded context.
 
-## Trigger Conditions
-
-Use when the user needs to design aggregates, entities, value objects, domain events, or domain services within a bounded context.
-
 ## Inputs
 
-- Bounded context file with purpose, ubiquitous language, and integration contracts.
+- The bounded context's `context.md` (purpose, boundary, dependencies) and `domain.md` (ubiquitous language).
 - Business rules and invariants for the context.
 - Use cases or user stories scoped to this context (optional).
 

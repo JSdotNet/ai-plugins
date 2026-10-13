@@ -19,7 +19,7 @@ Define shared Domain-Driven Design principles that apply to all domain design wo
 
 ## Ubiquitous Language Rules
 
-- Every domain term must be defined in the glossary section of its bounded context file.
+- Every domain term is defined once in its bounded context: as the `aliases` of the chapter that models it, or as a `term` chapter under `## Ubiquitous Language` in `domain.md`, per `domain-documentation-structure.md`.
 - Use domain terms consistently in all artifacts: documentation, code, API contracts, and conversations.
 - When a term is ambiguous, resolve it with the domain expert before proceeding.
 - Avoid generic technical names (`Manager`, `Handler`, `Processor`, `Service`) for domain concepts unless they genuinely reflect the domain language.

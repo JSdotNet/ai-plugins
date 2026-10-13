@@ -146,9 +146,12 @@ flowchart TD
         E[Identity and Access]
         F[Payment Gateway]
     end
-    A -->|Customer-Supplier| C
-    B -->|Published Language| A
+    A --> C
+    B --> A
 ```
+
+Edges carry direction only. The relationship pattern (`Customer-Supplier`, `Published Language`)
+is labelled on the context map, never on the landscape.
 
 ### Node Shapes
 

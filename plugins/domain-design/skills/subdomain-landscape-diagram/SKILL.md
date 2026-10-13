@@ -1,25 +1,21 @@
 ---
 name: subdomain-landscape-diagram
-description: 'Generate a Mermaid landscape diagram showing subdomains classified by type (core, supporting, generic) with their bounded contexts.'
+description: 'Generate a Mermaid landscape diagram of the subdomains, classified core, supporting, or generic, with their bounded contexts. Use when: the subdomains have been classified, or refreshing the landscape after contexts are added or reclassified. DO NOT USE FOR: the relationship patterns between contexts (context-mapping).'
 ---
 
 # Subdomain Landscape Diagram
 
 Use this skill to produce a high-level visual of the domain's subdomain landscape, classifying each subdomain and its bounded contexts by type.
 
-## Trigger Conditions
-
-Use after `domain-exploration` has produced `domain.md` with a subdomain overview, or to refresh the landscape diagram when bounded contexts are added or reclassified.
-
 ## Inputs
 
-- `domain.md` with the Subdomains table and Bounded Context Index.
+- `context-map.md` with the subdomain classification and its bounded contexts. If it has none, report that and stop.
 - Context map (optional) to show cross-context relationships on the diagram.
 
 ## Workflow
 
 1. Apply `resources/ddd-global.md` and `resources/ddd-diagram.md`.
-2. Read `domain.md` and extract:
+2. Read `context-map.md` and extract:
    - All subdomains with their type (core, supporting, generic).
    - All bounded contexts and their owning subdomain.
    - Cross-context relationships from the context map (optional).
@@ -28,11 +24,11 @@ Use after `domain-exploration` has produced `domain.md` with a subdomain overvie
    - **🔧 Supporting** — necessary but non-differentiating subdomains.
    - **📦 Generic** — commodity subdomains.
 4. Place each bounded context as a rectangle node inside its owning subdomain's subgraph.
-5. If context map relationships are available, add simplified directional edges between bounded context nodes (direction only, no pattern labels, to keep the landscape readable).
+5. If context map relationships are available, add simplified directional edges between bounded context nodes — direction only, no pattern labels, to keep the landscape readable; the patterns are labelled on the context map, not here.
 6. External systems referenced by any bounded context appear as stadium-shape nodes `([SystemName])` outside the subgraphs.
-7. Insert or update the diagram in `domain.md` under a **Subdomain Landscape** section, positioned above the Bounded Context Map section.
-8. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-domain.md>` from the plugin root to generate an SVG alongside the Markdown output.
+7. Insert or update the diagram in `context-map.md` under a **Subdomain Landscape** section, positioned above the context map.
+8. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-context-map.md>` from the plugin root to generate an SVG alongside the Markdown output.
 
 ## Output
 
-- Updated `domain.md` with an embedded Mermaid `flowchart TD` subdomain landscape diagram.
+- Updated `context-map.md` with an embedded Mermaid `flowchart TD` subdomain landscape diagram.

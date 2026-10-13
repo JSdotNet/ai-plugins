@@ -1,15 +1,11 @@
 ---
 name: context-mapping
-description: 'Define and validate bounded context boundaries and map relationships between contexts using DDD strategic design patterns.'
+description: 'Define and validate bounded context boundaries and map the relationships between contexts with DDD strategic patterns. Use when: finalising context boundaries, mapping which context depends on which and by what pattern, or validating existing context definitions. DO NOT USE FOR: the integration contract of one relationship (domain-interaction-model) or the subdomain overview picture (subdomain-landscape-diagram).'
 ---
 
 # Context Mapping
 
 Use this skill to define bounded context boundaries and map their relationships.
-
-## Trigger Conditions
-
-Use when the user needs to finalize bounded context boundaries, map interactions between contexts, or validate existing context definitions.
 
 ## Inputs
 
@@ -39,6 +35,8 @@ Use when the user needs to finalize bounded context boundaries, map interactions
 
 ## Output
 
-- Updated `domain.md` with bounded context map and index.
-- One file per bounded context with purpose, language glossary, and relationship summary.
+- Updated `context-map.md` with the bounded contexts, their relationships, and published languages.
+- One folder per bounded context: its purpose and boundary in `context.md`, its terms under
+  `## Ubiquitous Language` in `domain.md`, its relationships in the dependency tables — layout per
+  `resources/domain-documentation-structure.md`.
 - Context map diagram (Mermaid).

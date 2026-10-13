@@ -1,19 +1,15 @@
 ---
 name: domain-event-flow-diagram
-description: 'Generate Mermaid sequence diagrams showing how domain events flow from commands through aggregates and policies within or across bounded contexts.'
+description: 'Generate Mermaid sequence diagrams of how domain events flow from commands through aggregates and policies, within or across bounded contexts. Use when: visualising the event flow of a business process once its commands, events, and policies are known. DO NOT USE FOR: a technical runtime call chain (architecture:sequence-diagram-generator).'
 ---
 
 # Domain Event Flow Diagram
 
 Use this skill to produce event flow diagrams that visualise the command-to-event-to-policy chain for one or more business processes.
 
-## Trigger Conditions
-
-Use after `domain-exploration` or `domain-model-design` has identified commands, domain events, and policies, or when the user wants to visualise event flow for a specific process.
-
 ## Inputs
 
-- `domain.md` or bounded context file(s) with commands, domain events, and policies.
+- The bounded contexts' `domain.md` with commands, domain events, and policies, and `context-map.md` for flows that cross contexts.
 - Optionally: a named business process to focus the diagram on.
 
 ## Workflow
@@ -22,7 +18,7 @@ Use after `domain-exploration` or `domain-model-design` has identified commands,
 2. Confirm scope with the user:
    - **Single process** — one end-to-end business process (e.g., "Place Order").
    - **Cross-context flow** — events crossing one or more bounded context boundaries.
-   - **Full domain** — all significant processes in `domain.md`.
+   - **Full domain** — all significant processes across the bounded contexts.
 3. For each in-scope process:
    - Identify the actor or external trigger.
    - Trace the chain: actor → command → aggregate → domain event → policy → next command.
@@ -32,11 +28,11 @@ Use after `domain-exploration` or `domain-model-design` has identified commands,
    - Commands: solid arrows (`->>`).
    - Domain events: dashed arrows (`-->>`).
    - Policy triggers: fire-and-forget arrows (`--)`).
-5. Store diagrams in `domain.md` under a **Domain Event Flows** section, or in the relevant bounded context file under a **Domain Event Flows** subsection.
+5. Store each diagram in the `flow.md` of the context whose process it draws — for a cross-context flow, the context where it starts — per `resources/domain-documentation-structure.md`.
 6. Produce one diagram per significant process; do not combine unrelated processes in a single diagram.
 7. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-output-file>` from the plugin root to generate SVG files alongside the Markdown output.
 
 ## Output
 
 - One or more Mermaid `sequenceDiagram` blocks showing the command-event-policy chain for each identified process.
-- Diagrams embedded in `domain.md` or the relevant bounded context file(s).
+- Diagrams embedded in the owning contexts' `flow.md`.
