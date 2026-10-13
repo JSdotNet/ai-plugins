@@ -38,9 +38,9 @@ per host.
 
 | File | Governs | Purpose |
 |------|---------|---------|
-| `wip-stories.md` | `.wip/work/*/story-*.md` | Story quality standards |
-| `wip-epics.md` | `.wip/work/*/epic-*.md` | Epic quality standards |
-| `wip-bugs.md` | `.wip/work/*/bug-*.md` | Bug quality standards |
+| `wip-stories.md` | `.wip/work/*/story-*.md` | Story placement; content per `product-owner:write-story`, with a fallback section order |
+| `wip-epics.md` | `.wip/work/*/epic-*.md` | Epic placement; content per `product-owner:write-epic`, with a fallback section order |
+| `wip-bugs.md` | `.wip/work/*/bug-*.md` | Bug placement; content per `product-owner:write-bug`, with a fallback section order |
 | `wip-ideas.md` | `.wip/ideas/*.md` | Idea quality standards |
 | `wip-proposals.md` | `.wip/proposals/*.md` | Proposal quality standards |
 | `wip-confidence.md` | `.wip/work/**/*.md` | 97% confidence threshold |

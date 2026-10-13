@@ -105,7 +105,7 @@
       "name": "wip-convention",
       "source": "./plugins/wip-convention",
       "description": "Encapsulates the .wip folder convention for storing work-in-progress artifacts. Provides skills and instructions to align agents with the .wip workflow.",
-      "version": "0.3.1"
+      "version": "0.3.2"
     }
   ]
 }
