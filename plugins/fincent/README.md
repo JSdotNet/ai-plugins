@@ -82,7 +82,13 @@ flowchart LR
 ## Resources
 
 - `resources/dor.md` — Fincent Definition of Ready (the shared readiness baseline)
-- `resources/templates/story-review-checklist.md` — review and estimation checklist
+- `resources/story-pipeline.md` — review order, verdict legend, and input precondition
+- `resources/batch-review.md` — the shared loop of the `automation-story-*` skills
+- `resources/jira-discovery.md` — how story and PR skills reach Jira, and the paste fallback
+- `resources/dataset-rendering.md` — determinism and fidelity rules for the sprint and release reports
+- `resources/pr-remarks-github.md` — GitHub calls, reply content, and report for `pr-remarks-resolve`
+- `resources/templates/story-review-checklist.md` — review checklist and estimation rubric
+- `resources/templates/demo-slides.md` — slide content of the Fincent Review deck
 - `resources/jira-setup.md` — shared Jira project configuration reference
 
 ## Scripts
@@ -116,12 +122,10 @@ $env:JIRA_API_TOKEN = '<api token>'
 
 ## Dependencies
 
-Story and PR review skills use a **discovered Jira skill**: the automation skills scan
-installed skills at runtime for one that can retrieve, create, or update Jira issues.
-No specific plugin name is required.
-
-If no Jira skill is found, those automations fall back gracefully: ask the user to paste
-story content and skip Jira write-back steps.
+Story and PR review skills reach Jira through an Atlassian MCP server connected to the
+session, and create enablers with `jira:create-jira-ticket` when the `jira` plugin is
+installed — see `resources/jira-discovery.md`. Without a server they ask the user to paste
+the story and skip Jira write-back.
 
 The sprint review pipeline is the exception — it does not use skill discovery. It reads Jira
 exclusively through `scripts/Get-SprintData.ps1` and `scripts/Get-ReleaseData.ps1`, which need

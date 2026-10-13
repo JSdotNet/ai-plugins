@@ -11,82 +11,29 @@ description: >
 
 # PR Review — Architecture
 
-This review is complementary to the domain review — it focuses on structure and non-functional
-correctness rather than domain model semantics.
+Review structure and non-functional correctness across every changed layer; domain-model
+semantics belong to `pr-review-domain`.
 
-## Input Expectations
+1. Load the PR diff, the ADRs in `.devbook/arc42/adr/`, and, when a `FIN` key is given, the
+   story per [jira-discovery.md](../../resources/jira-discovery.md).
+2. Review every changed file — `**/Application/**`, `**/Infrastructure/**`, `**/Api/**`,
+   configuration and deployment files — for:
+   - **Dependency direction** — inward only (Infrastructure → Application → Domain).
+   - **ADR consistency** — no conflict with an existing ADR; a new decision has an ADR
+     drafted or referenced; ADR patterns applied the same way throughout.
+   - **Integration** — when the codebase has them, integration events go through the outbox
+     and external APIs through the anti-corruption layer or adapter; event schemas stay
+     backward-compatible.
+   - **Security and compliance**, on every PR — auth policies on new endpoints, PII and
+     financial data masked in logs, caches, and responses, secrets from configuration, and
+     PSD2, GDPR, and AML implications.
+   - **NFRs and errors** — performance, scaling, resilience, observability, the codebase's
+     result or exception pattern, and validation at the API boundary.
+3. Before raising a violation, check the ADRs: a pattern may be deliberately non-standard.
 
-- PR number, branch name, or diff to review.
-- Optional: linked Jira story key for context.
-- Optional: architecture documentation folder or ADR list.
+## Output
 
-## Workflow
-
-1. Load the PR diff. Review all changed files, with particular attention to:
-   - Layer boundaries (`**/Application/**`, `**/Infrastructure/**`, `**/Api/**`).
-   - Cross-cutting concerns (logging, validation, error handling, auth).
-   - Integration points (external APIs, message bus, database).
-   - Configuration and deployment files.
-2. Load any relevant ADRs from the codebase (`.devbook/arc42/adr/`) if accessible.
-3. Evaluate each criterion below across the full diff.
-4. Produce a structured finding per criterion with an overall architectural verdict.
-
-## Review Criteria
-
-### Layer Dependencies and Clean Architecture
-- Does the dependency direction flow inward only (Infrastructure → Application → Domain)?
-- Does the Application layer reference Infrastructure types directly (bypassing interfaces)?
-- Does the Domain layer reference anything outside itself (Framework types, EF, HttpClient)?
-- Are abstractions (interfaces, ports) defined in the correct layer and implemented outward?
-
-### ADR Compliance
-- Are any architectural decisions made in this PR that conflict with existing ADRs?
-- If a new architectural decision is introduced, has an ADR been drafted or referenced?
-- Are patterns established by ADRs (CQRS handlers, event sourcing, outbox pattern, etc.)
-  applied consistently in this PR?
-
-### Non-Functional Requirements (NFRs)
-- **Performance**: Are there any N+1 queries, unbounded loops, or synchronous blocking calls
-  where async is required?
-- **Scalability**: Are any in-memory collections or singleton state introduced that would
-  break horizontal scaling?
-- **Resilience**: Are external service calls wrapped with retry/timeout/circuit-breaker policies?
-- **Observability**: Are structured log entries, metrics, or distributed trace spans added for
-  new operations?
-
-### Security and Compliance
-- Are new endpoints or operations protected with the appropriate auth policies?
-- Is any sensitive data (PII, financial data) logged, cached, or exposed without masking?
-- Are there PSD2, GDPR, or AML implications that must be addressed before merge?
-- Are secrets injected via configuration (never hardcoded)?
-
-### Integration and Messaging
-- Are integration events published via the outbox/message bus pattern (not direct HTTP in
-  the domain or application layer)?
-- Are integration event schemas backward-compatible with existing consumers?
-- Are external API calls using the designated anti-corruption layer or adapter?
-
-### Error Handling and Validation
-- Are domain and application errors surfaced using the established result/exception pattern?
-- Is input validation performed at the boundary (API layer) before it reaches the application?
-- Are unhandled exceptions caught and mapped to appropriate responses at the API layer?
-
-## Output Expectations
-
-- Per-criterion finding with a verdict: ✅ (compliant), ⚠️ (minor issue), ❌ (violation).
-- Overall architectural verdict:
-  - ✅ **Architecturally sound** — PR can be merged from an architecture perspective.
-  - ⚠️ **Minor issues** — do not block merge, but should be tracked and addressed.
-  - ❌ **Architectural violation** — structural issues must be resolved before merge.
-- Concrete correction per ⚠️ or ❌: the specific refactor, pattern, or ADR reference to apply.
-
-## Quality Checks
-
-- Review all layers — do not limit to the domain layer (that is `pr-review-domain`'s scope).
-- ADRs are checked before raising a violation — a pattern may be deliberately non-standard.
-- Security and compliance implications are never skipped for Fincent PRs.
-- Do not overlap with domain model semantics — stay focused on structure, NFRs, and compliance.
-
-## References
-
-- `../../resources/dor.md` — Fincent Definition of Ready
+- One finding per criterion: ✅ compliant, ⚠️ minor issue, or ❌ violation.
+- For each ⚠️ and ❌ the exact correction: the refactor, the pattern, or the ADR to apply.
+- Overall: ✅ **Architecturally sound** (mergeable), ⚠️ **Minor issues** (mergeable; track
+  the fixes), or ❌ **Architectural violation** (resolve before merge).

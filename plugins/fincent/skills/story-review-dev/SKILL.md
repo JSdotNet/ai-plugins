@@ -10,65 +10,32 @@ description: >
 
 # Story Review — Dev (Architect)
 
-## Input Expectations
+Third in [story-pipeline.md](../../resources/story-pipeline.md): check its input
+precondition (the PO and domain verdicts) first, and label every finding with its verdict
+legend.
 
-- The user story to review (Jira key, link, or pasted content).
-- The story's `story-review-po` verdict and `story-review-domain` verdict (each ✅ or ⚠️).
-- Optional: architecture documentation or ADR links.
-- Optional: existing enabler stories or spikes.
+1. Load the story per [jira-discovery.md](../../resources/jira-discovery.md), the
+   architecture documentation and ADRs (`.devbook/arc42/`, `.devbook/arc42/adr/`), any
+   enabler stories or spikes the user names, and the code the story touches. Without
+   architecture documentation, review on best-effort reasoning and name the missing context
+   in each finding it affects.
+2. Fill the Pre-Refinement (Architect) section of
+   [story-review-checklist.md](../../resources/templates/story-review-checklist.md):
+   - Bounded context fit, and an explicit integration contract for cross-context work.
+   - Hidden assumptions about infrastructure, APIs, or external services, and the NFRs the
+     story implies.
+   - Architectural decisions not yet made, and risks that need a spike first.
+   - Enabler check: infrastructure, platform, or foundational work a feature team cannot
+     do inside the story.
+   - PSD2, GDPR, and AML implications — checked on every story, also one that looks
+     unrelated.
+3. When an enabler is needed, say so explicitly and draft it: title, enabler type (Enabler
+   Story or Enabler Feature), and acceptance scope.
+4. Leave the business acceptance criteria as written; this review judges feasibility.
 
-## Workflow
+## Output
 
-1. Load the story content. If only a Jira key is provided and a Jira retrieval skill is
-   available, use it to fetch the story. Otherwise ask the user to paste the story text.
-2. **Precondition**: both verdicts are ✅ or ⚠️. If either is missing, report which review the
-   story has not had yet and stop. If either is ❌, stop and output:
-   > ❌ **Not ready for dev review** — resolve the following issues first: {list blockers}.
-3. Evaluate each Pre-Refinement criterion:
-
-   ### Bounded Context Fit
-   - Does the story belong to a single bounded context?
-   - Are cross-context integrations explicitly defined with integration contracts?
-
-   ### Technical Assumptions
-   - Are there hidden assumptions about infrastructure, APIs, or external services?
-   - Are non-functional requirements (performance, security, scalability) identified?
-
-   ### Architecture Risk
-   - Does the story require architectural decisions that are not yet made?
-   - Are there risks that need a spike before delivery?
-
-   ### Enabler Check
-   - Does the story require infrastructure, platform, or foundational architecture work
-     before it can be delivered by a feature team?
-   - If yes: flag the need for an **Enabler Story** or **Enabler Feature** and describe
-     the scope of the enabler.
-
-   ### Security and Compliance
-   - Are there security or regulatory implications (e.g., PSD2, GDPR, AML) that must
-     be addressed before delivery?
-
-4. Classify each criterion as ✅, ⚠️, or ❌.
-5. Produce overall readiness classification:
-   - ✅ **Architecturally ready** — no blockers; the story is ready for estimation.
-   - ⚠️ **Conditionally ready** — ready for estimation with noted conditions or parallel enabler work.
-   - ❌ **Not ready** — architectural gaps block delivery; resolve before estimation.
-6. If an enabler is needed, draft a brief enabler story description with title, type, and scope.
-
-## Output Expectations
-
-- Overall architectural readiness classification with rationale.
-- Enabler story draft (if applicable) with: title, enabler type, and acceptance scope.
-- Prioritised list of architectural actions if the story is not ready.
-- Clear next step: on ✅ or ⚠️ the story is ready for `story-point-estimation`; on ❌, the
-  blockers to resolve.
-
-## Quality Checks
-
-- The review focuses on architecture and feasibility — do not rewrite business acceptance criteria.
-- Enabler identification is always explicit; never assume the team will discover the need later.
-- Security and compliance implications are never skipped for Fincent stories.
-
-## References
-
-- `../../resources/dor.md` — Fincent Definition of Ready
+The checklist rows, the enabler draft when one is needed, then the overall verdict —
+✅ **Architecturally ready**, ⚠️ **Conditionally ready** (with the conditions or the parallel
+enabler work), or ❌ **Not ready** — with rationale, prioritised architectural actions, and
+the next step: on ✅ or ⚠️, `story-point-estimation`.
