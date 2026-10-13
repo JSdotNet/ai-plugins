@@ -1,35 +1,26 @@
 ---
 name: story-point-estimation
 description: >
-  Estimate story points for a Fincent user story using a structured three-factor model
-  (complexity, effort, uncertainty) calibrated against team velocity and reference stories.
-  Requires PO review, dev review, and domain review to have passed first.
+  Estimate story points for a Fincent user story with a three-factor model (complexity,
+  effort, uncertainty) mapped to Fibonacci points and calibrated against reference stories.
+  Takes the story's PO, domain, and dev review verdicts as input. Use when: "estimate
+  FIN-123", "how many points is this story", before sprint planning. DO NOT USE FOR: a batch
+  by Jira status (automation-story-point-estimation).
 ---
 
 # Story Point Estimation
 
-## Pipeline Gate
-
-> **Prerequisite**: The story must have passed all three preceding reviews:
-> `story-review-po` (✅ or ⚠️), `story-review-dev` (✅ or ⚠️), and
-> `story-review-domain` (✅ or ⚠️).
-> If any result is ❌, return **Not estimable** immediately — list the blocking issues
-> and do not produce an estimate until they are resolved.
-
-## Purpose and Trigger Conditions
-
-Use this skill after a story has cleared all three reviews. Run before sprint planning
-to produce a reasoned, calibrated Fibonacci estimate.
-
 ## Input Expectations
 
 - The user story to estimate (Jira link, ID, or pasted content).
+- The story's `story-review-po`, `story-review-domain`, and `story-review-dev` verdicts
+  (each ✅ or ⚠️).
 - Optional: reference stories with known point values for calibration.
-- Optional: team velocity or point scale (Fibonacci by default: 1, 2, 3, 5, 8, 13, 21).
+- Optional: team velocity for calibration. Points are Fibonacci (1, 2, 3, 5, 8, 13).
 
 ## Estimation Model
 
-Use the three-factor model from `resources/templates/story-review-checklist.md`:
+Use the three-factor model from `../../resources/templates/story-review-checklist.md`:
 
 ### Factor 1 — Complexity (1–5)
 
@@ -64,21 +55,24 @@ How much is unknown or risky about delivery?
 ## Workflow
 
 1. Load the story content.
-2. **Gate check**: Confirm all three review results (PO, dev, domain) are ✅ or ⚠️.
-   If any is ❌, stop and output:
+2. **Precondition**: all three verdicts are ✅ or ⚠️. If any is missing, output
+   **Not estimable — no {review} verdict yet** and stop. If any is ❌, stop and output:
    > ❌ **Not estimable** — the following issues must be resolved first: {list blockers}.
 3. If available, load reference stories for calibration.
 4. Score each factor (1–5) with explicit reasoning for each score.
-5. Map the factor scores to a Fibonacci story point value:
+5. If Effort is 5 (over 12 hours), produce no points: output **Split required** with a
+   proposed split, and skip steps 6–7. Otherwise map the factor sum to one Fibonacci value:
 
-   | Factor Sum | Suggested Points |
-   |-----------|-----------------|
-   | 3–5       | 1–2             |
-   | 6–8       | 3               |
-   | 9–10      | 5               |
-   | 11–12     | 8               |
-   | 13–14     | 13              |
-   | 15        | 21 (consider splitting) |
+   | Factor Sum | Points |
+   |-----------|--------|
+   | 3         | 1      |
+   | 4–5       | 2      |
+   | 6–8       | 3      |
+   | 9–10      | 5      |
+   | 11–12     | 8      |
+   | 13–14     | 13     |
+
+   A sum of 15 always has Effort 5, so it never reaches the table.
 
 6. Compare against reference stories if provided; adjust if the calibration differs.
 7. Flag stories where the estimate exceeds **12 hours** (or the equivalent story points) for
@@ -88,7 +82,7 @@ How much is unknown or risky about delivery?
 ## Output Expectations
 
 - Factor scores with explicit rationale for each.
-- Suggested story point or hour estimate.
+- Story points, or **Split required** with a proposed split.
 - Split recommendation if the estimate exceeds 12 hours or equivalent.
 - Calibration note if reference stories were used.
 
@@ -98,10 +92,9 @@ How much is unknown or risky about delivery?
 - Uncertainty is never scored 1 unless the team has an identical delivered story as reference.
 - Stories touching external Fincent integrations (payment rails, regulatory APIs) are never
   scored below 3 for uncertainty without explicit justification.
-- Stories exceeding 12 hours are always flagged — do not produce a final estimate for them
-  without a split recommendation.
+- Stories exceeding 12 hours always get a split recommendation and no points.
 
 ## References
 
-- `resources/templates/story-review-checklist.md` — estimation section
-- `resources/dor.md` — story readiness criteria (a story must meet DOR before estimation is reliable)
+- `../../resources/templates/story-review-checklist.md` — estimation section
+- `../../resources/dor.md` — story readiness criteria (a story must meet DOR before estimation is reliable)

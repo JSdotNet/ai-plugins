@@ -1,10 +1,12 @@
 ---
 name: pr-remarks-resolve
 description: >
-  Collect the open review remarks on a Fincent pull request, propose a concrete solution per
-  remark, get one batch approval from the user, then implement, push, reply to each reviewer
-  thread, and resolve the threads that were fixed. Use when a Fincent PR has review comments
-  that need to be addressed and answered.
+  Collect the open review remarks on a Fincent pull request, propose a solution per remark,
+  get one batch approval, then implement, push, reply to each thread, and resolve the fixed
+  ones. Use when: "address the review comments", "resolve the PR remarks", a reviewer is
+  waiting for changes, a new review round left remarks. DO NOT USE FOR: failing checks
+  (delivery:fix-pr-checks), base-branch conflicts (delivery:update-pr-branch), or drafting
+  replies without pushing (review:pr-remarks-review).
 ---
 
 # PR Remarks — Propose, Approve, Push, Reply
@@ -17,13 +19,9 @@ code change actually fixed.
 This skill acts on remarks. `pr-review-architecture`, `pr-review-domain`, and
 `pr-review-story` produce remarks; this skill answers them.
 
-## When to use
-
-- A Fincent PR has open review comments and the reviewer is waiting for changes.
-- A review round finished and the remarks need to be turned into commits and replies.
-- Re-review after a push left new remarks that still need answering.
-
-Failing CI checks go to `fix-pr-checks`; a base-branch conflict goes to `update-pr-branch`.
+Failing CI checks go to `delivery:fix-pr-checks`; a base-branch conflict goes to
+`delivery:update-pr-branch`. When the `delivery` plugin is not installed, report the failing
+checks or the conflict to the user and stop; do not fix them inside this skill.
 
 ## Inputs
 
@@ -103,9 +101,10 @@ Where a remark concerns domain modelling, layer boundaries, or story scope, appl
 criteria from the sibling Fincent review skills (`pr-review-domain`,
 `pr-review-architecture`, `pr-review-story`) instead of inventing new criteria.
 
-Consult the coding guidelines MCP server (`jsdotnet-coding-guidelines`) when a remark cites
-a project convention, so the proposed fix matches the documented guideline rather than a
-guess. If the server is unavailable, say so and propose based on surrounding code style.
+When a remark cites a project convention, consult the repository's own coding guidelines
+(its instruction or guideline files, or a coding-guidelines server the session has connected)
+so the proposed fix matches the documented guideline rather than a guess. If none exists,
+say so and propose based on surrounding code style.
 
 ### Step 4 — Propose the solution plan and get approval
 
@@ -176,8 +175,9 @@ git push
 gh pr checks PR_NUMBER
 ```
 
-If the push made checks go red, hand off to `fix-pr-checks` before replying — a reply that
-points at a broken build is worse than no reply.
+If the push made checks go red, fix them with `delivery:fix-pr-checks` before replying — or,
+when that plugin is not installed, report the red checks and stop before replying. A reply
+that points at a broken build is worse than no reply.
 
 ### Step 7 — Reply to each remark
 
@@ -253,9 +253,9 @@ settled.
 
 - `pr-review-architecture`, `pr-review-domain`, `pr-review-story` — produce the remarks this
   skill answers.
-- `pr-remarks-review` (plugin: `review`) — triage-and-draft only; no push, no reply.
-- `fix-pr-checks` (plugin: `delivery`, from the `jsdotnet` marketplace) — failing checks rather than review remarks.
-- `update-pr-branch` (plugin: `delivery`, from the `jsdotnet` marketplace) — conflicts or an out-of-date base.
+- `review:pr-remarks-review` — triage-and-draft only; no push, no reply.
+- `delivery:fix-pr-checks` (`jsdotnet` marketplace) — failing checks rather than review remarks.
+- `delivery:update-pr-branch` (`jsdotnet` marketplace) — conflicts or an out-of-date base.
 
 ## Notes
 

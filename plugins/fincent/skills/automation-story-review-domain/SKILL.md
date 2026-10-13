@@ -46,8 +46,8 @@ Jira skill. Never reproduce that knowledge in this skill.
 | Jira write-back | Discovered Jira update skill | Sync review findings per story |
 | Ubiquitous language glossary | Domain documentation | Term validation |
 | Bounded context map | Architecture documentation or domain-design plugin | Context ownership |
-| Definition of Ready | `resources/dor.md` | Review criteria baseline |
-| Story review checklist | `resources/templates/story-review-checklist.md` | Checklist template |
+| Definition of Ready | `../../resources/dor.md` | Review criteria baseline |
+| Story review checklist | `../../resources/templates/story-review-checklist.md` | Checklist template |
 
 ## Workflow
 
@@ -57,25 +57,29 @@ Jira skill. Never reproduce that knowledge in this skill.
 2. Use the discovered query skill to retrieve all stories in the specified status.
    Let that skill own the query, filter, and pagination logic.
 3. Load the ubiquitous language glossary and bounded context map if available.
-5. Load `resources/dor.md` and `resources/templates/story-review-checklist.md`.
-6. Present the story count to the user and confirm before proceeding.
+4. Load `../../resources/dor.md` and `../../resources/templates/story-review-checklist.md`.
+5. Present the story count to the user and confirm before proceeding.
 
 ### Phase 2 — Per-Story Review (repeat for each story)
 
-7. Use the discovered retrieval skill to fetch the full story content.
-8. Use the `story-review-domain` skill with the loaded context to:
+6. Use the discovered retrieval skill to fetch the full story content.
+7. Read the story's `story-review-po` verdict — from the findings `automation-story-review-po`
+   wrote back to Jira, or from a review run in this session — and pass it in. `story-review-domain`
+   reports a story with no PO verdict, or a ❌ one, as not ready; list it under Misaligned with
+   that reason.
+   Use the `story-review-domain` skill with the verdict and the loaded context to:
    - Validate all business terms against the ubiquitous language.
    - Confirm bounded context ownership and aggregate alignment.
    - Identify domain events produced or consumed.
    - Detect domain invariant or policy violations.
    - Classify each criterion as ✅, ⚠️, or ❌.
-9. For each ⚠️ or ❌ finding, propose corrected terms, names, or model adjustments.
-10. If `update Jira` is enabled and an update skill was discovered: sync the review
-    findings back to this story in Jira.
+8. For each ⚠️ or ❌ finding, propose corrected terms, names, or model adjustments.
+9. If `update Jira` is enabled and an update skill was discovered: sync the review
+   findings back to this story in Jira.
 
 ### Phase 3 — Consolidated Summary
 
-11. Output a consolidated batch summary after all stories are processed:
+10. Output a consolidated batch summary after all stories are processed:
 
     | Story | Title | Domain Ready | Needs Clarification | Misaligned | Jira Updated |
     |-------|-------|-------------|--------------------|-----------|----|
@@ -83,7 +87,7 @@ Jira skill. Never reproduce that knowledge in this skill.
     | FIN-124 | — | | ⚠️ | | — |
     | FIN-125 | — | | | ❌ | — |
 
-12. List all ❌ stories first, then ⚠️, then ✅.
+11. List all ❌ stories first, then ⚠️, then ✅.
 
 ## Output
 

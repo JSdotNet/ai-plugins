@@ -1,18 +1,16 @@
 ---
 name: pr-review-architecture
 description: >
-  Review a pull request from the Software Architect perspective: validate architectural fit,
-  layer boundaries, dependency direction, NFR compliance, security and compliance implications,
-  and consistency with ADRs. Use when reviewing a PR that touches system structure, cross-cutting
-  concerns, infrastructure, or integration points in the Fincent codebase.
+  Review a Fincent pull request from the Software Architect perspective: layer boundaries,
+  dependency direction, ADR consistency, NFRs, security and compliance, integration and error
+  handling. Use when: "architecture review of this PR", a PR touches system structure,
+  cross-cutting concerns, infrastructure, or integration points. DO NOT USE FOR: domain model
+  semantics (pr-review-domain), story coverage (pr-review-story), or a story before
+  development (story-review-dev).
 ---
 
 # PR Review — Architecture
 
-## Purpose and Trigger Conditions
-
-Use this skill when a pull request touches architectural boundaries, cross-cutting concerns,
-infrastructure, integration points, or any system-level concern in the Fincent codebase.
 This review is complementary to the domain review — it focuses on structure and non-functional
 correctness rather than domain model semantics.
 
@@ -29,7 +27,7 @@ correctness rather than domain model semantics.
    - Cross-cutting concerns (logging, validation, error handling, auth).
    - Integration points (external APIs, message bus, database).
    - Configuration and deployment files.
-2. Load any relevant ADRs from the codebase (`.wip/` or architecture folder) if accessible.
+2. Load any relevant ADRs from the codebase (`.devbook/arc42/adr/`) if accessible.
 3. Evaluate each criterion below across the full diff.
 4. Produce a structured finding per criterion with an overall architectural verdict.
 
@@ -91,4 +89,4 @@ correctness rather than domain model semantics.
 
 ## References
 
-- `resources/dor.md` — Fincent Definition of Ready
+- `../../resources/dor.md` — Fincent Definition of Ready

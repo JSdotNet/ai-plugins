@@ -1,6 +1,6 @@
 ---
 name: automation-sprint-review
-description: 'End-to-end sprint review automation: collects deterministic Jira datasets with Get-ReleaseData.ps1 and Get-SprintData.ps1, then generates the sprint report(s) per team, the release report for the resolved fixVersion, and a demo presentation as PowerPoint. Orchestrates sprint-report, release-report, and demo-presentation sequentially over those datasets so repeated runs on unchanged Jira data produce identical output.'
+description: 'End-to-end sprint review automation: collects deterministic Jira datasets with Get-ReleaseData.ps1 and Get-SprintData.ps1, then generates the sprint report(s) per team, the release report for the resolved fixVersion, and a demo presentation as PowerPoint. Runs sprint-report, release-report, and demo-presentation sequentially over those datasets so repeated runs on unchanged Jira data produce identical output.'
 disable-model-invocation: true
 ---
 
@@ -13,14 +13,14 @@ This skill is optimized for sprint reviews that cover one or more sprints. The f
 must keep the detailed reporting signal from the underlying reports instead of collapsing it
 to a minimal status note.
 
-This is an **orchestration skill**. It owns the end-to-end flow, cross-step context, and
-artifact handoff. It must not duplicate the detailed reporting logic that already belongs
+This skill owns the end-to-end flow, cross-step context, artifact handoff, and the `.pptx`
+build. It must not duplicate the detailed reporting logic that already belongs
 inside `sprint-report`, `release-report`, or `demo-presentation`, and it must not query Jira
 itself — all Jira data comes from the collection script described below.
 
 ## Jira Setup Reference
 
-Refer to `plugins/fincent/resources/jira-setup.md` for the Fincent Jira project
+Refer to `../../resources/jira-setup.md` for the Fincent Jira project
 configuration including the status flow, custom fields, fix version naming, labels,
 and epic ordering conventions.
 
@@ -28,11 +28,11 @@ and epic ordering conventions.
 
 All Jira data for this pipeline comes from two deterministic collection scripts:
 
-- `plugins/fincent/scripts/Get-ReleaseData.ps1` — release scope for `release-report`.
-- `plugins/fincent/scripts/Get-SprintData.ps1` — sprint scope for `sprint-report`, one
+- `../../scripts/Get-ReleaseData.ps1` — release scope for `release-report`.
+- `../../scripts/Get-SprintData.ps1` — sprint scope for `sprint-report`, one
   dataset per team.
 
-Both share `plugins/fincent/scripts/FincentJira.psm1`, so completion classification, epic
+Both share `../../scripts/FincentJira.psm1`, so completion classification, epic
 ordering, issue ordering, and totals cannot drift between the two reports.
 
 Rules:
@@ -45,8 +45,11 @@ Rules:
 - Do not paraphrase status values, sprint names, epic names, or labels.
 - The same `datasetHash` must yield an identical report. If a rerun on the same dataset would
   change a number, table row, or ordering, that is a defect in the skill, not a judgement call.
-- If a dataset is missing or a script fails, stop and report the error. Do not fall back
-  to model-driven Jira exploration.
+- If a script fails or its dataset is missing, report the error and skip every phase that
+  needs that dataset: a failed team's sprint reports, or the release report for a failed
+  release run. Run the phases whose datasets exist, and mark each skipped artifact as
+  failed in the summary. The demo presentation runs only when the release report and at
+  least one sprint report exist. Never fall back to model-driven Jira exploration.
 
 ## Input
 
@@ -55,7 +58,7 @@ Provide:
 - **Sprint name(s)**: one or more sprint names (e.g. `"Sprint A - Xanadu"`). Optional when
   the sprints should be derived from the release.
 - **Team(s)**: the teams to report on. One sprint dataset and one sprint report set is
-  produced per team. Omit for a single all-teams sprint dataset.
+  produced per team. `all teams` produces a single all-teams sprint dataset.
 - **Release**: optional. If omitted, `Get-ReleaseData.ps1` resolves the latest fixVersion.
 - **Expected sprint count**: optional but recommended when the user states a number; it is
   passed to `Get-SprintData.ps1` as `-ExpectedSprintCount` so the run fails loudly on a
@@ -64,9 +67,9 @@ Provide:
 Translate the request into script parameters — do not resolve scope yourself. If the user
 asks for active sprints, pass `-ActiveSprints -BoardId {board id}`; ask for the board id when
 it is unknown. If the user does not name the teams, ask which teams are in scope rather than
-guessing.
+guessing; an answer of "all teams" means one dataset with `-Team` omitted.
 
-## Orchestration responsibilities
+## Responsibilities
 
 This skill is responsible for:
 
@@ -75,6 +78,7 @@ This skill is responsible for:
 - Calling `sprint-report` per team and `release-report` for the resolved version.
 - Persisting each generated report as an artifact.
 - Passing the generated sprint and release reports forward into `demo-presentation`.
+- Building the `.pptx` from the Markdown `demo-presentation` returns.
 - Producing the final artifact summary for the user, including every `datasetHash`.
 
 This skill is **not** responsible for:
@@ -121,10 +125,11 @@ Execute phase 0 first, then the three reporting phases **sequentially**.
 
 ### Phase 0a — Release data collection (mandatory)
 
-Run the release collection script from the repository root:
+Run the release collection script. Paths in this file are relative to this skill's folder;
+resolve them to absolute paths before running:
 
 ```powershell
-./plugins/fincent/scripts/Get-ReleaseData.ps1 `
+../../scripts/Get-ReleaseData.ps1 `
   -Release 'release/2026.32.0' `
   -OutputPath ./release-data.json
 ```
@@ -137,7 +142,7 @@ After it completes:
 2. Read `release.name` as the authoritative release name.
 3. Read `release.sprintsCovered` as the authoritative sprint list when the user did not
    name the sprints explicitly.
-4. If the script exits non-zero, stop the pipeline and report the error.
+4. If the script exits non-zero, apply the failure rule in the Determinism Contract.
 
 ### Phase 0b — Sprint data collection, once per team (mandatory)
 
@@ -145,7 +150,7 @@ Run the sprint collection script **once per team in scope**. Each run produces i
 dataset and its own hash:
 
 ```powershell
-./plugins/fincent/scripts/Get-SprintData.ps1 `
+../../scripts/Get-SprintData.ps1 `
   -Sprint 'Sprint A - Xanadu','Sprint B - Xanadu' `
   -Team 'Team B' `
   -ExpectedSprintCount 2 `
@@ -213,14 +218,14 @@ The preferred data source for `demo-presentation` is the generated report conten
 If a detail needed for the demo is missing, enrich the sprint or release report inputs first
 and then call `demo-presentation` with the updated artifacts.
 
-Ask `demo-presentation` to do its own job end-to-end:
+`demo-presentation` interprets the report content, decides the slide content and order,
+and returns the deck as slide-by-slide Markdown. Save that Markdown as
+`demo-{sprint-name}.md`, then build `demo-{sprint-name}.pptx` from it: open
+`../../resources/fincent-review-template.pptx` as the base presentation with `python-pptx`
+and fill each slide on the layout `demo-presentation` names for it. When `python-pptx` is
+not available, keep the Markdown, report the `.pptx` as not built, and say what to install.
 
-- interpret the passed report content
-- decide the slide content and ordering
-- apply the Fincent review template
-- return or generate the final presentation content needed for `demo-{sprint-name}.pptx`
-
-If multiple sprints are requested, produce one combined `.pptx` covering all sprints.
+If multiple sprints are requested, produce one combined deck covering all sprints.
 
 ## Output
 
@@ -231,7 +236,8 @@ The automation produces file artifacts saved to the working directory:
 2. **Sprint report(s)** — one Markdown file per team per sprint: `sprint-report-{team}-{sprint-name}.md`
 3. **Sprint overview** — when multiple sprints are included: `sprint-report-overview-{first-sprint-name}.md`
 4. **Release report** — Markdown file: `release-report-{release-name}.md`
-5. **Demo presentation** — PowerPoint file: `demo-{sprint-name}.pptx`
+5. **Demo presentation** — PowerPoint file `demo-{sprint-name}.pptx`, built from the slide
+   Markdown `demo-{sprint-name}.md`
 
 After all phases complete, present a **summary** that includes:
 
@@ -289,20 +295,19 @@ name or only a single sprint-report row.
 - Save one sprint-report file per team per sprint; do not merge multiple sprint reports into a
   single per-sprint artifact.
 - Use the latest fixVersion even if it is unreleased; do not skip it.
-- The demo presentation must be a `.pptx` file, not Markdown.
+- The demo deliverable is the `.pptx`; the slide Markdown is its source, kept beside it.
 - Pass report artifacts forward to `demo-presentation`; do not force it to rebuild those
   inputs from Jira.
 - Use Dutch language for slide content (the Fincent Review template is Dutch).
 - Preserve the detailed reporting signal from the generated reports: include labels,
   story points, carry-over, and sprint-by-sprint totals in the final chat summary.
-- If a phase fails, report the error in the summary table and continue with subsequent phases where possible.
 - Do not post anything to Jira.
 
 ## Tools Used
 
-- `plugins/fincent/scripts/Get-ReleaseData.ps1` — deterministic release collection (phase 0a).
-- `plugins/fincent/scripts/Get-SprintData.ps1` — deterministic sprint collection per team (phase 0b).
-- `plugins/fincent/scripts/FincentJira.psm1` — shared classification, ordering, and hashing rules.
+- `../../scripts/Get-ReleaseData.ps1` — deterministic release collection (phase 0a).
+- `../../scripts/Get-SprintData.ps1` — deterministic sprint collection per team (phase 0b).
+- `../../scripts/FincentJira.psm1` — shared classification, ordering, and hashing rules.
 - `sprint-report` skill — phase 1 rendering logic over each sprint dataset.
 - `release-report` skill — phase 2 rendering logic over the release dataset.
 - `demo-presentation` skill — phase 3 slide logic, using the generated reports as primary input.

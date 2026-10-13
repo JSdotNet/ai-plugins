@@ -1,10 +1,11 @@
 ---
 name: release-report
 description: >
-  Generate a release report for a Fincent fixVersion: what was delivered (including items
-  in test or beyond), what was deferred, a breakdown by epic, bug fixes, and a draft of
-  release notes suitable for stakeholders. Use after a release is shipped or to prepare
-  the release sign-off.
+  Render a Fincent release report for one fixVersion from the Get-ReleaseData.ps1 dataset:
+  delivered (Test or beyond), deferred, removed scope, by epic, bug fixes, and a stakeholder
+  release notes draft. Use when: "release report", "what is in release/2026.32.0", release
+  notes, release sign-off. DO NOT USE FOR: one sprint's results (sprint-report), or the full
+  review with deck (automation-sprint-review).
 ---
 
 # Release Report
@@ -15,26 +16,29 @@ deferred items, and produces a stakeholder-ready release notes draft.
 
 ## Jira Setup Reference
 
-Refer to `plugins/fincent/resources/jira-setup.md` for the Fincent Jira project
+Refer to `../../resources/jira-setup.md` for the Fincent Jira project
 configuration including the status flow, custom fields, fix version naming, labels,
 and epic ordering conventions.
 
 ## Data source (deterministic)
 
 This skill renders a report from the dataset produced by
-`plugins/fincent/scripts/Get-ReleaseData.ps1`. That script owns release resolution, JQL,
+`../../scripts/Get-ReleaseData.ps1`. That script owns release resolution, JQL,
 pagination, delivery classification, epic ordering, and totals. It fetches release data
 only — never per-sprint data.
 
 ```powershell
-./plugins/fincent/scripts/Get-ReleaseData.ps1 -Release 'release/2026.32.0' -OutputPath ./release-data.json
+../../scripts/Get-ReleaseData.ps1 -Release 'release/2026.32.0' -OutputPath ./release-data.json
 ```
+
+Paths in this file are relative to this skill's folder; resolve them to absolute paths
+before running.
 
 Omit `-Release` to let the script resolve the latest fixVersion (released or unreleased).
 Omit `-Team` for the default all-teams release report.
 
-When invoked by `automation-sprint-review`, use the dataset path passed by the orchestrator
-instead of running the script again.
+When `automation-sprint-review` passes a dataset path, use it instead of running the script
+again.
 
 The script requires `JIRA_BASE_URL`, `JIRA_EMAIL`, and `JIRA_API_TOKEN`. If it fails, stop
 and report the error — never fall back to ad-hoc Jira queries or model-discovered Jira skills.
@@ -66,6 +70,7 @@ release-note drafting. It does not own data fetching or classification.
 | Report field | Dataset path |
 |--------------|--------------|
 | Release | `release.name` |
+| Teams | `metadata.team`, or `All teams` when it is null |
 | Release date | `release.version.releaseDate` |
 | Released flag | `release.version.released` |
 | Sprints covered | `release.sprintsCovered` |
@@ -87,9 +92,8 @@ release-note drafting. It does not own data fetching or classification.
 | Field | Value |
 |-------|-------|
 | Release | {release name} |
-| Teams | All teams |
+| Teams | {team, or All teams} |
 | Release date | {date} |
-| Preproduction release date | {date or "TBD"} |
 | Sprints covered | {sprint names} |
 | Original scope | {N} stories / {N} points |
 | Delivered | {N} stories / {N} points (includes items in Test or beyond) |
@@ -139,11 +143,12 @@ Always place the **No epic** group last.
 
 ### 4. Scope Changes
 
-Stories added to or removed from the release after the release was opened (if detectable):
+Stories that carried this fixVersion and no longer do, from `release.removedIssues`. The
+dataset does not record stories added late; state "Added late: not available in the
+dataset" under the table.
 
 | Key | Summary | Direction | Points | Labels | Reason |
 |-----|---------|-----------|--------|--------|--------|
-| FIN-xxx | … | Added late | N | … | … |
 | FIN-yyy | … | Removed | N | … | … |
 
 ### 5. Bug Fixes
@@ -193,4 +198,4 @@ Example format:
 
 ## Tools used
 
-- `plugins/fincent/scripts/Get-ReleaseData.ps1` — deterministic release data collection.
+- `../../scripts/Get-ReleaseData.ps1` — deterministic release data collection.

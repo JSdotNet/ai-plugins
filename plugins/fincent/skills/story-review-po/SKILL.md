@@ -1,16 +1,14 @@
 ---
 name: story-review-po
 description: >
-  Review a Fincent user story from the Product Owner perspective: validate format,
-  business value, acceptance criteria, scope, and backlog readiness.
+  Review a Fincent user story from the Product Owner perspective against the Fincent Definition
+  of Ready: format, title, scope, design images, and bug detail. The first review a story gets.
+  Use when: "PO review FIN-123", "is this story well written", "check this story against the DOR",
+  before refinement. DO NOT USE FOR: domain modelling (story-review-domain), technical
+  readiness (story-review-dev), or a batch by Jira status (automation-story-review-po).
 ---
 
 # Story Review — Product Owner
-
-## Purpose and Trigger Conditions
-
-Use this skill when a product owner or team member wants to validate whether a Fincent user story
-is well-formed, clear, and ready for team refinement from a business and backlog perspective.
 
 ## Input Expectations
 
@@ -23,8 +21,8 @@ is well-formed, clear, and ready for team refinement from a business and backlog
 1. Load the story content. If only a Jira key is provided and a Jira retrieval skill is
    available, use it to fetch the story. Otherwise ask the user to paste the story text.
 2. Determine the story type: **feature**, **bug**, or **support request**.
-3. Load `resources/dor.md` to apply the Fincent Definition of Ready.
-4. Load `resources/templates/story-review-checklist.md` (Product Owner section).
+3. Load `../../resources/dor.md` to apply the Fincent Definition of Ready.
+4. Load `../../resources/templates/story-review-checklist.md` (Product Owner section).
 5. Evaluate the story against each applicable DOR criterion:
 
    ### Story Description (all types)
@@ -44,9 +42,9 @@ is well-formed, clear, and ready for team refinement from a business and backlog
      attached?
 
    ### Refinement (all types)
-   - Has the development team reviewed and refined the story?
-   - Is a team estimate present (story points or hours)?
-   - Does the story stay within the 12-hour limit? If larger, flag for splitting.
+   - Report "refined by the team" and "team estimate present" as ⏭ *checked at sprint
+     entry*: refinement and estimation follow this review, so they never count against it.
+   - Does the story stay within the 12-hour limit? If it is clearly larger, flag it for splitting.
 
    ### Design (UI stories only)
    - Are design images (screens/mockups) included directly in the story? (Always mandatory,
@@ -65,7 +63,8 @@ is well-formed, clear, and ready for team refinement from a business and backlog
    - ✅ **Ready** — story meets all applicable criteria.
    - ⚠️ **Needs refinement** — minor gaps; list specific improvements needed.
    - ❌ **Not ready** — critical gaps; story must be reworked before it can enter a sprint.
-8. Provide a short actionable summary with concrete next steps.
+8. Provide a short actionable summary with concrete next steps; on ✅ or ⚠️ the story is
+   ready for `story-review-domain`.
 
 ## Output Expectations
 
@@ -85,5 +84,5 @@ is well-formed, clear, and ready for team refinement from a business and backlog
 
 ## References
 
-- `resources/dor.md` — Fincent Definition of Ready
-- `resources/templates/story-review-checklist.md` — review checklist
+- `../../resources/dor.md` — Fincent Definition of Ready
+- `../../resources/templates/story-review-checklist.md` — review checklist

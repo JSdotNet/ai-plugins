@@ -1,11 +1,12 @@
 ---
 name: demo-presentation
 description: >
-  Generate a structured demo presentation for a Fincent sprint review. Follows the
-  Fincent Review PPTX template: title, stories per epic, bugs, per-epic demo slides,
-  demo section, next sprint preview, release slide, and roadmap. Output is a Markdown
-  artifact that mirrors the slide-by-slide structure and can be used directly or to
-  populate the PPTX template.
+  Turn Fincent sprint and release reports into the slide-by-slide Markdown of the Fincent
+  Review deck: title, stories and bugs per epic, per-epic demo slides, release, next sprint,
+  and roadmap. Returns Markdown, never a .pptx. Use when: "demo slides for the sprint
+  review", "prepare the Fincent Review", sprint and release reports exist. DO NOT USE FOR:
+  producing the reports (sprint-report, release-report) or the full run with the .pptx
+  build (automation-sprint-review).
 ---
 
 # Demo Presentation
@@ -21,10 +22,10 @@ that can be written into the PPTX template.
 ## Template File
 
 The PowerPoint template is located at:
-`plugins/fincent/resources/fincent-review-template.pptx`
+`../../resources/fincent-review-template.pptx`
 
-When generating the `.pptx` directly (e.g. via `automation-sprint-review`), open this
-file as the base presentation with `python-pptx`. The relevant slide layouts are:
+This skill does not build the `.pptx`; `automation-sprint-review` builds it from this
+skill's Markdown, using the template as the base. The layouts each slide maps to are:
 
 - `Logo foto` — cover slide (slide 1).
 - `Title and Content 2` — title, demo divider, next, release, and info slides.
@@ -32,7 +33,8 @@ file as the base presentation with `python-pptx`. The relevant slide layouts are
 
 ## Fincent Review PPTX slide structure
 
-The template has 13 slides in the following order:
+The deck follows this order. The per-epic slides repeat once per epic, so the slide count
+varies with the sprint:
 
 | # | Slide | Content |
 |---|-------|---------|
@@ -61,10 +63,14 @@ When this skill is invoked by `automation-sprint-review`, the caller should pass
 - the resolved release name
 - the team
 
-Use those report artifacts as the **primary source** for slide content.
+Use those report artifacts as the **only source** for slide content.
 
 If the required report artifacts are missing, stop and ask the caller or user to provide
 them. Do not access Jira from this skill.
+
+The reports carry no assignee, acceptance criteria, priority, next-sprint scope, or
+implementation notes. Fill those from what the user supplies in the conversation; otherwise
+mark them `[TODO]`.
 
 ## Data sources
 
@@ -133,8 +139,8 @@ Content: a bullet list of stories completed in this epic, suitable for a live de
 For each story include:
 - Jira key
 - Summary (short)
-- Assignee (if relevant for demo handover)
-- Any demo notes from the story description or acceptance criteria
+- Assignee (if relevant for demo handover; `[TODO]` unless the user supplied it)
+- Any demo notes the user supplied for the story
 - Any delivery context already captured in the sprint report narrative
 
 ---
@@ -160,7 +166,7 @@ Brief preview of the next sprint:
 - Key focus areas (top 3 epics or themes)
 - Any notable upcoming features
 
-Source: open-sprint stories with high priority or "sprint goal" label.
+Source: the next sprint's scope as the user supplies it; otherwise `[TODO]` per line.
 
 ---
 
@@ -187,7 +193,8 @@ Team Fincent     Sprint [next name]     [theme/color]
 - Voorlopige planning
 ```
 
-List planned epic themes and estimated story counts for the next sprint:
+List planned epic themes and estimated story counts for the next sprint, as the user
+supplies them; otherwise `[TODO]`:
 
 | Epic / Theme | Stories planned | Points |
 |-------------|----------------|--------|
@@ -213,10 +220,11 @@ If no information is available, write: *"Geen bijzonderheden vanuit implementati
 ## Output format
 
 - Produce the full Markdown document with all slide sections in order.
-- Each slide section uses a level-2 heading (`## Slide N — Title`).
+- Each slide section uses a level-2 heading with its resolved number (`## Slide 7 — Demo`):
+  number the slides consecutively once the per-epic slides are counted.
 - After the slides, append a **Presenter Notes** section with talking points per slide.
-- When called from `automation-sprint-review`, return the slide content directly so the
-  orchestration skill can save it and build the `.pptx`.
+- When called from `automation-sprint-review`, return the slide Markdown directly; that skill
+  saves it and builds the `.pptx`.
 - When run standalone, ask the user if they want to save the output as a `.md` file.
 
 ## Working rules

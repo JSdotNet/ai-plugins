@@ -1,9 +1,11 @@
 ---
 name: sprint-report
 description: >
-  Generate a sprint report for a Fincent sprint: what was completed (including items in
-  test or beyond) vs the original sprint scope, what was not completed, and a breakdown
-  by epic. Use after a sprint ends or during the sprint review.
+  Render a Fincent sprint report for one team from the Get-SprintData.ps1 dataset: completed
+  (Test or beyond) vs sprint scope, not completed, removed scope, and a breakdown by epic.
+  Use when: "sprint report", "what did we finish this sprint", "sprint FIN results", after a
+  sprint ends or for the sprint review. DO NOT USE FOR: a fixVersion (release-report), or the
+  full review with deck (automation-sprint-review).
 ---
 
 # Sprint Report
@@ -14,21 +16,22 @@ by epic, and includes untested items inside the completed section.
 
 ## Jira Setup Reference
 
-Refer to `plugins/fincent/resources/jira-setup.md` for the Fincent Jira project
+Refer to `../../resources/jira-setup.md` for the Fincent Jira project
 configuration including the status flow, custom fields, fix version naming, labels,
 and epic ordering conventions.
 
 ## Data source (deterministic)
 
 This skill renders a report from the dataset produced by
-`plugins/fincent/scripts/Get-SprintData.ps1`. That script owns sprint resolution, JQL,
+`../../scripts/Get-SprintData.ps1`. That script owns sprint resolution, JQL,
 pagination, completion classification, epic ordering, and totals. It fetches sprint data
 only — never release data.
 
-One dataset covers **one team**. Run the script once per team.
+One dataset covers **one team**. Run the script once per team. Paths in this file are
+relative to this skill's folder; resolve them to absolute paths before running.
 
 ```powershell
-./plugins/fincent/scripts/Get-SprintData.ps1 `
+../../scripts/Get-SprintData.ps1 `
   -Sprint 'Sprint A - Xanadu','Sprint B - Xanadu' `
   -Team 'Team B' `
   -OutputPath ./sprint-data-team-b.json
@@ -40,8 +43,8 @@ Sprint scope alternatives when the names are not known up front:
 - `-Release '{release name}'` — the sprints that appear on that release's issues.
 - `-ExpectedSprintCount {n}` — fail the run when the resolved count differs.
 
-When invoked by `automation-sprint-review`, use the dataset path and team passed by the
-orchestrator instead of running the script again.
+When `automation-sprint-review` passes a dataset path and team, use them instead of running
+the script again.
 
 The script requires `JIRA_BASE_URL`, `JIRA_EMAIL`, and `JIRA_API_TOKEN`. If it fails, stop
 and report the error — never fall back to ad-hoc Jira queries or model-discovered Jira skills.
@@ -82,6 +85,10 @@ evaluation, and narrative summary. It does not own data fetching or classificati
 | Issue rows | `sprints[].issues` |
 | Scope changes | `sprints[].removedIssues` |
 
+Sprint metadata — and with it the period and the goal — is present only when the script ran
+with `-BoardId`; when `sprints[].metadata` is null, write `[not available]` for the period
+and drop section 6.
+
 ## Report structure
 
 ### 1. Sprint Summary
@@ -89,7 +96,7 @@ evaluation, and narrative summary. It does not own data fetching or classificati
 | Field | Value |
 |-------|-------|
 | Sprint | {sprint name} |
-| Team | Team B (or named team) |
+| Team | {team, or All teams when `metadata.team` is null} |
 | Period | {start date} – {end date} |
 | Original scope | {N} stories / {N} points |
 | Completed | {N} stories / {N} points (includes items in Test or beyond) |
@@ -123,11 +130,12 @@ Always place the **No epic** group last.
 
 ### 4. Scope Changes
 
-Stories added to or removed from the sprint after it started (if detectable):
+Stories removed from the sprint after they were in it, from `removedIssues`. The dataset
+does not record stories added mid-sprint; state "Added mid-sprint: not available in the
+dataset" under the table.
 
 | Key | Summary | Direction | Points | Labels | Reason |
 |-----|---------|-----------|--------|--------|--------|
-| FIN-xxx | … | Added mid-sprint | N | … | … |
 | FIN-yyy | … | Removed | N | … | … |
 
 ### 5. Bugs (sprint-only, not in Completed)
@@ -173,10 +181,10 @@ End with one short narrative paragraph suitable for a sprint retrospective or st
 - Group every section by epic using `epicOrder` — never mix stories from different epics in
   the same table and never reorder the groups.
 - The **No epic** group is already last in `epicOrder`; keep that position.
-- If `metadata.goal` is available, include section 6 instead of dropping that context.
+- If `sprints[].metadata.goal` is available, include section 6 instead of dropping that context.
 - After producing the report, present section 7 as the final narrative summary.
 - Quote `metadata.datasetHash` at the end of the report for reproducibility.
 
 ## Tools used
 
-- `plugins/fincent/scripts/Get-SprintData.ps1` — deterministic sprint data collection.
+- `../../scripts/Get-SprintData.ps1` — deterministic sprint data collection.

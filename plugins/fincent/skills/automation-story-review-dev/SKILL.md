@@ -51,9 +51,9 @@ Jira skill. Never reproduce that knowledge in this skill.
 | Jira write-back | Discovered Jira update skill | Sync review findings per story |
 | Enabler ticket creation | Discovered Jira create skill | Create enabler stories in Jira |
 | Architecture documentation | Codebase / architecture folder | Architectural fit and context |
-| ADRs (Architecture Decision Records) | Codebase `.wip/` or architecture plugin | Confirm decisions are in place |
-| Definition of Ready | `resources/dor.md` | Review criteria baseline |
-| Story review checklist | `resources/templates/story-review-checklist.md` | Checklist template |
+| ADRs (Architecture Decision Records) | Codebase `.devbook/arc42/adr/` | Confirm decisions are in place |
+| Definition of Ready | `../../resources/dor.md` | Review criteria baseline |
+| Story review checklist | `../../resources/templates/story-review-checklist.md` | Checklist template |
 
 ## Workflow
 
@@ -63,13 +63,17 @@ Jira skill. Never reproduce that knowledge in this skill.
 2. Use the discovered query skill to retrieve all stories in the specified status.
    Let that skill own the query, filter, and pagination logic.
 3. Load architecture documentation and relevant ADRs once for the entire batch.
-4. Load `resources/dor.md` and `resources/templates/story-review-checklist.md`.
+4. Load `../../resources/dor.md` and `../../resources/templates/story-review-checklist.md`.
 5. Present the story count to the user and confirm before proceeding.
 
 ### Phase 2 — Per-Story Review (repeat for each story)
 
 6. Use the discovered retrieval skill to fetch the full story content.
-7. Use the `story-review-dev` skill with the loaded context to:
+7. Read the story's `story-review-po` and `story-review-domain` verdicts — from the findings
+   the review automations wrote back to Jira, or from reviews run in this session — and pass
+   them in. `story-review-dev` reports a story missing either verdict, or with a ❌ one, as
+   not ready; list it under Blocked with that reason.
+   Use the `story-review-dev` skill with the verdicts and the loaded context to:
    - Evaluate all Pre-Refinement checklist criteria (bounded context, assumptions, risks,
      enabler check, security, and compliance).
    - Classify each as ✅, ⚠️, or ❌.

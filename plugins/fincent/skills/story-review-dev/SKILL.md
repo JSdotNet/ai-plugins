@@ -1,30 +1,19 @@
 ---
 name: story-review-dev
 description: >
-  Review a Fincent user story before sprint refinement: assess architectural readiness,
-  identify hidden technical risks, determine if enabler stories are needed, and confirm
-  the story is implementable as scoped. Requires PO review to have passed first.
+  Review a Fincent user story for technical readiness before sprint refinement: architectural
+  fit, hidden technical risks, enabler stories needed, security and compliance. Takes the
+  story's PO and domain review verdicts as input. Use when: "dev review FIN-123", "is this
+  story technically ready", "does this need an enabler". DO NOT USE FOR: a pull request
+  (pr-review-architecture), domain modelling (story-review-domain), or a batch (automation-story-review-dev).
 ---
 
 # Story Review — Dev (Architect)
 
-## Pipeline Gate
-
-> **Prerequisite**: The story must have passed both `story-review-po` (✅ or ⚠️) and
-> `story-review-domain` (✅ or ⚠️) first.
-> If either result is ❌, return **Not ready for dev review** immediately — list the
-> unresolved issues and do not proceed with this review.
-
-## Purpose and Trigger Conditions
-
-Use this skill after a story has passed both PO review and domain review. The focus is on
-technical feasibility, architectural fit, and identifying infrastructure or enabler work
-that must precede delivery.
-
 ## Input Expectations
 
 - The user story to review (Jira key, link, or pasted content).
-- PO review result (✅ or ⚠️) and domain review result (✅ or ⚠️) required to proceed.
+- The story's `story-review-po` verdict and `story-review-domain` verdict (each ✅ or ⚠️).
 - Optional: architecture documentation or ADR links.
 - Optional: existing enabler stories or spikes.
 
@@ -32,8 +21,8 @@ that must precede delivery.
 
 1. Load the story content. If only a Jira key is provided and a Jira retrieval skill is
    available, use it to fetch the story. Otherwise ask the user to paste the story text.
-2. **Gate check**: Confirm PO review result (✅ or ⚠️) and domain review result (✅ or ⚠️).
-   If either is ❌, stop and output:
+2. **Precondition**: both verdicts are ✅ or ⚠️. If either is missing, report which review the
+   story has not had yet and stop. If either is ❌, stop and output:
    > ❌ **Not ready for dev review** — resolve the following issues first: {list blockers}.
 3. Evaluate each Pre-Refinement criterion:
 
@@ -61,9 +50,9 @@ that must precede delivery.
 
 4. Classify each criterion as ✅, ⚠️, or ❌.
 5. Produce overall readiness classification:
-   - ✅ **Architecturally ready** — no blockers; the story can proceed to domain review.
-   - ⚠️ **Conditionally ready** — proceed with noted conditions or parallel enabler work.
-   - ❌ **Not ready** — architectural gaps block delivery; resolve before domain review.
+   - ✅ **Architecturally ready** — no blockers; the story is ready for estimation.
+   - ⚠️ **Conditionally ready** — ready for estimation with noted conditions or parallel enabler work.
+   - ❌ **Not ready** — architectural gaps block delivery; resolve before estimation.
 6. If an enabler is needed, draft a brief enabler story description with title, type, and scope.
 
 ## Output Expectations
@@ -71,7 +60,8 @@ that must precede delivery.
 - Overall architectural readiness classification with rationale.
 - Enabler story draft (if applicable) with: title, enabler type, and acceptance scope.
 - Prioritised list of architectural actions if the story is not ready.
-- Clear next step: proceed to `story-point-estimation` or resolve blockers first.
+- Clear next step: on ✅ or ⚠️ the story is ready for `story-point-estimation`; on ❌, the
+  blockers to resolve.
 
 ## Quality Checks
 
@@ -81,4 +71,4 @@ that must precede delivery.
 
 ## References
 
-- `resources/dor.md` — Fincent Definition of Ready
+- `../../resources/dor.md` — Fincent Definition of Ready

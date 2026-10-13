@@ -48,8 +48,8 @@ the discovered Jira skill. Never reproduce that knowledge in this skill.
 | Story list | Discovered Jira query skill | All stories in the target status |
 | Story content | Discovered Jira retrieval skill | Per-story review target |
 | Jira write-back | Discovered Jira update skill | Post review findings per story |
-| Definition of Ready | `resources/dor.md` | Review criteria baseline |
-| Story review checklist | `resources/templates/story-review-checklist.md` | Checklist template |
+| Definition of Ready | `../../resources/dor.md` | Review criteria baseline |
+| Story review checklist | `../../resources/templates/story-review-checklist.md` | Checklist template |
 
 ## Workflow
 
@@ -58,7 +58,7 @@ the discovered Jira skill. Never reproduce that knowledge in this skill.
 1. Run Jira Skill Discovery (see above).
 2. Use the discovered query skill to retrieve all stories in the specified status.
    Let that skill own the query, filter, and pagination logic.
-3. Load `resources/dor.md` and `resources/templates/story-review-checklist.md` once
+3. Load `../../resources/dor.md` and `../../resources/templates/story-review-checklist.md` once
    for the entire batch.
 4. Present the story count to the user and confirm before proceeding.
 

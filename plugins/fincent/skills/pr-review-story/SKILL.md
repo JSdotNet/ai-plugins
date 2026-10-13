@@ -1,10 +1,11 @@
 ---
 name: pr-review-story
 description: >
-  Verify that a pull request fully delivers what was promised in its linked Fincent story.
-  Checks scope coverage (all acceptance criteria implemented), no out-of-scope changes,
-  and that the PR description connects back to the story. Use after code review and before
-  merging to ensure delivery matches the agreed story.
+  Verify that a pull request fully delivers its linked Fincent story: every acceptance
+  criterion covered, no out-of-scope changes, and the PR traced back to the story. Use when:
+  "does this PR deliver FIN-123", "check the PR against the story", before a merge decision,
+  or when PR scope and story scope seem to differ. DO NOT USE FOR: code structure
+  (pr-review-architecture), domain code (pr-review-domain), or answering remarks (pr-remarks-resolve).
 ---
 
 # PR vs Story Review
@@ -13,14 +14,8 @@ Verify that a pull request is a complete and faithful implementation of its link
 story. This skill answers: **"Does the PR deliver exactly what the story describes — no
 less, no more?"**
 
-This is complementary to the domain and architecture PR reviews. Run it independently or
-after those.
-
-## When to use
-
-- After the PR has passed the domain and architecture review.
-- Before a merge decision, to confirm the story is fully delivered.
-- When there is doubt about whether the PR scope matches the agreed story.
+This is complementary to the domain and architecture PR reviews and runs independently of
+them.
 
 ## Jira Skill Discovery
 

@@ -1,19 +1,18 @@
 ---
 name: pr-review-domain
 description: >
-  Review a pull request from the Domain Architect perspective: validate that code changes
-  respect ubiquitous language, bounded context boundaries, aggregate invariants, domain event
-  naming, and domain layer purity. Use when reviewing a PR that touches domain model, aggregates,
-  events, or business logic in the Fincent codebase.
+  Review a Fincent pull request's domain-layer code from the Domain Architect perspective:
+  ubiquitous language, bounded context boundaries, aggregate invariants, domain event naming,
+  and domain layer purity. Use when: "domain review of this PR", a PR touches aggregates,
+  entities, value objects, events, or business rules. DO NOT USE FOR: layers outside the domain
+  (pr-review-architecture), story coverage (pr-review-story), or a story before development
+  (story-review-domain).
 ---
 
 # PR Review — Domain Architect
 
-## Purpose and Trigger Conditions
-
-Use this skill when a pull request touches the Fincent domain layer — aggregates, entities,
-value objects, domain events, domain policies, or bounded context boundaries. The focus is
-purely on domain model correctness; infrastructure, API, and UI concerns are out of scope.
+The focus is purely on domain model correctness; infrastructure, API, and UI concerns are
+out of scope.
 
 ## Input Expectations
 
@@ -85,4 +84,4 @@ purely on domain model correctness; infrastructure, API, and UI concerns are out
 
 ## References
 
-- `resources/dor.md` — Fincent Definition of Ready
+- `../../resources/dor.md` — Fincent Definition of Ready

@@ -67,7 +67,7 @@ flowchart LR
 |-------|---------|
 | `automation-story-review-po` | Batch PO review across all stories in a status |
 | `automation-story-review-dev` | Batch technical review with enabler drafting |
-| `automation-story-review-domain` | Batch domain review with codebase inspection |
+| `automation-story-review-domain` | Batch domain review against the glossary and domain documentation |
 | `automation-story-point-estimation` | Batch estimation with drift reporting |
 
 ### Reporting & Presentation Skills
