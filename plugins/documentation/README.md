@@ -9,11 +9,13 @@ Covers six documentation artifact types and three profile artifact types.
 |---|---|---|
 | Agent | `agents/documentation.agent.md` | Writes all six documentation artifact types |
 | Agent | `agents/profile.agent.md` | Writes GitHub, project, and LinkedIn profile artifacts |
+| Contract | `resources/document-authoring.md` | The procedure every `create-*` skill shares: inputs, `[TODO: …]` markers, what may be published, saving |
 | Instruction | `resources/howto.md` | How-To writing rules |
 | Instruction | `resources/explanations.md` | Explanation writing rules |
 | Instruction | `resources/articles.md` | Article writing rules |
 | Instruction | `resources/ideas.md` | Idea writing rules |
 | Instruction | `resources/proposals.md` | Proposal writing rules |
+| Template | `resources/proposal-template.md` | The Proposal skeleton `proposals.md` points at |
 | Instruction | `resources/infographics.md` | SVG infographic authoring rules |
 | Instruction | `resources/profile-github.md` | GitHub profile writing rules |
 | Instruction | `resources/profile-projects.md` | GitHub project profile writing rules |

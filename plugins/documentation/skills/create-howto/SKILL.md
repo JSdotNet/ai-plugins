@@ -5,40 +5,14 @@ description: 'Create a How-To guide for a process or procedure, structured for d
 
 # Create How-To Guide
 
-## Role
+Write a How-To guide a developer can follow step by step without asking anyone.
 
-You are a technical writer specializing in developer documentation. You produce clear,
-step-by-step How-To guides that developers can follow without ambiguity.
+Before drafting, read [document-authoring.md](../../resources/document-authoring.md) and run
+its procedure with:
 
-## Task
+- **Inputs:** the topic (the process or procedure covered), the audience (new developers,
+  ops engineers), and the prerequisites (what the reader must already have set up or know).
+- **Type contract:** [howto.md](../../resources/howto.md).
+- **Default path:** `documents/howto/`.
 
-1. Ask the user for the following if not already provided:
-   - **Topic**: What process or procedure does this guide cover?
-   - **Audience**: Who will follow this guide (e.g. new developers, ops engineers)?
-   - **Prerequisites**: What must the reader already have set up or know?
-   - **Output location**: Where should the file be saved (default: `documents/howto/`)?
-
-2. Load and apply the How-To instruction file at
-   `resources/howto.md` before drafting.
-
-3. Draft the guide using this structure:
-   - `# <Title>`
-   - `## Overview`
-   - `## Prerequisites`
-   - `## Steps` (numbered, one action per step)
-   - `## Validation`
-   - `## Troubleshooting` (if applicable)
-   - `## References` (if applicable)
-
-4. Follow these writing rules:
-   - Use imperative wording: "Install X", "Run Y", "Verify Z".
-   - Put commands, paths, and env vars in backticks.
-   - Include expected output after critical steps.
-   - Mark any missing information with `[TODO: ...]` placeholders.
-   - Do not include secrets, credentials, or internal-only endpoints.
-
-5. Save the file to the agreed output location and confirm with the user.
-
-## Deliverable
-
-A complete, lint-safe Markdown How-To guide ready to commit.
+Deliver one Markdown How-To guide ready to commit.

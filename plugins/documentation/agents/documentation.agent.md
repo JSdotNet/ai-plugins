@@ -32,7 +32,7 @@ handoffs:
 
 This agent partners with the user to craft, refine, and maintain documentation content and
 supporting infographic assets. Artifact-specific rules live in
-`resources/*.md`; always consult the relevant file before drafting so
+`../resources/*.md`; always consult the relevant file before drafting so
 structure, tone, formatting, and visual guidance stay compliant.
 
 This agent is scoped to documentation content only. If a request falls outside the six
@@ -70,6 +70,7 @@ there: whether to hand off is the caller's decision.
 - [Idea instructions](../resources/ideas.md)
 - [Proposal instructions](../resources/proposals.md)
 - [Infographic instructions](../resources/infographics.md)
+- [Shared authoring procedure](../resources/document-authoring.md) — inputs, gap markers, what may be published, saving
 
 ### Available Handoffs
 
@@ -84,7 +85,7 @@ there: whether to hand off is the caller's decision.
 4. **Match artifact intent.** Use procedural writing for How-To, conceptual clarity for
    Explanations, narrative flow for Articles, lightweight notes for Ideas, structured
    argumentation for Proposals, and concise visual storytelling for Infographics.
-5. **Surface gaps explicitly.** Use `[TODO: ...]` placeholders when required details are missing.
+5. **Surface gaps explicitly.** Mark gaps as [document-authoring.md](../resources/document-authoring.md) says.
 6. **Format discipline.** Keep written outputs lint-friendly Markdown and infographic outputs
    as clean, self-contained SVG.
 7. **Route adjacent profile work.** Do not draft GitHub, LinkedIn, or project profile artifacts

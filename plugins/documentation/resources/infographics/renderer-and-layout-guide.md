@@ -36,11 +36,3 @@
 | KPI bullets or metrics | KPI snapshot | Highlight a small number of numbers |
 | Nested concepts or tiers | Hierarchy | Use stacked layers or grouped sections |
 | Decision summary | Roadmap / summary card set | Keep trade-offs short and visible |
-
-## Output Checklist
-
-- Choose one primary pattern.
-- Limit the number of colors and shape types.
-- Keep text short enough for scanning.
-- Make the most important fact visible first.
-- Ensure the SVG can stand alone without surrounding explanation.
