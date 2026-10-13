@@ -5,17 +5,17 @@ description: "Start this repository's application the way the repository says to
 
 # Start the Application
 
-Start the app from the repository's own startup instruction instead of a command guessed per
-session, then open it. Usually that is `aspire run` plus a browser on the front end.
+Start the app from the repository's own startup instruction, then open it. Usually that is
+`aspire run` plus a browser on the front end.
 
 ## Find the Instruction
 
-First source that answers the question wins; say which one was used.
+The first source that answers wins; say which one was used.
 
-1. `.claude/start.md` — the startup instruction, from
-   [`resources/claude-start-template.md`](../../resources/claude-start-template.md).
+1. `.claude/start.md` — the startup instruction, shaped like
+   [claude-start-template.md](../../resources/claude-start-template.md).
 2. `.claude/orch-context.md` — `## How to Run`, `## Base URLs`, `## Healthy Startup`.
-3. The repository's own getting-started docs — `README.md`, `CONTRIBUTING.md`,
+3. The repository's getting-started docs — `README.md`, `CONTRIBUTING.md`,
    `.github/instructions/`.
 4. Inference — an `*.AppHost` project means `aspire run`; otherwise `package.json` scripts,
    `compose.yaml`, `.claude/launch.json`. Say that this was a guess.
@@ -25,32 +25,21 @@ start. Say so and stop.
 
 ## Run It
 
-1. Check whether it is already running before starting a second copy — worktrees share
-   ports. Reuse a running instance and say so.
-2. Run the declared command in the background. Never substitute a different command when the
-   declared one fails; report the failure.
+1. Check whether it already runs — worktrees share ports. Reuse a running instance and say
+   so; restart one only after saying you will.
+2. Run the declared command in the background. When it fails, report the failure and keep to
+   the declared command rather than trying another.
 3. Wait for the declared readiness signal, or `list_resources` on the Aspire MCP server when
-   the repository has an AppHost. Stop waiting on a fatal error or two minutes of silence.
-4. Open the URL from `## Open`, else the front end from `## Base URLs`, else whatever the
-   startup output printed. Use the inline browser pane (`preview_start`); fall back to
-   giving the plain URL. Re-read the port every start — it changes.
-5. Follow the optional sections when the file has them: `## Sign In` for a local session, and
-   `## Go To` to land on the area the current branch changes (match `git diff --name-only`
-   against its entries).
+   there is an AppHost. Stop waiting on a fatal error or after two minutes of silence.
+4. Open the URL from `## Open`, else the front end from `## Base URLs`, else the one the
+   startup output printed — in the inline browser pane (`preview_start`), else as a plain
+   URL. Re-read the port on every start; it changes.
+5. Follow `## Sign In` and `## Go To` when present; `## Go To` lands on the area the branch
+   changes (match `git diff --name-only` against its entries). For a credential, open the page,
+   name where the credential lives, and let the user sign in — typing passwords, tokens, and
+   keys is theirs.
+6. Propose destructive setup (database drop, volume prune, `git clean`) for the user to run;
+   starting runs none of it.
 
-Report in a couple of lines: which instruction source, the command, health, and the open URL.
-Leave the app running. Offer once to write `.claude/start.md` when the start had to be
-inferred.
-
-## Constraints
-
-- Never type a password, token, or key into a form. With no non-interactive sign-in path,
-  open the page, name where the credential lives, and let the user sign in.
-- Never restart a running instance without saying so.
-- Never run destructive setup (database drop, volume prune, `git clean`) as part of starting.
-  Propose it instead.
-
-## Related Skills
-
-- `aspire-run` (plugin: `qa`) — startup inside QA validation, with MCP evidence requirements.
-- `aspire-log-monitor` (plugin: `qa`) — watch logs and traces while the app is up.
+Report in a couple of lines: instruction source, command, health, open URL. Leave the app
+running. Offer once to write `.claude/start.md` when the start was inferred.

@@ -5,188 +5,47 @@ description: "Open a pull request for the current branch — push it, derive tit
 
 # Create Pull Request
 
-## Purpose
+Inputs: base branch (default: the repository default branch), draft or ready (default draft
+when the branch has open TODOs or failing local checks), linked issue, reviewers, labels.
+`gh` must be authenticated; configured GitHub MCP tools may stand in for any `gh` call.
 
-Turn a finished working branch into a reviewable pull request. The skill collects everything a
-reviewer needs — a scoped title, a body grounded in the actual commits and diff, a linked issue,
-and the right labels and reviewers — and creates the PR with `gh`.
+## Before drafting
 
-## Inputs
+- On the default branch: stop and ask the user to create a feature branch first.
+- Uncommitted changes: list them and ask whether to commit them into the PR or leave them
+  behind. Never stash silently. Keep secrets, `.env` files, and local settings out of the
+  staged diff.
+- A PR already exists for the branch: open and draft — report the URL and ask whether to
+  publish it; on yes, mark it ready (`gh pr ready`) and go to the report; on no, stop. Open
+  and not a draft — report the URL and stop. Closed, merged, or none — continue.
 
-- Base branch (default: the repository default branch from `gh repo view --json defaultBranchRef`).
-- Draft or ready for review (default: `draft` when the branch has open TODOs or failing local
-  checks, otherwise `ready`).
-- Linked issue number (optional; inferred from the branch name or commit trailers).
-- Reviewers and labels (optional).
+## Draft
 
-## Hard Constraints
+- Ground the body in `origin/<base>..HEAD` after a fetch: describe only what the diff changes.
+- Linked issue: an `#123` or `owner/repo#123` in a commit message or trailer, else a number in
+  the branch name, else ask when the repository requires one.
+- Title in the style of recent merged PR titles. Body from the repository PR template when
+  one exists, otherwise `## Summary`, `## Changes`, `## Validation` (only what was actually
+  run), then the issue line.
+- Write `Closes #<n>` only when merging genuinely resolves the issue; otherwise `Refs #<n>`.
 
-- Never push or create a PR without explicit user confirmation of the title, body, and base branch.
-- Never force-push in this skill. History rewriting belongs to `update-pr-branch`.
-- Never invent scope: the body describes only what the diff actually changes.
-- Never commit secrets, `.env` files, or local settings — check the staged diff before pushing.
+## Confirm, push, create
 
-## Workflow
+1. Show the user the title, the full body, the base branch, and draft or ready. Wait for an
+   explicit confirmation of all of them; push nothing and create nothing before it.
+2. Push with `--set-upstream`. Never force-push. When the remote rejects the push because the
+   branch diverged, stop and hand off to `delivery:update-pr-branch`; when that plugin is not
+   installed, report the divergence and stop.
+3. Create the PR with the body written to a temporary file (`--body-file`), adding `--draft`
+   unless it is ready; then apply the requested labels and reviewers.
 
-### Phase 1 — Assess Branch State
+## Report
 
-1. Capture the branch and working-tree state:
+PR number, URL, base, draft state, linked issue, and the check status. Right after creation an
+empty check list means pending — report pending, never passing. Failing checks: hand off to
+`delivery:fix-pr-checks`; when a hand-off's plugin is absent, report the state and URL and stop.
 
-   ```bash
-   git --no-pager branch --show-current
-   git --no-pager status --short
-   ```
-
-2. If the branch is the default branch, stop and ask the user to create a feature branch first.
-3. If there are uncommitted changes, list them and ask whether to commit them into the PR or
-   leave them behind. Do not stash silently.
-4. Check whether a PR already exists for this branch:
-
-   ```bash
-   gh pr view --json number,state,isDraft,url
-   ```
-
-   - Open and `isDraft: true`: report the URL and ask whether to publish it. On yes, skip to
-     step 16; on no, stop.
-   - Open and not a draft: stop and report the URL — use `update-pr-branch` or
-     `fix-pr-checks` instead.
-   - None, or closed or merged: continue.
-
-### Phase 2 — Collect Change Context
-
-5. Read the commits and diff that the PR would contain:
-
-   ```bash
-   git --no-pager fetch origin
-   git --no-pager log origin/<base>..HEAD --oneline
-   git --no-pager diff origin/<base>...HEAD --stat
-   ```
-
-6. Identify the linked issue, in this order:
-   - An `owner/repo#123` or `#123` reference in a commit message or trailer.
-   - A number embedded in the branch name (`feature/42-...`, `fix/37-...`).
-   - Ask the user if neither is found and the repository convention requires one.
-
-7. If the repository has a PR template, read it and follow its section structure:
-
-   ```bash
-   ls .github/pull_request_template.md .github/PULL_REQUEST_TEMPLATE/ 2>/dev/null
-   ```
-
-### Phase 3 — Draft Title and Body
-
-8. Write the title as a single scoped sentence in the repository's existing style — check
-   recent merged PR titles with `gh pr list --state merged --limit 10 --json title` and match
-   the convention (Conventional Commits prefix, ticket prefix, or plain sentence).
-9. Write the body from the template when one exists, otherwise from this structure:
-
-   ```markdown
-   ## Summary
-
-   <what changed and why, 2-4 sentences grounded in the diff>
-
-   ## Changes
-
-   - <change per area, one line each>
-
-   ## Validation
-
-   - <build, test, or manual verification actually performed>
-
-   Closes #<issue>
-   ```
-
-10. Use `Closes #<n>` only when merging the PR genuinely resolves the issue; otherwise use
-    `Refs #<n>`.
-11. Present the title, body, base branch, and draft/ready decision to the user and wait for
-    confirmation.
-
-### Phase 4 — Push the Branch
-
-12. Push the branch and set upstream:
-
-    ```bash
-    git push --set-upstream origin <branch>
-    ```
-
-13. If the remote rejects the push because the branch diverged, stop and hand off to
-    `update-pr-branch`.
-
-### Phase 5 — Create the Pull Request
-
-14. Create the PR:
-
-    ```bash
-    gh pr create --base <base> --head <branch> \
-      --title "<title>" --body-file <body-file> \
-      --draft
-    ```
-
-    Drop `--draft` when the PR is ready for review. Write the body to a temporary file rather
-    than passing multi-line text inline.
-
-15. Apply optional metadata when requested:
-
-    ```bash
-    gh pr edit <number> --add-label "<label>" --add-reviewer "<user-or-team>"
-    ```
-
-16. To publish an existing draft:
-
-    ```bash
-    gh pr ready <number>
-    ```
-
-### Phase 6 — Report
-
-17. Output the PR number, URL, base, draft state, and linked issue.
-18. Report the initial check status:
-
-    ```bash
-    gh pr checks <number>
-    ```
-
-    Right after creation the checks have usually not started yet, so an empty result means
-    pending — report it as pending, not as passing. If checks are already failing, hand off
-    to `fix-pr-checks`.
-
-## Dashboard Interface
-
-This skill reports progress through the `orch-dashboard` MCP server
-(`plugins/claude-desktop/mcp/orch-dashboard/`). Follow the shared
-**Dashboard Reporting Contract** in
-[`resources/orch-dashboard-contract.md`](../../resources/orch-dashboard-contract.md)
-for availability and the tool cadence.
-
-- Open the dashboard per the shared contract, then call `start_run` with
-  `skillId: "create-pull-request"` and these stages: Assess Branch State, Collect
-  Change Context, Draft Title and Body, Push the Branch, Create the Pull Request,
-  Report.
-- Call `finish_run` with the final status and the PR URL once the pull request exists.
-
-See `plugins/claude-desktop/mcp/orch-dashboard/README.md` for the full dashboard tool
-contract.
-
-## Output
-
-- An open pull request with a scoped title, a diff-grounded body, and the issue linked.
-- PR number and URL.
-- Initial CI check status.
-
-## Related Skills
-
-- `update-pr-branch` (plugin: `delivery`) — bring the PR branch up to date with its base and resolve conflicts.
-- `fix-pr-checks` (plugin: `delivery`) — diagnose and fix failing PR checks.
-- `pr-merge-ready` (plugin: `delivery`) — score one pull request against the merge-ready checklist and clear its blockers, one PR per pass.
-- `pr-remarks-review` (plugin: `review`) — work through reviewer comments.
-
-When the plugin a hand-off names is not installed, report the state and the URL and stop.
-
-## Notes
-
-- `gh` must be authenticated (`gh auth status`). GitHub MCP tooling is an acceptable substitute
-  for every `gh` call here when configured.
-- Draft is the safer default for long-running or exploratory branches: it keeps CI running
-  without notifying reviewers.
-- When the repository enforces a linear history, keep the branch rebased rather than merged so
-  the PR stays mergeable — see `update-pr-branch`.
+Dashboard: per [orch-dashboard-contract.md](../../resources/orch-dashboard-contract.md),
+`start_run` with `skillId: "create-pull-request"` and stages Assess Branch State, Collect
+Change Context, Draft Title and Body, Push the Branch, Create the Pull Request, Report;
+`finish_run` with the final status and the PR URL once the PR exists.

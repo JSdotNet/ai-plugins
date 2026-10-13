@@ -1,13 +1,9 @@
 # Handoff — <objective in a few words>
 
 <!--
-The shape of a handoff brief. Written by the `session-handoff` skill to
-`~/.claude/handoffs/<yyyyMMdd-HHmm>-<slug>.md` (Windows: `%USERPROFILE%\.claude\handoffs\`),
-or to `.wip/handoffs/handoff-<slug>.md` when the brief should live in the repository.
-
-Two rules the next session depends on: every path absolute, and no secrets.
-Written for a reader who cannot see the conversation this came from.
-Read by: plugins/claude-desktop/skills/session-handoff/SKILL.md
+The shape of a handoff brief, written by the `session-handoff` skill to the path its table
+names. Every path absolute, no secrets, written for a reader who cannot see the conversation.
+Read by: ../skills/session-handoff/SKILL.md
 -->
 
 | | |
