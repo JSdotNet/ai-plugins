@@ -1,12 +1,11 @@
 ---
 name: deployed-environment-validation
 description: >
-  Validate a feature or bug fix with Playwright against a specific already-deployed
-  test environment (e.g. staging, QA, UAT) instead of an app started locally via
-  Aspire.
-  Use when: testing against a deployed staging/QA/UAT environment, validating a
-  release candidate before promotion, running smoke or regression checks against
-  a specific environment URL rather than a local run.
+  Validate a feature or bug fix with Playwright against an already-deployed test
+  environment (staging, QA, UAT) instead of an app started locally via Aspire.
+  Use when: testing a deployed staging/QA/UAT environment, validating a release
+  candidate before promotion, smoke or regression checks against an environment
+  URL. DO NOT USE FOR: a local run (aspire-run, playwright-validation).
 ---
 
 # Deployed Environment Validation
@@ -27,8 +26,8 @@ after a deploy.
 - Any credentials needed to reach the environment. Never hardcode secrets in
   scenarios, reports, or committed files — reference an environment variable or
   the user's existing secret manager/credential store instead.
-- Whether the environment exposes a reachable Aspire dashboard/MCP endpoint for
-  remote log/trace/metric access (optional — not all deployed environments do).
+- Whether the environment runs a reachable Aspire dashboard whose telemetry API remote
+  log/trace access can use (optional — not all deployed environments do).
 
 ## Workflow
 
@@ -54,15 +53,18 @@ after a deploy.
 
 ### 4. Monitor Logs (Best Effort)
 
-6. If the environment exposes a reachable Aspire dashboard/MCP endpoint, apply
-   `aspire-log-monitor` against that remote endpoint for the duration of testing,
-   the same as for a local run.
+6. This plugin's Aspire MCP server sees only AppHosts on this machine. If the
+   environment runs a reachable Aspire dashboard and the person has registered an
+   Aspire MCP server pointed at it (`aspire agent mcp --dashboard-url <url>
+   --api-key <key>`), apply `aspire-log-monitor` through that server for the
+   duration of testing; it exposes only the structured-log and trace tools, not
+   resource state.
 7. If no such endpoint is available, log/trace monitoring is out of scope for
    this skill — proceed using Playwright console/network evidence only, and
    clearly note in the report that Aspire log monitoring was not available for
-   this environment. For deeper observability needs, recommend a handoff to the
-   `csharp-coding` plugin's `sre` skill instead of trying to access production
-   logging systems directly from here.
+   this environment. For deeper observability needs, recommend `csharp-coding:sre`
+   instead of trying to access production logging systems directly from here;
+   when the `csharp-coding` plugin is not installed, name the gap in the report.
 
 ### 5. Validate with Playwright
 
@@ -102,6 +104,6 @@ after a deploy.
 | Skill | When to use |
 |---|---|
 | `playwright-validation` | Drive the browser and capture evidence against the confirmed environment |
-| `aspire-log-monitor` | Monitor logs/traces/metrics if the environment exposes a reachable Aspire endpoint |
+| `aspire-log-monitor` | Monitor logs and traces if an Aspire MCP server reaches the environment's dashboard |
 | `feature-test-from-issue` | Derive the scenario(s) to run from a GitHub issue or Jira ticket |
 | `playwright-e2e-authoring` | Turn a scenario validated here into a durable, re-runnable test |

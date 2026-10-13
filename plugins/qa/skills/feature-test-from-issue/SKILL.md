@@ -1,12 +1,13 @@
 ---
 name: feature-test-from-issue
 description: >
-  Derive end-to-end Playwright test scenarios from a GitHub issue or Jira ticket
-  (acceptance criteria, repro steps), then validate the feature or bug fix against
-  the running app with evidence and Aspire log monitoring.
-  Use when: an issue/ticket number or link is provided as the source of truth for
-  what to test, validating a feature against its acceptance criteria, confirming a
-  bug fix against its original repro steps.
+  Derive Playwright test scenarios from a GitHub issue or Jira ticket (acceptance
+  criteria, repro steps), then validate the feature or bug fix against the running
+  app with evidence and Aspire log monitoring.
+  Use when: an issue/ticket number or link is the source of truth for what to test,
+  checking a feature against its acceptance criteria, confirming a bug fix against
+  its repro steps. DO NOT USE FOR: writing or updating the issue itself, or
+  scenarios with no issue behind them (playwright-validation).
 ---
 
 # Feature Test from Issue
@@ -18,15 +19,15 @@ guessing what to test. The issue/ticket is the source of truth for acceptance
 criteria (features) or repro steps (bugs); this skill maps that content onto the
 `qa` agent's existing Aspire + Playwright + monitoring workflow.
 
-This skill does **not** contain any GitHub- or Jira-specific API calls, CLI
-commands, or field mappings. Issue/ticket retrieval is always delegated to a
-dedicated skill from another installed plugin (see [Fetching the Issue](#1-identify-and-fetch-the-issue-or-ticket)).
+This skill holds no GitHub- or Jira-specific API calls or field mappings. It reads
+the issue/ticket with whatever issue tooling the session already has (see
+[Fetching the Issue](#1-identify-and-fetch-the-issue-or-ticket)).
 
 ## Inputs
 
 - Issue/ticket reference — a GitHub issue number/URL (e.g. `owner/repo#123`) or a
-  Jira issue key (e.g. `PROJ-456`), or a pasted issue/ticket body if no fetch skill
-  is available.
+  Jira issue key (e.g. `PROJ-456`), or a pasted issue/ticket body when the session
+  has no issue tooling.
 - (Optional) Which specific acceptance criteria or repro steps to focus on, if the
   issue/ticket contains more than one testable scenario.
 
@@ -36,15 +37,12 @@ dedicated skill from another installed plugin (see [Fetching the Issue](#1-ident
 
 1. Determine the source from the reference format or ask the user: **GitHub** or
    **Jira**.
-2. Look for a skill from another installed plugin that can fetch the issue/ticket
-   content (for example, a GitHub-issue skill in a `github` plugin, or a
-   Jira-ticket skill in a `jira` plugin). Apply that skill to retrieve the
-   title, description/body, acceptance criteria, labels, and (for bugs) repro
+2. Read the issue/ticket with the issue tooling the session has — the `gh` CLI or a
+   GitHub MCP server for GitHub, an Atlassian MCP server for Jira — and retrieve
+   the title, description/body, acceptance criteria, labels, and (for bugs) repro
    steps.
-3. If no such skill is installed or available, ask the user to paste the relevant
-   issue/ticket content directly. Do not fetch issue/ticket data yourself with a
-   direct API or CLI call — that belongs to the dedicated GitHub/Jira skill, not
-   to this plugin.
+3. If the session has no tooling that reaches the source, ask the user to paste
+   the relevant issue/ticket content directly.
 4. Confirm with the user which acceptance criteria or repro steps to test if the
    issue/ticket contains multiple distinct scenarios.
 
@@ -63,7 +61,7 @@ dedicated skill from another installed plugin (see [Fetching the Issue](#1-ident
 8. Apply the `aspire-run` skill to start the app and confirm all resources are
    healthy.
 9. Apply the `aspire-log-monitor` skill (unless the caller runs `qa-monitor` itself)
-   to keep Aspire log/trace/metric monitoring active for the whole session.
+   to keep Aspire log/trace monitoring active for the whole session.
 
 ### 4. Execute Scenarios with Playwright
 
@@ -77,10 +75,12 @@ dedicated skill from another installed plugin (see [Fetching the Issue](#1-ident
 12. Produce a QA report mapping each derived scenario back to its originating
     acceptance criterion or repro step, with Pass/Fail/Flaky status, evidence
     paths, and Aspire findings.
-13. If the user wants the result posted back to the issue/ticket (e.g. a comment
-    or status update), do not do this directly — recommend a handoff to the
-    relevant GitHub or Jira skill (with explicit user approval) to perform the
-    update.
+13. If the user wants the result posted back to the issue/ticket as a comment,
+    show the exact comment text and the issue/ticket it will be posted to, and ask
+    for explicit confirmation before posting, because a posted comment is visible
+    to everyone watching that issue and cannot be silently withdrawn. Post it only
+    after the user confirms, with the session's issue tooling. Leave status
+    changes to the user.
 
 ## Output
 
@@ -92,10 +92,11 @@ dedicated skill from another installed plugin (see [Fetching the Issue](#1-ident
 
 ## Constraints
 
-- Never hardcode GitHub or Jira API endpoints, CLI commands, or authentication in
-  this skill — always delegate fetch/update operations to a skill from the
-  relevant plugin, and fall back to asking the user for pasted content when no
-  such skill is installed.
+- Never hardcode GitHub or Jira API endpoints or authentication in this skill —
+  use the session's issue tooling, and fall back to asking the user for pasted
+  content when it has none.
+- Never post to an issue/ticket without the user's explicit confirmation of the
+  exact text (step 13).
 - Do not run tests against scenarios that have not been confirmed by the user in
   step 7.
 - Do not mark a scenario as validated without both Playwright evidence and an
@@ -106,7 +107,5 @@ dedicated skill from another installed plugin (see [Fetching the Issue](#1-ident
 | Skill | When to use |
 |---|---|
 | `aspire-run` | Start (and confirm healthy) the app under test |
-| `aspire-log-monitor` | Continuous Aspire log/trace/metric monitoring |
+| `aspire-log-monitor` | Continuous Aspire log/trace monitoring |
 | `playwright-validation` | Execute the derived scenarios against the running app and capture evidence |
-| A GitHub-issue skill (from an installed GitHub plugin) | Fetch or update a GitHub issue |
-| A Jira-ticket skill (from an installed Jira plugin) | Fetch or update a Jira ticket |

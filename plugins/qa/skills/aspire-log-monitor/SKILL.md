@@ -1,7 +1,6 @@
 ---
 name: aspire-log-monitor
-description: 'Continuously monitor logs and traces of a running Aspire application via the Aspire MCP server while QA/Playwright validation is in progress. Use for the full duration of a test session, not just as a final check.'
-compatibility: Requires the Aspire MCP server (`aspire mcp start`, CLI 13.1+).
+description: 'Continuously monitor logs and traces of a running Aspire application through the Aspire MCP server for the full duration of a QA test session. Use when: watching backend errors while Playwright validation runs, correlating a UI step with its logs and traces, checking resource health mid-session. DO NOT USE FOR: starting the app (aspire-run) or driving the browser (playwright-validation).'
 ---
 
 # Aspire Log Monitor — Continuous QA Monitoring
@@ -16,13 +15,9 @@ interaction begins, and keep it running until every scenario is finished.
 
 ## Prerequisites
 
-The Aspire CLI MCP server must be initialized and running before validation that depends on
-resource state, logs, traces, or health evidence:
-
-```bash
-aspire mcp init
-aspire mcp start
-```
+The Aspire MCP server must be running before validation that depends on resource state, logs,
+traces, or health evidence. This plugin declares it, started as `aspire agent mcp` (an older
+Aspire CLI names it `aspire mcp start`), so the host starts it with the session.
 
 If the Aspire MCP tools are not visible in the session after startup, restart the
 session/runtime or reload MCP tools before QA begins. If monitoring remains

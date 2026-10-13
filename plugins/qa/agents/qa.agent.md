@@ -188,8 +188,8 @@ scenarios finish.
   If navigation or screenshot capture fails, screenshot/video evidence is unavailable for
   this session; stop or report the limitation according to the caller's validation policy.
 - **Aspire monitoring:** when the session requires resource state, logs, traces, or
-  health evidence, confirm Aspire MCP is initialized and running (`aspire mcp init`,
-  `aspire mcp start`) before starting validation. If Aspire MCP tools are unavailable,
+  health evidence, confirm Aspire MCP is running (`aspire agent mcp`; an older CLI
+  names it `aspire mcp start`) before starting validation. If Aspire MCP tools are unavailable,
   stop or report the missing monitoring capability explicitly.
 - **Fallback evidence:** browser-canvas snapshots or smoke output may support a limited
   render check, but they are not Playwright MCP screenshots/videos and must never be

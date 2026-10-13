@@ -1,7 +1,6 @@
 ---
 name: playwright-validation
-description: 'Validate a feature or run extensive end-to-end testing against a running app using the Playwright MCP server, capturing screenshots as evidence. Use after the app under test is running (see the aspire-run skill).'
-compatibility: Requires the Playwright MCP server (`@playwright/mcp`).
+description: 'Validate a feature or run extensive end-to-end testing against a running app through the Playwright MCP server, capturing screenshot evidence per scenario. Use when: the app under test is running and a feature, bug fix, or scenario list must be proved in a real browser. DO NOT USE FOR: writing a checked-in test file (playwright-e2e-authoring) or deriving scenarios from an issue (feature-test-from-issue).'
 ---
 
 # Playwright Validation — Evidence-Backed Feature Testing
@@ -15,7 +14,8 @@ reading to claim a feature works — prove it by running it.
 - The app under test is already running and healthy (see the `aspire-run` skill).
 - Aspire log/trace monitoring is already active (see the `aspire-log-monitor` skill) —
   start it before this skill, not after.
-- The Playwright MCP server is configured before QA starts, for example:
+- The Playwright MCP server (`@playwright/mcp`) is configured before QA starts; when it is
+  absent, report that Playwright evidence cannot be captured and stop. For example:
 
   ```json
   {
@@ -53,12 +53,12 @@ reading to claim a feature works — prove it by running it.
 Exact tool names depend on the installed Playwright MCP version — use `browser_snapshot`
 first on an unfamiliar page to confirm available element references before interacting.
 
-**Resolve the recordable form from the tool list you actually have.** `@playwright/mcp`
-0.0.79 — the version this plugin installs via `@playwright/mcp@latest` — exposes **no**
-tracing or video tools (`browser_start_tracing` / `browser_stop_tracing` do not exist) and
-**no** `--save-trace` or `--save-video` server option; only `--save-session` (a log of tool
-calls under `--output-dir`) and screenshots. Continuous evidence is therefore a numbered
-screenshot sequence unless your tool list shows tracing tools. Name the form used in the
+**Resolve the recordable form from the tool list you actually have.** As of `@playwright/mcp`
+0.0.79 the server exposes **no** tracing or video tools (`browser_start_tracing` /
+`browser_stop_tracing` do not exist) and **no** `--save-trace` or `--save-video` server
+option; only `--save-session` (a log of tool calls under `--output-dir`) and screenshots.
+`@latest` moves, so read the tool list: continuous evidence is a numbered screenshot
+sequence unless that list shows tracing or video tools. Name the form used in the
 report, and never call a screenshot sequence a video or a trace.
 
 ## Workflow

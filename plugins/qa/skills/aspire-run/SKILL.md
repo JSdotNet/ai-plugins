@@ -1,7 +1,6 @@
 ---
 name: aspire-run
-description: 'Start and confirm the health of a .NET Aspire-orchestrated application for QA/testing purposes. Use before any runtime validation, browser testing, or exploratory testing session.'
-compatibility: Requires the Aspire CLI (`aspire run`) and Aspire MCP server for QA validation that needs resource state, logs, traces, metrics, or health evidence.
+description: 'Start a .NET Aspire-orchestrated application and confirm every resource is healthy before QA. Use when: starting the app under test before Playwright validation, exploratory or regression testing against a local build, a QA report must name the running version, refreshing the app after a code change. DO NOT USE FOR: an already-deployed environment (deployed-environment-validation).'
 ---
 
 # Aspire Run — Start the App Under Test
@@ -11,11 +10,9 @@ validation begins. Running through Aspire (rather than a single project) ensures
 dependent resources — databases, caches, queues, downstream services — are available
 and wired exactly as they would be for a real user.
 
-## When to Use
-
-- Before any Playwright-driven feature validation.
-- Before exploratory or regression testing against a local build.
-- Whenever a QA report needs to reference a specific running app version/commit.
+Requires the Aspire CLI (`aspire run`), and the Aspire MCP server for resource state, logs,
+traces, or health evidence; without the CLI, fall back to `dotnet run` (step 2), and without
+the server, see the fallback in step 3.
 
 ## Steps
 
@@ -62,7 +59,7 @@ tool list. If `list_resources` is missing, an older Aspire CLI may still expose 
 `get_resources` name; `doctor` diagnoses the environment even with no AppHost running.
 
 Fallback (no MCP server): only allowed for startup-only checks where MCP-backed resource
-state, log, trace, metric, or health evidence is not required. For QA validation that
+state, log, trace, or health evidence is not required. For QA validation that
 requires Aspire monitoring or evidence, missing Aspire MCP blocks the phase; stop and report
 that Aspire MCP must be started/configured before validation can continue — to the user when
 you have a user turn, otherwise to your caller as a blocked result.
@@ -82,8 +79,8 @@ you have a user turn, otherwise to your caller as a blocked result.
 
 ### 6. Refresh After Code Changes
 
-When implementation changes are made after an app has already been started for QA or
-Personal Validation, refresh the running app before continuing validation:
+When implementation changes are made after an app has already been started for QA or for
+a later review by the person, refresh the running app before continuing validation:
 
 - Prefer the same running instance when the startup command supports hot reload/watch and
   resource state remains healthy.
