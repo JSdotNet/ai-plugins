@@ -1,16 +1,14 @@
 ---
 name: create-jira-ticket
-description: "Uploads an already written Jira ticket from a Markdown file to Jira in project FIN. Use when: ticket content already exists and must be created in Jira without rewriting, summarizing, translating, or changing any ticket text."
-user-invocable: true
+description: "Create a Jira issue in project FIN from an already written Markdown story, epic, or bug, without changing its text, and write the new key back. Use when: upload this ticket to Jira, create the Jira issue for this story/epic/bug, the artifact has no Issue Key yet. DO NOT USE FOR: an artifact that already has an Issue Key (update-jira-ticket), or drafting ticket content."
 ---
 
 # Create Jira Ticket (Upload Only)
 
 ## Prerequisites
 
-Requires the **Atlassian MCP server** (`mcp_atlassian`) to be connected. The following MCP tool is called:
-
-- `mcp_atlassian_jira_create_issue`
+Requires an **Atlassian MCP server** connected to the session; this skill creates the issue
+through its create-issue tool. When no Atlassian MCP server is connected, stop and say so.
 
 ## Purpose
 
@@ -23,7 +21,7 @@ Create the Jira issue in project FIN without changing ticket content.
 - Do not rewrite, summarize, translate, reorder, or correct ticket content.
 - Do not infer missing acceptance criteria.
 - Do not add workflow steps unrelated to creation (no transitions, no board routing, no branch/worktree setup).
-- Do not edit the source Markdown file unless the user explicitly asks to write back the Jira key and URL.
+- Do not edit the source Markdown file except to write back `Issue Key` and `Issue URL` to `## Jira Fields`.
 - Never include the title heading in the description.
 - Never include the `## Jira Fields` section in the description.
 - Never include the `## Acceptance Criteria` section in the description.
@@ -53,6 +51,9 @@ Read these values from the source file:
 - Optional `## Test Instructions` content — for the Jira test instructions custom field (Story and Bug only).
 - All sections **except** the title, `## Acceptance Criteria`, `## Test Instructions`, and `## Jira Fields` — for `description`.
 
+This plugin records no field id for the test-instructions or the readiness custom field. When
+the session cannot resolve either one, leave it unset and say so in the response.
+
 Validation rules:
 
 - For Story and Bug, `Acceptance Criteria` must be present in the source.
@@ -75,7 +76,7 @@ Uncertainty rendering rules:
 - `test instructions custom field`: content of `## Test Instructions` when present (Story and Bug only)
 - `additional_fields`:
 
-  - Include epic link only for Story and Bug using `{"epicKey":"<Epic Link>"}`
+  - Include the epic only for Story and Bug as the parent, `{"parent":{"key":"<Epic Link>"}}` (Jira Cloud replaced the Epic Link field with `parent`)
   - Include labels only when present in source Jira fields
   - Include readiness custom field with value `Red` when `⚠️` open questions are present and the field is configured
 
@@ -84,8 +85,8 @@ Uncertainty rendering rules:
 1. Read the source Markdown file.
 2. Validate required fields for the artifact type.
 3. Build the create payload with correct field mapping.
-4. Call `mcp_atlassian_jira_create_issue`.
-5. Write back the `Issue Key` to the `## Jira Fields` section of the source file.
+4. Create the issue through the Atlassian MCP server.
+5. Write back `Issue Key` and `Issue URL` to the `## Jira Fields` section of the source file.
 6. Return both:
 
   - Jira issue key

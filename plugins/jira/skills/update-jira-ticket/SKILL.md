@@ -1,16 +1,14 @@
 ---
 name: update-jira-ticket
-description: "Updates an existing Jira issue in project FIN from a Markdown backlog artifact. Use when: a ticket already exists in Jira (Issue Key present in Jira Fields) and the description or other editable fields need to be re-synced. Note: customfield_11193 (Acceptance Criteria) is only settable at create time and cannot be updated."
-user-invocable: true
+description: "Re-sync an existing Jira issue in project FIN from its Markdown story, epic, or bug without changing its text. Use when: the artifact has an Issue Key in Jira Fields and its summary, description, or test instructions changed. Acceptance criteria are create-only. DO NOT USE FOR: an artifact with no Issue Key (create-jira-ticket)."
 ---
 
 # Update Jira Ticket
 
 ## Prerequisites
 
-Requires the **Atlassian MCP server** (`mcp_atlassian`) to be connected. The following MCP tool is called:
-
-- `mcp_atlassian_jira_update_issue`
+Requires an **Atlassian MCP server** connected to the session; this skill edits the issue
+through its update-issue tool. When no Atlassian MCP server is connected, stop and say so.
 
 ## Purpose
 
@@ -47,14 +45,16 @@ Read these values from the source file:
 - All sections **except** the title, `## Acceptance Criteria`, `## Test Instructions`, and `## Jira Fields` — for `description`.
 
 > **Known limitation:** `customfield_11193` (Acceptance Criteria) does not support update via the Jira edit API.
-> It can only be set at creation time. If acceptance criteria must be corrected, delete and recreate the issue
-> using `create-jira-ticket`, or update the field manually in the Jira UI.
+> It can only be set at creation time. If acceptance criteria must be corrected, tell the person to change the
+> field in the Jira UI. Never delete or recreate the issue from this skill: deleting a Jira issue permanently
+> removes its key, history, comments, and links.
 
 Validation rules:
 
 - `Issue Key` must be present in `## Jira Fields`; stop and ask if missing.
-- For Story and Bug, `## Acceptance Criteria` must be present.
 - If `⚠️` open questions are present in description, set the configured readiness custom field to `Red` when available.
+- This plugin records no field id for the test-instructions or the readiness custom field. When the session
+  cannot resolve either one, leave it unset and say so in the response.
 - If a required value is missing, stop and ask only for the missing value.
 
 Uncertainty rendering rules:
@@ -77,7 +77,7 @@ Uncertainty rendering rules:
 1. Read the source Markdown file.
 2. Validate required fields for the artifact type.
 3. Build the update payload with correct field mapping.
-4. Call `mcp_atlassian_jira_update_issue` with `issue_key` and `fields`.
+4. Update the issue through the Atlassian MCP server, passing the issue key and the mapped fields.
 5. Return the issue key and browse URL: `https://innovadis.atlassian.net/browse/<KEY>`.
 
 ## Out Of Scope
