@@ -40,9 +40,12 @@ Direct agents to use the `.wip` folder convention correctly when storing work-in
 ## Quality Contracts
 
 Load the contract for the artifact type before writing it — nothing applies it for you:
-`resources/wip-stories.md`, `resources/wip-epics.md`, `resources/wip-bugs.md`,
-`resources/wip-ideas.md`, `resources/wip-proposals.md`, and `resources/wip-confidence.md`
-for anything under `.wip/work/`.
+[`resources/wip-stories.md`](../../resources/wip-stories.md),
+[`resources/wip-epics.md`](../../resources/wip-epics.md),
+[`resources/wip-bugs.md`](../../resources/wip-bugs.md),
+[`resources/wip-ideas.md`](../../resources/wip-ideas.md),
+[`resources/wip-proposals.md`](../../resources/wip-proposals.md), and
+[`resources/wip-confidence.md`](../../resources/wip-confidence.md) for anything under `.wip/work/`.
 
 ## Naming Conventions
 
@@ -111,9 +114,9 @@ When handing off work between agents, always:
 
 Which contract to load for a path under `.wip/`:
 
-- `.wip/work/*/story-*.md` → `resources/wip-stories.md`
-- `.wip/work/*/epic-*.md` → `resources/wip-epics.md`
-- `.wip/work/*/bug-*.md` → `resources/wip-bugs.md`
-- `.wip/ideas/*.md` → `resources/wip-ideas.md`
-- `.wip/proposals/*.md` → `resources/wip-proposals.md`
-- `.wip/work/**/*.md` → `resources/wip-confidence.md` (97% confidence threshold)
+- `.wip/work/*/story-*.md` → `../../resources/wip-stories.md`
+- `.wip/work/*/epic-*.md` → `../../resources/wip-epics.md`
+- `.wip/work/*/bug-*.md` → `../../resources/wip-bugs.md`
+- `.wip/ideas/*.md` → `../../resources/wip-ideas.md`
+- `.wip/proposals/*.md` → `../../resources/wip-proposals.md`
+- `.wip/work/**/*.md` → `../../resources/wip-confidence.md` (97% confidence threshold)
