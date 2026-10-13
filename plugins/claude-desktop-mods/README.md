@@ -87,6 +87,35 @@ marked, but stay out of the by-tool totals, since they never reach this session'
 | `hooks/context-view/model.ts` | The pure logic: shell-read parsing, rule globs, `@` imports, the devbook lens |
 | `tests/context-view*.test.ts` | The tests |
 
+### Account bar
+
+For telling parallel Claude Code instances, signed in with different accounts, apart at a
+glance. A one-line band above the prompt shows the signed-in account in an accent colour,
+the weekly usage limit as a bar that runs from green to red as it fills, and the percentage
+with the reset moment in local time:
+
+```text
+● job@example.com ████████░░░░░░░░░░░░░░░░░░░░░░░░░░░ 16% · resets Thu 17:00
+```
+
+- The account comes from the first message's `userEmail` context, which tells desktop
+  instances apart; until then from `oauthAccount` in `.claude.json` under
+  `CLAUDE_CONFIG_DIR` or the home folder.
+- The weekly figure is the `seven_day` rate-limit window: read at session start, refreshed
+  whenever a response moves it a whole point. Off a subscription the bar says `no reading yet`.
+- The accent is derived from the email and is never red, amber, or green, so it cannot be
+  read as usage. Set **Account label** (e.g. `Work`) and **Account colour** (`#rrggbb`) in
+  the plugin's config to override either.
+- The handoff band takes the slot while it holds a brief; the bar returns on **Dismiss**.
+
+The desktop app's own account menu is outside what a plugin can draw, so the bar lives in
+the session view.
+
+| File | Holds |
+| --- | --- |
+| `hooks/account-bar.tsx` | the hooks, the band, and the pure helpers |
+| `tests/account-bar.test.ts` | the tests |
+
 ## Develop
 
 ```bash

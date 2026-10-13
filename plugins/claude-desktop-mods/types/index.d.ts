@@ -1,5 +1,12 @@
-// The $.state contract of claude-desktop-mods: its two hooks modules, hooks/handoff.tsx and
-// hooks/context-view/register.tsx, keep their values under the one plugin name. Claude Code only.
+// The $.state contract of claude-desktop-mods: its hooks modules, hooks/handoff.tsx,
+// hooks/context-view/register.tsx, and hooks/account-bar.tsx, keep their values under the one
+// plugin name. Claude Code only.
+
+/** The account the session is signed in with. */
+export type AccountIdentity = { email: string }
+
+/** The seven-day rate-limit window as the last response reported it. */
+export type AccountWeek = { percentUsed: number; resetsAt?: string }
 
 /** A cross-repository handoff brief found in a reply. */
 export type HandoffBrief = {
@@ -105,6 +112,11 @@ declare module 'claude-code' {
       contextFocus: string
       /** Folded sections of the overview, by id, and `instructions-all` when every instruction row shows. */
       contextFolded: Record<string, boolean>
+      // hooks/account-bar.tsx
+      /** The signed-in account: from the first message's context, else the config file. */
+      accountIdentity: AccountIdentity | null
+      /** The weekly window the bar draws; null before the first reading. */
+      accountWeek: AccountWeek | null
     }
   }
 }
