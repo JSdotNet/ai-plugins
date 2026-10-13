@@ -1,18 +1,12 @@
 ---
 name: react-component
-description: 'Write or change a React component so it matches the patterns already in the repository — composition, typing, state placement, data fetching, and accessibility. Use when implementing UI from an approved plan.'
+description: 'Write or change a React component so it matches the patterns already in the repository — composition, typing, state placement, data fetching, and accessibility. Use when: implementing a UI change from a plan or specification, extending or restructuring a component, reviewing a component change for consistency. DO NOT USE FOR: the API binding (api-client-contract) or the tests (react-testing).'
 ---
 
 # React Component Implementation
 
 Match the repository before matching any general best practice. The nearest existing
 component is the specification for structure, naming, and typing.
-
-## When To Use
-
-- Implementing a UI change from a specification.
-- Extending or restructuring an existing component.
-- Reviewing a component change for consistency with the codebase.
 
 ## Before Writing Code
 

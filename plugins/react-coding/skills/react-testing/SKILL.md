@@ -1,18 +1,12 @@
 ---
 name: react-testing
-description: 'Write React component and hook tests that assert user-visible behavior with accessible queries, using the test runner the repository already has. Use when adding or updating frontend tests.'
+description: 'Write React component and hook tests that assert user-visible behavior with accessible queries, using the test runner the repository already has. Use when: adding tests for new UI behavior, updating tests after a component or hook change, diagnosing a flaky frontend test. DO NOT USE FOR: browser end-to-end tests against a running app (qa:playwright-e2e-authoring).'
 ---
 
 # React Component And Hook Testing
 
 Test what a user can observe. A test that asserts internal state or a rendered class name
 locks in the implementation and blocks refactoring.
-
-## When To Use
-
-- Adding tests for new UI behavior from a specification.
-- Updating tests after a component or hook change.
-- Diagnosing a frontend test that fails intermittently.
 
 ## Before Writing Tests
 

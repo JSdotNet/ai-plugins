@@ -1,18 +1,12 @@
 ---
 name: api-client-contract
-description: 'Bind a React frontend to a .NET API using the API contract as the single source of truth for request, response, and error types. Use before building screens against a new or changed endpoint.'
+description: 'Bind a React frontend to a .NET API with the API contract as the single source of truth for request, response, and error types. Use when: a screen consumes a new or changed endpoint, the UI calls the API through untyped or guessed shapes, a backend response changed and the UI must follow. DO NOT USE FOR: the component markup itself (react-component).'
 ---
 
 # API Client From Contract
 
 Types flow from the contract into the UI. A screen never invents a shape the API does not
 promise, and the frontend never restates a shape the backend already publishes.
-
-## When To Use
-
-- A plan step adds or changes an endpoint the UI consumes.
-- A screen currently talks to the API through untyped or hand-guessed shapes.
-- A backend change altered a response and the UI must follow.
 
 ## Source Of Truth Order
 

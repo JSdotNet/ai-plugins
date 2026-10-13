@@ -1,18 +1,12 @@
 ---
 name: frontend-stack-detect
-description: 'Detect a repository frontend stack from its own files — package manager, React version, routing, state, data fetching, styling, test runner, and the exact build, typecheck, lint, and test commands. Use before any frontend edit or validation run so no framework or command is assumed.'
+description: 'Detect a repository frontend stack from its own files — package manager, React version, routing, state, data fetching, styling, test runner, and the exact build, typecheck, lint, and test commands. Use when: before the first frontend edit in a session, before any frontend validation command, a plan or issue names a library the repository may not use.'
 ---
 
 # Frontend Stack Detection
 
 Read the stack out of the repository. Never assume a framework version, a package manager,
 or a command name.
-
-## When To Use
-
-- Before the first frontend edit in a session.
-- Before running any frontend validation command.
-- When a handoff, plan, or issue names a library the repository may not actually use.
 
 ## Detection Order
 
