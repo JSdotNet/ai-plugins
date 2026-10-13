@@ -5,23 +5,20 @@ description: Rules for creating user flow diagrams and journey maps using Mermai
 
 # User Flow Instructions
 
-## Purpose
-
-Define how to create user flow diagrams and journey maps that capture the paths users take through a product.
+This contract governs user flow diagrams and journey maps: the paths users take through a
+product.
 
 ## Artifact Types
 
 | Type | Format | Purpose |
 |---|---|---|
-| Task flow | Mermaid flowchart | Shows the steps a user takes to complete one specific task |
-| Navigation tree | Mermaid flowchart | Shows the full screen hierarchy and linking structure |
-| User journey map | Markdown table + SVG | Captures multi-step experience with emotions, pain points, and opportunities |
-| State diagram | Mermaid stateDiagram-v2 | Shows screen or modal states and the events that trigger transitions |
+| Task flow | Mermaid `flowchart TD` | Shows the steps a user takes to complete one specific task |
+| Navigation tree | Mermaid `flowchart LR` | Shows the full screen hierarchy and linking structure |
+| User journey map | Markdown table + optional SVG swimlane | Captures multi-step experience with emotions, pain points, and opportunities |
+| State diagram | Mermaid `stateDiagram-v2` | Shows screen or modal states and the events that trigger transitions |
 
 ## Task Flow and Navigation Tree Rules (Mermaid)
 
-- Use `flowchart TD` (top-down) for task flows.
-- Use `flowchart LR` (left-to-right) for wide navigation trees.
 - Node naming: use short, human-readable screen or step names.
 - Edge labels: describe the user action or system event that triggers the transition (e.g., `Submits form`, `Clicks Cancel`).
 - Use decision diamonds (`{...}`) for branching conditions.
@@ -73,7 +70,6 @@ Every user flow artifact must include:
 - **Exit points** — where and how the flow ends (success, abandonment, error).
 - **Annotations** — open questions, missing content, and TODO items.
 
-## Naming and Storage
+## Naming
 
-- Save flow diagrams and journey maps under `**/design/flows/` or `**/flows/`.
-- Use descriptive file names: `<task-name>-flow.md` or `<persona>-journey.md`.
+- Name a flow `<task-name>-flow.md` and a journey map `<persona>-journey.md`.

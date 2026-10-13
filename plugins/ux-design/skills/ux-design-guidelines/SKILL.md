@@ -5,59 +5,35 @@ description: 'Create or maintain a project design system or style guide: tokens,
 
 # UX Design Guidelines
 
-## Purpose
-
-Use this skill to create a new design system or update an existing one. The output is a set of structured Markdown chapters that serve as the authoritative reference for the project's visual and interaction standards.
+Create or update the project's design system as Markdown chapters: the authoritative
+reference for its visual and interaction standards.
 
 ## Inputs
 
-Ask for the following when not already provided:
+Ask only for what the request has not given:
 
-- **Project name** — used in the document title and file name
-- **Existing guidelines path** — if updating an existing document, provide the path
-- **Brand assets** — primary brand colours, font families, logo guidelines (if available)
-- **Platform** — web, mobile, or multi-platform?
-- **Scope** — full design system, tokens only, or specific sections to add or update?
-- **Output location** — where should the guidelines be saved? (default: the repository's
-  `.devbook/design/` folder when it has one, else `docs/design/`)
+- **Project name**, for titles and file names, and the **existing guidelines path** when
+  updating.
+- **Brand assets**: colours, font families, and logo rules, when available.
+- **Platform**: web, mobile, or multi-platform.
+- **Scope**: the full system, tokens only, or named sections to add or update.
+- **Output location**: the repository's `.devbook/design/` folder when it has one, else
+  `docs/design/`.
 
-## Required Resources
+## Steps
 
-Load and apply before generating:
-
-1. `resources/ux-global.md`
-2. `resources/design-guidelines.md`
-3. `resources/design/design-principles.md`
-
-### Optional — `impeccable:impeccable`
-
-When the `impeccable` plugin is installed, run its `impeccable:impeccable` skill before drafting design token values and component patterns, and use its UI-craft guidance to inform the choices. When it is absent, apply the built-in design principles resource as the primary reference.
-
-## Workflow
-
-1. **Confirm the scope**
-   - New document or update to an existing one?
-   - Which sections are in scope for this session?
-
-2. **Gather brand inputs**
-   - If brand colours or fonts are provided, use them.
-   - If not, use accessible neutral defaults and mark with `[TODO: define brand tokens]`.
-
-3. **Draft or update the document**
-   - Lay the files out per "File Naming and Storage" in `resources/design-guidelines.md`: in `.devbook/design/`, one chapter per topic with `README.md` as the entry point; elsewhere, `design-guidelines.md` as the entry point.
-   - Cover the sections of the document structure template in `resources/design-guidelines.md`.
-   - For each section, apply the quality rules from that instruction file.
-   - Mark missing content with `[TODO: define]` rather than inventing values.
-
-4. **Validate completeness**
-   - Check the chapters against "What a Design Guideline Document Must Cover" in `resources/design-guidelines.md`.
-   - Flag any missing required sections explicitly.
-
-5. **Save and confirm**
-   - Save to the agreed location.
-   - Report which sections were created, updated, or left as TODO.
-
-## Output
-
-- The guideline chapters, created or updated in the layout that "File Naming and Storage" in `resources/design-guidelines.md` sets
-- Short confirmation note: output path, sections covered, and any `[TODO: define]` items
+1. Read [ux-global.md](../../resources/ux-global.md),
+   [design-guidelines.md](../../resources/design-guidelines.md), and
+   [design-principles.md](../../resources/design/design-principles.md).
+2. When the `impeccable` plugin is installed, run its `impeccable:impeccable` skill before
+   drafting token values and component patterns, and use its UI-craft guidance to inform the
+   choices. When it is absent, use design-principles.md as the primary reference.
+3. Use the brand colours and fonts given; otherwise use accessible neutral defaults marked
+   `[TODO: define brand tokens]`.
+4. Lay the files out per "File Naming and Storage" in design-guidelines.md: in
+   `.devbook/design/`, one chapter per topic with `README.md` as the entry point; elsewhere,
+   `design-guidelines.md` as the entry point.
+5. Cover every section "What a Design Guideline Document Must Cover" lists, applying its
+   rules. Write `[TODO: define]` for a missing value instead of inventing one, and flag each
+   required section still missing.
+6. Save, and report the output path and the sections created, updated, or left as TODO.

@@ -19,6 +19,7 @@ UX design — wireframes, design guidelines, user flows, and design reviews. Fil
 - Resources:
   - `resources/wireframe/wireframe-patterns.md`
   - `resources/design/design-principles.md`
+  - `resources/ux-review-report.md` (the design review report template)
 - Hooks:
   - `hooks.json`
 

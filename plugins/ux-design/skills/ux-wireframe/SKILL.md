@@ -5,60 +5,34 @@ description: 'Create low-, mid-, or high-fidelity wireframes as SVG, or Mermaid 
 
 # UX Wireframe
 
-## Purpose
-
-Use this skill to produce wireframe artifacts for new screens, redesigns, or component explorations. Outputs are SVG files by default; Mermaid is the alternative for simple navigation structures.
+Produce wireframes for new screens, redesigns, or component explorations: SVG by default,
+Mermaid for simple navigation structures.
 
 ## Inputs
 
-Ask for the following when not already provided:
+Confirm the platform, the fidelity, and the target user before producing anything. Ask in
+one message for those and whatever else the request has not given:
 
-- **Screen or component name** — what is being designed?
-- **Platform** — web, mobile (iOS/Android), or desktop?
-- **Fidelity level** — low, mid, or high?
-- **User goal** — what task is the user completing on this screen?
-- **Key elements** — what UI regions or components must appear?
-- **Design tokens / style guide** — path to project guidelines, if available
-- **Output location** — where should the SVG be saved? (default: `docs/design/wireframes/`; never the design devbook folder, which is guideline-level only)
+- **Screen or component name**.
+- **Platform**: web, mobile (iOS/Android), or desktop.
+- **Fidelity**: low, mid, or high.
+- **User goal**: who the user is and the task they complete on this screen.
+- **Key elements**: the UI regions or components that must appear.
+- **Style guide**: the project's design guidelines or tokens, when they exist.
+- **Output location**: default `docs/design/wireframes/`. Write the wireframe there or to the
+  path the person gives; a wireframe is a deliverable, and the design devbook folder holds
+  guidelines only.
 
-## Required Resources
+## Steps
 
-Load and apply before generating:
-
-1. `resources/ux-global.md`
-2. `resources/wireframe.md`
-3. `resources/wireframe/wireframe-patterns.md`
-
-If a project style guide or design guidelines document exists, load that too.
-
-## Workflow
-
-1. **Confirm the brief**
-   - Clarify screen name, platform, fidelity, user goal, and required elements.
-   - If anything is missing, ask focused questions before proceeding.
-
-2. **Select a layout pattern**
-   - Use `resources/wireframe/wireframe-patterns.md` to pick an appropriate base layout (dashboard, form, list-detail, card grid, wizard, etc.).
-
-3. **Apply fidelity rules**
-   - Low: boxes and labels only — no icons, no real content, no colour.
-   - Mid: realistic labels, form fields, buttons, and state annotations.
-   - High: full design tokens from the project style guide.
-
-4. **Generate the SVG**
-   - Create a self-contained SVG with `viewBox`, `<title>`, `<desc>`, embedded `<style>`, and grouped regions.
-   - Follow the colour, font, and annotation rules from `resources/wireframe.md`.
-
-5. **Annotate**
-   - Label all regions and interactive elements.
-   - Note interactions, placeholders, and open questions.
-   - Add ARIA or focus-order annotations where meaningful.
-
-6. **Save and confirm**
-   - Save to the agreed location.
-   - Confirm output path, fidelity applied, and any `[TODO: clarify]` items.
-
-## Output
-
-- One SVG wireframe file per screen or component
-- Short confirmation note: output path, layout pattern used, fidelity level, open questions
+1. Read [ux-global.md](../../resources/ux-global.md),
+   [wireframe.md](../../resources/wireframe.md),
+   [wireframe-patterns.md](../../resources/wireframe/wireframe-patterns.md), and the project
+   style guide when one exists.
+2. Pick the base layout from wireframe-patterns.md: dashboard, form, list-detail, card grid,
+   wizard, and the rest.
+3. Build the SVG to the fidelity, SVG, palette, and annotation rules in wireframe.md, and
+   mark each unresolved decision `[TODO: clarify]`.
+4. Save one file per screen or component, named and listed in the folder's companion
+   `README.md` per "Naming and Storage" in wireframe.md.
+5. Report the output path, the layout pattern, the fidelity, and each open question.
