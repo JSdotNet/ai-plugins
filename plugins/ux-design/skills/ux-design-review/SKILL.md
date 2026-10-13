@@ -1,6 +1,6 @@
 ---
 name: ux-design-review
-description: Review existing UI screens or components against project design guidelines and UX heuristics. Produces a severity-rated findings report.
+description: 'Review UI screens or components against the project design guidelines and usability heuristics, producing a severity-rated findings report. Use when: reviewing a wireframe, mockup, or live screen for UX quality, auditing a page against the design system, checking accessibility or contrast, or finding usability issues before development or release. DO NOT USE FOR: writing the guidelines (ux-design-guidelines).'
 ---
 
 # UX Design Review
@@ -8,15 +8,6 @@ description: Review existing UI screens or components against project design gui
 ## Purpose
 
 Use this skill to evaluate one or more screens, components, or user flows against design guidelines and established usability heuristics. The output is a structured findings report with severity ratings and actionable recommendations.
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- review a wireframe, mockup, or live screen for UX quality
-- audit a component or page against the project design system
-- check accessibility or contrast compliance
-- identify usability issues before development or release
 
 ## Inputs
 
@@ -36,9 +27,9 @@ Load and apply before reviewing:
 2. Project design guidelines document (if available)
 3. `resources/design/design-principles.md`
 
-### Optional — `/impeccable`
+### Optional — `impeccable:impeccable`
 
-If the `impeccable` skill is installed, invoke `/impeccable` as the first step of the review to get frontend design and UI-craft guidance. Incorporate its output into findings. If not installed, continue with the resources above.
+When the `impeccable` plugin is installed, run its `impeccable:impeccable` skill as the first step of the review for frontend design and UI-craft guidance, and incorporate its output into the findings. When it is absent, continue with the resources above.
 
 ## Workflow
 
@@ -50,7 +41,7 @@ If the `impeccable` skill is installed, invoke `/impeccable` as the first step o
    Apply Nielsen's 10 usability heuristics from `resources/ux-global.md` as the primary evaluation lens.
 
 3. **Check accessibility**
-   - Text contrast ratio (WCAG 2.1 AA minimum).
+   - Text contrast ratio (WCAG 2.2 AA minimum).
    - Keyboard navigation and focus management.
    - Colour-alone reliance for meaning.
    - Missing or inadequate labels and alt text.

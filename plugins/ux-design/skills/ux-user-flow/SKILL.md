@@ -1,6 +1,6 @@
 ---
 name: ux-user-flow
-description: Create user flow diagrams, navigation trees, and journey maps using Mermaid and Markdown.
+description: 'Create user flow diagrams, navigation trees, and journey maps in Mermaid and Markdown. Use when: creating a user, task, or navigation flow, mapping a journey from discovery to retention, documenting screen-to-screen navigation or UI state transitions, or drawing the happy path and error branches of a feature. DO NOT USE FOR: the layout of one screen (ux-wireframe).'
 ---
 
 # UX User Flow
@@ -8,15 +8,6 @@ description: Create user flow diagrams, navigation trees, and journey maps using
 ## Purpose
 
 Use this skill to map the paths users take through a product — from task flows and navigation trees to end-to-end journey maps with emotions, pain points, and opportunities.
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- create a user flow, task flow, or navigation diagram
-- map a user journey from discovery through conversion and retention
-- document screen-to-screen navigation or state transitions
-- visualise the happy path and error branches for a feature
 
 ## Inputs
 

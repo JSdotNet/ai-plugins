@@ -101,4 +101,4 @@ Install the `impeccable` skill from `awesome-copilot` to get deep frontend desig
 copilot plugin install impeccable@awesome-copilot
 ```
 
-When installed, the `ux-designer` agent and the `ux-design-review` and `ux-design-guidelines` skills will automatically invoke `/impeccable` for expert UI-craft input. Without it, the plugin falls back to its built-in design principles and wireframe pattern resources. Node 18+ on your PATH is required for impeccable's optional automation scripts.
+When installed, the `ux-designer` agent and the `ux-design-review` and `ux-design-guidelines` skills run its `impeccable:impeccable` skill for expert UI-craft input. Without it, the plugin falls back to its built-in design principles and wireframe pattern resources. Node 18+ on your PATH is required for impeccable's optional automation scripts.

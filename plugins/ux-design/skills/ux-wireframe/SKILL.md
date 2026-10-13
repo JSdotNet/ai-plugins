@@ -1,6 +1,6 @@
 ---
 name: ux-wireframe
-description: Create low-, mid-, or high-fidelity wireframes as SVG or Mermaid diagrams for screens, components, or flows.
+description: 'Create low-, mid-, or high-fidelity wireframes as SVG, or Mermaid for simple navigation, for screens, components, or flows. Use when: creating a wireframe, mockup, or screen sketch, laying out the UI for a feature or user story, or preparing a deliverable for design review or developer handoff. DO NOT USE FOR: the path across screens (ux-user-flow).'
 ---
 
 # UX Wireframe
@@ -8,15 +8,6 @@ description: Create low-, mid-, or high-fidelity wireframes as SVG or Mermaid di
 ## Purpose
 
 Use this skill to produce wireframe artifacts for new screens, redesigns, or component explorations. Outputs are SVG files by default; Mermaid is the alternative for simple navigation structures.
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- create a wireframe, mockup, or screen sketch
-- sketch a UI layout for a feature or user story
-- visualise a navigation structure or component arrangement
-- produce a deliverable for design review or developer handoff
 
 ## Inputs
 

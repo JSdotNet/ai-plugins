@@ -49,9 +49,9 @@ anything under `agents/`, `resources/`, or `skills/`. The `spec-builder` agent o
 - For design guideline authoring, load `resources/design-guidelines.md`.
 - For user flow mapping, load `resources/user-flow.md`.
 
-### Optional Enhancement — `/impeccable`
+### Optional Enhancement — `impeccable:impeccable`
 
-When the `impeccable` skill is installed, invoke `/impeccable` at the start of a design
+When the `impeccable` plugin is installed, run its `impeccable:impeccable` skill at the start of a design
 guidelines or design review session for deep frontend UI-craft guidance (Paul Bakaus,
 impeccable.style), and use its output to validate token, component, and visual-quality
 choices. Fall back to `resources/design/design-principles.md` and
