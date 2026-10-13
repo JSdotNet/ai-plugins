@@ -69,7 +69,7 @@
       "name": "product-owner",
       "source": "./plugins/product-owner",
       "description": "Copilot plugin for product backlog authoring — epics, stories, and bugs as Markdown artifacts.",
-      "version": "0.3.0"
+      "version": "0.3.1"
     },
     {
       "name": "qa",
