@@ -1,6 +1,6 @@
 ---
 name: create-project-profile
-description: Create or refresh a GitHub project profile artifact that explains the project, its audience, and its proof points.
+description: 'Create or refresh a GitHub project profile that explains a project, its audience, and its proof points. Use when: writing a project showcase, a portfolio entry for one repository, or a project summary for external readers. DO NOT USE FOR: a personal GitHub profile (create-github-profile).'
 ---
 
 # Create Project Profile

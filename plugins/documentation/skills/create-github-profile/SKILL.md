@@ -1,6 +1,6 @@
 ---
 name: create-github-profile
-description: Create or refresh a GitHub profile artifact with a clear hook, proof links, and collaboration cues.
+description: 'Create or refresh a GitHub profile artifact with a clear hook, proof links, and collaboration cues. Use when: writing or updating a GitHub profile README or personal GitHub page. DO NOT USE FOR: one repository''s showcase (create-project-profile) or a LinkedIn profile (create-linkedin-profile).'
 ---
 
 # Create GitHub Profile

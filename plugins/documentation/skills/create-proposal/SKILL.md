@@ -1,6 +1,6 @@
 ---
 name: create-proposal
-description: Create a structured proposal for a change, feature, or decision — with clear problem statement, recommendation, trade-offs, and success criteria.
+description: 'Create a structured proposal for a change, feature, or decision, with problem statement, recommendation, trade-offs, and success criteria. Use when: proposing a change or feature for stakeholders to approve, or framing the options for a decision. DO NOT USE FOR: an architectural decision (architecture:create-architectural-decision-record) or an early idea (create-idea).'
 ---
 
 # Create Proposal

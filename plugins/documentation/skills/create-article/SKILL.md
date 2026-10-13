@@ -1,6 +1,6 @@
 ---
 name: create-article
-description: Create a new blog post or article with a clear narrative arc, practical takeaways, and audience-appropriate tone.
+description: 'Create a blog post or article with a clear narrative arc, practical takeaways, and an audience-appropriate tone. Use when: writing a blog post, article, write-up, or story about a lesson or insight. DO NOT USE FOR: step-by-step instructions (create-howto) or explaining a concept or trade-off (create-explanation).'
 ---
 
 # Create Article

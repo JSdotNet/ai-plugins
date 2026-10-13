@@ -1,6 +1,6 @@
 ---
 name: create-howto
-description: Create a new How-To guide for a process or procedure, structured for developer audiences.
+description: 'Create a How-To guide for a process or procedure, structured for developer audiences. Use when: writing step-by-step instructions, a setup guide, a runbook, or "how do I" documentation. DO NOT USE FOR: explaining why or how a concept works (create-explanation).'
 ---
 
 # Create How-To Guide

@@ -1,6 +1,6 @@
 ---
 name: create-infographic
-description: Create a branded infographic from a Markdown file or direct prompt, outputting a pure SVG asset with optional motion guidance.
+description: 'Create a branded infographic as a pure SVG from a Markdown file or a direct prompt, with optional motion. Use when: creating an infographic from a Markdown file or a fresh concept, turning a proposal, explanation, article, process, or KPI summary into a visual, or producing a documentation-friendly SVG. DO NOT USE FOR: architecture diagrams (architecture:c4-diagram-generator) or wireframes (ux-design:ux-wireframe).'
 ---
 
 # Create Infographic
@@ -9,16 +9,7 @@ description: Create a branded infographic from a Markdown file or direct prompt,
 
 Use this skill to turn existing Markdown content or a new natural-language brief into a reusable infographic asset.
 
-The first version should generate a **pure SVG** file by default so the result is portable, documentation-friendly, and easy to review in source control.
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- create an infographic from an existing Markdown file
-- create an infographic from a fresh prompt or concept
-- convert a proposal, explanation, article, process, or KPI summary into a visual asset
-- produce a documentation-friendly SVG that can optionally include light animation
+Generate a **pure SVG** file by default so the result is portable, documentation-friendly, and easy to review in source control.
 
 ## Inputs
 

@@ -1,6 +1,6 @@
 ---
 name: create-idea
-description: Capture a new idea as a lightweight, refinement-friendly note with a clear value hypothesis and explicit next step.
+description: 'Capture an idea as a lightweight, refinement-friendly note with a value hypothesis and an explicit next step. Use when: jotting down a new idea, an early feature thought, or an opportunity to refine later. DO NOT USE FOR: a worked-out recommendation for stakeholders to decide on (create-proposal).'
 ---
 
 # Create Idea

@@ -1,6 +1,6 @@
 ---
 name: create-linkedin-profile
-description: Create or refresh a LinkedIn profile artifact with clear positioning, concise proof, and a strong call to action.
+description: 'Create or refresh a LinkedIn profile artifact with clear positioning, concise proof, and a strong call to action. Use when: writing or updating a LinkedIn headline, About section, or profile. DO NOT USE FOR: a GitHub profile (create-github-profile).'
 ---
 
 # Create LinkedIn Profile

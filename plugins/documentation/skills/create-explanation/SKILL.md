@@ -1,6 +1,6 @@
 ---
 name: create-explanation
-description: Create a new Explanation document that clarifies a concept, decision, or trade-off for developers and stakeholders.
+description: 'Create an Explanation document that clarifies a concept, decision, or trade-off for developers and stakeholders. Use when: explaining why something works the way it does, how a system fits together, or the trade-offs behind a design choice. DO NOT USE FOR: recording an architectural decision (architecture:create-architectural-decision-record) or step-by-step instructions (create-howto).'
 ---
 
 # Create Explanation
