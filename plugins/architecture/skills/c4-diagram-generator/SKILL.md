@@ -7,36 +7,19 @@ description: 'Generate C4 diagrams (System Context, Container, Component, Code) 
 
 ## Inputs
 
-- System or component name and purpose
-- Known users (personas) and external systems
-- Container or component inventory (Level 2 / Level 3)
-- Technology stack for containers and components
-- Target audience and required level of detail
+- The system or container in scope, its users, and its external systems.
+- For Levels 2 and 3, the containers or components with their technology.
+- The audience, which sets the level; ask for it when it is ambiguous.
 
 ## Workflow
 
-1. Load `resources/c4-global.md`.
-2. Identify the required C4 level based on audience and scope.
-3. Load the matching level prompt from `skills/c4-diagram-generator/prompts/`.
-4. Ask focused clarifying questions only for information that is missing or conflicting.
-5. Generate the Mermaid C4 diagram with correct element types and labelled relationships, applying the Color Conventions palette from `resources/c4-global.md` via `UpdateElementStyle`.
-6. Write a prose summary (3–5 sentences) explaining the diagram's key design decisions.
-7. Add traceability notes linking the diagram to relevant arc42 sections or ADRs.
-8. List open questions or assumptions explicitly.
-9. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-output-file>` from the plugin root to generate an SVG alongside the Markdown output.
-
-## Prompt Pack
-
-| Level | Prompt File |
-| --- | --- |
-| Level 1 — System Context | `skills/c4-diagram-generator/prompts/c4-level1-system-context.prompt.md` |
-| Level 2 — Container | `skills/c4-diagram-generator/prompts/c4-level2-container.prompt.md` |
-| Level 3 — Component | `skills/c4-diagram-generator/prompts/c4-level3-component.prompt.md` |
-| Level 4 — Code | `skills/c4-diagram-generator/prompts/c4-level4-code.prompt.md` |
-
-## Output
-
-- Mermaid C4 diagram embedded in a fenced `mermaid` code block
-- Prose summary of the diagram (3–5 sentences)
-- Traceability links to related arc42 sections or ADRs
-- List of open questions or assumptions
+1. Read [c4-global.md](../../resources/c4-global.md) and
+   [diagram-output.md](../../resources/diagram-output.md).
+2. Pick the level and read its prompt:
+   [Level 1 — System Context](prompts/c4-level1-system-context.prompt.md),
+   [Level 2 — Container](prompts/c4-level2-container.prompt.md),
+   [Level 3 — Component](prompts/c4-level3-component.prompt.md),
+   [Level 4 — Code](prompts/c4-level4-code.prompt.md).
+3. Draft the diagram from that prompt's template, and style every element with
+   `UpdateElementStyle` in the c4-global.md Color Conventions palette.
+4. Land it, write what goes beside it, and generate the SVG per diagram-output.md.

@@ -5,7 +5,7 @@ description: "Log a technical debt item as a numbered, dated record with its ori
 
 # Create Technical Debt Record
 
-Apply `resources/tdr-global.md` and `resources/prose.md`.
+Apply [tdr-global.md](../../resources/tdr-global.md) and [prose.md](../../resources/prose.md).
 
 ## Inputs
 

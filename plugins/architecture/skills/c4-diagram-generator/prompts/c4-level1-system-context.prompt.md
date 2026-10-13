@@ -5,14 +5,6 @@ description: Prompt for generating a C4 Level 1 System Context diagram.
 
 # C4 Level 1 — System Context Diagram Prompt
 
-## Purpose
-
-Produce a System Context diagram that shows the target system as a single box surrounded by its users (personas) and external dependencies. This is the highest-level view and requires the least technical knowledge to understand.
-
-## Audience
-
-Business stakeholders, product owners, and anyone who needs a system overview without technical implementation detail.
-
 ## Pre-Draft Checklist
 
 Confirm the following before generating the diagram:
@@ -51,6 +43,5 @@ C4Context
 - One `C4Context` fenced `mermaid` code block.
 - Every `Person` and `System` element has a name and a short description (maximum 10 words).
 - All relationships are labelled with a verb phrase; protocol added where known.
-- Prose summary (3–5 sentences) describing the system purpose and primary interactions.
-- Traceability link to arc42 Section 3 (Context and Scope).
-- Explicit list of assumptions for any unknown stakeholders or external systems.
+
+The summary, links, assumptions, and SVG follow [diagram-output.md](../../../resources/diagram-output.md).

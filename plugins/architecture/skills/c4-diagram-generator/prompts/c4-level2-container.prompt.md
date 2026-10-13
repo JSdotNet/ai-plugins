@@ -5,14 +5,6 @@ description: Prompt for generating a C4 Level 2 Container diagram.
 
 # C4 Level 2 — Container Diagram Prompt
 
-## Purpose
-
-Produce a Container diagram that shows the high-level technology building blocks inside the target system and how they communicate. This level reveals technology choices and deployment units without diving into internal component structure.
-
-## Audience
-
-Software architects, developers, and DevOps teams who need to understand the deployment topology and technology choices.
-
 ## Pre-Draft Checklist
 
 Confirm the following before generating the diagram:
@@ -51,7 +43,6 @@ C4Container
 - Add a technology tag in brackets after the container name (e.g., `"React"`, `"ASP.NET Core"`, `"PostgreSQL"`).
 - Keep container names concise (maximum 3 words).
 - Include only architecturally significant containers; do not list every microservice if a logical group can be represented as one container at this level.
-- Reference ADR entries for technology choices where they exist.
 
 ## Output Requirements
 
@@ -59,7 +50,5 @@ C4Container
 - Every container has a name, technology tag, and short responsibility description (maximum 10 words).
 - External systems and persons are positioned outside the boundary.
 - Relationship labels include protocol or technology.
-- Prose summary (3–5 sentences) explaining technology choices and container responsibilities.
-- Traceability links to arc42 Section 5 (Building Block View) and Section 7 (Deployment View).
-- ADR references for key technology decisions visible in the diagram.
-- List of open questions or assumptions.
+
+The summary, links, assumptions, and SVG follow [diagram-output.md](../../../resources/diagram-output.md).

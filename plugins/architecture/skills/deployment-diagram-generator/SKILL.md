@@ -5,34 +5,19 @@ description: 'Generate deployment diagrams of cloud, on-premises, or hybrid host
 
 # Deployment Diagram Generator
 
-Use this skill to produce deployment diagrams that show the physical and logical infrastructure hosting a system, complementing the C4 Level 2 Container diagram with an infrastructure perspective.
-
 ## Inputs
 
-- Target environment (production, staging, development)
-- Cloud provider or hosting platform (AWS, Azure, GCP, on-premises, Kubernetes)
-- Infrastructure nodes: compute, databases, caches, queues, CDNs, load balancers
-- Network zones, VPCs, subnets, or security groups (if relevant)
-- Services or containers deployed to each node (reference the C4 Level 2 diagram)
-- Scaling topology (single node, cluster, multi-region)
+- The environment, and the cloud provider or hosting platform.
+- The infrastructure nodes, the network zones, and the scaling topology.
+- Which C4 Level 2 containers run on each node.
 
 ## Workflow
 
-1. Load `resources/deployment-global.md`.
-2. Confirm environment, cloud provider, and key infrastructure nodes with the user.
-3. Load `skills/deployment-diagram-generator/prompts/deployment-diagram.prompt.md`.
-4. Ask focused clarifying questions only for missing network zones, protocols, or scaling details.
-5. Select diagram type: prefer `architecture-beta` for Mermaid v11+ environments; fall back to `graph TD` otherwise.
-6. Generate the diagram with named nodes, logical groupings, and labelled relationships.
-7. Write a prose summary (3–5 sentences) explaining hosting choices, scaling strategy, and key security boundaries.
-8. Add traceability notes to arc42 §7 and the related C4 Level 2 Container diagram.
-9. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-output-file>` from the plugin root to generate an SVG alongside the Markdown output.
-
-## Output
-
-- Mermaid `architecture-beta` or `graph TD` diagram embedded in a fenced `mermaid` code block
-- Note on which Mermaid version is required
-- Prose summary (3–5 sentences)
-- Traceability links to arc42 §7 and the C4 Level 2 Container diagram
-- ADR references for cloud provider, region, and scaling decisions
-- List of open questions or assumptions
+1. Read [deployment-global.md](../../resources/deployment-global.md),
+   [diagram-output.md](../../resources/diagram-output.md), and
+   [deployment-diagram.prompt.md](prompts/deployment-diagram.prompt.md).
+2. Confirm the environment, the provider, and the key nodes with the user.
+3. Use `architecture-beta` when the target renderer runs Mermaid v11 or later; otherwise use
+   the `graph TD` fallback template. Open with a `%% Deployment:` header line.
+4. Land it in §7 Deployment View, link the C4 Level 2 Container diagram, state the Mermaid
+   version the chosen type needs, and generate the SVG per diagram-output.md.

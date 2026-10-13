@@ -36,11 +36,12 @@ anything under `agents/`, `resources/`, or `skills/`. The `spec-builder` agent o
 
 ### Mandatory Instruction Enforcement
 
-Load the global contract for the work in hand before writing — `resources/arc42-global.md`,
-`resources/adr-global.md`, `resources/tdr-global.md`, `resources/c4-global.md`,
-`resources/sequence-global.md`, `resources/state-global.md`, `resources/deployment-global.md` —
-plus `resources/arc42-section-NN.md` for the arc42 section in hand.
-Always load `resources/prose.md`: it owns how every artifact is written.
+Load the global contract for the work in hand before writing — `../resources/arc42-global.md`,
+`../resources/adr-global.md`, `../resources/tdr-global.md`, `../resources/c4-global.md`,
+`../resources/sequence-global.md`, `../resources/state-global.md`,
+`../resources/deployment-global.md` — plus `../resources/arc42-section-NN.md` for the arc42
+section in hand, and `../resources/diagram-output.md` for any diagram.
+Always load `../resources/prose.md`: it owns how every artifact is written.
 
 ## Custom Instructions
 
@@ -55,7 +56,7 @@ Always load `resources/prose.md`: it owns how every artifact is written.
 
 | Work | Skill | Instructions |
 | --- | --- | --- |
-| arc42 sections | `architecture-arc42-generator` | `arc42/` global plus the section file, and the skill's own `prompts/arc42-section-XX.prompt.md` |
+| arc42 sections | `architecture-arc42-generator` | `arc42/` global plus the section file |
 | Decision record | `create-architectural-decision-record` | `adr/` |
 | Technical debt record | `create-technical-debt-record` | `tdr/` |
 | C4 diagrams, levels 1–4 | `c4-diagram-generator` | `c4/` plus the matching level prompt |
@@ -75,9 +76,9 @@ index rather than restating it. Every file carries a fenced `meta` block, and no
 `_meta/` is hand-edited. Follow that folder's own instruction file for structure and status.
 Otherwise ask for a path.
 
-Diagrams live inside the chapter they document, in Mermaid fences — never as standalone files.
-Sequence diagrams belong to section 6, deployment to section 7, C4 level 1 to section 3,
-levels 2 and 3 to sections 5 and 7. Cross-link sections, ADRs, and TDRs explicitly.
+Diagrams live inside the chapter they document, in Mermaid fences — never as standalone files;
+`../resources/diagram-output.md` names the chapter for each diagram type. Cross-link sections,
+ADRs, and TDRs explicitly.
 
 ## Handoffs
 

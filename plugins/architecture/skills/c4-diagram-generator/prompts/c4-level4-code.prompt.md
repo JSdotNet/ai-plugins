@@ -5,14 +5,6 @@ description: Prompt for generating a C4 Level 4 Code diagram using Mermaid class
 
 # C4 Level 4 — Code Diagram Prompt
 
-## Purpose
-
-Produce a Code-level diagram showing the implementation details of a specific component, expressed as a UML class diagram. This is the most detailed C4 level and should be used sparingly.
-
-## Audience
-
-Developers implementing or reviewing a specific component who need to see class relationships, interfaces, and applied design patterns.
-
 ## When to Use
 
 Use Level 4 only when the class structure is architecturally significant or non-obvious. Good candidates include:
@@ -74,7 +66,5 @@ classDiagram
 - One `classDiagram` fenced `mermaid` code block.
 - Key public members shown for each class or interface.
 - All relationships labelled with a stereotype or verb phrase.
-- Prose summary (2–4 sentences) explaining the design decisions and patterns applied.
-- Explicit justification for why Level 4 is needed for this component.
-- Traceability link to the Level 3 diagram of the parent container.
-- List of open questions or assumptions.
+
+The summary, links, assumptions, and SVG follow [diagram-output.md](../../../resources/diagram-output.md).

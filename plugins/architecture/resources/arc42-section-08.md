@@ -1,224 +1,53 @@
 ---
 name: arc42-section-08
-description: 'Defines requirements and output standards for arc42-section-08-instructions.'
+description: What arc42 section 8, Crosscutting Concepts, holds — only the concepts that apply across building blocks, each with rules, an example, and trade-offs — its inputs, and its output template.
 ---
 
-# arc42 Section 8: Crosscutting Concepts - Specific Instructions
+# arc42 Section 8: Crosscutting Concepts
 
-## Section Purpose
+Section 8 holds the rules several building blocks share — security, persistence, error
+handling, logging, API design, testing, the domain model — so no block restates them.
 
-**Why this section exists:**
-Section 8 documents overarching concepts, patterns, and rules that apply across multiple building blocks. These are the "horizontal" concerns that cut across the system structure.
+## Rules
 
-**Value for stakeholders:**
-- Documents recurring patterns and approaches
-- Shows how crosscutting concerns are addressed
-- Provides consistency across the system
-- Reduces redundancy in documentation
-- Essential for maintaining architectural integrity
-- Answers: How do we handle logging? Security? Persistence? Error handling?
+- Include only the concepts that genuinely cut across THIS system, and delete the template
+  subsections that do not apply.
+- Give each concept actionable rules, a concrete example or code, the building blocks it
+  affects, and its trade-offs.
+- Name in one line the common concepts deliberately left out, so a reader knows they were
+  considered.
+- Leave building-block-specific detail to Section 5.
+- Draw a shared lifecycle or protocol as a state diagram (`state-diagram-generator`).
+- Lean: three to seven concepts, one paragraph each, linking any guideline that exists
+  elsewhere.
 
-**Key insight:** This is the MOST FLEXIBLE section - include only what's relevant. Remove irrelevant subsections entirely.
+## Inputs
 
-## Mandatory Content (ESSENTIAL)
+The system, and which concerns are actually crosscutting in it.
 
-### What MUST be included:
-- **Only concepts that are actually crosscutting** in YOUR system
-- **Concepts that apply to multiple building blocks**
-- **Patterns and rules used consistently across the system**
+## Output
 
-### Common Crosscutting Concepts (Pick What Applies):
+````markdown
+# 8. Crosscutting Concepts
 
-#### Domain Concepts
-- Domain models
-- Business rules and logic
-- Ubiquitous language
+<Which concerns are documented and why. Not applicable: <concept — reason>.>
 
-#### Architecture and Design Patterns
-- Layering
-- Dependency injection
-- MVC/MVVM patterns
-- Repository pattern
-- Factory patterns
+## <Concept>
 
-#### User Experience (UX)
-- UI layout principles
-- Interaction patterns
-- Accessibility guidelines
-- Internationalization
+<What it is and why the system needs it, in 1–2 sentences.>
 
-#### Safety and Security
-- Authentication and authorization
-- Data encryption
-- Input validation
-- Audit logging
-- Security architecture
+- <Rule a developer can follow>
 
-#### Communication and Integration
-- API design guidelines
-- Message formats
-- Communication protocols
-- Integration patterns
-
-#### Persistence
-- Database access strategy
-- Transaction handling
-- Caching strategy
-- Data migration approach
-
-#### Session Handling
-- Session management
-- State management
-- Cookie policies
-
-#### Error Handling and Logging
-- Error handling strategy
-- Logging guidelines
-- Monitoring approach
-- Exception handling patterns
-
-#### Testability
-- Testing strategy
-- Test automation
-- Test data management
-
-#### Development Concepts
-- Build process
-- Code organization
-- Naming conventions
-- Development guidelines
-
-## Lean Variant (Minimum Viable Documentation)
-
-### Format:
-- **List only concepts actually used** in your system
-- **One paragraph per concept**
-- **Reference to detailed guidelines** if they exist elsewhere
-
-### Minimum Content:
-- 3-7 crosscutting concepts
-- Brief description of each
-- Example or diagram if needed
-
-### Example Lean Crosscutting Concepts:
-
-**1. Error Handling**
-All services use standardized error codes and HTTP status codes. Errors logged to central logging system. Client receives structured error responses with error code, message, and request ID.
-
-**2. Authentication**
-OAuth 2.0 for all API access. JWT tokens with 1-hour expiration. Refresh tokens stored securely. All endpoints except health checks require authentication.
-
-**3. Logging**
-Structured JSON logging to CloudWatch. All logs include request ID, timestamp, service name, log level. Sensitive data masked. Log retention: 30 days.
-
-**4. API Design**
-RESTful APIs following OpenAPI 3.0 spec. Versioning via URL path (/api/v1/). JSON request/response bodies. Consistent error responses.
-
-## Thorough Variant (Complete Version)
-
-### Structure per Concept:
-
-#### Concept: <n>
-
-**Overview:**
-[What is this concept? Why is it important?]
-
-**Motivation:**
-[Why do we need this? What problem does it solve?]
-
-**Guidelines and Rules:**
-- Rule 1: <Specific guideline>
-- Rule 2: <Specific guideline>
-- Rule 3: <Specific guideline>
-
-**Examples:**
-[Code snippets, diagrams, or concrete examples]
-
-**Benefits:**
-[What advantages does this approach provide?]
-
-**Trade-offs:**
-[What are the costs or limitations?]
-
-**Affected Building Blocks:**
-[Which components from Section 5 follow this concept?]
-
-**Related Patterns:**
-[Links to external pattern descriptions]
-
-**Tools and Technologies:**
-[Specific tools or frameworks supporting this concept]
-
-**Further Reading:**
-[Links to detailed documentation]
-
-### Detailed Example:
-
-#### Concept: Logging Strategy
-
-**Overview:**
-Centralized, structured logging across all services for observability, debugging, and audit compliance.
-
-**Motivation:**
-- Distributed system requires centralized log aggregation
-- Debugging requires correlation across services
-- Compliance requires audit trail
-- Operations requires monitoring and alerting
-
-**Guidelines and Rules:**
-1. **Structured Logging:** All logs in JSON format with standard fields
-2. **Log Levels:** ERROR, WARN, INFO, DEBUG following standard definitions
-3. **Context Propagation:** All logs include correlation ID (request ID)
-4. **Sensitive Data:** PII and credentials must be masked
-5. **Log Aggregation:** All logs shipped to CloudWatch Logs
-6. **Retention:** 30 days for INFO, 90 days for ERROR/WARN
-7. **Alerting:** ERROR level triggers alerts to on-call engineer
-
-**Examples:**
-
-```json
-{
-  "timestamp": "2025-11-07T10:15:30Z",
-  "level": "INFO",
-  "service": "order-service",
-  "correlation_id": "req-12345",
-  "user_id": "user-67890",
-  "message": "Order created successfully",
-  "order_id": "ord-111",
-  "duration_ms": 45
-}
+```<language>
+<Concrete example>
 ```
 
-**Benefits:**
-- Easy debugging across distributed services
-- Compliance with audit requirements
-- Proactive issue detection via alerts
-- Performance analysis via structured data
+- **Trade-offs:** <what it costs>
+- **Applies to:** <building blocks from section 5>
+- **Tools:** <libraries or services that carry it>
+````
 
-**Trade-offs:**
-- Additional infrastructure cost (CloudWatch)
-- Slight performance overhead for logging
-- Development effort to implement consistently
+## Relationship to other sections
 
-**Affected Building Blocks:**
-- All microservices
-- API Gateway
-- Background job processors
-
-**Tools:**
-- Winston (Node.js logging library)
-- Logback (Java logging)
-- CloudWatch Logs (aggregation)
-- Datadog (visualization and alerting)
-
-**Related Patterns:**
-- Correlation ID pattern
-- Log aggregation pattern
-- Circuit Breaker (logs circuit state changes)
-
-
-## Concept 2: <n>
-[Repeat structure]
-
-*Based on docs.arc42.org/section-8/ and official arc42 sources*
-
+The patterns named in 4 are detailed here; the constraints of 2 may mandate a concept; a
+concept's technology choice links its decision record.

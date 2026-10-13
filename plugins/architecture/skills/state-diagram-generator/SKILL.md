@@ -7,27 +7,16 @@ description: 'Generate Mermaid stateDiagram-v2 state machines for entity lifecyc
 
 ## Inputs
 
-- Entity or protocol name being modelled
-- List of possible states
-- Events or commands that trigger transitions
-- Guard conditions for conditional transitions (if any)
-- Entry, exit, or transition actions (if any)
-- Composite or concurrent sub-states (if any)
+- The entity or protocol, its states, and the events or commands between them.
+- Guards, entry and exit actions, and composite or concurrent sub-states, where they exist.
 
 ## Workflow
 
-1. Load `resources/state-global.md`.
-2. Confirm the entity name, states, and key transitions with the user.
-3. Load `skills/state-diagram-generator/prompts/state-diagram.prompt.md`.
-4. Ask focused clarifying questions only for missing guards, terminal states, or sub-state structure.
-5. Generate the Mermaid `stateDiagram-v2` with labelled transitions and composite states where needed.
-6. Write a prose summary (2–4 sentences) explaining the lifecycle, key guards, and any side effects.
-7. Add traceability notes to arc42 §6 or §8 and the related domain model.
-8. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-output-file>` from the plugin root to generate an SVG alongside the Markdown output.
-
-## Output
-
-- Mermaid `stateDiagram-v2` embedded in a fenced `mermaid` code block
-- Prose summary of the lifecycle (2–4 sentences)
-- Traceability links to arc42 §6 (scenario) or §8 (crosscutting pattern) and the related domain definition
-- List of open questions or assumptions
+1. Read [state-global.md](../../resources/state-global.md),
+   [diagram-output.md](../../resources/diagram-output.md), and
+   [state-diagram.prompt.md](prompts/state-diagram.prompt.md).
+2. Confirm the entity, its states, and its key transitions with the user.
+3. Draft one `stateDiagram-v2` from the prompt's template, opening with a
+   `%% State machine:` header line.
+4. Land it in §6 when it models one scenario's lifecycle and in §8 when it models a shared
+   pattern, write what goes beside it, and generate the SVG per diagram-output.md.

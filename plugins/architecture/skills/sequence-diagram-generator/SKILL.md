@@ -7,27 +7,17 @@ description: 'Generate Mermaid sequence diagrams of runtime scenarios, integrati
 
 ## Inputs
 
-- Scenario name and triggering actor or event
-- Participants involved (services, components, actors, external systems)
-- Message sequence: what is sent, by whom, and in what order
-- Error paths or alternative branches that are architecturally significant
-- Relevant protocol or technology for each message (optional)
+- The scenario name and its triggering actor or event.
+- The participants and the messages between them, in order.
+- The architecturally significant error paths and alternatives.
 
 ## Workflow
 
-1. Load `resources/sequence-global.md`.
-2. Confirm the scenario name, participants, and message flow with the user.
-3. Load `skills/sequence-diagram-generator/prompts/sequence-diagram.prompt.md`.
-4. Ask focused clarifying questions only for missing ordering decisions or error paths.
-5. Generate the Mermaid `sequenceDiagram` with correctly typed arrows and labelled messages.
-6. Add `alt`/`opt`/`loop` fragments for conditionals and error paths.
-7. Write a prose summary (2–4 sentences) explaining key ordering decisions and error handling.
-8. Add traceability notes to arc42 §6 and the related C4 diagram.
-9. Run `scripts/generate-diagram-svgs.ps1 -Path <directory-of-output-file>` from the plugin root to generate an SVG alongside the Markdown output.
-
-## Output
-
-- Mermaid `sequenceDiagram` embedded in a fenced `mermaid` code block
-- Prose summary of the scenario (2–4 sentences)
-- Traceability links to arc42 §6 and the relevant C4 Container or Component diagram
-- List of open questions or assumptions
+1. Read [sequence-global.md](../../resources/sequence-global.md),
+   [diagram-output.md](../../resources/diagram-output.md), and
+   [sequence-diagram.prompt.md](prompts/sequence-diagram.prompt.md).
+2. Confirm the scenario, participants, and message flow with the user.
+3. Draft one `sequenceDiagram` per scenario from the prompt's template, opening with a
+   `%% Scenario:` header line.
+4. Land it in §6 Runtime View, write what goes beside it, and generate the SVG per
+   diagram-output.md.

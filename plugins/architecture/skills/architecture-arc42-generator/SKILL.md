@@ -5,21 +5,21 @@ description: 'Draft, update, or check arc42 sections 1-12, one chapter per secti
 
 # Architecture arc42 Generator
 
-## Scope
+## Inputs
 
-- Section-by-section drafting and refinement
-- Context-driven clarification of missing facts
-- Cross-section consistency checks
-- Structured handoff-ready architecture output
+- The sections to draft, update, or check, and the detail level (LEAN, ESSENTIAL, THOROUGH).
+- The facts each section's contract lists under Inputs; read the codebase and the existing
+  chapters before asking for one.
 
 ## Workflow
 
 1. Find the target folder: `.devbook/arc42/` when it exists, one `NN-name.md` chapter per
    section, and read that folder's rule; otherwise ask for a path.
-2. Load `resources/arc42-global.md`.
-3. For each target section, load `resources/arc42-section-XX.md`.
-4. Use section prompts from `skills/architecture-arc42-generator/prompts/`.
-5. Draft or update each section's chapter in the target folder with explicit assumptions and decision traceability.
-6. Reconcile cross-section consistency for scope, constraints, risks, and quality goals.
-7. Report the changed chapters and the open assumptions.
-
+2. Read [arc42-global.md](../../resources/arc42-global.md) and, per target section,
+   `../../resources/arc42-section-NN.md`. Each section contract is the one source for that
+   section's rules, inputs, and output template.
+3. Draft or update each chapter from its template, marking every unconfirmed fact as an
+   assumption and linking the decision record behind every choice.
+4. Reconcile the touched chapters against the cross-section consistency list in
+   arc42-global.md.
+5. Report the changed chapters, the open assumptions, and any inconsistency left unresolved.
