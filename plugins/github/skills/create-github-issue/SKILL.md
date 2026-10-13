@@ -5,73 +5,22 @@ description: "Create a GitHub issue from an already written Markdown story, epic
 
 # Create GitHub Issue (Upload Only)
 
-## Purpose
+Upload a ticket that is already fully written in Markdown. Before building the payload, read
+[github-issues-sync.md](../../resources/github-issues-sync.md): its content rules and field
+mapping govern every value sent.
 
-Use this skill only to create a GitHub issue from a ticket that is already fully written in a Markdown file.
+Input: the path to the artifact, for example
+`/create-github-issue .wip/work/regeling-uitvoer/story-uitvoer-algemeen.md`. When it already
+carries an `Issue Number`, use `update-github-issue` instead.
 
-## Hard Constraints
+## Steps
 
-- Do not write new ticket content.
-- Do not rewrite, summarize, translate, reorder, or correct ticket content.
-- Do not edit the source Markdown file unless writing back `Issue Number` and `Issue URL`.
-- Never include the title heading in issue body.
-- Never include the `## GitHub Fields` section in issue body.
-
-## Supported Input
-
-- A path to an existing Markdown artifact:
-  - `.wip/work/*/story-*.md`
-  - `.wip/work/*/epic-*.md`
-  - `.wip/work/*/bug-*.md`
-
-## Required Source Data
-
-Read these values from the source file:
-
-- Title heading for issue title (strip `# Story:`, `# Epic:`, or `# Bug:` prefix only).
-- `## GitHub Fields` section:
-  - `Repository` (required, format `owner/repo`)
-  - Optional `Labels`
-  - Optional `Assignees`
-  - Optional `Milestone`
-- All sections except title and `## GitHub Fields` for issue body.
-
-Validation rules:
-
-- `Repository` must be present.
-- If required values are missing, ask only for missing fields.
-
-## Upload Mapping
-
-- `repository`: from `Repository`
-- `title`: from title text
-- `body`: all sections except title and `## GitHub Fields`
-- `labels`: from `Labels` when present
-- `assignees`: from `Assignees` when present
-- `milestone`: from `Milestone` when present
-
-## Execution Steps
-
-1. Read source Markdown file.
-2. Validate required source data.
-3. Build create payload with mapped fields.
-4. Create issue using configured GitHub issue tooling (MCP preferred, `gh issue create` fallback).
-5. Write back `Issue Number` and `Issue URL` to `## GitHub Fields`.
-6. Return issue number and URL.
-
-## Out Of Scope
-
-- Drafting new tickets from scratch.
-- Improving wording or structure.
-- Status transitions or project board management.
-
-## Example Invocation
-
-```text
-/create-github-issue .wip/work/regeling-uitvoer/story-uitvoer-algemeen.md
-```
-
-## Success Response Format
+1. Read the source file and map its fields per the contract; `Repository` must be present.
+2. Ask only for the required values that are missing.
+3. Create the issue with the session's GitHub issue tooling.
+4. Write `Issue Number` and `Issue URL` back into `## GitHub Fields` — the only edit to the
+   source file.
+5. Return the result in exactly this form:
 
 ```text
 Created #1234

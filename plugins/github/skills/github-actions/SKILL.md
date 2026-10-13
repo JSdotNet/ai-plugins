@@ -5,58 +5,25 @@ description: "Create, review, and harden GitHub Actions workflow files under .gi
 
 # GitHub Actions
 
-## Purpose
+Create, review, or optimize a workflow under `.github/workflows/`. Before writing or reviewing
+any workflow, read [github-actions.md](../../resources/github-actions.md) and apply every rule
+in it, whether the file is new or existing. Resolve each pin to the SHA of the release you
+name in the version comment; never invent a SHA.
 
-Use this skill to create, review, and optimize GitHub Actions workflows under `.github/workflows/`.
-Apply security-first defaults on every workflow regardless of whether you are writing from scratch
-or modifying an existing file.
+## Review
 
-## Hard Constraints
+When auditing an existing workflow, report each rule it breaks with the file and line, and
+the fixed line.
 
-- Always pin third-party and first-party actions to a full-length commit SHA (e.g. `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2`).
-- Never use mutable references such as `@main`, `@latest`, or bare major version tags (e.g. `@v4`).
-- Add a human-readable version comment (e.g. `# v4.2.2`) next to every pinned SHA.
-- Set `permissions: contents: read` at the workflow level; narrow only at the job level.
-- Never log secrets or expose them in outputs.
+## OIDC trust claims
 
-## Inputs
-
-- Repository path or an existing `.github/workflows/*.yml` file (optional).
-- Workflow purpose description when creating from scratch.
-
-## Security Checklist
-
-- [ ] All actions pinned to full commit SHA with version comment.
-- [ ] `permissions` set at workflow level; overridden at job level only when necessary.
-- [ ] Secrets accessed via environment variables only (`${{ secrets.MY_SECRET }}`).
-- [ ] OIDC preferred over long-lived access keys for cloud deployments.
-- [ ] `pull_request_target` trigger reviewed carefully for untrusted code risk.
-- [ ] `concurrency` configured to cancel stale runs when appropriate.
-
-## Workflow Structure Guidelines
-
-- Name workflows descriptively: `build-and-test.yml`, `deploy-production.yml`.
-- Use `on.push.branches` and `on.pull_request.branches` to limit trigger scope.
-- Add `workflow_dispatch` for manual runs on any workflow that may need it.
-- Use `needs` to express job ordering.
-- Use `outputs` to pass data between jobs.
-- Cache dependencies with `actions/cache` keyed on lock file hash.
-
-## OIDC Quick Reference
-
-| Provider | Action | Trust Policy Claim |
+| Provider | Action | Trust policy claim |
 | --- | --- | --- |
 | AWS | `aws-actions/configure-aws-credentials` | `sub: repo:owner/repo:ref:refs/heads/main`, `aud: sts.amazonaws.com` |
-| Azure | `azure/login` with `client-id` + workload identity | `repo:owner/repo:ref:refs/heads/main` |
+| Azure | `azure/login` with `client-id` and workload identity federation | `repo:owner/repo:ref:refs/heads/main` |
 | GCP | `google-github-actions/auth` | `sub: repo:owner/repo:ref:refs/heads/main` |
 
-## Example Invocation
+## Output
 
-```text
-/github-actions Create a CI workflow that builds and tests a .NET solution on push and pull_request.
-```
-
-## Success Response Format
-
-Returns a complete `.github/workflows/<name>.yml` file ready to commit, plus a short summary of
+The complete `.github/workflows/<name>.yml`, ready to commit, plus a short summary of the
 security decisions made.
