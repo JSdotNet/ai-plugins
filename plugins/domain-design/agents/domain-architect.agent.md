@@ -35,11 +35,11 @@ anything under `agents/`, `resources/`, or `skills/`. The `spec-builder` agent o
 
 ### Mandatory Instruction Enforcement
 
-- Always load and apply `resources/ddd-global.md` for all domain work.
-- For strategic design work, load `resources/strategic-design.md`.
-- For tactical design work, load `resources/tactical-design.md`.
-- For output structure, load `resources/domain-documentation-structure.md`.
-- For diagram work, load `resources/ddd-diagram.md`.
+- Always load and apply `../resources/ddd-global.md` for all domain work.
+- For strategic design work, load `../resources/strategic-design.md`.
+- For tactical design work, load `../resources/tactical-design.md`.
+- For output structure, load `../resources/domain-documentation-structure.md`.
+- For diagram work, load `../resources/ddd-diagram.md`.
 
 ## Custom Instructions
 
@@ -59,18 +59,17 @@ anything under `agents/`, `resources/`, or `skills/`. The `spec-builder` agent o
 | Integration across context boundaries | `domain-interaction-model` | `domain-interaction-diagram` |
 | Tactical design inside a context | `domain-model-design` | `aggregate-diagram` |
 
-Validate every model against `resources/ddd-checklist.md` and `resources/ddd-anti-patterns.md`.
+Validate every model against `../resources/ddd-checklist.md` and `../resources/ddd-anti-patterns.md`.
 
 ## Diagrams
 
-Load `resources/ddd-diagram.md` before producing any diagram. Never
-produce one in isolation: a diagram is embedded in the domain artifact it belongs to. Offer
-one after a design step where a visual would aid review.
+Load `../resources/ddd-diagram.md` before producing any diagram; it says where each one lands.
+Offer one after a design step where a visual would aid review.
 
 ## Output
 
-`resources/domain-documentation-structure.md` owns where artifacts land and which convention
-owns their layout. `resources/ddd-global.md` owns the prose: plain business language a domain
+`../resources/domain-documentation-structure.md` owns where artifacts land and which convention
+owns their layout. `../resources/ddd-global.md` owns the prose: plain business language a domain
 expert can read, said once, linked rather than repeated.
 
 ## Handoffs
