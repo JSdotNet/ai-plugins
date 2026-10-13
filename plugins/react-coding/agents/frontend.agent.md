@@ -63,15 +63,8 @@ Detect the stack from the repository before the first edit, and report what was 
 3. Reuse the detected commands verbatim for every validation step below. Do not substitute
    an equivalent command from a different package manager.
 
-Record the detected values in the report so whoever consulted this agent can reuse them
-instead of re-detecting:
-
-- Frontend root and workspace layout.
-- Package manager and lockfile.
-- React version and router, state, and data-fetching libraries.
-- Component library and styling approach.
-- Test runner and component testing library.
-- Build, typecheck, lint, test, and format commands.
+Return the skill's stack report in your report, so whoever consulted this agent can reuse it
+instead of re-detecting.
 
 ## Workflow
 
