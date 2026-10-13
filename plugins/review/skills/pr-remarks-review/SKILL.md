@@ -5,34 +5,27 @@ description: "Triage pull request review remarks one by one — classify each as
 
 # PR Remarks Review Skill
 
-The calling agent supplies domain knowledge about the code, story, or documentation being reviewed; this skill drives the remark-by-remark processing workflow.
+The calling agent supplies the domain knowledge about what is under review; this skill works
+through the reviewer remarks. Drafts only: post nothing to the pull request and change no
+code — the user posts the replies and makes the fixes.
 
-## Input Expectations
+Input: a PR URL or number, or a pasted list of remarks; optionally a filter (reviewer, file,
+label, severity) and the target branch or files for context.
 
-- Pull request URL, number, or a pasted list of review remarks.
-- Optional filter (reviewer name, file, label, or severity).
-- Optional target branch or file set for context.
+1. Collect every open remark, from the PR or the list, and group them by file or topic.
+2. Per remark, summarise the concern in one sentence and classify it:
+   - **Fix** — a clear defect or violation; name the change required, with the file, section,
+     or line where known.
+   - **Discuss** — a question or opinion; name the question or trade-off to settle with the
+     reviewer before acting.
+   - **Decline** — out of scope or already handled.
+   - **Defer** — valid, but belongs in a follow-up issue; log it explicitly.
+3. Draft a reply for each remark as inline reply text. A Decline or Defer reply carries a
+   rationale the user can paste as is.
+4. Return the summary table, then the open questions that need reviewer or stakeholder input
+   before the PR can merge:
 
-## Workflow
+   | Remark | Classification | Proposed resolution | Draft reply | Status |
+   |---|---|---|---|---|
 
-1. Collect all open review remarks from the PR (or from the provided list).
-2. Group remarks by file or topic area for efficient triage.
-3. For each remark:
-   - Summarise the concern in one sentence.
-   - Classify the action required:
-     - **Fix** — the remark identifies a clear defect or violation; a code/content change is required.
-     - **Discuss** — the remark is a question or opinion; alignment with the reviewer is needed before acting.
-     - **Decline** — the remark is out of scope or already handled; provide a clear rationale.
-     - **Defer** — the remark is valid but belongs in a follow-up issue; log it explicitly.
-   - Draft a response to the reviewer (inline comment reply text).
-4. Produce a summary table: remark → classification → proposed resolution → status.
-5. List any open questions that need reviewer or stakeholder input before the PR can be merged.
-
-## Output Expectations and Quality Checks
-
-- Every remark has a classification and a proposed resolution or reply.
-- Fix items include the specific change required (file, section, or line reference where known).
-- Discuss items include the question or trade-off to resolve with the reviewer.
-- Decline and Defer items include a rationale that can be pasted directly as a reply.
-- No remark is left without a decision.
-- Nothing is posted to the pull request: the user posts the drafted replies.
+Every remark leaves with a classification and a decision.

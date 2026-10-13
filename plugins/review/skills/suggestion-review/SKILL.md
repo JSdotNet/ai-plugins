@@ -5,34 +5,16 @@ description: "Propose ranked improvements to any artifact — code, stories, doc
 
 # Suggestion Review Skill
 
-The calling agent provides the domain knowledge about the review target; this skill drives the suggestion-focused review workflow.
+The calling agent supplies the domain knowledge; this skill proposes improvements to a target
+— a file, folder, or document set — against an objective the user names (quality,
+maintainability, speed, usability, clarity, scalability, completeness) and within any
+constraint they give (budget, timeline, complexity, capacity).
 
-## Input Expectations
+Return the suggestions ranked by value against effort:
 
-- Review target location (file, folder, or document set) and its type (code, story, docs, architecture, etc.).
-- Improvement objective (quality, maintainability, speed, usability, clarity, scalability, or completeness).
-- Optional constraints (budget, timeline, complexity, or team capacity).
+| # | Suggestion | Benefit | Effort | Risk |
+|---|---|---|---|---|
+| 1 | <change> | <what it buys, tied to the objective> | small / medium / large | low / medium / high |
 
-## Workflow
-
-1. Establish the current state and review objective.
-2. Identify improvement opportunities across:
-   - Structure and organization
-   - Quality and consistency
-   - Coverage and completeness
-   - Extensibility and maintainability
-3. Propose suggestions with:
-   - Expected benefit
-   - Effort estimate (small, medium, large)
-   - Risk level (low, medium, high)
-4. Rank suggestions by value versus effort.
-5. Return a phased recommendation plan:
-   - Quick wins
-   - Next iteration
-   - Longer-term opportunities
-
-## Output Expectations and Quality Checks
-
-- Value, effort, and risk are provided for each suggestion.
-- Ranking is clear and justified.
-- Plan includes at least one quick win and one longer-term idea.
+Then a phased plan — **Quick wins**, **Next iteration**, **Longer term** — with at least one
+quick win and one longer-term item, and one line justifying the ranking.

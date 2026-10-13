@@ -5,31 +5,16 @@ description: "Turn the TODO notes, open checklist items, and unresolved placehol
 
 # TODO Review Skill
 
-The calling agent provides the domain knowledge about the review target; this skill drives the TODO-based review workflow.
+The calling agent supplies the domain knowledge; this skill reviews the TODO notes, open
+checklist items, and placeholders in a target — a file, folder, or document set — within any
+timebox or focus the user gives.
 
-## Input Expectations
+Rewrite each entry as a clear review statement and return:
 
-- Review target location (file, folder, or document set) and its type (code, story, docs, architecture, etc.).
-- TODO source content or path.
-- Optional constraints (timebox, severity focus, or category focus).
+| TODO | Location | Why it exists | Risk if unresolved | Done when | Priority | Decision |
+|---|---|---|---|---|---|---|
+| <statement> | <file:line> | <reason> | <impact> | <completion criteria> | high / medium / low | resolve / defer — rationale / escalate as finding |
 
-## Workflow
-
-1. Collect TODO entries from the target artifact.
-2. Normalize TODO items into clear review statements.
-3. For each TODO item, assess:
-   - Why it exists
-   - Risk if unresolved
-   - Expected completion criteria
-4. Classify each item:
-   - High priority
-   - Medium priority
-   - Low priority
-5. Produce a review report with findings, assumptions, and recommended next actions.
-
-## Output Expectations and Quality Checks
-
-- Every TODO item is either resolved, deferred with rationale, or escalated as a finding.
-- Findings are explicit, actionable, and prioritized.
-- Unknowns are listed as open questions.
-- Recommendations include the smallest practical next step.
+- Every entry gets a decision; none is left open.
+- Each recommendation names the smallest practical next step.
+- After the table, list assumptions and unknowns as open questions.

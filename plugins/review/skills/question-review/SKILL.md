@@ -5,27 +5,16 @@ description: "Answer the user's explicit review questions about any artifact —
 
 # Question Review Skill
 
-The calling agent provides the domain knowledge about the review target; this skill drives the question-driven review workflow.
+The calling agent supplies the domain knowledge; this skill answers the user's questions
+about a target — a file, folder, or document set — and nothing beyond them.
 
-## Input Expectations
+Confirm the complete list of questions first. Then return, per question:
 
-- Review target location (file, folder, or document set) and its type (code, story, docs, architecture, etc.).
-- One or more review questions.
-- Optional response format preferences.
+| Question | Answer | Evidence | Confidence |
+|---|---|---|---|
+| <as asked> | <direct answer, or **unresolved**> | <file and line or section it rests on> | high / medium / low |
 
-## Workflow
-
-1. Confirm the complete list of questions to answer.
-2. Inspect the target artifacts relevant to each question.
-3. Answer each question with:
-   - Direct answer
-   - Supporting evidence from the reviewed artifact
-   - Confidence level (high, medium, or low)
-4. Identify gaps where the artifact cannot fully answer a question.
-5. Add follow-up recommendations for unresolved or low-confidence areas.
-
-## Output Expectations and Quality Checks
-
-- Every input question is answered or explicitly marked unresolved.
-- Evidence is cited from the reviewed artifact.
-- Confidence levels are provided for each answer.
+- Every question is answered or explicitly marked unresolved; never dropped.
+- Evidence cites the reviewed artifact, not general knowledge.
+- After the table, name what the artifact cannot answer and a follow-up for each unresolved
+  or low-confidence answer.
