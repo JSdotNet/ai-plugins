@@ -4,6 +4,7 @@ description: >
   Scan local code files with Aikido for SAST vulnerabilities and hardcoded secrets.
   Use when: finishing a feature, reviewing a file for security, scanning before a commit,
   or running a targeted scan on a specific path or file type.
+  DO NOT USE FOR: findings in a pull request's changed files (aikido-scan-pr).
 ---
 
 # Scan Code with Aikido
@@ -31,7 +32,8 @@ finalizing security-sensitive code changes.
    - `secrets` → `aikido_secrets_scan`
 
 > If the Aikido MCP server is not available, stop and tell the user to configure it
-> using the setup instructions in `agents/aikido.agent.md` before proceeding.
+> using the setup instructions in [`agents/aikido.agent.md`](../../agents/aikido.agent.md)
+> before proceeding.
 
 ### Phase 2 — Run Scan
 
@@ -68,9 +70,11 @@ Findings: <N critical, N high, N medium, N low>
 ```
 
 10. Suggest next actions:
-    - **Fix now** — invoke `fix-security-issue` for each critical or high finding.
+    - **Fix now** — invoke `fix-security-issue` for each critical or high finding, passing it
+      as a local scan finding (file, line, rule, type).
     - **Defer** — note finding as known risk and continue.
-    - **Sync to GitHub** — invoke `aikido-issues-to-github` to create tracked issues.
+    - **Sync to GitHub** — invoke `aikido-issues-to-github` to create tracked issues for the
+      findings the Aikido feed holds.
 
 ## Output
 

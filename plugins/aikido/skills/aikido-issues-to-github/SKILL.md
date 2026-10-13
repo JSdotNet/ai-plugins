@@ -27,7 +27,8 @@ issue ID fingerprint to prevent duplicates on re-runs.
 ## MCP Prerequisite
 
 > If the Aikido MCP server (`aikido_issues_list`) is not available, stop immediately
-> and tell the user to configure it using the setup instructions in `agents/aikido.agent.md`.
+> and tell the user to configure it using the setup instructions in
+> [`agents/aikido.agent.md`](../../agents/aikido.agent.md).
 
 ## Workflow
 
@@ -37,19 +38,33 @@ issue ID fingerprint to prevent duplicates on re-runs.
    Use pagination to retrieve all matching findings.
 2. List all findings with: title, type, severity, affected file or component.
 
-### Phase 2 — Deduplicate Against Open GitHub Issues
+### Phase 2 — Deduplicate Against Existing GitHub Issues
 
-3. For each finding, search existing open GitHub issues for the Aikido issue ID fingerprint:
+3. For each finding, search open and closed GitHub issues for the Aikido issue ID fingerprint,
+   quoting it so the search matches it as one term:
    ```bash
-   gh issue list --repo <owner/repo> --state open --search "aikido-id:<aikido-issue-id>" --json number,title
+   gh issue list --repo <owner/repo> --state all --search '"aikido-id:<aikido-issue-id>" in:body' --json number,title,state
    ```
-4. Mark findings that already have a matching open issue as **skipped**.
-5. Present the full list — to-create and skipped — and ask for confirmation before proceeding.
-   In dry-run mode, stop here with the preview.
+4. Mark each finding:
+   - A matching open issue: **skipped**.
+   - Only a matching closed issue: **closed — not recreated**. The finding is still open in
+     Aikido, so the fix did not land or the issue was closed without one; report the issue
+     number and let a person decide whether to reopen it.
+5. List the repository's labels and note every label this run needs that does not exist yet
+   (`security`, `aikido`, each `severity:<level>`, and any requested label):
+   ```bash
+   gh label list --repo <owner/repo> --limit 500 --json name
+   ```
+6. Present the full list — to-create, skipped, closed — and the labels to create, and ask for
+   confirmation before proceeding. In dry-run mode, stop here with the preview.
 
 ### Phase 3 — Create GitHub Issues
 
-6. For each finding not already tracked, create a GitHub issue using this structure:
+7. Create each missing label first, so `--label` does not fail:
+   ```bash
+   gh label create "<label>" --repo <owner/repo>
+   ```
+8. For each finding marked to-create, create a GitHub issue using this structure:
 
 **Title:** `[Security] <Finding Title> (<Severity>)`
 
@@ -79,18 +94,24 @@ issue ID fingerprint to prevent duplicates on re-runs.
 - [View in Aikido](https://app.aikido.dev)
 ```
 
-7. Apply labels: `security`, `aikido`, and severity label (e.g., `severity:critical`).
-8. Apply optional assignee.
-9. Record the created issue number against the Aikido issue ID.
+   ```bash
+   gh issue create --repo <owner/repo> --title "<title>" --body-file <body-file> \
+     --label security --label aikido --label "severity:<level>" [--assignee <user>]
+   ```
+
+9. Apply labels — `security`, `aikido`, the severity label (e.g., `severity:critical`), and any
+   requested label — and the optional assignee, as in the command above.
+10. Record the created issue number against the Aikido issue ID.
 
 ### Phase 4 — Summary
 
-10. Output a summary table:
+11. Output a summary table:
 
 | Finding | Type | Severity | Action | Issue |
 |---------|------|----------|--------|-------|
 | `SQL injection in users.cs` | sast | Critical | Created | #42 |
 | `Hardcoded AWS key` | leaked_secret | High | Skipped (existing #38) | #38 |
+| `Open redirect` | sast | High | Closed — not recreated | #31 |
 
 ## Output
 
@@ -104,6 +125,6 @@ issue ID fingerprint to prevent duplicates on re-runs.
   Do not edit or remove it from issue bodies.
 - Accepted-risk and suppressed findings in Aikido will not appear in the feed
   and will not be synced.
-- For Jira integration, replace the GitHub issue creation step with a Jira ticket
-  using the Jira skill, keeping the same field mapping.
+- For Jira, replace the GitHub issue creation step with `jira:create-jira-ticket`, keeping the
+  same field mapping. Without the `jira` plugin, GitHub is the only target.
 - Run this skill after each security sprint to sync newly discovered findings.

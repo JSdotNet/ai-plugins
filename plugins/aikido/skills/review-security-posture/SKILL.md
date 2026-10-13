@@ -27,7 +27,8 @@ highlight what needs immediate attention, and recommend a remediation order.
 ## MCP Prerequisite
 
 > If the Aikido MCP server (`aikido_issues_list`) is not available, stop immediately
-> and tell the user to configure it using the setup instructions in `agents/aikido.agent.md`.
+> and tell the user to configure it using the setup instructions in
+> [`agents/aikido.agent.md`](../../agents/aikido.agent.md).
 
 ## Workflow
 
@@ -36,17 +37,19 @@ highlight what needs immediate attention, and recommend a remediation order.
 1. Confirm the scope from the user's request.
 2. Call `aikido_issues_list` for the given scope. Use pagination to retrieve all results
    (repeat with `page` increment until fewer than `per_page` results are returned).
-3. Collect all open findings into a working set.
+3. Collect into a working set every open finding at or above the minimum severity and of the
+   requested issue types. Everything below the threshold stays out of every later phase.
 
 ### Phase 2 — Group and Prioritize
 
 4. Group findings by severity: **Critical → High → Medium → Low**.
-5. Within each severity group, sub-group by issue type:
+5. Within each severity group, split by fixability — the two columns of the summary table:
    - Code-fixable: `sast`, `leaked_secret`, `iac`
-   - Dependency / supply chain: `open_source`, `malware`
-   - Infrastructure / cloud: `cloud`, `cloud_instance`, `docker_container`
-   - Compliance / lifecycle: `eol`, `license`, `scm_security`
-   - Runtime / monitoring: `surface_monitoring`, `ai_pentest`
+   - Triage-only: every other type, sub-grouped by area so Phase 4 can name an owner:
+     - Dependency / supply chain: `open_source`, `malware`
+     - Infrastructure / cloud: `cloud`, `cloud_instance`, `docker_container`
+     - Compliance / lifecycle: `eol`, `license`, `scm_security`
+     - Runtime / monitoring: `surface_monitoring`, `ai_pentest`
 
 ### Phase 3 — Present Dashboard
 
@@ -81,16 +84,11 @@ Date: <today>
    - **Immediate**: all Critical findings (code-fixable first).
    - **This sprint**: all High findings.
    - **Backlog**: Medium and Low findings.
-   - **Triage-only**: list non-code issues with recommended owner (cloud team, ops, etc.).
-
-10. Estimate rough effort:
-    - Each `sast` or `leaked_secret` fix: ~30 min per finding.
-    - Each `iac` fix: ~15 min per finding.
-    - Dependency upgrade (`open_source`): depends on breaking changes.
+   - **Triage-only**: list non-code issues by area with recommended owner (cloud team, ops, etc.).
 
 ### Phase 5 — Suggested Next Steps
 
-11. Present options:
+10. Present options:
     - **Fix now** — invoke `fix-security-issue` for a specific finding.
     - **Sync to GitHub** — invoke `aikido-issues-to-github` to create tracked issues for all findings.
     - **Drill down** — re-run `aikido_issues_list` filtered to a specific type or severity.
