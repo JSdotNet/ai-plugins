@@ -1,7 +1,6 @@
 ---
 name: dependabot
-description: "Configure and optimize GitHub Dependabot for automated dependency updates and security alerts. Use when creating or updating .github/dependabot.yml, setting up grouped updates, configuring security update strategies, or tuning Dependabot PR behavior."
-user-invocable: true
+description: "Create or update .github/dependabot.yml so Dependabot keeps every package ecosystem current with grouped updates. Use when: setting up Dependabot for the first time, adding an ecosystem after a new technology, reducing Dependabot PR noise with groups, tuning schedules, reviewers, and labels, configuring security updates. DO NOT USE FOR: workflow files under .github/workflows (github-actions)."
 ---
 
 # Dependabot
@@ -11,23 +10,11 @@ user-invocable: true
 Use this skill to create or update `.github/dependabot.yml` so GitHub Dependabot automatically
 keeps dependencies current and alerts on known vulnerabilities.
 
-> **Awesome Copilot reference:** A detailed `dependabot` skill with full ecosystem reference and
-> monorepo patterns is available at `awesome-copilot`:
-> `copilot plugin install dependabot@awesome-copilot`
-
 ## Hard Constraints
 
 - Configuration must be in `.github/dependabot.yml` on the default branch only.
 - Do not create multiple `dependabot.yml` files — GitHub supports exactly one per repository.
 - Use `directories` (plural) with glob patterns for monorepos; `directory` (singular) does not support globs.
-
-## When To Use
-
-- Setting up Dependabot for the first time in a repository.
-- Adding a new package ecosystem after introducing a new technology.
-- Reducing PR noise by configuring grouped updates.
-- Tuning schedules, reviewers, and labels for team workflows.
-- Enabling security update configuration for compliance or supply-chain hardening.
 
 ## Inputs
 
@@ -41,7 +28,8 @@ keeps dependencies current and alerts on known vulnerabilities.
 3. Generate a `dependabot.yml` entry per ecosystem with a weekly schedule by default.
 4. Apply grouping to reduce PR count (minor + patch together; major separate).
 5. Add `github-actions` ecosystem entry if `.github/workflows/` is present.
-6. Return the complete `.github/dependabot.yml` content.
+6. Write the complete configuration to `.github/dependabot.yml`, merging into the existing file
+   when there is one rather than creating a second.
 
 ## Ecosystem Detection Reference
 
@@ -77,5 +65,5 @@ groups:
 
 ## Success Response Format
 
-Returns a complete `.github/dependabot.yml` file with all detected ecosystems configured and
-a short explanation of each grouping decision.
+Writes `.github/dependabot.yml` with all detected ecosystems configured, and reports the path
+with a short explanation of each grouping decision.

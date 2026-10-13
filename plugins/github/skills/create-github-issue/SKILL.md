@@ -1,7 +1,6 @@
 ---
 name: create-github-issue
-description: "Creates a GitHub issue from an already written Markdown backlog artifact without rewriting ticket content."
-user-invocable: true
+description: "Create a GitHub issue from an already written Markdown story, epic, or bug without rewriting its content, and write the issue number and URL back. Use when: upload this ticket to GitHub, open a GitHub issue for this backlog artifact, the artifact has no Issue Number yet. DO NOT USE FOR: an artifact that already has an Issue Number (update-github-issue), or drafting ticket content."
 ---
 
 # Create GitHub Issue (Upload Only)

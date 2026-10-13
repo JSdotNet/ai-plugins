@@ -1,7 +1,6 @@
 ---
 name: update-github-issue
-description: "Updates an existing GitHub issue from a Markdown backlog artifact when an Issue Number is already known."
-user-invocable: true
+description: "Re-sync an existing GitHub issue from its Markdown story, epic, or bug without rewriting its content: title, body, labels, assignees, milestone. Use when: the artifact has an Issue Number in GitHub Fields and has changed, sync this ticket to its GitHub issue. DO NOT USE FOR: an artifact with no Issue Number (create-github-issue)."
 ---
 
 # Update GitHub Issue
@@ -57,6 +56,11 @@ Validation rules:
 2. Validate required source data.
 3. Build update payload with mapped fields.
 4. Update issue using configured GitHub issue tooling (MCP preferred, `gh issue edit` fallback).
+   Labels and assignees end as exactly the source's set; when `Labels` or `Assignees` is absent
+   from the source, leave that field on the issue untouched. `gh issue edit` only adds with
+   `--add-label` / `--add-assignee`, so read the issue's current labels and assignees first
+   (`gh issue view <number> --json labels,assignees`), add the missing ones, and drop the extra
+   ones with `--remove-label` / `--remove-assignee`.
 5. Return issue number and URL.
 
 ## Out Of Scope

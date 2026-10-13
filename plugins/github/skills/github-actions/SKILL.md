@@ -1,7 +1,6 @@
 ---
 name: github-actions
-description: "Create, review, and optimize GitHub Actions workflow files. Use when authoring new CI/CD workflows, hardening existing ones for security, or upgrading action versions. Covers secure pinning, least-privilege permissions, OIDC authentication, caching, matrix strategies, and reusable workflows."
-user-invocable: true
+description: "Create, review, and harden GitHub Actions workflow files under .github/workflows: SHA pinning, least-privilege permissions, OIDC, caching, reusable workflows. Use when: writing a CI or CD workflow, auditing a workflow for security or speed, upgrading actions after a Dependabot PR, setting up OIDC to AWS, Azure, or GCP, adding a workflow_call workflow. DO NOT USE FOR: .github/dependabot.yml (dependabot)."
 ---
 
 # GitHub Actions
@@ -12,11 +11,6 @@ Use this skill to create, review, and optimize GitHub Actions workflows under `.
 Apply security-first defaults on every workflow regardless of whether you are writing from scratch
 or modifying an existing file.
 
-> **Awesome Copilot reference:** A dedicated `github-actions-expert` agent and
-> `github-actions-ci-cd-best-practices` instructions are available at
-> `github-actions-expert@awesome-copilot`. Install for deeper CI/CD guidance:
-> `copilot plugin install github-actions-expert@awesome-copilot`
-
 ## Hard Constraints
 
 - Always pin third-party and first-party actions to a full-length commit SHA (e.g. `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2`).
@@ -24,15 +18,6 @@ or modifying an existing file.
 - Add a human-readable version comment (e.g. `# v4.2.2`) next to every pinned SHA.
 - Set `permissions: contents: read` at the workflow level; narrow only at the job level.
 - Never log secrets or expose them in outputs.
-
-## When To Use
-
-- Creating a new CI workflow (build, test, lint, security scan).
-- Creating a new CD workflow (release, deploy, publish).
-- Auditing an existing workflow for security or performance issues.
-- Upgrading actions after a Dependabot PR.
-- Setting up OIDC authentication for cloud providers (AWS, Azure, GCP).
-- Adding reusable workflow patterns (`workflow_call`).
 
 ## Inputs
 
@@ -61,7 +46,7 @@ or modifying an existing file.
 
 | Provider | Action | Trust Policy Claim |
 | --- | --- | --- |
-| AWS | `aws-actions/configure-aws-credentials` | `token.actions.githubusercontent.com` |
+| AWS | `aws-actions/configure-aws-credentials` | `sub: repo:owner/repo:ref:refs/heads/main`, `aud: sts.amazonaws.com` |
 | Azure | `azure/login` with `client-id` + workload identity | `repo:owner/repo:ref:refs/heads/main` |
 | GCP | `google-github-actions/auth` | `sub: repo:owner/repo:ref:refs/heads/main` |
 

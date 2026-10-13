@@ -25,4 +25,4 @@ description: GitHub Actions security and authoring rules for workflow files.
 ## Dependency Update Rules
 
 - Use `dependabot.yml` to keep action SHAs current (ecosystem `github-actions`).
-- Pin Dependabot updates to the same full-SHA format before merging.
+- Dependabot keeps a full-SHA pin as a SHA and updates its version comment; check both in the PR before merging.
