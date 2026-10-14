@@ -3,71 +3,37 @@ name: howto
 description: Rules for writing How-To guides — step-by-step, developer-focused procedural documentation.
 ---
 
-# HowTo Instructions
+# How-To Instructions
 
-## Purpose
+This contract governs How-To guides — local development setup, laptop setup, tooling
+bootstrap, environment onboarding — for developers who need to complete a process step by
+step. The shared procedure is [document-authoring.md](document-authoring.md).
 
-- Apply these rules when editing any file under `**/howto/*.md`.
-- Audience: developers who need practical, step-by-step instructions to complete a process.
-- Focus on executable guidance (what to do, in what order, and how to verify success).
-
-## Scope
-
-- This folder is for **How-To guides** only.
-- Typical examples: local development setup, developer laptop setup, tooling bootstrap, environment onboarding.
-
-## Recommended Structure (Guideline)
+## Structure
 
 Use this section order when it improves clarity.
 
 1. `# Title`
 2. `## Overview` — short goal statement and target audience.
 3. `## Prerequisites` — required accounts, access, software, and assumptions.
-4. `## Steps` — numbered sequence (`1.`, `2.`, `3.`) with one action per step.
-5. `## Validation` — checks to confirm the process worked.
-6. `## Troubleshooting` — common issues and fixes.
-7. `## References` — links to official docs, scripts, or related internal guides.
+4. `## Steps` — numbered sequence with one action per step.
+5. `## Validation` — checks that confirm the process worked.
+6. `## Troubleshooting` — common issues and fixes, when there are any.
+7. `## References` — official docs, scripts, or related internal guides, when there are any.
 
-## Heading and Layout Conventions
+## Step Rules
 
-- Use ATX headings (`#`, `##`, `###`) with one blank line before and after headings.
-- Keep one blank line between paragraphs and lists.
-- Use numbered lists for procedures and unordered lists for supporting details.
-- Keep step text concise and avoid long narrative blocks.
+- Word each step imperatively ("Install X", "Run Y", "Verify Z") and make it observable.
+- State where to run a command: terminal, repository root, admin shell.
+- Show the expected result after every critical step.
+- Call out OS-specific differences only where they exist.
+- State restart, reboot, or sign-out requirements explicitly.
+- Put a warning before every destructive or privileged action.
+- Link to official documentation for install and update steps.
+- Keep the scope to the task; leave out unrelated background.
 
-## Writing Rules
+## Validation Rules
 
-- Use direct, concise language aimed at developers.
-- Prefer imperative step wording (for example: "Install X", "Run Y", "Verify Z").
-- Keep each step actionable and observable.
-- Put commands, paths, environment variables, and file names in backticks.
-- If required information is missing, use explicit placeholders like `[TODO: add script URL]`.
-
-## Step Quality Checklist
-
-- State where to run a command (for example: terminal, repo root, admin shell).
-- Include expected result after critical steps.
-- Call out OS-specific differences only when needed.
-- Mention restart/reboot/sign-out requirements explicitly.
-- Add warnings before destructive or privileged actions.
-
-## Quality Bar for Validation
-
-- Ensure `## Validation` includes concrete checks (for example: command output, UI state, service health).
-- Prefer observable outcomes over vague statements like "it should work."
-- If manual verification is required, state who verifies and where.
-
-## Safety and Accuracy
-
-- Do not include secrets, tokens, private endpoints, or personal credentials.
-- Prefer official documentation links for install/update steps.
-- Avoid inventing versions, URLs, or access requirements.
-- Keep scope minimal and task-focused; avoid unrelated background.
-
-## Final Checklist
-
-- [ ] Instructions are step-by-step and easy to follow.
-- [ ] Prerequisites and validation are present when relevant.
-- [ ] Commands and references are accurate and current.
-- [ ] Any assumptions or unknowns are marked with TODO placeholders.
-- [ ] No sensitive information is included.
+- Make `## Validation` concrete: command output, UI state, or service health.
+- State an observable outcome, never "it should work".
+- When verification is manual, state who verifies and where.

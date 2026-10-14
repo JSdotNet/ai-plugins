@@ -26,8 +26,9 @@ and an arc42 document already carries what a blueprint did.
   - `resources/sequence-global.md`
   - `resources/state-global.md`
   - `resources/deployment-global.md`
+  - `resources/diagram-output.md`
   - `resources/arc42-global.md`
-  - `resources/arc42-section-01.md` … `arc42-section-12-instructions.md`
+  - `resources/arc42-section-01.md` … `resources/arc42-section-12.md`
 
 ## Install
 

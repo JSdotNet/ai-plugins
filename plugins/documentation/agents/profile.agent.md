@@ -62,6 +62,7 @@ caller's decision.
 - [GitHub profile instructions](../resources/profile-github.md)
 - [GitHub project profile instructions](../resources/profile-projects.md)
 - [LinkedIn profile instructions](../resources/profile-linkedin.md)
+- [Shared authoring procedure](../resources/document-authoring.md) — inputs, gap markers, what may be published, saving
 
 ### Available Skills
 
@@ -75,8 +76,8 @@ caller's decision.
 2. **Load scoped instructions.** Read the relevant instruction file every time before producing output.
 3. **Lead with value.** Start from audience relevance, proof, and outcomes before tooling or biography details.
 4. **Keep it publishable.** Prefer concise, external-facing wording over internal jargon or process detail.
-5. **Surface gaps explicitly.** Use `[TODO: ...]` placeholders when required links, metrics, or claims are missing.
-6. **Protect sensitive details.** Do not expose private client data, confidential metrics, or personal contact details unless the user explicitly wants them published.
+5. **Surface gaps explicitly.** Mark missing links, metrics, or claims as [document-authoring.md](../resources/document-authoring.md) says.
+6. **Protect sensitive details.** Publish only what the person approved as public, per [document-authoring.md](../resources/document-authoring.md).
 7. **Markdown only.** Keep outputs lint-friendly and ready to review or publish.
 8. **Route adjacent documentation work.** Name the `documentation` agent for general documentation requests and say why. This agent holds no approval gate and performs no handoff itself; that belongs to whatever consulted it.
 

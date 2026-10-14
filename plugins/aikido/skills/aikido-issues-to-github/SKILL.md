@@ -8,102 +8,38 @@ description: >
 
 # Aikido Issues to GitHub
 
-## Purpose
+Before fetching, read [aikido-findings.md](../../resources/aikido-findings.md): the
+prerequisite, feed pagination, and scopes. The issue formats are in
+[aikido-templates.md](../../resources/aikido-templates.md).
 
-Fetch open security findings from the Aikido feed and create one GitHub issue per
-new finding, enriched with severity, type, remediation steps, and a stable Aikido
-issue ID fingerprint to prevent duplicates on re-runs.
+Inputs: Aikido scope (required); minimum severity (default: `high`); issue types (default:
+all); GitHub repository `owner/repo` (required); labels (default `security`, `aikido`, plus
+`severity:<level>` added per finding); optional assignee; dry run `true` or `false` (default
+`false`).
 
-## Inputs
+The `aikido-id:<id>` fingerprint in each issue body is the deduplication key: write it
+exactly, and leave it in place on every issue.
 
-- Aikido scope — one of: `repo_name`, `cloud_name`, `vm_name`, `domain_name`, `container_name` (required).
-- Minimum severity to include: `critical`, `high`, `medium`, `low` (default: `high`).
-- Issue types to include (optional): defaults to all types.
-- GitHub repository in `owner/repo` format (required).
-- Labels to apply (default: `security`, `aikido`; severity label such as `severity:critical` is added automatically).
-- Assignee GitHub username (optional).
-- Dry-run mode: `true` previews what would be created without creating issues (default: `false`).
+1. **Fetch** every matching finding, all pages; list each with title, type, severity, and
+   affected file or component.
+2. **Deduplicate.** Search open and closed issues for the fingerprint, quoted so it matches as
+   one term: `gh issue list --repo <owner/repo> --state all --search
+   '"aikido-id:<id>" in:body' --json number,title,state`. A matching open issue: **skipped**.
+   Only a matching closed issue: **closed — not recreated** — the finding is still open in
+   Aikido, so the fix did not land or the issue was closed without one; report the number and
+   let a person decide whether to reopen it.
+3. **Check labels.** List the repository's labels (`gh label list --limit 500`) and note each
+   label this run needs that does not exist yet: `security`, `aikido`, each
+   `severity:<level>`, and any requested label.
+4. **Confirm.** Show the user the full list — to create, skipped, closed — and the labels to
+   create, and wait for explicit confirmation before creating anything; every issue and label
+   is created in the repository for everyone to see. In dry-run mode, stop here with the
+   preview.
+5. **Create** each missing label first, so `--label` does not fail. Then create one issue per
+   finding marked to create, with the templates file's title and body (body via
+   `--body-file`), the labels `security`, `aikido`, `severity:<level>`, any requested label,
+   and the optional assignee. Record each issue number against its Aikido ID.
+6. **Summarize** in the issue sync summary table of the templates file.
 
-## MCP Prerequisite
-
-> If the Aikido MCP server (`aikido_issues_list`) is not available, stop immediately
-> and tell the user to configure it using the setup instructions in `agents/aikido.agent.md`.
-
-## Workflow
-
-### Phase 1 — Fetch Aikido Findings
-
-1. Call `aikido_issues_list` for the given scope and filters.
-   Use pagination to retrieve all matching findings.
-2. List all findings with: title, type, severity, affected file or component.
-
-### Phase 2 — Deduplicate Against Open GitHub Issues
-
-3. For each finding, search existing open GitHub issues for the Aikido issue ID fingerprint:
-   ```bash
-   gh issue list --repo <owner/repo> --state open --search "aikido-id:<aikido-issue-id>" --json number,title
-   ```
-4. Mark findings that already have a matching open issue as **skipped**.
-5. Present the full list — to-create and skipped — and ask for confirmation before proceeding.
-   In dry-run mode, stop here with the preview.
-
-### Phase 3 — Create GitHub Issues
-
-6. For each finding not already tracked, create a GitHub issue using this structure:
-
-**Title:** `[Security] <Finding Title> (<Severity>)`
-
-**Body:**
-
-```markdown
-## Aikido Security Finding
-
-| Field | Value |
-|-------|-------|
-| **Aikido ID** | `aikido-id:<aikido-issue-id>` |
-| **Type** | `<sast | leaked_secret | iac | open_source | …>` |
-| **Severity** | `<Critical | High | Medium | Low>` |
-| **Scope** | `<repo/cloud/container name>` |
-| **Affected** | `<file path and line, or component name>` |
-
-## Description
-
-<finding description from Aikido>
-
-## Remediation
-
-<remediation steps from Aikido>
-
-## References
-
-- [View in Aikido](https://app.aikido.dev)
-```
-
-7. Apply labels: `security`, `aikido`, and severity label (e.g., `severity:critical`).
-8. Apply optional assignee.
-9. Record the created issue number against the Aikido issue ID.
-
-### Phase 4 — Summary
-
-10. Output a summary table:
-
-| Finding | Type | Severity | Action | Issue |
-|---------|------|----------|--------|-------|
-| `SQL injection in users.cs` | sast | Critical | Created | #42 |
-| `Hardcoded AWS key` | leaked_secret | High | Skipped (existing #38) | #38 |
-
-## Output
-
-- One GitHub issue per new Aikido finding above the severity threshold.
-- Summary table with action taken for each finding.
-- No duplicate issues created (deduplication by `aikido-id:<id>` fingerprint).
-
-## Notes
-
-- The `aikido-id:<id>` fingerprint in the issue body is the deduplication key.
-  Do not edit or remove it from issue bodies.
-- Accepted-risk and suppressed findings in Aikido will not appear in the feed
-  and will not be synced.
-- For Jira integration, replace the GitHub issue creation step with a Jira ticket
-  using the Jira skill, keeping the same field mapping.
-- Run this skill after each security sprint to sync newly discovered findings.
+For Jira, create each ticket with `jira:create-jira-ticket` instead, keeping the same field
+mapping; without the `jira` plugin, GitHub is the only target.

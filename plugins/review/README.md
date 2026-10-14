@@ -12,7 +12,7 @@ The review plugin ships **skills only** — no dedicated agent. Any agent (cshar
   - `skills/todo-review/SKILL.md` — TODO-driven review for any artifact
   - `skills/question-review/SKILL.md` — question-driven review for any artifact
   - `skills/suggestion-review/SKILL.md` — improvement-suggestion review for any artifact
-  - `skills/pr-remarks-review/SKILL.md` — triage and address open PR review remarks
+  - `skills/pr-remarks-review/SKILL.md` — triage open PR review remarks and draft replies
 - Hooks:
   - `hooks.json` (session-start finding quality guardrail prompt)
 

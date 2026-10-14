@@ -3,7 +3,7 @@
 <!--
 Copy to `.claude/start.md` and fill in. Only `## Start` and `## Open` are needed — delete
 every other section unless you want it. Never put a secret here.
-Read by the `start` skill: plugins/claude-desktop/skills/start/SKILL.md
+Read by the `start` skill: ../skills/start/SKILL.md
 -->
 
 ## Start

@@ -1,81 +1,28 @@
 ---
 name: dependabot
-description: "Configure and optimize GitHub Dependabot for automated dependency updates and security alerts. Use when creating or updating .github/dependabot.yml, setting up grouped updates, configuring security update strategies, or tuning Dependabot PR behavior."
-user-invocable: true
+description: "Create or update .github/dependabot.yml so Dependabot keeps every package ecosystem current with grouped updates. Use when: setting up Dependabot for the first time, adding an ecosystem after a new technology, reducing Dependabot PR noise with groups, tuning schedules, reviewers, and labels, configuring security updates. DO NOT USE FOR: workflow files under .github/workflows (github-actions)."
 ---
 
 # Dependabot
 
-## Purpose
+Keep one `.github/dependabot.yml` on the default branch: GitHub reads exactly one per
+repository, so merge into an existing file instead of adding a second.
 
-Use this skill to create or update `.github/dependabot.yml` so GitHub Dependabot automatically
-keeps dependencies current and alerts on known vulnerabilities.
+## Steps
 
-> **Awesome Copilot reference:** A detailed `dependabot` skill with full ecosystem reference and
-> monorepo patterns is available at `awesome-copilot`:
-> `copilot plugin install dependabot@awesome-copilot`
+1. Scan the repository for dependency manifests and list every ecosystem with its
+   directories (root `/` and sub-paths).
+2. Write one entry per ecosystem, weekly unless the user names another schedule, with the
+   user's reviewers and labels when given. For a monorepo use `directories` (plural) with
+   glob patterns; `directory` (singular) does not take globs.
+3. Group minor and patch updates by default, keeping major updates separate for deliberate
+   review:
 
-## Hard Constraints
+   ```yaml
+   groups:
+     minor-and-patch:
+       update-types: ["minor", "patch"]
+   ```
 
-- Configuration must be in `.github/dependabot.yml` on the default branch only.
-- Do not create multiple `dependabot.yml` files — GitHub supports exactly one per repository.
-- Use `directories` (plural) with glob patterns for monorepos; `directory` (singular) does not support globs.
-
-## When To Use
-
-- Setting up Dependabot for the first time in a repository.
-- Adding a new package ecosystem after introducing a new technology.
-- Reducing PR noise by configuring grouped updates.
-- Tuning schedules, reviewers, and labels for team workflows.
-- Enabling security update configuration for compliance or supply-chain hardening.
-
-## Inputs
-
-- Repository root path to scan for package manifests.
-- Optional: preferred schedule, reviewer list, label preferences.
-
-## Execution Steps
-
-1. Scan the repository for dependency manifests to identify all package ecosystems present.
-2. Map directory locations for each ecosystem (root `/` and sub-paths).
-3. Generate a `dependabot.yml` entry per ecosystem with a weekly schedule by default.
-4. Apply grouping to reduce PR count (minor + patch together; major separate).
-5. Add `github-actions` ecosystem entry if `.github/workflows/` is present.
-6. Return the complete `.github/dependabot.yml` content.
-
-## Ecosystem Detection Reference
-
-| Technology | Ecosystem Value | Manifest Files |
-| --- | --- | --- |
-| npm / pnpm / yarn | `npm` | `package.json`, `package-lock.json` |
-| pip / poetry | `pip` | `requirements.txt`, `pyproject.toml` |
-| NuGet (.NET) | `nuget` | `*.csproj`, `packages.config` |
-| Docker | `docker` | `Dockerfile` |
-| GitHub Actions | `github-actions` | `.github/workflows/*.yml` |
-| Go modules | `gomod` | `go.mod` |
-| Cargo (Rust) | `cargo` | `Cargo.toml` |
-| Maven (Java) | `maven` | `pom.xml` |
-| Gradle (Java) | `gradle` | `build.gradle` |
-| Terraform | `terraform` | `*.tf` |
-
-## Grouping Strategy
-
-Group minor and patch updates together to reduce PR count; keep major updates separate for
-deliberate review:
-
-```yaml
-groups:
-  minor-and-patch:
-    update-types: ["minor", "patch"]
-```
-
-## Example Invocation
-
-```text
-/dependabot Set up Dependabot for this repository.
-```
-
-## Success Response Format
-
-Returns a complete `.github/dependabot.yml` file with all detected ecosystems configured and
-a short explanation of each grouping decision.
+4. Add a `github-actions` entry whenever `.github/workflows/` exists.
+5. Report the path and one line per grouping decision.

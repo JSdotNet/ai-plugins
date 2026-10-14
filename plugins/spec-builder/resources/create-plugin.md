@@ -1,6 +1,6 @@
 ---
 name: create-plugin
-description: Dedicated rules for creating and refining Copilot plugin package assets.
+description: Dedicated rules for creating and refining plugin package assets for both hosts.
 ---
 
 # Create Plugin Instructions
@@ -54,9 +54,11 @@ author cannot look up in the repository.
   maps to an existing directory.
 - Author both sides — `.github/plugin/plugin.json` with `hooks.json`, and
   `.claude-plugin/plugin.json` with `hooks/`, plus the repo-root marketplace entry and the
-  `copilot-plugins.md` row. Nothing is generated; `node tools/check-assets.mjs` fails when
-  the two sides or the four versions disagree. Full rules:
-  [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md).
+  `copilot-plugins.md` row. Nothing is generated; `node tools/bump-version.mjs <plugin>`
+  writes all four versions, and `node tools/check-assets.mjs` fails when the two sides or the
+  four versions disagree. The reasoning is in
+  [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md), in the
+  marketplace's own repository only; this contract is the installed source of the rules.
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and
   the 60-line budget.
 

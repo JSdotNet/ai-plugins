@@ -5,14 +5,6 @@ description: Prompt for generating a C4 Level 3 Component diagram.
 
 # C4 Level 3 — Component Diagram Prompt
 
-## Purpose
-
-Produce a Component diagram that shows the logical components inside a single container and how they collaborate. This level is intended for developers who work on that specific container.
-
-## Audience
-
-Developers working on the specific container who need to understand internal structure, responsibilities, and collaboration patterns.
-
 ## Pre-Draft Checklist
 
 Confirm the following before generating the diagram:
@@ -60,6 +52,5 @@ C4Component
 - Every component has a name, technology or pattern tag, and short responsibility description (maximum 10 words).
 - Relationships between components are labelled with a verb phrase.
 - External systems or databases are shown outside the boundary.
-- Prose summary (3–5 sentences) explaining key component responsibilities and collaboration patterns.
-- Traceability link to arc42 Section 5 (Building Block View — Level 2 or deeper).
-- List of open questions or assumptions.
+
+The summary, links, assumptions, and SVG follow [diagram-output.md](../../../resources/diagram-output.md).

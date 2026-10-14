@@ -1,59 +1,19 @@
 ---
 name: refactor
-description: 'Surgical code refactoring to improve maintainability without changing behavior. Covers extracting methods, renaming variables, breaking down large functions, improving type safety, eliminating code smells, and applying design patterns.'
+description: 'Behaviour-preserving refactoring of C# .NET code in small, tested steps — extract method, rename, break up large methods, remove code smells, improve type safety, apply a design pattern. Use when: restructuring or cleaning up code without changing what it does, or preparing code for a change. DO NOT USE FOR: performance work (code-optimization), new behaviour or a bug fix (tdd).'
 ---
 
-# Refactor
+# Refactor — C# .NET
 
-Use this skill for safe, behavior-preserving refactoring of C# .NET code.
+Change structure, never behaviour. This skill owns structure and readability; performance
+goes through [../code-optimization/SKILL.md](../code-optimization/SKILL.md).
 
-## Principles
+1. Confirm the tests over the code pass. With none, name the gap before the first step.
+2. Make one concern per step — a rename, an extraction, a move — and run `dotnet test` after
+   each; keep a step only when it passes.
+3. Rename through a symbol-aware rename (the IDE or language server), not a text replace.
+4. Enable nullable reference types and remove each `!` suppression by fixing the flow it hides.
 
-- Keep behavior unchanged.
-- Make small, testable steps.
-- Prefer one refactor concern at a time.
-- Validate continuously with `dotnet test` after each step.
-
-## Common Refactoring Patterns
-
-### Extract Method
-
-Split large methods into smaller, named helpers with a single responsibility.
-
-### Rename for Clarity
-
-Update variable, method, or class names to reflect intent and domain language. Use IDE rename (F2) to avoid missing references.
-
-### Remove Code Smells
-
-| Smell | Fix |
-|---|---|
-| God class | Extract focused classes by responsibility |
-| Long method | Extract method, reduce nesting |
-| Feature envy | Move method closer to the data it uses |
-| Primitive obsession | Introduce value objects or records |
-| Duplicate code | Extract shared helper or base class |
-| Magic numbers | Replace with named constants or enums |
-
-### Apply Design Patterns
-
-- **Strategy** — replace conditional dispatch with polymorphism.
-- **Factory** — centralize complex object creation.
-- **Decorator** — add behavior without modifying existing classes.
-- **Command** — encapsulate operations for undo/redo or queuing.
-
-### Improve Type Safety
-
-- Replace `string` sentinel values with enums or discriminated unions (records).
-- Use `record` types for immutable value objects.
-- Enable nullable reference types and eliminate `!` suppressions.
-
-## Validation
-
-Run after every change:
-
-```bash
-dotnet test
-```
-
-Commit after each passing refactor step.
+Readability targets: long methods become named helpers, magic numbers named constants,
+complex conditions named predicates, and if-else or cast chains switch expressions and
+pattern matching.

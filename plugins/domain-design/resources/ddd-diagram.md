@@ -5,17 +5,15 @@ description: Mermaid diagram conventions for DDD domain design artifacts.
 
 # DDD Diagram Instructions
 
-## Purpose
-
-Define Mermaid diagram conventions for domain design artifacts produced by the `domain-architect` agent.
+The one diagram contract for this plugin: every diagram skill reads it, and none restates it.
+Over the 60-line budget by design: it holds the conventions for six diagram types, each with
+the example that fixes its syntax.
 
 ## General Rules
 
-- Use Mermaid syntax for all diagrams embedded in Markdown files.
-- Always use fenced code blocks with the `mermaid` language tag.
 - Keep diagrams focused: one diagram per concept or process.
 - Use domain language (ubiquitous language) for all node and participant labels.
-- Do not embed hard-coded hex colours; use subgraph labels and annotations only so diagrams render correctly across light and dark themes. **Exception:** Aggregate class diagrams (`classDiagram`, `aggregate-diagram` skill) and Context Map diagrams (`flowchart LR`, `context-mapping` skill) use the hard-coded palettes documented below/in `resources/strategic-design.md`. In both cases colour is applied to nodes/classes only — never to lines/edges — and is always additive to existing text annotations (`<<AggregateRoot>>`, etc.) or labels, never a replacement for them.
+- Use subgraph labels and annotations, not hard-coded hex colours, so diagrams render in light and dark themes. **Exception:** aggregate class diagrams and context map diagrams use the palettes below. Colour goes on nodes and classes only, never on lines or edges, and always adds to a text annotation or label rather than replacing it.
 - Optionally add `click NodeId "tooltip text"` to `flowchart`/`classDiagram`/`stateDiagram`/`sequenceDiagram` nodes to surface extra detail in interactive Mermaid viewers without changing the diagram's visual layout.
 
 ## Aggregate Class Diagram Conventions (`classDiagram`)
@@ -146,9 +144,12 @@ flowchart TD
         E[Identity and Access]
         F[Payment Gateway]
     end
-    A -->|Customer-Supplier| C
-    B -->|Published Language| A
+    A --> C
+    B --> A
 ```
+
+Edges carry direction only. The relationship pattern (`Customer-Supplier`, `Published Language`)
+is labelled on the context map, never on the landscape.
 
 ### Node Shapes
 
@@ -212,6 +213,40 @@ flowchart LR
     ACL -->|"PaymentOutcome { outcome, reference }"| Downstream
 ```
 
-## Context Map Diagram Conventions
+## Context Map Diagram Conventions (`flowchart LR`)
 
-Refer to `resources/strategic-design.md` for the full relationship pattern list and the Color Conventions palette. Context map diagrams are produced by the `context-mapping` skill and use `flowchart LR` syntax with relationship pattern labels on edges (text only, no edge colour). Bounded context nodes are colour-coded by deployment type (Service vs Module) using `classDef` + `class <nodeId> service|module`.
+Label every edge with its relationship pattern from `strategic-design.md`, as text only. Colour
+each bounded context node by its deployment type, classified per `strategic-design.md`: define
+both classes once per diagram with `classDef`, then assign each node with
+`class <nodeId> service` or `class <nodeId> module`. (`classDef` works on `flowchart` nodes; it
+is `classDiagram` that ignores it.)
+
+| Deployment Type | Fill | Border | Font |
+| --- | --- | --- | --- |
+| Service | `#1168BD` | `#0B4884` | `#FFFFFF` |
+| Module | `#85BBF0` | `#5D82A8` | `#000000` |
+
+```mermaid
+flowchart LR
+    classDef service fill:#1168BD,stroke:#0B4884,color:#FFFFFF
+    classDef module fill:#85BBF0,stroke:#5D82A8,color:#000000
+
+    A[Order Management] -->|Customer-Supplier| B[Inventory]
+    A -->|Anti-Corruption Layer| C[Payment Gateway]
+    B -->|Published Language| D[Warehouse]
+
+    class A,C service
+    class B,D module
+```
+
+## Landing and SVG
+
+Embed each diagram in a fenced `mermaid` block in the domain file its skill names — never a
+standalone diagram file. Then run [generate-diagram-svgs.ps1](../scripts/generate-diagram-svgs.ps1)
+with `-Path <directory of that file>`; it writes `diagrams/<file>-<heading-slug>.svg` beside
+every Markdown file under that path that holds a `mermaid` block.
+
+- A `Failed:` line means Mermaid rejected the diagram: fix the fence and run it again.
+- When PowerShell (`pwsh`, or `powershell` on Windows) or the Mermaid CLI `mmdc` is missing,
+  skip the SVG. The fence is the deliverable; say in the report that no SVG was generated and
+  that `npm install -g @mermaid-js/mermaid-cli` enables it.

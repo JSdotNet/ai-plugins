@@ -5,7 +5,7 @@ description: 'Record, change, or propose an architectural decision in its one re
 
 # Create Architectural Decision Record
 
-Apply `resources/adr-global.md` and `resources/prose.md`.
+Apply [adr-global.md](../../resources/adr-global.md) and [prose.md](../../resources/prose.md).
 
 ## Inputs
 

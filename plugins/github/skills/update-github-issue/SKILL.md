@@ -1,77 +1,26 @@
 ---
 name: update-github-issue
-description: "Updates an existing GitHub issue from a Markdown backlog artifact when an Issue Number is already known."
-user-invocable: true
+description: "Re-sync an existing GitHub issue from its Markdown story, epic, or bug without rewriting its content: title, body, labels, assignees, milestone. Use when: the artifact has an Issue Number in GitHub Fields and has changed, sync this ticket to its GitHub issue. DO NOT USE FOR: an artifact with no Issue Number (create-github-issue)."
 ---
 
 # Update GitHub Issue
 
-## Purpose
+Re-sync an issue that already exists. Before building the payload, read
+[github-issues-sync.md](../../resources/github-issues-sync.md): its content rules and field
+mapping govern every value sent. `Repository` and `Issue Number` must be present in
+`## GitHub Fields`; without an `Issue Number`, use `create-github-issue` instead of creating
+an issue here. Ask only for the required values that are missing.
 
-Use this skill only to update a GitHub issue that already exists.
-The source Markdown file must contain an `Issue Number` in the `## GitHub Fields` section.
+## Steps
 
-## Hard Constraints
-
-- Do not create a new issue; use `create-github-issue` if no `Issue Number` is present.
-- Do not rewrite, summarize, translate, or reorder ticket content.
-- Do not include the title heading in issue body.
-- Do not include the `## GitHub Fields` section in issue body.
-
-## Supported Input
-
-- A path to an existing Markdown artifact that contains `Issue Number` and `Repository` in `## GitHub Fields`.
-- Typical sources:
-  - `.wip/work/*/story-*.md`
-  - `.wip/work/*/epic-*.md`
-  - `.wip/work/*/bug-*.md`
-
-## Required Source Data
-
-Read these values from the source file:
-
-- `Repository` from `## GitHub Fields` (required, format `owner/repo`).
-- `Issue Number` from `## GitHub Fields` (required).
-- Title heading for issue title.
-- Optional `Labels`, `Assignees`, and `Milestone` from `## GitHub Fields`.
-- All sections except title and `## GitHub Fields` for issue body.
-
-Validation rules:
-
-- `Repository` and `Issue Number` must be present.
-- If required values are missing, ask only for missing fields.
-
-## Update Mapping
-
-| Markdown Section | GitHub Field | Updatable |
-| --- | --- | --- |
-| Title text (prefix stripped) | `title` | Yes |
-| All sections except title and `## GitHub Fields` | `body` | Yes |
-| `Labels` from `## GitHub Fields` | `labels` | Yes |
-| `Assignees` from `## GitHub Fields` | `assignees` | Yes |
-| `Milestone` from `## GitHub Fields` | `milestone` | Yes (when configured) |
-
-## Execution Steps
-
-1. Read source Markdown file.
-2. Validate required source data.
-3. Build update payload with mapped fields.
-4. Update issue using configured GitHub issue tooling (MCP preferred, `gh issue edit` fallback).
-5. Return issue number and URL.
-
-## Out Of Scope
-
-- Creating new issues (use `create-github-issue`).
-- Improving wording or structure.
-- Status transitions or project board management.
-
-## Example Invocation
-
-```text
-/update-github-issue .wip/work/regeling-uitvoer/story-uitvoer-algemeen.md
-```
-
-## Success Response Format
+1. Read the source file and map title, body, labels, assignees, and milestone per the contract.
+2. Update the issue with the session's GitHub issue tooling.
+3. Make labels and assignees end as exactly the source's set; when `Labels` or `Assignees`
+   is absent from the source, leave that field on the issue untouched. `gh issue edit` only
+   adds with `--add-label` / `--add-assignee`, so read the current set first
+   (`gh issue view <number> --json labels,assignees`), add the missing ones, and drop the
+   extra ones with `--remove-label` / `--remove-assignee`.
+4. Return the result in exactly this form:
 
 ```text
 Updated #1234

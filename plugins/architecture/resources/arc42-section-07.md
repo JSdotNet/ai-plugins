@@ -1,168 +1,62 @@
 ---
 name: arc42-section-07
-description: 'Defines requirements and output standards for arc42-section-07-instructions.'
+description: What arc42 section 7, Deployment View, holds — the infrastructure, the mapping of building blocks onto it, and the environments that differ — its inputs, and its output template.
 ---
 
-# arc42 Section 7: Deployment View - Specific Instructions
+# arc42 Section 7: Deployment View
 
-## Section Purpose
+Section 7 says where the building blocks of 5 run and how they get there.
 
-**Why this section exists:**
-Section 7 documents the technical infrastructure and how software building blocks are mapped to hardware/infrastructure elements. It shows where components run and how they're deployed.
+## Rules
 
-**Value for stakeholders:**
-- Shows physical/virtual infrastructure
-- Documents deployment strategy
-- Maps software to hardware/cloud resources
-- Explains runtime environment configuration
-- Critical for operations and DevOps teams
-- Answers: Where do components run? How are they deployed? What's the infrastructure?
+- Map every building block from Section 5 onto the infrastructure that runs it.
+- Show the infrastructure nodes — servers, containers, cloud services — and the communication
+  channels between them, naming the technologies, regions, and availability zones.
+- Cover the network and security aspects, and the scalability the deployment provides.
+- Document each environment that genuinely differs, and the deployment process that produces
+  it.
+- Draw the infrastructure with `deployment-diagram-generator` and the logical view with C4
+  Level 2 (`c4-diagram-generator`).
+- Keep a trivial deployment brief: a standard install or a plain three-tier web app needs a
+  sentence, not a node catalogue.
 
-**Key insight:** Focus on technically relevant deployment aspects. Skip if deployment is trivial or obvious.
+## Inputs
 
-## Mandatory Content (ESSENTIAL)
+The system, its infrastructure and cloud provider, which blocks run where, the environments
+and how they differ, and the deployment process.
 
-### What MUST be included:
-
-#### Infrastructure Overview
-- **Infrastructure elements** (servers, containers, networks, storage)
-- **Mapping** of building blocks (Section 5) to infrastructure
-- **Communication channels** between infrastructure elements
-- **Technology/protocols** used for deployment
-
-**Note:** For cloud deployments: regions, availability zones, services used.
-
-### When Section 7 Can Be Empty:
-- Desktop applications with standard installation
-- Simple web applications (standard 3-tier)
-- No special infrastructure requirements
-- Deployment is obvious from technology stack
-
-## Lean Variant (Minimum Viable Documentation)
-
-### Format:
-Simple deployment diagram + table
-
-### Minimum Content:
-- One deployment diagram showing main infrastructure nodes
-- Simple table mapping components to infrastructure
-
-### Example:
-
-```
-[Load Balancer] --> [App Server 1] --> [Database]
-                --> [App Server 2] â”€â”€â”˜
-```
-
-| Infrastructure Node | Hosted Components | Technology |
-|--------------------|------------------|-----------|
-| Load Balancer | Traffic distribution | AWS ELB |
-| App Server 1/2 | UI Layer, Search Engine | Kubernetes pods |
-| Database | Product Catalog data | AWS RDS PostgreSQL |
-
-## Thorough Variant (Complete Version)
-
-### Structure:
-
-#### Infrastructure Level 1
-[Highest abstraction - data centers, cloud regions, networks]
-
-**Diagram:** Physical/cloud infrastructure overview
-**Description:** Regions, zones, networks, security boundaries
-
-#### Infrastructure Level 2
-[Refinement - servers, containers, services within Level 1]
-
-**For each infrastructure node:**
-
-##### Node: <n>
-
-**Technical Description:**
-- Hardware specifications (CPU, RAM, storage)
-- Operating system
-- Virtualization/containerization technology
-- Network configuration
-
-**Hosted Building Blocks:**
-[Which software components from Section 5 run here]
-
-**Quality Attributes:**
-- Performance characteristics
-- Availability/redundancy
-- Scalability approach
-- Security measures
-
-**Deployment Process:**
-- How software is deployed to this node
-- Deployment tools/automation
-- Configuration management
-
-**Communication Channels:**
-[How this node communicates with others]
-
-### Multiple Environments:
-Document differences between:
-- Development
-- Testing/Staging
-- Production
-
-## Output Format
+## Output
 
 ```markdown
 # 7. Deployment View
 
-## Overview
-[1-2 paragraphs explaining infrastructure approach and deployment strategy]
+<Infrastructure approach and deployment strategy.>
 
-## Infrastructure Level 1: Overall Infrastructure
+## Infrastructure
 
-### Deployment Diagram
-![Infrastructure Overview](./diagrams/deployment-overview.png)
+<Deployment Mermaid fence>
 
-**Legend:**
-- [Server] = Physical/virtual server
-- <Container> = Container/pod
-- {Database} = Database instance
-- === = Network connection
+<Regions, zones, networks, and security boundaries the diagram does not say.>
 
-### Infrastructure Description
-[Describe cloud regions, data centers, network zones, security boundaries]
+## Node: <name>
 
-## Infrastructure Level 2: Detailed Nodes
+- **Type:** <VM / container / managed service>, <location: region, zone>
+- **Hosts:** <building blocks from section 5, with version and key configuration>
+- **Quality:** <capacity, redundancy, scaling approach, security>
+- **Deployment:** <method, tools, frequency>
 
-### Node: <n>
-
-**Description:**
-[What this node is - server, container cluster, database, etc.]
-
-**Technical Specifications:**
-- **Type:** [Physical server / VM / Container / Cloud service]
-- **Compute:** [CPU, RAM specifications]
-- **Storage:** [Type and capacity]
-- **OS:** [Operating system and version]
-- **Location:** [Data center, region, availability zone]
-
-**Hosted Components:**
-| Building Block | Version | Configuration |
-|---------------|---------|---------------|
-| <Component from Section 5> | <Version> | <Key config> |
-
-**Quality Attributes:**
-- **Performance:** <Capacity, response time>
-- **Availability:** <Redundancy, failover>
-- **Scalability:** <Horizontal/vertical scaling approach>
-- **Security:** <Firewall, access control, encryption>
-
-**Deployment:**
-- **Method:** [CI/CD pipeline, manual, automated scripts]
-- **Tools:** [Kubernetes, Ansible, Terraform, etc.]
-- **Frequency:** [Continuous, daily, weekly]
-
-**Communication Channels:**
 | Target Node | Protocol | Port | Purpose |
-|------------|----------|------|---------|
-| <Other node> | HTTPS | 443 | API calls |
-| <Database> | PostgreSQL | 5432 | Data access |
+| --- | --- | --- | --- |
+| <Node> | <HTTPS> | <443> | <API calls> |
 
-*Based on docs.arc42.org/section-7/ and official arc42 sources*
+## Environments
 
+| Environment | Differs from production in |
+| --- | --- |
+| <Staging> | <What is different> |
+```
+
+## Relationship to other sections
+
+The hosted components are the blocks of 5; the technical context of 3 and the constraints of 2
+shape the infrastructure; hosting and region choices link their decision records.

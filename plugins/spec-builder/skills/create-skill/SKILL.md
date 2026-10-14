@@ -1,6 +1,6 @@
 ---
 name: create-skill
-description: Create or refine a focused SKILL.md with clear trigger conditions, workflow steps, and outputs. Use when authoring or reviewing a skill.
+description: 'Create or refine a focused SKILL.md: its invocation mode, a trigger description, workflow steps, and outputs. Use when: authoring, reviewing, or fixing a skill or its description. DO NOT USE FOR: an agent (create-agent) or a rule or contract (create-instruction).'
 ---
 
 # Create Skill Skill

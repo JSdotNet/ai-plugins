@@ -5,18 +5,11 @@ description: Rules for writing LinkedIn profile Markdown with concise positionin
 
 # LinkedIn Profile Instructions
 
-## Purpose
+This contract governs LinkedIn profile content — headline and About drafts, featured-profile
+summaries, refresh notes in Markdown — for recruiters, hiring managers, peers, and
+professional contacts. The shared procedure is [document-authoring.md](document-authoring.md).
 
-- Apply these rules when editing any file under `**/profiles/linkedin/*.md`.
-- Audience: recruiters, hiring managers, peers, and professional contacts.
-- Focus on positioning, proof, and approachability in a concise format.
-
-## Scope
-
-- This folder is for **LinkedIn profile** content only.
-- Typical examples: headline drafts, about-section drafts, featured-profile summaries, and profile refresh notes prepared in Markdown.
-
-## Recommended Structure
+## Structure
 
 1. `# LinkedIn Profile: <Focus>`
 2. `## Headline`
@@ -27,22 +20,10 @@ description: Rules for writing LinkedIn profile Markdown with concise positionin
 
 ## Writing Rules
 
-- Write in first person unless the user asks for a different voice.
-- Keep positioning specific: role, domain, and value should be obvious early.
+- Write in first person unless the person asks for another voice.
+- Make role, domain, and value obvious in the opening lines.
 - Prefer outcomes, lessons, and credibility markers over keyword stuffing.
-- Keep sentences short and natural; avoid resume-style dumping.
-- Use `[TODO: ...]` for missing achievements, featured links, or phrasing choices.
-
-## Safety and Accuracy
-
-- Do not publish private contact details, compensation information, or confidential client details unless explicitly requested.
-- Avoid unsupported claims such as "best", "world-class", or "expert in everything".
-- Keep tone professional, direct, and externally appropriate.
-
-## Final Checklist
-
-- [ ] Headline and about text are concise and differentiated.
-- [ ] Proof points are specific.
-- [ ] Featured links or TODO placeholders are present.
-- [ ] CTA is clear.
-- [ ] No sensitive or unverifiable content is included.
+- Write short, natural sentences rather than resume-style fragments.
+- Back every claim with evidence; leave out claims such as "best", "world-class", or
+  "expert in everything".
+- Keep the tone professional, direct, and externally appropriate.

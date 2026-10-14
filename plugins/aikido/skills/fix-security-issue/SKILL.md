@@ -1,113 +1,44 @@
 ---
 name: fix-security-issue
 description: >
-  Triage and fix a specific Aikido security finding.
-  Use when: resolving a SAST vulnerability, removing a hardcoded secret,
-  fixing an IaC misconfiguration, or triaging a non-code finding.
+  Triage and fix one Aikido security finding, given by its Aikido feed issue ID or as a
+  local scan finding (file, line, rule). Use when: resolving a SAST vulnerability, removing
+  a hardcoded secret, fixing an IaC misconfiguration, or triaging a non-code finding.
+  DO NOT USE FOR: finding issues in the first place (scan-code, aikido-scan-pr).
 ---
 
 # Fix Security Issue
 
-## Purpose
+Before starting, read [aikido-findings.md](../../resources/aikido-findings.md): the
+prerequisite, the re-scan tool per type, and the code-fixable or triage-only table. A local
+scan finding still needs the server for the re-scan.
 
-Retrieve an Aikido finding, classify whether it is code-fixable or requires a
-non-code action, apply the appropriate remediation, and verify the fix with a
-targeted re-scan.
+Inputs: the finding — an Aikido feed issue ID or description, or a local scan finding from
+`scan-code` or `aikido-scan-pr` (file, line, rule, type; no feed ID); optional repo name to
+filter the feed; accepted risk `true` or `false` (default `false`).
 
-## Issue Type Classification
-
-| Code-fixable (fix in codebase) | Triage-only (advise and track) |
-|---|---|
-| `sast` | `open_source` (dependency upgrade) |
-| `leaked_secret` | `cloud` |
-| `iac` | `cloud_instance` |
-| | `docker_container` |
-| | `malware` |
-| | `eol` |
-| | `license` |
-| | `mobile` |
-| | `surface_monitoring` |
-| | `scm_security` |
-| | `ai_pentest` |
-
-## Inputs
-
-- Issue ID or description (required): the specific Aikido finding to address.
-- Repo name (optional): used to filter `aikido_issues_list` if no issue ID is available.
-- Accepted risk: `true` marks the finding as known/accepted without fixing (default: `false`).
-
-## MCP Prerequisite
-
-> If the Aikido MCP server (`aikido_issues_list`) is not available, stop immediately
-> and tell the user to configure it using the setup instructions in `agents/aikido.agent.md`.
-
-## Workflow
-
-### Phase 1 — Retrieve the Finding
-
-1. If an issue ID is provided, call `aikido_issues_list` filtered to that ID.
-   Otherwise call `aikido_issues_list` with filters for `repo_name` and/or `severity`
-   to locate the finding.
-2. Display the finding details:
-   - Title, type, severity, affected file/line (if applicable), and remediation guidance.
-3. Confirm with the user which finding to address.
-
-### Phase 2 — Classify
-
-4. Determine the issue type:
-   - **Code-fixable** → proceed to Phase 3.
-   - **Triage-only** → proceed to Phase 4.
-
-### Phase 3 — Apply Code Fix (code-fixable only)
-
-5. Load the affected file(s) using `read/readFile`.
-6. Analyse the vulnerable code section identified in the finding.
-7. Apply the minimal targeted fix. Follow these rules:
-   - Do not refactor unrelated code.
-   - Do not introduce new functionality.
-   - Do not change tests unrelated to the fix.
-   - For `leaked_secret`: remove the credential, replace with an environment variable
-     or secret manager reference, and provide rotation instructions.
-   - For `sast`: apply the pattern recommended by the finding's remediation guidance.
-   - For `iac`: update the configuration value or policy to the secure setting.
-8. Re-scan the changed file(s):
-   - For `sast` or `iac`: call `aikido_sast_scan` on the changed path.
-   - For `leaked_secret`: call `aikido_secrets_scan` on the changed path.
-9. Confirm the finding is no longer reported.
-   - If the finding persists, analyse the re-scan output and iterate.
-   - If the finding cannot be resolved, escalate to the user with a clear explanation.
-
-### Phase 4 — Triage Non-Code Issues
-
-10. For triage-only issues, do **not** attempt a code fix. Instead:
-    - Explain the issue and its security impact.
-    - Provide recommended remediation steps tailored to the issue type:
-      - `open_source`: identify the vulnerable dependency and its fixed version.
-      - `cloud` / `cloud_instance`: describe the misconfiguration and the remediation action in the cloud provider.
-      - `docker_container`: describe the container vulnerability and the base image or layer to update.
-      - `eol`: identify the end-of-life component and its supported replacement.
-      - `license`: flag the incompatible license and suggest an alternative package.
-      - `malware`: flag the affected dependency for immediate removal.
-    - Ask whether to create a GitHub issue to track the finding.
-
-### Phase 5 — Record and Close
-
-11. For fixed issues:
-    - Summarize the change made (file, line, what changed, why).
-    - Confirm the re-scan result is clean.
-    - Suggest committing with a message referencing the finding.
-
-12. For triaged issues where a GitHub issue should be created:
-    - Invoke the `aikido-issues-to-github` skill or create a GitHub issue directly.
-
-## Output
-
-- For code-fixable issues: diff of the applied fix, re-scan result confirming resolution.
-- For triage-only issues: impact summary, remediation steps, and optional GitHub issue.
-
-## Notes
-
-- Never commit a fix that introduces a new Aikido finding.
-- For `sast` fixes involving user input validation or cryptography, request a peer review.
-- If a fix requires a significant refactoring, name `csharp-coding:coding` as its owner and
-  say why; whether the work moves is the caller's decision.
+1. **Retrieve.** A local scan finding is the finding as given; skip the feed. Otherwise call
+   `aikido_issues_list` filtered to the issue ID, or by `repo_name` and severity to locate it.
+   Show its title, type, severity, file and line, and remediation, and confirm with the user
+   which finding to address.
+2. **Accepted risk** `true`: report the finding as accepted risk with the user's reason,
+   change no code, and stop.
+3. **Code-fixable** (`sast`, `leaked_secret`, `iac`): read the affected files and apply the
+   minimal targeted fix — only the vulnerable code, no new functionality, no unrelated tests.
+   - `sast`: the pattern the finding's remediation recommends.
+   - `leaked_secret`: remove the credential, replace it with an environment variable or a
+     secret-manager reference, and give the user rotation instructions — a committed secret
+     stays compromised until it is rotated.
+   - `iac`: set the configuration value or policy to its secure setting.
+4. **Verify.** Re-scan the changed paths with the type's re-scan tool. Iterate until the
+   finding is gone and no new finding appeared; when it cannot be resolved, explain why to the
+   user. Commit nothing that introduces a new Aikido finding.
+5. **Triage-only:** explain the issue and its impact, and give the type's next step —
+   `open_source` the fixed dependency version; `cloud`/`cloud_instance` the provider-side
+   remediation; `docker_container` the base image or layer to update; `eol` the supported
+   replacement; `license` an alternative package; `malware` immediate removal. Ask whether to
+   track it with `aikido-issues-to-github` or a GitHub issue.
+6. **Report.** Fixed: the diff (file, line, what changed, why), the clean re-scan, and a
+   commit message referencing the finding. Ask for a peer review of a `sast` fix touching
+   input validation or cryptography. A fix needing significant refactoring belongs with
+   `csharp-coding:coding` — name it and why; whether the work moves is the caller's decision.

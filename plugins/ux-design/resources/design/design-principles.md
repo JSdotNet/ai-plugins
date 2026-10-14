@@ -43,7 +43,7 @@ Visual hierarchy directs the user's eye to the most important content first.
 ### Colour Rules
 
 - Never use colour as the only way to communicate meaning — always pair with a label, icon, or pattern.
-- Minimum contrast ratio: 4.5:1 for normal text (WCAG 2.1 AA), 3:1 for large text and UI components.
+- Minimum contrast ratio: 4.5:1 for normal text (WCAG 2.2 AA), 3:1 for large text and UI components.
 - Limit the active palette to 2–3 hue families per screen to avoid visual noise.
 - Dark-mode equivalents must be defined for every colour token.
 
@@ -120,7 +120,7 @@ Every interactive element must have defined states:
 ### Focus Ring Requirements
 
 - Focus ring must be visible in all themes including high-contrast modes.
-- Minimum 2 px solid offset focus ring with at least 3:1 contrast against adjacent colours (WCAG 2.1 AA).
+- Minimum 2 px solid offset focus ring with at least 3:1 contrast against adjacent colours (WCAG 2.2 AA).
 - Do not rely solely on colour change for focus indication.
 
 ---

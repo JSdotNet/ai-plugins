@@ -11,12 +11,6 @@ description: Bug writing standards for Product Owner backlog artifacts.
 - Produce clear, reproducible bug descriptions that are ready for Scrum refinement.
 - Keep content structured for easy upload or copy into Jira later.
 
-## Location and Naming
-
-- Store bugs in module folders under `.wip/work/`.
-- Use one module depth only: `.wip/work/<module>/bug-<short-title>.md`.
-- Keep bug files in the same module folder as related epic and story files.
-
 ## Core Quality Standard
 
 - Every bug must describe observable behavior, expected behavior, and impact.

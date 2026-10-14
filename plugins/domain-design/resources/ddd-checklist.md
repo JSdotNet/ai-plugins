@@ -9,7 +9,7 @@ Validation checklist for domain design artifacts. Use during and after design se
 - [ ] No entity in this context requires direct access to another context's internal model.
 - [ ] The context can be developed, deployed, and evolved independently.
 - [ ] The context owner (team or individual) is identified.
-- [ ] All interactions with other contexts are documented in the Integration Contracts section.
+- [ ] All interactions with other contexts are documented in its dependency tables (`## Dependencies` in `context.md`, or `dependencies.md`).
 - [ ] The subdomain type (core, supporting, generic) is classified.
 
 ## Aggregate Design Checklist
@@ -59,15 +59,15 @@ Validation checklist for domain design artifacts. Use during and after design se
 - [ ] Every domain term has exactly one definition within its bounded context.
 - [ ] Terms that differ across contexts are documented in both contexts.
 - [ ] Generic technical names are avoided for domain concepts.
-- [ ] The glossary is maintained in each bounded context file.
-- [ ] Domain experts can read the glossary and confirm accuracy.
+- [ ] Each term sits on its bounded context's model: the `aliases` of its chapter, or a `term` chapter under `## Ubiquitous Language` in `domain.md`.
+- [ ] Domain experts can read the ubiquitous language and confirm accuracy.
 
 ## Documentation Structure Checklist
 
-- [ ] A primary `domain.md` file exists with domain overview.
-- [ ] One file exists per bounded context, named in kebab-case.
-- [ ] `domain.md` links to each bounded context file.
-- [ ] Each bounded context file has the required frontmatter.
+- [ ] A `context-map.md` exists with the domain overview.
+- [ ] One folder (or, without a domain folder, one file) exists per bounded context, named in kebab-case.
+- [ ] `context-map.md` links to each bounded context.
+- [ ] Each file carries the metadata `domain-documentation-structure.md` requires for its layout.
 - [ ] All required sections are present in each file.
 - [ ] Cross-references between files use relative Markdown links.
 - [ ] Prose follows the `Prose` section of `ddd-global.md`.

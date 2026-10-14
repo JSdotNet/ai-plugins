@@ -5,88 +5,31 @@ description: Rules for writing Idea artifacts — lightweight, refinement-friend
 
 # Idea Writing Instructions
 
-## Purpose
+This contract governs Idea notes: lightweight, refinement-friendly, one page, ready to move
+into epic or story work when they prove out. The shared procedure is
+[document-authoring.md](document-authoring.md).
 
-- Apply these rules to idea artifacts stored in `**/ideas/*.md`.
-- Keep idea notes lightweight, clear, and refinement-friendly.
-- Prepare ideas for a smooth transition into epic or story workflows when applicable.
+## Naming
 
-## Location and Naming
-
-- Use filename pattern: `idea-<short-title>.md`.
-- Keep titles concise and outcome-oriented.
-
-## Core Quality Standard
-
-- Describe the user or business problem clearly.
-- Explain expected value with a simple hypothesis.
-- Define initial boundaries without over-specifying implementation.
-
-## Required Structure (in order)
-
-1. `# Idea: <Working title>`
-2. `## Summary`
-3. `## Problem and Audience`
-4. `## Value Hypothesis`
-5. `## Initial Scope`
-6. `## Assumptions and Open Questions`
-7. `## Next Step`
+Name the file `idea-<slug>.md`, `<slug>` the kebab-cased working title.
 
 ## Section Rules
 
-### Summary
+Use the template below, with every section in its order.
 
-- Max 2-3 sentences.
-- State what the idea is and why it matters now.
+- **Title** — concise and outcome-oriented.
+- **Summary** — 2-3 sentences: what the idea is and why it matters now.
+- **Problem and Audience** — the main pain point and the primary audience or stakeholders.
+- **Value Hypothesis** — a testable statement of the outcome, not the implementation.
+- **Initial Scope** — explicit `In scope` and `Out of scope` lists, kept light.
+- **Assumptions and Open Questions** — every unknown, unresolved ones as `[TODO: clarify]`.
+- **Next Step** — exactly one path: continue lightweight refinement, prepare an epic draft,
+  request an analyst deep dive, or stop without creating work items.
 
-### Problem and Audience
+Keep to one page with short paragraphs and one-line bullets. Stay at the problem and value
+level; go into architecture or implementation only when the person asks for it.
 
-- Identify the main pain point.
-- Name primary audience or stakeholder group.
-
-### Value Hypothesis
-
-- Use a testable statement where possible.
-- Prefer concise outcomes over implementation detail.
-
-### Initial Scope
-
-- Include:
-
-  - `In scope`
-  - `Out of scope`
-
-- Keep this section lightweight and explicit.
-
-### Assumptions and Open Questions
-
-- List unknowns transparently.
-- Use `[TODO: clarify]` for unresolved items.
-
-### Next Step
-
-- Choose one clear path:
-
-  - Continue lightweight refinement
-  - Prepare epic draft
-  - Request analyst deep dive
-  - Stop without creating work items
-
-## Conciseness Rules
-
-- Target one page per idea.
-- Use short paragraphs and one-line bullets.
-- Avoid architecture and implementation deep dives unless explicitly requested.
-
-## Idea Readiness Check
-
-- [ ] Problem and audience are clear.
-- [ ] Value hypothesis is stated.
-- [ ] Scope boundaries are visible.
-- [ ] Key assumptions/questions are explicit.
-- [ ] Next step is unambiguous.
-
-## Idea Template
+## Template
 
 ```md
 # Idea: <Working title>

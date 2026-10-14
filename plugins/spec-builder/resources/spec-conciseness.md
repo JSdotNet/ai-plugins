@@ -32,7 +32,7 @@ description: Pruning rules and size budgets that keep authored customization ass
 ## Size Budgets
 
 The budget is the trigger for a disclosure decision, not a hard limit. Count authored body
-lines; generated frontmatter such as an agent `tools` list does not count.
+lines; frontmatter, such as an agent `tools` list, does not count.
 
 | Asset | Budget |
 |---|---|

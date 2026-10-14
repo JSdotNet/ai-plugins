@@ -5,9 +5,7 @@ description: Rules and conventions for creating wireframe artifacts as SVG or Me
 
 # Wireframe Instructions
 
-## Purpose
-
-Define how to create, annotate, and save wireframe artifacts in this plugin.
+This contract governs how wireframe artifacts are built, annotated, and stored.
 
 ## Output Format
 
@@ -38,13 +36,15 @@ Define how to create, annotate, and save wireframe artifacts in this plugin.
 - Indicate keyboard focus order with small numbered badges when relevant.
 - Note ARIA labels or roles for non-obvious interactive elements.
 
-## Fidelity Guidance
+## Fidelity Levels
 
-| Fidelity | SVG Approach |
-|---|---|
-| Low | Boxes and text labels only — no icons, no real content |
-| Mid | Realistic labels, form fields, buttons, and state annotations |
-| High | Brand colours, typography tokens, actual icons via SVG symbols |
+Match fidelity to the design stage.
+
+| Fidelity | Purpose | SVG approach |
+|---|---|---|
+| Low | Explore layout and structure | Boxes and text labels only: no icons, real content, or colour |
+| Mid | Validate flow and usability | Realistic labels, form fields, buttons, and state annotations |
+| High | Prepare for developer handoff | The project's design tokens, typography, and icons via SVG symbols |
 
 ## Mermaid Wireframe Rules
 
@@ -57,6 +57,6 @@ Use Mermaid only for simple, linear layouts or screen-to-screen navigation maps.
 
 ## Naming and Storage
 
-- Save wireframe SVG files under `**/wireframes/` or `**/design/wireframes/`.
-- Use descriptive file names: `<screen-name>-wireframe-<fidelity>.svg` (e.g., `checkout-flow-wireframe-mid.svg`).
-- Include a companion `README.md` in the wireframes folder listing each file, its fidelity, and scope.
+- Name each file `<screen-name>-wireframe-<fidelity>.svg` (e.g., `checkout-flow-wireframe-mid.svg`).
+- Keep a companion `README.md` in each wireframes folder listing every file, its fidelity, and
+  its scope.

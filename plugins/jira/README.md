@@ -7,9 +7,8 @@ Installable GitHub Copilot CLI plugin for Jira issue synchronization workflows.
 - Skills:
   - `skills/create-jira-ticket/SKILL.md`
   - `skills/update-jira-ticket/SKILL.md`
-- Instructions:
-  - `resources/jira-sync.md`
-  - `resources/markdown.md`
+- Contracts:
+  - `resources/jira-sync.md` — field mapping, uncertainty rendering, and content rules for create and update
 
 ## Scope
 

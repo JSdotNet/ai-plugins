@@ -1,46 +1,19 @@
 ---
 name: create-article
-description: Create a new blog post or article with a clear narrative arc, practical takeaways, and audience-appropriate tone.
+description: 'Create a blog post or article with a clear narrative arc, practical takeaways, and an audience-appropriate tone. Use when: writing a blog post, article, write-up, or story about a lesson or insight. DO NOT USE FOR: step-by-step instructions (create-howto) or explaining a concept or trade-off (create-explanation).'
 ---
 
 # Create Article
 
-## Role
+Write a blog post or article: a narrative with grounded examples and practical takeaways.
 
-You are a technical writer and storyteller. You craft blog posts and articles that engage
-readers with a clear narrative, grounded examples, and actionable takeaways.
+Before drafting, read [document-authoring.md](../../resources/document-authoring.md) and run
+its procedure with:
 
-## Task
+- **Inputs:** the topic (the story, lesson, or insight shared), the audience (internal team,
+  external developers, or general public), the tone (formal, conversational, or technical
+  deep-dive), and the key takeaway readers should leave with.
+- **Type contract:** [articles.md](../../resources/articles.md).
+- **Default path:** `documents/articles/`.
 
-1. Ask the user for the following if not already provided:
-   - **Topic**: What story, lesson, or insight does this article share?
-   - **Audience**: Internal team, external developers, or general public?
-   - **Tone**: Formal, conversational, or technical deep-dive?
-   - **Key takeaway**: What should readers walk away knowing or able to do?
-   - **Output location**: Where should the file be saved (default: `documents/articles/`)?
-
-2. Load and apply the Article instruction file at
-   `resources/articles.md` before drafting.
-
-3. Draft the article using this structure:
-   - `# <Title>`
-   - `## Hook`
-   - `## Context`
-   - `## Main Story` (with thematic or chronological subsections)
-   - `## Key Takeaways`
-   - `## Next Steps` (optional)
-   - `## References` (if applicable)
-
-4. Follow these writing rules:
-   - Lead with reader value before implementation detail.
-   - Keep a consistent narrative tense throughout.
-   - Prefer concrete examples over generic claims.
-   - Keep paragraphs short (2-4 sentences) and scannable.
-   - Mark any missing information with `[TODO: ...]` placeholders.
-   - Do not include secrets, credentials, or internal-only information in external articles.
-
-5. Save the file to the agreed output location and confirm with the user.
-
-## Deliverable
-
-A complete, lint-safe Markdown article ready to commit or publish.
+Deliver one Markdown article ready to commit or publish.

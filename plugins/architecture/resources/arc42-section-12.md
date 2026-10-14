@@ -1,165 +1,55 @@
 ---
 name: arc42-section-12
-description: 'Defines requirements and output standards for arc42-section-12-instructions.'
+description: What arc42 section 12, Glossary, holds — the domain and technical terms and acronyms the documentation uses, defined once — its inputs, and its output template.
 ---
 
-# arc42 Section 12: Glossary - Specific Instructions
+# arc42 Section 12: Glossary
 
-## Section Purpose
+Section 12 defines the terms the documentation uses, so every reader means the same thing.
 
-**Why this section exists:**
-Section 12 defines important domain and technical terms used throughout the documentation. It establishes a ubiquitous language that prevents misunderstandings and ensures consistent terminology.
+## Rules
 
-**Value for stakeholders:**
-- Prevents misunderstandings through clear definitions
-- Establishes shared vocabulary across team and stakeholders
-- Helps new team members understand domain language
-- Provides translation between business and technical terms
-- Essential reference for consistent communication
-- Answers: What do we mean by X? What is the official definition of Y?
+- Define every domain term, acronym, and system-specific term the chapters use, sorted
+  alphabetically; leave universally known words out.
+- Write definitions that stand on their own: no circular definitions, no undefined terms
+  inside one.
+- Add an example for the terms that need one, and note synonyms and related terms.
+- Keep the definitions consistent with the code and with the ubiquitous language of the domain
+  model where one exists.
+- Record a renamed term as deprecated with its replacement rather than dropping it.
+- Lean: one alphabetical table of term and one-sentence definition.
 
-**Key insight:** This section SHOULD exist for virtually every system. Domain language is always present, even if implicit.
+## Inputs
 
-## Mandatory Content (ESSENTIAL)
+The system, its domain, the key domain terms, the system-specific technical terms, the
+acronyms, and the code entities that need a definition.
 
-### What MUST be included:
-
-#### Domain Terms
-- **Business concepts** specific to the domain
-- **Entities and objects** from the domain model
-- **Processes and activities** with special meaning
-
-#### Technical Terms
-- **Technology-specific terms** not commonly known
-- **Acronyms and abbreviations** used in documentation
-- **System-specific terminology**
-
-### For Each Term:
-- **Term** (the word or phrase)
-- **Definition** (clear, unambiguous explanation)
-- **Synonyms** (if any)
-- **Related terms** (links to other glossary entries)
-- **Examples** (optional, but helpful)
-
-**Note:** Include ONLY terms actually used in the documentation that require definition.
-
-## Lean Variant (Minimum Viable Documentation)
-
-### Format:
-Simple alphabetically sorted table
-
-### Minimum Content:
-- 10-30 key terms from domain and technical vocabulary
-- One-sentence definitions
-- Basic structure
-
-### Example Lean Glossary:
-
-| Term | Definition |
-|------|------------|
-| Account | A customer record in the system containing profile information and order history |
-| API Gateway | Central entry point for all external API requests, handles authentication and routing |
-| Checkout Process | The sequence of steps a user follows from cart review to payment completion |
-| Inventory | Real-time record of available products and their stock levels |
-| Microservice | An independently deployable service implementing a single business capability |
-| Order | A customer purchase request containing line items, shipping info, and payment details |
-| Product Catalog | The master database of all products available for purchase |
-| SKU | Stock Keeping Unit - unique identifier for each distinct product variant |
-| User Session | A temporary authenticated state for a logged-in user, expires after 1 hour of inactivity |
-
-## Thorough Variant (Complete Version)
-
-### Structure per Term:
-
-#### Term: <n>
-
-**Definition:**
-[Clear, unambiguous definition - 1-3 sentences]
-
-**Domain:** [Business | Technical | Hybrid]
-
-**Category:** [Entity | Process | Concept | Technology | Metric]
-
-**Synonyms:**
-- [Alternative term 1]
-- [Alternative term 2]
-
-**Related Terms:**
-- [Link to related glossary entry 1]
-- [Link to related glossary entry 2]
-
-**Example:**
-[Concrete example showing the term in context]
-
-**Appears In:**
-- [Section where this term is used]
-- [Section where this term is used]
-
-**Translation:**
-[If multilingual system, translations to other languages]
-
-**Historical Note:**
-[If term meaning has changed, note previous meaning]
-
-
-## Output Format
+## Output
 
 ```markdown
 # 12. Glossary
 
-## Overview
-[1 paragraph explaining the purpose and scope of this glossary]
+| Term | Definition | Category | Related |
+| --- | --- | --- | --- |
+| <Account> | <Clear definition in 1–3 sentences; an example where it helps> | <Business> | [<Order>](#order) |
 
-**Total Terms:** [Number]
+## Acronyms
 
-**Domains Covered:** Business, Technical, Infrastructure
+| Acronym | Full Form | Definition |
+| --- | --- | --- |
+| <SLA> | <Service Level Agreement> | <What it guarantees here> |
 
-**Last Updated:** YYYY-MM-DD
+## Deprecated Terms
 
+| Old Term | Replacement | Since |
+| --- | --- | --- |
+| <Shopping Basket> | <Cart> | <v2.0> |
+```
 
-#### API Gateway
+Give a term its own `####` entry with synonyms and an example only when one table row cannot
+hold it. Add a translations table only for a multilingual system.
 
-**Definition:** [Clear definition]
+## Relationship to other sections
 
-**Category:** Technical Infrastructure
-
-**Related:** [Microservice](#microservice), [Authentication](#authentication)
-
-
-## Terms by Category
-
-### Business Domain Terms
-- Account
-- Cart
-- Checkout
-- Customer
-- Order
-- Product
-
-### Technical Terms
-- API Gateway
-- Container
-- Microservice
-- Service Mesh
-
-### Infrastructure Terms
-- Availability Zone
-- Load Balancer
-- Replica
-
-### Metrics & Measurements
-- Latency
-- Throughput
-- Uptime
-
-
-## Translations (if multilingual)
-
-| English | Deutsch | FranÃ§ais |
-|---------|---------|----------|
-| Order | Bestellung | Commande |
-| Cart | Warenkorb | Panier |
-| Checkout | Kasse | Caisse |
-
-*Based on docs.arc42.org/section-12/ and official arc42 sources*
-
+Every external entity in 3 and every building block in 5 that carries a domain name is a term
+here.

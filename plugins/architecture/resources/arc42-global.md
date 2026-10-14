@@ -5,196 +5,46 @@ description: 'Defines global rules and quality standards for arc42 architecture 
 
 # arc42 Architecture Documentation - Global Instructions
 
-Prose follows `resources/prose.md`.
+Prose follows `prose.md`. Where the repository has `.devbook/arc42/`, its folder rule governs
+file names, metadata, and status, and wins over this contract on any conflict. Each section's
+content, inputs, and output template live in `arc42-section-NN.md`, one file per section.
 
-## Core Philosophy
+## Economy
 
-### Pragmatic & Economical
-- **Document economically** but continuously
-- "Painless documentation" - only what stakeholders truly need
-- "Travel light" - especially in agile environments
-- Balance effort against value
+- Every section is optional. Write a chapter only when it has real content, in whatever order
+  the project needs; the reading order 1 to 12 is for readers, not for authoring.
+- Prefer the abstract over the detailed, and an aggregate over every element. Detail that the
+  code already shows belongs in the code.
+- Correctness outranks completeness: mark an unconfirmed fact as an assumption, never write it
+  as settled.
 
-### Optional Compartments ("Cabinet Metaphor")
-- Arc42 is like a cabinet with 12 drawers/compartments
-- **ALL compartments are OPTIONAL**
-- "The cabinet has value even if certain compartments remain empty"
-- Create content in ANY order your project requires
-- Reading order (1â†’12) optimized for understandability
-- Creation order: Whatever works for your project
+## Detail level
 
-### Top-Down Organization
-- Start with overview, gradually add details
-- Facilitate navigation from high-level to specifics
-- Makes architecture accessible to all stakeholders
+Ask for the level when the user has not given one.
 
-## The 12 Sections Overview
+| Level | Covers |
+| --- | --- |
+| LEAN | 1.2 quality goals, 3 context, 5 Level 1, 9 decisions, 12 glossary; one to three pages per section |
+| ESSENTIAL | LEAN plus 1.1 requirements overview, 1.3 stakeholders, 2 critical constraints, 4 solution strategy |
+| THOROUGH | All twelve sections, deeper building-block levels, full quality scenarios and deployment detail |
 
-### 1. Introduction and Goals
-**Essential requirements and driving forces**
-- Why does the system exist?
-- Top 3-5 quality goals
-- Key stakeholders and their expectations
+## Diagrams
 
-### 2. Constraints
-**Boundaries of architectural freedom**
-- Technical, organizational, political constraints
-- Non-negotiable requirements
-- Long-term decisions limiting choices
+Draw each diagram as a Mermaid fence inside its chapter with the matching diagram skill —
+`c4-diagram-generator`, `sequence-diagram-generator`, `state-diagram-generator`,
+`deployment-diagram-generator` — per `diagram-output.md`. Where a section template shows a
+diagram, it is that fence, never a link to an image file. One topic per diagram.
 
-### 3. Context and Scope
-**System boundaries and external interfaces**
-- Business context (domain perspective)
-- Technical context (optional)
-- External communication partners
+## Cross-section consistency
 
-### 4. Solution Strategy
-**Fundamental decisions and approaches**
-- Technology choices
-- Decomposition strategy
-- Approaches to achieve quality goals
+Reconcile these on every change, and report each mismatch you cannot settle:
 
-### 5. Building Block View
-**Static structure and decomposition**
-- Source code organization
-- Hierarchical building blocks (Level 1, 2, 3+)
-- **Level-1 is mandatory** ("Level-1 is your friend")
-
-### 6. Runtime View
-**Dynamic behavior and interactions**
-- Important runtime scenarios (1-5 typically)
-- How building blocks cooperate
-- Operation and error handling
-
-### 7. Deployment View
-**Hardware and infrastructure**
-- Technical infrastructure
-- Mapping of software to hardware
-- Multiple environments
-
-### 8. Crosscutting Concepts
-**Recurring patterns and approaches**
-- Domain models
-- Security, persistence, error handling
-- Architecture and design patterns
-- **Most flexible section** - pick only needed topics
-
-### 9. Architecture Decisions
-**Important decisions with rationale**
-- Architecturally significant decisions
-- One decision record per concern under `adr/`; the section links to the `adr/` index
-- Document WHY, not just WHAT
-
-### 10. Quality Requirements
-**Detailed quality scenarios**
-- Elaborates on Section 1.2 quality goals
-- Concrete, measurable scenarios
-- Quality tree overview
-
-### 11. Risks and Technical Debt
-**Known problems and risks**
-- Technical risks ordered by priority
-- Technical debt documentation
-- Mitigation strategies
-
-### 12. Glossary
-**Domain and technical terminology**
-- Ubiquitous language
-- Translation reference
-- Essential for shared understanding
-
-## Three Documentation Approaches
-
-### LEAN (Agile/Minimal)
-**When to use:** Agile teams, time-constrained projects, evolving systems
-
-**Characteristics:**
-- Focus on essential information only
-- 1-3 pages per section maximum
-- Quick to create and maintain
-- "Dare to leave gaps" philosophy
-
-**Minimum sections:**
-- Section 1.2: Quality Goals
-- Section 3: Context
-- Section 5.1: Building Block Level-1
-- Section 9: Key Decisions
-- Section 12: Glossary
-
-### ESSENTIAL (Core Information)
-**When to use:** All projects should include these basics
-
-**Characteristics:**
-- Non-negotiable minimum
-- Critical architectural information
-- Enables basic understanding
-
-**Includes everything in LEAN plus:**
-- Section 1.1: Requirements Overview
-- Section 1.3: Stakeholder Table
-- Section 2: Critical Constraints
-- Section 4: Solution Strategy Overview
-
-### THOROUGH (Comprehensive)
-**When to use:** Critical systems, formal environments, audit requirements, large teams
-
-**Characteristics:**
-- Complete documentation
-- Detailed scenarios and specifications
-- Multiple refinement levels
-- Extensive validation
-
-**Includes:**
-- All 12 sections fully documented
-- Multiple building block levels
-- Comprehensive quality scenarios
-- Detailed deployment configurations
-- Complete crosscutting concepts
-
-## Quality Principles for Documentation
-
-### Content Requirements
-1. **Correct** - Never allow incorrect information (highest priority)
-2. **Current** - Regular reviews, focus on important aspects
-3. **Understandable** - Clear terms, optimized structure, audience-appropriate
-4. **Relevant** - Task-oriented, serves stakeholder purposes
-
-### Formal Requirements
-5. **Referenceable** - Numbered sections, diagrams, tables; provide TOC
-6. **Proper Language** - As `resources/prose.md` requires
-7. **Maintainable** - Structure optimized for easy updates
-
-### Process Requirements
-8. **Easy to Find** - Well-known locations, templates, top-down organization
-9. **Version Controlled** - Track changes, rollback capability
-10. **Appropriate Tools** - Support structure, diagrams, reviews
-11. **Continuously Updated** - Include in Definition-of-Done, reserve timeboxes
-
-## Best Practices
-
-### Diagrams
-- Combine diagrams with text/tables
-- Provide legend or use standard notation (UML, C4, ArchiMate)
-- Keep source files for all diagrams
-- Restrict to higher abstraction levels
-- Stick to single topic per diagram
-
-### Abstraction
-- Prefer abstract over detailed information
-- Omit details to facilitate change
-- Document aggregations instead of all elements
-
-### Structure
-- Use fixed structures (like arc42) for findability
-- Organize top-down
-
-## Resources
-
-- Main site: https://arc42.org
-- Documentation: https://docs.arc42.org
-- FAQ: https://faq.arc42.org
-- Quality model: https://quality.arc42.org
-
----
-*Based on official arc42 documentation | Version 1.0 | November 2025*
-
+- Every 1.2 quality goal has a strategy in 4 and scenarios in 10; every scenario in 10 traces
+  back to a goal.
+- Sections 4, 5, 7, and 8 respect every constraint in 2.
+- The external interfaces and the system boundary in 3 match Level 1 in 5.
+- The participants in 6 and the hosted components in 7 are the building blocks of 5.
+- A goal or scenario that cannot be met, or a constraint that conflicts, is a risk in 11.
+- Section 9 links the `adr/` index and section 11 links the `tdr/` index; neither restates a
+  record.
+- The terms in 12 match the ubiquitous language of the domain model where one exists.

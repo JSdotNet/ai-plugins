@@ -1,45 +1,36 @@
 ---
 name: domain-model-design
-description: 'Design tactical domain models within a bounded context — aggregate roots, entities, value objects, domain events, and invariants.'
+description: 'Design the tactical domain model of one bounded context: aggregate roots, entities, value objects, domain events, domain services, and invariants. Use when: designing aggregates, entities, value objects, domain events, or domain services within a context. DO NOT USE FOR: the class diagram of the result (aggregate-diagram) or boundaries between contexts (context-mapping).'
 ---
 
 # Domain Model Design
 
-Use this skill to design the tactical domain model for a specific bounded context.
-
-## Trigger Conditions
-
-Use when the user needs to design aggregates, entities, value objects, domain events, or domain services within a bounded context.
-
 ## Inputs
 
-- Bounded context file with purpose, ubiquitous language, and integration contracts.
-- Business rules and invariants for the context.
-- Use cases or user stories scoped to this context (optional).
+- The bounded context's `context.md` (purpose, boundary, dependencies) and `domain.md`
+  (ubiquitous language).
+- The business rules and invariants of the context, and its use cases when there are any.
 
 ## Workflow
 
-1. Apply `resources/ddd-global.md` and `resources/tactical-design.md`.
-2. Identify **aggregates** within the context:
-   - Determine consistency boundaries: what must be immediately consistent in a single transaction?
-   - Identify the aggregate root for each aggregate.
-   - Keep aggregates small. Split if two concepts can be eventually consistent.
-3. For each aggregate, design:
-   - **Aggregate root** — name, responsibilities, and public interface.
-   - **Internal entities** — entities that exist only within this aggregate.
-   - **Value objects** — immutable concepts defined by their attributes.
-   - **Invariants** — business rules that must always hold within this aggregate.
-   - **Domain events** — events raised when significant state changes occur.
-4. Validate the design against `resources/ddd-checklist.md`.
-5. Check for anti-patterns using `resources/ddd-anti-patterns.md`.
-6. Document domain services for logic that spans multiple aggregates or does not belong to a single entity.
-7. Update the bounded context following `resources/domain-documentation-structure.md`: the
-   aggregates, events, and services on its domain page, and each invariant as its own
-   `### Invariant:` chapter in that page's invariants subpage, per "Invariant Documentation" in
-   `resources/tactical-design.md`.
+1. Read [ddd-global.md](../../resources/ddd-global.md) and
+   [tactical-design.md](../../resources/tactical-design.md).
+2. Find the aggregates: what must be consistent in one transaction is one aggregate, and what
+   can be eventually consistent is split.
+3. Per aggregate, design the root with its responsibilities and public interface, its internal
+   entities, its value objects, its invariants, and the domain events it raises.
+4. Put logic that spans aggregates, or belongs to no single entity, in a domain service.
+5. When the user asks for a review, or a boundary or ownership choice is in doubt, read
+   [ddd-checklist.md](../../resources/ddd-checklist.md) and
+   [ddd-anti-patterns.md](../../resources/ddd-anti-patterns.md) and report what fails.
+6. Write per
+   [domain-documentation-structure.md](../../resources/domain-documentation-structure.md): the
+   aggregates, events, and services on the context's domain page, and each invariant as its
+   own `### Invariant:` chapter in that page's invariants subpage, with its `Enforced at:`
+   line — `open` for a rule or hot spot nobody has settled — per "Invariant Documentation" in
+   tactical-design.md.
 
 ## Output
 
-- Updated domain page with aggregate designs, domain events, and domain services.
-- Updated invariants subpage with one `### Invariant:` chapter per rule, each with its `Enforced at:` line.
-- Flagged anti-patterns or design concerns.
+- The updated domain page and invariants subpage.
+- The design concerns and anti-patterns found, each with the chapter it affects.

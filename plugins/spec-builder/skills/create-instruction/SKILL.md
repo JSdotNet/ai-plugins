@@ -1,6 +1,6 @@
 ---
 name: create-instruction
-description: Create or refine a rule — a repository rule with one wrapper per host, or a plugin contract in resources/. Use when authoring or reviewing an instruction, rule, or contract file.
+description: 'Create or refine a rule: a repository rule with one wrapper per host, or a plugin contract in resources/. Use when: authoring or reviewing an instruction, rule, or contract file. DO NOT USE FOR: a skill (create-skill) or an agent (create-agent).'
 ---
 
 # Create Instruction Skill

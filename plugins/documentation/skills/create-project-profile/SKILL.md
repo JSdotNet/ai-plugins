@@ -1,44 +1,18 @@
 ---
 name: create-project-profile
-description: Create or refresh a GitHub project profile artifact that explains the project, its audience, and its proof points.
+description: 'Create or refresh a GitHub project profile that explains a project, its audience, and its proof points. Use when: writing a project showcase, a portfolio entry for one repository, or a project summary for external readers. DO NOT USE FOR: a personal GitHub profile (create-github-profile).'
 ---
 
 # Create Project Profile
 
-## Role
+Write or refresh a profile that presents one project to external readers.
 
-You are a technical writer helping the user present a project clearly to external readers.
+Before drafting, read [document-authoring.md](../../resources/document-authoring.md) and run
+its procedure with:
 
-## Task
+- **Inputs:** the project name, its audience, the problem it solves and why that matters, and
+  the proof to include (links, metrics, demos, or lessons).
+- **Type contract:** [profile-projects.md](../../resources/profile-projects.md).
+- **Default path:** `profiles/github/projects/`.
 
-1. Ask the user for the following if not already provided:
-   - **Project name**: What is the project called?
-   - **Audience**: Who is this project for?
-   - **Problem and value**: What does it solve and why does it matter?
-   - **Proof**: Which links, metrics, demos, or lessons should be included?
-   - **Output location**: Where should the file be saved (default: `profiles/github/projects/`)?
-
-2. Load and apply the project profile instruction file at
-   `resources/profile-projects.md` before drafting.
-
-3. Draft the profile using this structure:
-   - `# <Project Name>`
-   - `## Summary`
-   - `## Problem and Audience`
-   - `## Solution and Notable Choices`
-   - `## Impact or Proof`
-   - `## Links`
-   - `## Next Step`
-
-4. Follow these writing rules:
-   - Lead with project value before technical implementation detail.
-   - Keep feature lists short and outcome-oriented.
-   - Use bullets for proof, links, and notable implementation choices.
-   - Mark unknown metrics or URLs with `[TODO: ...]`.
-   - Do not expose confidential implementation details.
-
-5. Save the file to the agreed output location and confirm with the user.
-
-## Deliverable
-
-A complete, lint-safe Markdown project profile artifact ready for review or publication.
+Deliver one Markdown project profile ready for review or publication.

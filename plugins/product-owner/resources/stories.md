@@ -11,12 +11,6 @@ description: Story writing standards for Product Owner backlog artifacts.
 - Produce concise, testable, user-centered stories that are ready for Scrum refinement.
 - Keep content structured for easy upload or copy into Jira later.
 
-## Location and Naming
-
-- Store stories in module folders under `.wip/work/`.
-- Use one module depth only: `.wip/work/<module>/story-<short-title>.md`.
-- Keep story files in the same module folder as related epic and bug files.
-
 ## Core Quality Standard
 
 - Every story should be clear, valuable, and small enough for one sprint.

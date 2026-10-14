@@ -1,100 +1,36 @@
 ---
 name: azure
-description: 'Azure SDK integration patterns for .NET. Use when adding Azure services (Storage, Service Bus, Cosmos DB, Key Vault, App Configuration, etc.) to a C# project using the official Azure SDK for .NET.'
+description: 'Azure SDK for .NET integration patterns — credentials, client registration, and Storage, Service Bus, Key Vault, App Configuration, and Cosmos DB clients. Use when: adding an Azure service to a C# project, authenticating to Azure from .NET, or registering Azure SDK clients in DI. DO NOT USE FOR: provisioning Azure infrastructure, Azure resources in an Aspire AppHost (aspire).'
 ---
 
 # Azure SDK for .NET
 
-Integrate Azure services into C# .NET projects using the official Azure SDK.
-
-## Core Principles
-
-- Use the `Azure.Identity` package for all authentication — never hardcode credentials.
-- Prefer `DefaultAzureCredential` for local dev and managed identity in production.
-- Use `Azure.*` SDK packages — not legacy `Microsoft.Azure.*` libraries.
-- Register SDK clients as singletons via dependency injection.
-- Apply `CancellationToken` to all SDK calls.
-
-## Authentication
-
-```csharp
-// Works locally (CLI/VS login) and in production (managed identity)
-var credential = new DefaultAzureCredential();
-
-// Register in DI
-builder.Services.AddSingleton(new BlobServiceClient(
-    new Uri("https://<account>.blob.core.windows.net"),
-    new DefaultAzureCredential()));
-```
-
-## Common Integrations
-
-### Azure Blob Storage
-
-```bash
-dotnet add package Azure.Storage.Blobs
-```
+- Authenticate with Microsoft Entra ID through `Azure.Identity` — a token credential for every
+  client, and no account key, connection string, or SAS in code or config.
+- Use `DefaultAzureCredential` for local development and a deterministic credential in
+  production: `ManagedIdentityCredential`, or `DefaultAzureCredential` with
+  `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` (Azure.Identity 1.16+; Aspire 13 sets it
+  on Container Apps and App Service). Build one credential and reuse it for every client.
+- Register each client once, as a singleton: under Aspire through its client integration
+  (`Aspire.Azure.*`, added with `aspire add`); otherwise through `AddAzureClients`
+  (`Microsoft.Extensions.Azure`).
+- Use `Azure.*` packages over legacy `Microsoft.Azure.*` ones, except the current official
+  packages that still carry the old prefix: `Microsoft.Azure.Cosmos` and
+  `Microsoft.Azure.AppConfiguration.AspNetCore`.
+- Verify an SDK signature you are unsure of with [../microsoft-code-reference/SKILL.md](../microsoft-code-reference/SKILL.md).
 
 ```csharp
-var client = new BlobServiceClient(new Uri("https://<account>.blob.core.windows.net"), new DefaultAzureCredential());
-var container = client.GetBlobContainerClient("my-container");
-await container.UploadBlobAsync("file.txt", stream, cancellationToken);
+TokenCredential credential = builder.Environment.IsProduction()
+    ? new ManagedIdentityCredential(ManagedIdentityId.SystemAssigned)
+    : new DefaultAzureCredential();
+
+builder.Services.AddAzureClients(clients =>
+{
+    clients.UseCredential(credential);
+    clients.AddBlobServiceClient(new Uri("https://<account>.blob.core.windows.net"));
+    clients.AddServiceBusClientWithNamespace("<namespace>.servicebus.windows.net");
+    clients.AddSecretClient(new Uri("https://<vault>.vault.azure.net/"));
+});
+builder.Services.AddSingleton(new CosmosClient("<account-endpoint>", credential));
+builder.Configuration.AddAzureAppConfiguration(o => o.Connect(new Uri("https://<store>.azconfig.io"), credential));
 ```
-
-### Azure Service Bus
-
-```bash
-dotnet add package Azure.Messaging.ServiceBus
-```
-
-```csharp
-await using var client = new ServiceBusClient("<namespace>.servicebus.windows.net", new DefaultAzureCredential());
-var sender = client.CreateSender("my-queue");
-await sender.SendMessageAsync(new ServiceBusMessage("hello"), cancellationToken);
-```
-
-### Azure Key Vault
-
-```bash
-dotnet add package Azure.Security.KeyVault.Secrets
-```
-
-```csharp
-var kvClient = new SecretClient(new Uri("https://<vault>.vault.azure.net/"), new DefaultAzureCredential());
-var secret = await kvClient.GetSecretAsync("my-secret", cancellationToken: cancellationToken);
-```
-
-### Azure App Configuration
-
-```bash
-dotnet add package Microsoft.Azure.AppConfiguration.AspNetCore
-```
-
-```csharp
-builder.Configuration.AddAzureAppConfiguration(options =>
-    options.Connect(new Uri("https://<store>.azconfig.io"), new DefaultAzureCredential()));
-```
-
-### Cosmos DB
-
-```bash
-dotnet add package Microsoft.Azure.Cosmos
-```
-
-```csharp
-builder.Services.AddSingleton(new CosmosClient(
-    "<account-endpoint>",
-    new DefaultAzureCredential()));
-```
-
-## Best Practices
-
-- Use `Azure.Core.Pipeline` retry policies (built-in by default in all Azure SDK clients).
-- Log SDK activity with `AzureEventSourceListener` for diagnostics.
-- Use `@Microsoft Learn MCP` or `https://learn.microsoft.com/dotnet/azure/` to verify SDK method signatures before implementation.
-- Validate SDK versions with `dotnet list package --outdated`.
-
-## Reference
-
-- Azure SDK for .NET: `https://learn.microsoft.com/en-us/dotnet/azure/`
-- Azure Identity docs: `https://learn.microsoft.com/en-us/dotnet/api/azure.identity`

@@ -1,102 +1,38 @@
 ---
 name: create-infographic
-description: Create a branded infographic from a Markdown file or direct prompt, outputting a pure SVG asset with optional motion guidance.
+description: 'Create a branded infographic as a pure SVG from a Markdown file or a direct prompt, with optional motion. Use when: creating an infographic from a Markdown file or a fresh concept, turning a proposal, explanation, article, process, or KPI summary into a visual, or producing a documentation-friendly SVG. DO NOT USE FOR: architecture diagrams (architecture:c4-diagram-generator) or wireframes (ux-design:ux-wireframe).'
 ---
 
 # Create Infographic
 
-## Purpose
+Turn a Markdown file or a direct prompt into one self-contained infographic. Generate **pure
+SVG** by default: portable, embeddable in documentation, and reviewable in source control.
 
-Use this skill to turn existing Markdown content or a new natural-language brief into a reusable infographic asset.
+Follow [document-authoring.md](../../resources/document-authoring.md) for asking, what may be
+published, and saving; its Markdown format step does not apply to an SVG. Inputs:
 
-The first version should generate a **pure SVG** file by default so the result is portable, documentation-friendly, and easy to review in source control.
+- **Source:** a Markdown file path to summarize, or a prompt describing goal and content.
+- **Audience** and the one **primary message** it must carry at a glance.
+- **Style guide** path or rules, when one exists; **motion**: static, or subtle animation.
+- **Default path:** `documents/infographics/`.
 
-## Trigger Conditions
+## Steps
 
-Use when the user asks to:
-
-- create an infographic from an existing Markdown file
-- create an infographic from a fresh prompt or concept
-- convert a proposal, explanation, article, process, or KPI summary into a visual asset
-- produce a documentation-friendly SVG that can optionally include light animation
-
-## Inputs
-
-Ask for the following when not already provided:
-
-- **Input mode**: Markdown file path or direct prompt
-- **Source**:
-  - Markdown path to read and summarize, or
-  - prompt describing the infographic goal and content
-- **Audience**: Who should understand this at a glance?
-- **Primary message**: What is the one thing the infographic must communicate?
-- **Style guide**: Brand/style guide path or rules to follow, if available
-- **Animation preference**: Static only, or subtle animation when useful
-- **Output location**: Where should the SVG be saved (default: `documents/infographics/`)?
-
-## Required Resources
-
-Load and apply these files before generating the infographic:
-
-1. `resources/infographics.md`
-2. `resources/infographics/svg-style-guide.md`
-3. `resources/infographics/renderer-and-layout-guide.md`
-
-## Workflow
-
-1. **Confirm the source mode**
-   - If the user provided a Markdown path, read the file and extract the message, sections, facts, steps, tables, and repeated themes.
-   - If the user provided a direct prompt, normalize it into the same structured brief.
-
-2. **Build an infographic brief**
-   - Capture:
-     - audience
-     - primary message
-     - supporting facts or KPIs
-     - desired tone
-     - output path
-     - style constraints
-     - motion preference
-   - If key facts are missing, use `[TODO: clarify]` rather than inventing content.
-
-3. **Choose the layout pattern**
-   - Use the renderer/layout resource to map the content to one primary pattern:
-     - timeline
-     - process flow
-     - comparison
-     - KPI snapshot
-     - hierarchy
-     - roadmap
-
-4. **Apply style guidance**
-   - Use the supplied style guide first.
-   - If no style guide is supplied, use the fallback SVG style guide resource.
-   - Keep the visual system restrained: limited colors, limited visual motifs, and clear hierarchy.
-
-5. **Generate the SVG**
-   - Create a self-contained SVG with:
-     - `viewBox`
-     - `<title>`
-     - `<desc>`
-     - embedded `<style>`
-     - grouped sections with `<g>`
-   - Preserve the source meaning accurately.
-   - Prefer concise text, labels, cards, dividers, arrows, and callouts over long paragraphs.
-
-6. **Handle animation carefully**
-   - Default to static-safe output.
-   - If animation is requested or clearly useful, add subtle SVG/CSS animation only where it reinforces meaning.
-   - Do not make animation the only way to understand the infographic.
-
-7. **Save and confirm**
-   - Save the SVG to the agreed location.
-   - Tell the user where it was saved and note any assumptions or TODO placeholders.
+1. Read [infographics.md](../../resources/infographics.md),
+   [svg-style-guide.md](../../resources/infographics/svg-style-guide.md), and
+   [renderer-and-layout-guide.md](../../resources/infographics/renderer-and-layout-guide.md).
+2. Build a brief: audience, primary message, supporting facts or KPIs, tone, style
+   constraints, motion, and output path. From a Markdown file, extract its message,
+   sections, facts, steps, tables, and repeated themes; from a prompt, normalize it into the
+   same brief. Write `[TODO: clarify]` for a missing fact instead of inventing one.
+3. Map the content to one primary layout pattern with the layout guide's matrix: timeline,
+   process flow, comparison, KPI snapshot, hierarchy, or roadmap.
+4. Style from the supplied guide first, else from the SVG style guide.
+5. Generate the SVG to the structure in infographics.md. Default to static-safe output; add
+   subtle SVG/CSS animation only when requested or clearly useful, and only where it
+   reinforces meaning the static frame already carries.
 
 ## Output
 
-- One infographic SVG file ready to commit or embed
-- A short note describing:
-  - output path
-  - selected layout pattern
-  - any missing facts captured as TODOs
-  - whether motion was included
+The SVG file, and a short note: its path, the layout pattern chosen, each `[TODO: clarify]`
+left in, and whether motion was included.

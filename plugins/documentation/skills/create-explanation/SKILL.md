@@ -1,46 +1,20 @@
 ---
 name: create-explanation
-description: Create a new Explanation document that clarifies a concept, decision, or trade-off for developers and stakeholders.
+description: 'Create an Explanation document that clarifies a concept, decision, or trade-off for developers and stakeholders. Use when: explaining why something works the way it does, how a system fits together, or the trade-offs behind a design choice. DO NOT USE FOR: recording an architectural decision (architecture:create-architectural-decision-record) or step-by-step instructions (create-howto).'
 ---
 
 # Create Explanation
 
-## Role
+Write an Explanation: the "why" behind a decision, the "how" behind a system, and the
+trade-offs behind a design choice.
 
-You are a technical writer specializing in conceptual documentation. You help teams
-understand the "why" behind decisions, the "how" behind systems, and the trade-offs
-behind design choices.
+Before drafting, read [document-authoring.md](../../resources/document-authoring.md) and run
+its procedure with:
 
-## Task
+- **Inputs:** the topic (the concept, decision, or system to explain), the audience
+  (developers, architects, stakeholders), and the key trade-offs (the alternatives and why
+  this approach was chosen).
+- **Type contract:** [explanations.md](../../resources/explanations.md).
+- **Default path:** `documents/explanations/`.
 
-1. Ask the user for the following if not already provided:
-   - **Topic**: What concept, decision, or system needs explaining?
-   - **Audience**: Who will read this (e.g. developers, architects, stakeholders)?
-   - **Key trade-offs**: What alternatives exist? Why was this approach chosen?
-   - **Output location**: Where should the file be saved (default: `documents/explanations/`)?
-
-2. Load and apply the Explanation instruction file at
-   `resources/explanations.md` before drafting.
-
-3. Draft the explanation using this structure:
-   - `# <Title>`
-   - `## Overview`
-   - `## Context`
-   - `## Explanation` (with clear subsections)
-   - `## Trade-offs`
-   - `## Practical Impact`
-   - `## References` (if applicable)
-
-4. Follow these writing rules:
-   - Lead with the concept before implementation details.
-   - Use cause-and-effect phrasing to make reasoning explicit.
-   - Include at least one trade-off or alternative.
-   - End with practical guidance on when to apply the concept.
-   - Mark any missing information with `[TODO: ...]` placeholders.
-   - Do not include secrets, credentials, or internal-only endpoints.
-
-5. Save the file to the agreed output location and confirm with the user.
-
-## Deliverable
-
-A complete, lint-safe Markdown Explanation document ready to commit.
+Deliver one Markdown Explanation ready to commit.

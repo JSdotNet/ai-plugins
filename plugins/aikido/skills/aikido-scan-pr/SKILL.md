@@ -8,120 +8,32 @@ description: >
 
 # Scan Pull Request with Aikido
 
-## Purpose
+Before scanning, read [aikido-findings.md](../../resources/aikido-findings.md): the
+prerequisite, the tool per mode, and how findings are ordered and reported.
 
-Run Aikido security scans on the current workspace, then filter and highlight findings
-that are relevant to the files changed in a pull request. Produces a PR-level security
-summary and optionally creates GitHub review annotations.
+Inputs: PR number or `current`; repository `owner/repo`; mode `full` (default), `sast`, or
+`secrets`; minimum severity (default: `high`); create review comments `true` or `false`
+(default: `false` — summary only).
 
-## Inputs
-
-- Pull request number (required) or `current` to use the current branch's open PR.
-- GitHub repository in `owner/repo` format (required).
-- Scan mode: `full` (SAST + secrets, default), `sast` (code only), `secrets` (credentials only).
-- Minimum severity to report: `critical`, `high`, `medium`, `all` (default: `high`).
-- Create review comments: `true` stages inline PR review comments for critical and high findings
-  (default: `false` — summary only).
-
-## MCP Prerequisite
-
-> If the Aikido MCP server (`aikido_full_scan`, `aikido_sast_scan`, or `aikido_secrets_scan`) is not available,
-> stop immediately and tell the user to configure it using the setup instructions in `agents/aikido.agent.md`.
-
-## Workflow
-
-### Phase 1 — Get Changed Files
-
-1. Fetch the list of files changed in the PR:
-   ```bash
-   gh pr diff <pr-number> --repo <owner/repo> --name-only
-   ```
-2. Store the changed file paths as the focus set for filtering scan results.
-
-### Phase 2 — Run Aikido Scan
-
-3. Choose the scan tool based on the requested mode:
-   - `full` → `aikido_full_scan`
-   - `sast` → `aikido_sast_scan`
-   - `secrets` → `aikido_secrets_scan`
-4. Call the selected Aikido MCP tool on the workspace root.
-
-> **Note:** Aikido scans the full workspace. Changed-file filtering is applied in Phase 3 to
-> focus the report. All workspace findings are still available on request.
-
-### Phase 3 — Filter and Prioritize
-
-5. Split findings into two groups:
-   - **PR-relevant**: findings in files that appear in the changed file list.
-   - **Pre-existing**: findings in unchanged files (reported as context only, not blocking).
-6. Apply the minimum severity filter to the PR-relevant group.
-7. Group PR-relevant findings by severity: **Critical → High → Medium → Low**.
-
-### Phase 4 — Report
-
-8. Output a PR security summary:
-
-```
-PR Security Scan — #<pr-number>
-Branch: <branch-name>
-Changed files: <N>
-Scan mode: <full | sast | secrets>
-
-PR-relevant findings:
-  Critical: N
-  High:     N
-  Medium:   N
-  Low:      N
-
-Pre-existing workspace findings (not in this PR): N total
-```
-
-9. List all PR-relevant findings with details:
-
-| Severity | Type | File | Line | Rule | Remediation |
-|----------|------|------|------|------|-------------|
-| Critical | sast | `src/api/users.cs` | 42 | SQL Injection | Use parameterized queries |
-| High | leaked_secret | `appsettings.json` | 15 | AWS Access Key | Rotate and move to Key Vault |
-
-10. For pre-existing findings, output a count only (not a full list) to avoid noise.
-
-### Phase 5 — Actions
-
-11. Present options:
-    - **Fix now** — invoke `fix-security-issue` for each Critical or High PR-relevant finding.
-    - **Create review comments** — stage inline PR comments for each PR-relevant finding
-      (requires `create review comments: true` or explicit user approval).
-    - **Sync to GitHub** — invoke `aikido-issues-to-github` to create tracked issues for pre-existing findings.
-    - **Mark as accepted risk** — note the finding as known risk and continue.
-
-12. If `create review comments` is enabled, stage one comment per PR-relevant finding:
-
-**Comment format:**
-
-```
-🔒 **Aikido Security Finding**
-
-**Severity:** Critical
-**Type:** sast
-**Rule:** SQL Injection
-**Description:** <description>
-**Remediation:** <remediation steps>
-```
-
-## Output
-
-- PR security summary with counts by severity.
-- Detailed list of PR-relevant findings.
-- Pre-existing finding count for context.
-- Optional inline PR review comments.
-
-## Notes
-
-- Critical and High PR-relevant findings should block the PR until resolved or
-  explicitly accepted by the team.
-- Run this skill as part of every PR review that touches security-sensitive code.
-- For automated enforcement, add an instruction to your `AGENTS.md`:
-  ```
-  Scan any new or modified code with `aikido_full_scan` before finalizing changes.
-  This security check is required.
-  ```
+1. **Check the tree.** The scan reads local files, not the PR: compare the PR's
+   `headRefOid` with local `HEAD`. When they differ, tell the user which branch and commit are
+   checked out and which the PR is at, and ask whether to switch with `gh pr checkout`. Switch
+   only on an explicit yes and with a clean working tree; when the user declines, stop — a
+   scan of another tree reports on code the PR does not contain.
+2. **Scan.** Take the PR's changed file names as the focus set, then run the mode's tool on
+   the workspace root.
+3. **Split.** PR-relevant: findings in changed files, filtered by the minimum severity and
+   grouped by severity. Pre-existing: the rest, reported as a count only, never blocking.
+4. **Report** the PR scan summary from [aikido-templates.md](../../resources/aikido-templates.md),
+   then one row per PR-relevant finding — Severity, Type, File, Line, Rule, Remediation.
+   Critical and High PR-relevant findings block the PR until resolved or explicitly accepted.
+5. **Offer:** Fix now (`fix-security-issue` per Critical or High finding, passed as a local
+   scan finding: file, line, rule, type); review comments; Sync to GitHub
+   (`aikido-issues-to-github` for pre-existing findings); accepted risk.
+6. **Review comments**, when enabled or approved: stage one per PR-relevant finding in the
+   templates file's PR review comment format. Staging writes nothing to GitHub. Before
+   posting, show the user every staged comment with its file and line and the pull request it
+   will be posted to, and ask for explicit confirmation. Post them only after a clear yes; a
+   comment on a pull request is visible to everyone with access to the repository and cannot
+   be taken back silently. If the user declines, keep the comments in the report and post
+   nothing.

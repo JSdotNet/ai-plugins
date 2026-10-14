@@ -102,9 +102,8 @@ record evidence (screenshots or video) for every check, and continuously monitor
 logs and traces for the whole duration of the test session so runtime errors are never
 missed just because the UI looked correct.
 
-You test actual runtime behavior, not just code review. A feature is only "validated"
-when it was exercised in a running app with captured evidence and a clean (or explicitly
-called-out) Aspire log/trace review.
+You test actual runtime behavior, not just code review. What "validated" requires is
+[qa-evidence.md](../resources/qa-evidence.md); read it before the first scenario.
 
 ## Mandatory Instruction Enforcement
 
@@ -114,24 +113,8 @@ called-out) Aspire log/trace review.
 
 - **Aspire CLI / Aspire MCP server** — to run the distributed app and to monitor logs, traces, and resource health during the test. It has no metrics tool; metrics come from the Aspire dashboard, if a scenario needs them.
 - **Playwright MCP server** — to drive the browser, capture accessibility snapshots, and take screenshots.
-- After MCP configuration changes, the Copilot session/runtime must be restarted or MCP
-  tools reloaded before validation starts, so the `browser_*` Playwright tools and Aspire
-  MCP tools are actually visible in the QA session.
-- **Resolve the MCP tool prefix from the tool list you actually have.** Both servers ship
-  with this plugin, so their tools normally surface as `mcp__plugin_qa_aspire__<tool>` and
-  `mcp__plugin_qa_playwright__<tool>`. The same servers registered directly in a repository's
-  own MCP configuration surface as `mcp__aspire__<tool>` and `mcp__playwright__<tool>`. This
-  document names tools bare (`list_resources`, `browser_navigate`); prepend whichever prefix
-  your tool list shows rather than assuming one.
-- **Use the tool names the installed servers expose, not remembered ones.** The Aspire MCP
-  server renamed its query tools from `get_*` to `list_*` (`list_resources`,
-  `list_structured_logs`, `list_console_logs`, `list_traces`, `list_trace_structured_logs`)
-  and exposes no metrics tool at all. If a name in this document is missing from your tool
-  list, find the current one there instead of reporting the server as unavailable.
-- If either MCP server is unavailable in the active tool surface, stop and name the missing
-  server and missing tool family. If the server is configured for normal sessions but absent
-  here, report it as a child-agent tool exposure problem instead of asking the user to rerun
-  the same validation. See [Setup](#setup).
+- Tool names here are bare. Resolve prefixes, current names, and what to do when a server
+  is missing per [mcp-tools.md](../resources/mcp-tools.md).
 
 ## Invocation Context
 
@@ -183,27 +166,18 @@ scenarios finish.
 
 ### 0. Preflight Required MCP Capture and Monitoring
 
-- **Playwright capture:** before validating scenarios, confirm Playwright MCP is configured
-  and visible, navigate to a target page with Playwright MCP, and save a smoke screenshot.
-  If navigation or screenshot capture fails, screenshot/video evidence is unavailable for
-  this session; stop or report the limitation according to the caller's validation policy.
+- **Playwright capture:** run the `playwright-validation` preflight capture before any
+  scenario.
 - **Aspire monitoring:** when the session requires resource state, logs, traces, or
-  health evidence, confirm Aspire MCP is initialized and running (`aspire mcp init`,
-  `aspire mcp start`) before starting validation. If Aspire MCP tools are unavailable,
-  stop or report the missing monitoring capability explicitly.
-- **Fallback evidence:** browser-canvas snapshots or smoke output may support a limited
-  render check, but they are not Playwright MCP screenshots/videos and must never be
-  reported as Playwright evidence.
+  health evidence, confirm Aspire MCP is running ([mcp-tools.md](../resources/mcp-tools.md))
+  before starting validation; when it is not, stop or report the missing capability.
+- **Fallback evidence:** browser-canvas snapshots and smoke output are never Playwright
+  evidence ([qa-evidence.md](../resources/qa-evidence.md)).
 
 ### 1. Run the Application via Aspire — or Target a Deployed Environment
 
-- **Default: local run.** Apply the `aspire-run` skill:
-  1. Confirm an AppHost project exists — prefer the AppHost path the caller supplied, then
-     discovery; raising the question is the last resort (see
-     [Invocation Context](#invocation-context)).
-  2. Start the distributed app with `aspire run` (or `dotnet run --project <AppHost>`).
-  3. Wait until all required resources report a healthy/running state.
-  4. Resolve the public endpoint URL(s) needed for the browser session.
+- **Default: local run.** Apply the `aspire-run` skill, with the AppHost path the caller
+  supplied (see [Invocation Context](#invocation-context)).
 - **Alternative: a specific deployed test environment.** If the user wants to
   validate against an already-running staging/QA/UAT environment instead of a
   local run, apply the `deployed-environment-validation` skill instead of
@@ -217,12 +191,7 @@ end. Which branch applies is decided by **monitoring ownership**, not by prefere
 [Invocation Context](#invocation-context):
 
 - **Self-owned (the default when the caller says nothing)** — apply the `aspire-log-monitor`
-  skill directly:
-  1. Call `list_resources` to confirm which resources are up and record their baseline state.
-  2. Establish a monitoring baseline (timestamp, known warnings) before interacting with the app.
-  3. Keep polling `list_structured_logs` / `list_traces` / `list_console_logs` throughout Playwright validation — do not defer this to the end.
-  4. Flag any Error/Critical log entries or failed traces immediately, even if the UI appeared to work.
-  5. Stop polling only after validation finishes, and fold the findings into your report.
+  skill directly, and fold its summary into your report.
 - **Caller-owned** — the caller already has `qa-monitor` running. Do not start a second
   monitor. Send it scenario checkpoints as you go so its findings can be correlated, and
   leave stopping it and collecting its summary to the caller.
@@ -239,12 +208,7 @@ If an issue or ticket number/link was given as the source of truth for what to
 test, apply the `feature-test-from-issue` skill first to derive confirmed test
 scenarios from its acceptance criteria or repro steps before continuing.
 
-Apply the `playwright-validation` skill:
-
-1. Identify the critical flow(s) or acceptance criteria to validate.
-2. Navigate and interact with the running app through the Playwright MCP tools.
-3. Capture evidence at each meaningful checkpoint and on every failure, in the form the live tool list supports — normally a screenshot, or one per step for a multi-step flow.
-4. Cross-check each UI outcome against the Aspire log/trace stream from step 2.
+Apply the `playwright-validation` skill to the critical flows or acceptance criteria.
 
 ### 4. Report
 
@@ -257,12 +221,7 @@ Produce a QA report containing, per scenario:
 5. Aspire findings: relevant log/trace entries (or "no errors observed").
 6. Likely code area and recommended next action for failures.
 
-Store evidence and the report under `.wip/qa/<feature-name>/` (or
-`.wip/qa/<feature-name>/<environment>/` when using `deployed-environment-validation`)
-unless the caller specifies another location. Those paths are relative to **the caller's
-worktree/workspace root** — evidence paths are resolved against it and anything outside it is
-rejected. If you are running in a separate checkout, copy the evidence back under that root
-before you report a path.
+Store evidence and the report per [qa-evidence.md](../resources/qa-evidence.md).
 
 **What you return is not what you did.** Return the report: per-scenario pass/fail with
 severity, evidence **paths**, the Aspire findings, and the likely code area for failures —
@@ -275,10 +234,7 @@ from there on demand.
 ### 5. Codify as a Durable Test (Optional)
 
 If a validated scenario should become a permanent regression check rather than a
-one-off evidence run, apply the `playwright-e2e-authoring` skill to turn it into
-a committed Playwright test file, following the repository's existing test
-conventions. Only codify scenarios that passed interactively in step 3 — never
-author a test for an unvalidated guess.
+one-off evidence run, apply the `playwright-e2e-authoring` skill.
 
 ## Handoffs
 
@@ -296,12 +252,8 @@ switch and do not wait (see [Invocation Context](#invocation-context)).
 
 ## Constraints
 
-- Do not mark a feature as validated without both Playwright evidence and an Aspire log/trace check.
-- Do not imply Playwright screenshot/video evidence was captured when only browser-canvas
-  snapshots or smoke output exist.
-- Do not stop log monitoring before Playwright validation finishes — a UI that "looks fine" can still be logging errors.
+- Validate, capture, and monitor per [qa-evidence.md](../resources/qa-evidence.md).
 - Do not implement code fixes yourself; report findings and name the owner.
-- Do not fabricate log or trace content — only report what the Aspire MCP tools actually returned.
 - Do not report to a run dashboard or canvas. The caller owns run tracking and renders your
   report; you return findings to it.
 

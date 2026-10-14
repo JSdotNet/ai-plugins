@@ -11,12 +11,6 @@ description: Epic writing standards for Product Owner backlog artifacts.
 - Keep epics outcome-driven, concise, and easy to refine into sprint-sized stories.
 - Keep structure compatible with later Jira use.
 
-## Location and Naming
-
-- Store epics in module folders under `.wip/work/`.
-- Use one module depth only: `.wip/work/<module>/epic-<short-title>.md`.
-- Keep epic files in the same module folder as related story and bug files.
-
 ## Core Quality Standard
 
 - Epic describes a meaningful product outcome, not a technical task bucket.

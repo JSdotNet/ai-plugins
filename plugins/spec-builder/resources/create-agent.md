@@ -16,13 +16,17 @@ agent needs them. An empty or restating section is a section to delete.
 
 - Keep scope explicit and responsibilities narrow.
 - Record the model preference in a `## Model` body section; leave `model` out of frontmatter.
-- Author `tools` as Copilot tool ids only; the sync script appends the Claude equivalents.
-- Describe every `handoffs` target in the body, and require explicit approval for each.
+- Author `tools` by hand as one union list: the Copilot tool ids first, then the Claude names
+  `tools/tool-map.json` translates them to. Nothing appends them; `node tools/check-assets.mjs`
+  fails on a mismatch.
+- Name every `handoffs` target in the body as `<plugin>:<agent>`, and write no approval step
+  around it.
 - Leave runtime application code guidance to the plugin that owns that code.
 - Follow [spec-conciseness.md](spec-conciseness.md) for pruning and
   the 80-line body budget.
-- The dual-host rules behind the `model`, `tools`, and `handoffs` items above are in
-  [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md).
+- The reasoning behind the `model`, `tools`, and `handoffs` items above is in
+  [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md), in the
+  marketplace's own repository only; this contract is the installed source of the rules.
 
 ## Validation Checklist
 

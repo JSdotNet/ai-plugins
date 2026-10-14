@@ -13,6 +13,10 @@ and secrets, triage findings, fix security issues, and sync to GitHub Issues.
   - `skills/review-security-posture/SKILL.md`
   - `skills/aikido-issues-to-github/SKILL.md`
   - `skills/aikido-scan-pr/SKILL.md`
+- Resources:
+  - `resources/aikido-findings.md` — the contract every skill and the agent read: MCP
+    prerequisite, tool per scan mode, finding order and fields, code-fixable or triage-only
+  - `resources/aikido-templates.md` — the exact summary, review-comment, and issue formats
 
 ## MCP Server (required)
 

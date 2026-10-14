@@ -18,7 +18,7 @@ Concise decision guide and troubleshooting checklist for authoring customization
 ## Dual-Host Rules
 
 Plugin assets in this repository load in both GitHub Copilot and Claude Code from one copy.
-The rules, the generated-file list, and the tool translation table are in
+The rules and the tool translation table are in
 [Crosscutting Concepts](../../../.devbook/arc42/08-crosscutting-concepts.md), and the
 always-on summary is in this plugin's `hooks.json` `sessionStart` prompt.
 

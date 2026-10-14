@@ -1,139 +1,46 @@
 ---
 name: playwright-validation
-description: 'Validate a feature or run extensive end-to-end testing against a running app using the Playwright MCP server, capturing screenshots as evidence. Use after the app under test is running (see the aspire-run skill).'
-compatibility: Requires the Playwright MCP server (`@playwright/mcp`).
+description: 'Validate a feature or run extensive end-to-end testing against a running app through the Playwright MCP server, capturing screenshot evidence per scenario. Use when: the app under test is running and a feature, bug fix, or scenario list must be proved in a real browser. DO NOT USE FOR: writing a checked-in test file (playwright-e2e-authoring) or deriving scenarios from an issue (feature-test-from-issue).'
 ---
 
-# Playwright Validation — Evidence-Backed Feature Testing
+# Playwright Validation
 
-Drive real browser interactions against the running application through the Playwright
-MCP server, and capture concrete evidence for every check. Do not rely on static code
-reading to claim a feature works — prove it by running it.
+Prove the feature in a real browser against the running app. Before starting, read
+[qa-evidence.md](../../resources/qa-evidence.md) — what counts as evidence and where it is
+stored — and resolve tool names and the recordable form per
+[mcp-tools.md](../../resources/mcp-tools.md). When the Playwright MCP tools are absent,
+report that Playwright evidence cannot be captured and stop.
 
-## Prerequisites
+## Preconditions
 
-- The app under test is already running and healthy (see the `aspire-run` skill).
-- Aspire log/trace monitoring is already active (see the `aspire-log-monitor` skill) —
-  start it before this skill, not after.
-- The Playwright MCP server is configured before QA starts, for example:
+- The app is running and healthy (`aspire-run`, or a confirmed deployed URL).
+- Aspire log/trace monitoring is already active (`aspire-log-monitor`, or the caller's
+  `qa-monitor`).
 
-  ```json
-  {
-    "servers": {
-      "playwright": {
-        "command": "npx",
-        "args": ["-y", "@playwright/mcp@latest"]
-      }
-    }
-  }
-  ```
+## Preflight capture
 
-- The session/runtime has been restarted or MCP tools have been reloaded after
-  configuration, so the `browser_*` tools are visible in the validation session.
-- The prefix is resolved from the tool list you actually have. The Playwright server ships
-  with this plugin, so its tools normally surface as `mcp__plugin_qa_playwright__<tool>`; the
-  same server registered directly in a repository's own MCP configuration surfaces as
-  `mcp__playwright__<tool>`. This skill names tools bare (`browser_navigate`) — prepend
-  whichever prefix your tool list shows rather than assuming one.
+1. Call `browser_navigate` to the target page or a lightweight health or render page.
+2. Call `browser_take_screenshot` and save the smoke screenshot in the evidence folder.
+3. When either call fails, capture is unavailable this session: stop, or mark the limitation
+   as the caller's validation policy says.
 
-## Available Playwright MCP Tools (typical set)
+## Per scenario
 
-| Tool | Description |
-|---|---|
-| `browser_navigate` | Navigate to a URL |
-| `browser_snapshot` | Get an accessibility-tree snapshot of the current page (preferred for locating elements) |
-| `browser_click` / `browser_type` / `browser_select_option` | Interact with elements |
-| `browser_take_screenshot` | Capture a screenshot of the current page or element |
-| `browser_find` | Find elements by description without a full snapshot |
-| `browser_evaluate` | Read computed state (e.g. a CSS value) the snapshot does not expose |
-| `browser_console_messages` | Read browser console output (client-side errors) |
-| `browser_network_requests` | Inspect network requests/responses made by the page |
-| `browser_wait_for` | Wait for text, element state, or a time interval |
-
-Exact tool names depend on the installed Playwright MCP version — use `browser_snapshot`
-first on an unfamiliar page to confirm available element references before interacting.
-
-**Resolve the recordable form from the tool list you actually have.** `@playwright/mcp`
-0.0.79 — the version this plugin installs via `@playwright/mcp@latest` — exposes **no**
-tracing or video tools (`browser_start_tracing` / `browser_stop_tracing` do not exist) and
-**no** `--save-trace` or `--save-video` server option; only `--save-session` (a log of tool
-calls under `--output-dir`) and screenshots. Continuous evidence is therefore a numbered
-screenshot sequence unless your tool list shows tracing tools. Name the form used in the
-report, and never call a screenshot sequence a video or a trace.
-
-## Workflow
-
-### 0. Preflight Capture
-
-Before scenario validation, prove capture works in this session:
-
-1. `browser_navigate` to the target page or a lightweight health/render page.
-2. `browser_take_screenshot` and save the smoke screenshot under the scenario evidence
-   folder.
-
-If navigation or screenshot capture fails, capture is unavailable in this session. Stop or
-mark the limitation according to the caller's validation policy, and do not claim
-Playwright evidence was captured.
-
-### 1. Define the Scenario
-
-- Restate the feature or acceptance criteria being validated in concrete steps.
-- For "more extensive testing", enumerate a scenario list (happy path, edge cases,
-  invalid input, empty states, permission boundaries) before starting.
-
-### 2. Navigate and Snapshot
-
-1. `browser_navigate` to the feature's entry URL (from `aspire-run`).
-2. `browser_snapshot` to confirm the page loaded and to find element references for
-   the next interaction — avoid guessing selectors from source code alone.
-
-### 3. Execute the Scenario
-
-- Perform each interaction (`browser_click`, `browser_type`, etc.) in order.
-- Stabilize before every capture: `browser_wait_for` on the specific element or text you
-  expect, never a fixed sleep. A frame taken mid-transition is misleading evidence.
-- Capture per scenario, and keep each file: a single screenshot for a single-state
-  checkpoint (scoped to an element reference when only that component matters), or one
-  screenshot per state-changing step — zero-padded so the sequence reads in execution
-  order — when the sequence itself is what is being proved.
-- On failure, capture the frame **before** attempting any recovery.
-- Check `browser_console_messages` after each step for client-side JS errors.
-- Check `browser_network_requests` when validating API-backed features — confirm status
-  codes and payload shape match expectations.
-
-### 4. Assert the Outcome
-
-- Compare the final `browser_snapshot` (or screenshot) against the expected outcome.
-- Cross-reference the Aspire log/trace stream (from `aspire-log-monitor`) for the same
-  time window — a visually correct page can still hide a swallowed server-side error.
-- Record Pass / Fail / Flaky with the evidence path(s) and any console/network findings.
-
-### 5. Repeat for Each Scenario
-
-- Use a fresh `browser_navigate` (or a full page reload) between independent scenarios
-  to avoid state leakage skewing results.
-- Keep all evidence files for the whole session — do not overwrite prior scenario
-  evidence.
-
-## Evidence Requirements
-
-- Every scenario must have at least one screenshot; multi-step flows should have a
-  screenshot per step, or a recording where the tool list exposes one.
-- Every failure must have a screenshot taken at the point of failure and before any
-  recovery, plus the `browser_console_messages` and `browser_network_requests` output at
-  that moment.
-- Evidence file paths must be included in the final QA report — do not describe a
-  screenshot without a path the user can open.
-- Browser-canvas snapshots and smoke output can be cited only as browser-canvas fallback
-  evidence; they are not Playwright MCP screenshots, videos, or traces.
-
-## Common Pitfalls
-
-- Don't skip the console/network check just because the visual result looks correct.
-- Don't stop Aspire log monitoring before finishing all scenarios.
-- Don't reuse a stale snapshot reference after the page has re-rendered — re-snapshot.
-
-## Reference
-
-- Playwright MCP server: `https://github.com/microsoft/playwright-mcp`
-- Playwright docs: `https://playwright.dev`
+1. Restate the scenario as concrete steps. For extensive testing, list the scenarios first:
+   happy path, edge cases, invalid input, empty states, permission boundaries.
+2. Call `browser_navigate` to the entry URL, then `browser_snapshot` for element references;
+   take selectors from the snapshot, not from source code.
+3. Perform each interaction in order. After a re-render, take a fresh snapshot before using a
+   reference again.
+4. Before every capture, call `browser_wait_for` on the specific element or text you expect,
+   never a fixed sleep: a mid-transition frame is misleading evidence.
+5. Capture one screenshot for a single-state checkpoint (scoped to an element when only that
+   component matters), or one per state-changing step, numbered zero-padded (`01-`, `02-`) so
+   the sequence reads in execution order.
+6. After each step, read `browser_console_messages`; for an API-backed feature, read
+   `browser_network_requests` and check status codes and payload shape.
+7. On failure, capture the frame first, then console and network output, and only then try
+   any recovery.
+8. Assert the outcome from the final snapshot or screenshot, cross-check the Aspire stream
+   for the same window, and record Pass / Fail / Flaky with evidence paths and findings.
+9. Start the next independent scenario with a fresh navigation or full reload.

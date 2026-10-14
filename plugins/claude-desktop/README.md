@@ -82,7 +82,7 @@ in which host.
   brief to `~/.claude/handoffs/` (template:
   [`resources/session-handoff-template.md`](resources/session-handoff-template.md)), marks
   the dashboard run handed off when there is one, and hands back the paste-ready first
-  message. Run it when the 85% context warning fires, or before a stage known to be
+  message ([`resources/session-handoff-message.md`](resources/session-handoff-message.md)). Run it when the 85% context warning fires, or before a stage known to be
   expensive.
 - `skills/create-pull-request/` — open a PR for the current branch, body grounded in the
   diff and the linked issue. The rest of the pull-request lane lives in `delivery@jsdotnet`.

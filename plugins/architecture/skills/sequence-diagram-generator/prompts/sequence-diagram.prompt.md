@@ -5,10 +5,6 @@ description: Prompt for generating a Mermaid sequence diagram for a specific run
 
 # Sequence Diagram Prompt
 
-## Purpose
-
-Produce a Mermaid `sequenceDiagram` that captures the message flow of a single runtime scenario between a defined set of participants.
-
 ## Pre-Draft Checklist
 
 Confirm the following before generating the diagram:
@@ -46,13 +42,7 @@ sequenceDiagram
 
 ## Guidance
 
-- Use `actor` for human participants and `participant` for automated systems.
-- Use `->>` for synchronous calls and `-->>` for replies.
-- Use `-x` for async fire-and-forget messages (no reply expected).
-- Use `activate` / `deactivate` to show processing time on a participant.
-- Wrap conditional branches in `alt` / `else` / `end`.
-- Wrap optional steps in `opt` / `end`.
-- Wrap retries or polling in `loop {condition}` / `end`.
+- Use `-)` for async fire-and-forget messages (no reply expected); reserve `-x` for a failed or rejected message.
 - Keep the participant list to the minimum needed for this scenario.
 
 ## Output Requirements
@@ -61,7 +51,5 @@ sequenceDiagram
 - All messages labelled with a verb phrase.
 - Synchronous and asynchronous arrows used correctly.
 - At least the happy path shown; significant error path included where architecturally relevant.
-- Prose summary (2–4 sentences) identifying key ordering decisions, error handling, and timing constraints.
-- Traceability link to arc42 Section 6 (Runtime View).
-- Cross-reference to the C4 Container or Component diagram that provides the structural context.
-- List of assumptions for any participant or message detail not confirmed by the user.
+
+The summary, links, assumptions, and SVG follow [diagram-output.md](../../../resources/diagram-output.md).

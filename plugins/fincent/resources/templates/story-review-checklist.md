@@ -1,7 +1,8 @@
 # Story Review Checklist
 
-Use this checklist when reviewing a Fincent story. Mark each item ✅, ⚠️, or ❌.
-Applies to all story types: features, bugs, and support requests.
+The output tables of the Fincent story reviews. The criteria behind the Product Owner and
+Bug rows are in [dor.md](../dor.md); mark each row with a label from the verdict legend in
+[story-pipeline.md](../story-pipeline.md), and leave out a section that does not apply.
 
 ## Product Owner Review (DOR — all story types)
 
@@ -22,25 +23,25 @@ Applies to all story types: features, bugs, and support requests.
 
 | # | Criterion | Status | Notes |
 |---|-----------|--------|-------|
-| 7 | Linked to an epic (if part of larger functionality) | | |
-| 8 | Linked to a version / release | | |
-| 9 | Screenshots or links of current state attached (if modifying existing) | | |
+| 9 | Linked to an epic (if part of larger functionality) | | |
+| 10 | Linked to a version / release | | |
+| 11 | Screenshots or links of current state attached (if modifying existing) | | |
 
 ### Refinement
 
 | # | Criterion | Status | Notes |
 |---|-----------|--------|-------|
-| 10 | Story has been reviewed and refined by the development team | | |
-| 11 | Team estimate present (story points or hours) | | |
-| 12 | Story does not exceed 12 hours / equivalent in points (split if larger) | | |
+| 12 | Story has been reviewed and refined by the development team | | |
+| 13 | Team estimate present (story points or hours) | | |
+| 14 | Story does not exceed 12 hours / equivalent in points (split if larger) | | |
 
 ### Design (UI stories only)
 
 | # | Criterion | Status | Notes |
 |---|-----------|--------|-------|
-| 13 | Design images (screens/mockups) included directly in the story | | |
-| 14 | Figma link provided (optional, but images are always required regardless) | | |
-| 15 | Interactions and animations worked out in design | | |
+| 15 | Design images (screens/mockups) included directly in the story | | |
+| 16 | Figma link provided (optional, but images are always required regardless) | | |
+| 17 | Interactions and animations worked out in design | | |
 
 ## Bug Review (additional criteria for bugs)
 
@@ -82,11 +83,20 @@ Applies to all story types: features, bugs, and support requests.
 
 ## Story Points (Estimation)
 
-| Factor | Value | Notes |
-|--------|-------|-------|
-| Complexity (1–5) | | |
-| Effort (1–5) | | |
-| Uncertainty/Risk (1–5) | | |
-| Similar stories (reference) | | |
-| **Suggested points / hours** | | |
-| Exceeds 12 hours? Split needed? | | |
+Score each factor 1–5 on this rubric:
+
+| Score | Complexity | Effort | Uncertainty / Risk |
+|---|---|---|---|
+| 1 | Trivial change, no logic | Under 2 hours | Fully understood, no unknowns |
+| 2 | Simple logic, one component, known domain | Half a day (~4 hours) | Minor unknowns; the team has done similar |
+| 3 | Moderate logic, several components or a domain rule | One day (~8 hours) | Some unknowns; a spike may be needed |
+| 4 | Complex logic, cross-context integration, or a new domain concept | Up to 12 hours, at the DOR limit | External dependencies or unclear requirements |
+| 5 | Novel domain territory or significant algorithm work | Over 12 hours: must be split | High; may need splitting after discovery |
+
+| Factor | Score | Rationale |
+|--------|-------|-----------|
+| Complexity | | |
+| Effort | | |
+| Uncertainty / Risk | | |
+| Reference stories | | |
+| **Points**, or **Split required** | | |

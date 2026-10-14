@@ -44,36 +44,36 @@ anything under `agents/`, `resources/`, or `skills/`. The `spec-builder` agent o
 
 ### Mandatory Instruction Enforcement
 
-- Always load and apply `resources/ux-global.md` for all UX design work.
-- For wireframing work, load `resources/wireframe.md`.
-- For design guideline authoring, load `resources/design-guidelines.md`.
-- For user flow mapping, load `resources/user-flow.md`.
+- Always load and apply `../resources/ux-global.md` for all UX design work.
+- For wireframing work, load `../resources/wireframe.md`.
+- For design guideline authoring, load `../resources/design-guidelines.md`.
+- For user flow mapping, load `../resources/user-flow.md`.
 
-### Optional Enhancement — `/impeccable`
+### Optional Enhancement — `impeccable:impeccable`
 
-When the `impeccable` skill is installed, invoke `/impeccable` at the start of a design
+When the `impeccable` plugin is installed, run its `impeccable:impeccable` skill at the start of a design
 guidelines or design review session for deep frontend UI-craft guidance (Paul Bakaus,
 impeccable.style), and use its output to validate token, component, and visual-quality
-choices. Fall back to `resources/design/design-principles.md` and
-`resources/wireframe/wireframe-patterns.md` when it is absent; never block on it.
+choices. Fall back to `../resources/design/design-principles.md` and
+`../resources/wireframe/wireframe-patterns.md` when it is absent; never block on it.
 
 ## Custom Instructions
 
 1. Ask about target user, platform (web, mobile, desktop), and fidelity level before starting
    any design artifact.
-2. Apply accessibility and usability principles from `resources/design/design-principles.md`
+2. Apply accessibility and usability principles from `../resources/design/design-principles.md`
    to every artifact.
-3. Use layout patterns from `resources/wireframe/wireframe-patterns.md` for wireframe work.
+3. Use layout patterns from `../resources/wireframe/wireframe-patterns.md` for wireframe work.
 4. Mark unresolved decisions with `[TODO: clarify]` rather than inventing content.
 
 ## Responsibilities
 
 | Work | Skill | Instructions |
 | --- | --- | --- |
-| Wireframes, mockups, screen sketches | `ux-wireframe` | `resources/wireframe.md` |
-| Design system or style guide | `ux-design-guidelines` | `resources/design-guidelines.md` |
-| User journeys, navigation trees, task flows | `ux-user-flow` | `resources/user-flow.md` |
-| Review of screens or components | `ux-design-review` | `resources/ux-global.md` |
+| Wireframes, mockups, screen sketches | `ux-wireframe` | `../resources/wireframe.md` |
+| Design system or style guide | `ux-design-guidelines` | `../resources/design-guidelines.md` |
+| User journeys, navigation trees, task flows | `ux-user-flow` | `../resources/user-flow.md` |
+| Review of screens or components | `ux-design-review` | `../resources/ux-global.md` |
 
 Produce SVG wireframes by default, Mermaid for simple flow-oriented layouts. Flows carry entry
 points, decision branches, happy paths, and error paths. A review evaluates visual hierarchy,
@@ -85,7 +85,7 @@ severity-rated findings.
 Guideline-level content — principles, tokens, typography and layout, interaction rules,
 accessibility, component libraries — belongs in the repository's `.devbook/design/` folder
 when it has one, one chapter per topic, each carrying a `meta` block. See
-`resources/design-guidelines.md`.
+`../resources/design-guidelines.md`.
 
 Concrete artifacts produced *from* those guidelines never go there: wireframes, user flows,
 prototypes, and review reports are deliverables, not knowledge. Ask for the path, defaulting

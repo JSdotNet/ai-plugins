@@ -1,72 +1,37 @@
 ---
 name: ux-design-review
-description: Review existing UI screens or components against project design guidelines and UX heuristics. Produces a severity-rated findings report.
+description: 'Review UI screens or components against the project design guidelines and usability heuristics, producing a severity-rated findings report. Use when: reviewing a wireframe, mockup, or live screen for UX quality, auditing a page against the design system, checking accessibility or contrast, or finding usability issues before development or release. DO NOT USE FOR: writing the guidelines (ux-design-guidelines).'
 ---
 
 # UX Design Review
 
-## Purpose
-
-Use this skill to evaluate one or more screens, components, or user flows against design guidelines and established usability heuristics. The output is a structured findings report with severity ratings and actionable recommendations.
-
-## Trigger Conditions
-
-Use when the user asks to:
-
-- review a wireframe, mockup, or live screen for UX quality
-- audit a component or page against the project design system
-- check accessibility or contrast compliance
-- identify usability issues before development or release
+Evaluate screens, components, or flows against the project design guidelines and usability
+heuristics, and report severity-rated findings with actionable recommendations.
 
 ## Inputs
 
-Ask for the following when not already provided:
+Ask only for what the request has not given:
 
-- **Artifact to review** — file path to the screen (SVG, image), Markdown description, or URL
-- **Design guidelines path** — path to the project style guide or design guidelines document, if available
-- **Review scope** — full review or specific concern (accessibility, visual consistency, flow clarity)?
-- **Platform** — web, mobile, or desktop?
-- **Output location** — where should the review report be saved? (default: `docs/design/reviews/`; never the design devbook folder, which is guideline-level only)
+- **Artifact**: a screen file (SVG, image), a Markdown description, or a URL, and its
+  **platform**: web, mobile, or desktop.
+- **Design guidelines path**, when the project has one.
+- **Scope**: a full review, or one concern (accessibility, visual consistency, flow clarity).
+- **Output location**: default `docs/design/reviews/`. Write the review there or to the path
+  the person gives; a review is a deliverable, and the design devbook folder holds guidelines
+  only.
 
-## Required Resources
+## Steps
 
-Load and apply before reviewing:
-
-1. `resources/ux-global.md`
-2. Project design guidelines document (if available)
-3. `resources/design/design-principles.md`
-
-### Optional — `/impeccable`
-
-If the `impeccable` skill is installed, invoke `/impeccable` as the first step of the review to get frontend design and UI-craft guidance. Incorporate its output into findings. If not installed, continue with the resources above.
-
-## Workflow
-
-1. **Confirm the artifact and scope**
-   - Load or read the artifact being reviewed.
-   - Confirm whether a project design guideline document is available. If not, apply the global UX principles and design principles resource.
-
-2. **Evaluate against heuristics**
-   Apply Nielsen's 10 usability heuristics from `resources/ux-global.md` as the primary evaluation lens.
-
-3. **Check accessibility**
-   - Text contrast ratio (WCAG 2.1 AA minimum).
-   - Keyboard navigation and focus management.
-   - Colour-alone reliance for meaning.
-   - Missing or inadequate labels and alt text.
-
-4. **Check design consistency**
-   - Typography and colour token usage vs. the project design system.
-   - Spacing and layout grid compliance.
-   - Component variant and state consistency.
-
-5. **Check flow and clarity**
-   - Is the user goal clear on first glance?
-   - Is the primary action visually prominent?
-   - Are error states and empty states handled?
-
-6. **Write the findings report**
-   Use the report template below. Rate each finding:
+1. When the `impeccable` plugin is installed, run its `impeccable:impeccable` skill first and
+   fold its UI-craft guidance into the findings; when it is absent, continue without it.
+2. Read the artifact, the project guidelines when they exist,
+   [ux-global.md](../../resources/ux-global.md), and
+   [design-principles.md](../../resources/design/design-principles.md).
+3. Evaluate with Nielsen's 10 usability heuristics as the primary lens, WCAG 2.2 AA as the
+   accessibility baseline, and the project's tokens, grid, and component states for
+   consistency. Check that the user goal reads at first glance, the primary action stands
+   out, and error and empty states exist.
+4. Rate each finding:
 
    | Severity | Definition |
    |---|---|
@@ -75,39 +40,5 @@ If the `impeccable` skill is installed, invoke `/impeccable` as the first step o
    | **Minor** | Reduces polish or convenience without blocking task completion |
    | **Suggestion** | Potential improvement that is not a defect |
 
-7. **Save and confirm**
-   - Save to the agreed location.
-   - Summarise finding counts by severity.
-
-## Report Template
-
-```markdown
-# UX Design Review: [Screen / Component Name]
-
-**Date:** YYYY-MM-DD
-**Reviewer:** UX Designer Agent
-**Artifact:** [path or description]
-**Platform:** [web / mobile / desktop]
-**Scope:** [Full review / Accessibility / Visual consistency / Flow clarity]
-
-## Summary
-
-| Severity | Count |
-|---|---|
-| Critical | 0 |
-| Major | 0 |
-| Minor | 0 |
-| Suggestion | 0 |
-
-## Findings
-
-### [Finding ID] — [Short Title] _(Severity)_
-
-**Heuristic / Principle:** [Which heuristic or guideline is violated?]
-**Location:** [Screen region or element]
-**Observation:** [What is the issue?]
-**Impact:** [Why does it matter?]
-**Recommendation:** [What should be changed?]
-
----
-```
+5. Write the report in the shape of [ux-review-report.md](../../resources/ux-review-report.md),
+   save it, and summarise the finding counts by severity.

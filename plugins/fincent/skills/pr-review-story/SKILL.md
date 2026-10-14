@@ -1,134 +1,56 @@
 ---
 name: pr-review-story
 description: >
-  Verify that a pull request fully delivers what was promised in its linked Fincent story.
-  Checks scope coverage (all acceptance criteria implemented), no out-of-scope changes,
-  and that the PR description connects back to the story. Use after code review and before
-  merging to ensure delivery matches the agreed story.
+  Verify that a pull request fully delivers its linked Fincent story: every acceptance
+  criterion covered, no out-of-scope changes, and the PR traced back to the story. Use when:
+  "does this PR deliver FIN-123", "check the PR against the story", before a merge decision,
+  or when PR scope and story scope seem to differ. DO NOT USE FOR: code structure
+  (pr-review-architecture), domain code (pr-review-domain), or answering remarks (pr-remarks-resolve).
 ---
 
 # PR vs Story Review
 
-Verify that a pull request is a complete and faithful implementation of its linked `FIN`
-story. This skill answers: **"Does the PR deliver exactly what the story describes — no
-less, no more?"**
+Answer one question: does the PR deliver exactly what its `FIN` story describes — no less,
+no more? Judge story-to-PR fit only; the architecture and domain reviews run separately.
 
-This is complementary to the domain and architecture PR reviews. Run it independently or
-after those.
+1. Take the story key from the input, else from the PR title, description, or branch name.
+   Load the story per [jira-discovery.md](../../resources/jira-discovery.md): summary,
+   description, acceptance criteria (description, custom field, or attachment), type,
+   epic, and points.
+2. Load the PR diff, title, and description.
+3. Map each acceptance criterion to evidence in the diff. When the story lists none, infer
+   them from the description and mark each `(inferred)`.
+4. List the changes unrelated to the story, each classed `Unrelated`, `Tech debt`, or
+   `Intentional extra`, and flag `Unrelated` ones for a separate PR or story. Skip trivial
+   formatting and import clean-ups unless the file is unrelated to the story altogether.
 
-## When to use
+## Output
 
-- After the PR has passed the domain and architecture review.
-- Before a merge decision, to confirm the story is fully delivered.
-- When there is doubt about whether the PR scope matches the agreed story.
+```markdown
+## PR vs Story: FIN-xxx — {story title}
 
-## Jira Skill Discovery
-
-Before fetching Jira data, discover available Jira skills:
-
-1. Check installed skills for skills whose name or description mentions "jira".
-2. Identify a **retrieval-capable** Jira skill — can fetch a single existing issue.
-3. If no retrieval skill is found: ask the user to paste the story content manually.
-
-All Jira field mapping and project conventions are owned by the discovered Jira skill.
-
-## Inputs
-
-- **PR** — the pull request to review (URL, number, or branch name).
-- **Story** — the linked `FIN` story key (e.g. `FIN-123`). If not provided, look for a
-  Jira key mentioned in the PR title, description, or branch name.
-
-## Workflow
-
-### Step 1 — Load the story
-
-Use the discovered retrieval-capable Jira skill to fetch the story. Load:
-- Summary (title)
-- Description
-- Acceptance criteria (look in description, custom field, or attached document)
-- Story type: Feature / Bug / Support
-- Epic link
-- Story points
-
-### Step 2 — Load the PR
-
-Read the PR diff and description:
-- Changed files and their purpose
-- PR title and description
-- Linked issues / Jira keys in the PR body
-
-### Step 3 — Scope coverage check
-
-For each acceptance criterion in the story, determine whether the PR addresses it:
-
-| # | Acceptance Criterion | Covered? | Evidence (file / line) |
-|---|---------------------|----------|------------------------|
-| 1 | … | ✅ / ❌ / ⚠️ | … |
-
-**Legend:**
-- ✅ — criterion is clearly implemented in the diff
-- ⚠️ — partially implemented or cannot be fully verified from code alone
-- ❌ — no evidence found in the diff
-
-### Step 4 — Out-of-scope changes check
-
-Identify changes in the PR that are **not** related to the story:
-
-| File / area | Change description | Classification |
-|-------------|-------------------|----------------|
-| … | … | Unrelated / Tech debt / Intentional extra |
-
-Flag any unrelated changes that should be extracted to a separate PR or story.
-
-### Step 5 — Story-PR alignment check
-
-Verify the connection between story and PR:
-
-| Check | Result | Notes |
-|-------|--------|-------|
-| PR title or description references story key | ✅/❌ | |
-| PR scope matches story type (Feature/Bug/Support) | ✅/❌ | |
-| Bug story: reproduction steps addressed | ✅/❌/N/A | |
-| Feature story: happy path + edge cases present | ✅/⚠️/❌ | |
-| UI story: screenshots or test evidence attached | ✅/⚠️/❌/N/A | |
-
-### Step 6 — Verdict
-
-**✅ Fully delivered** — all acceptance criteria covered, no concerning out-of-scope changes.
-
-**⚠️ Partially delivered** — list uncovered criteria; PR may still merge with open follow-up
-stories created for the gaps.
-
-**❌ Not delivered / Scope mismatch** — critical acceptance criteria missing, or the PR
-changes something fundamentally different from what the story describes. Do not merge; list
-specific gaps.
-
-## Output format
-
-```
-## PR vs Story: FIN-xxx — [Story title]
-
-**PR**: #N — [PR title]
-**Verdict**: ✅ Fully delivered / ⚠️ Partially delivered / ❌ Not delivered
+**PR**: #{n} — {PR title}
+**Verdict**: ✅ Fully delivered | ⚠️ Partially delivered | ❌ Not delivered
 
 ### Acceptance Criteria Coverage
-[table from Step 3]
+| # | Acceptance criterion | Covered | Evidence (file:line) |
 
 ### Out-of-Scope Changes
-[table from Step 4, or "None detected."]
+| File / area | Change | Classification |        (or "None detected.")
 
 ### Alignment Check
-[table from Step 5]
+| Check | Result | Notes |
+| PR title or description references the story key | ✅/❌ | |
+| PR scope matches the story type | ✅/❌ | |
+| Bug: reproduction steps addressed | ✅/❌/N/A | |
+| Feature: happy path and edge cases present | ✅/⚠️/❌ | |
+| UI: screenshots or test evidence attached | ✅/⚠️/❌/N/A | |
 
 ### Summary
-[2-3 sentences: what the PR delivers, what is missing (if any), recommended action]
+{2–3 sentences: what the PR delivers, what is missing, the recommended action}
 ```
 
-## Working rules
-
-- Do not re-run the domain or architecture review — focus only on story-to-PR fit.
-- If acceptance criteria are not explicitly listed, infer them from the story description
-  and mark them as "inferred" in the table.
-- A ⚠️ criterion is acceptable if a follow-up story is created or already exists.
-- Limit out-of-scope flagging to meaningful changes; ignore trivial formatting or import
-  clean-ups unless they are in files entirely unrelated to the story.
+- **Covered**: ✅ clearly implemented, ⚠️ partial or not verifiable from code, ❌ no evidence.
+- **Verdict**: ✅ every criterion covered and no concerning out-of-scope change. ⚠️ gaps
+  remain; mergeable when a follow-up story exists or is created for each. ❌ a critical
+  criterion is missing or the PR changes something else: do not merge, and list the gaps.

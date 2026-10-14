@@ -4,114 +4,49 @@ description: >
   Rebase or merge all open Copilot sessions onto the latest source branch.
   Use when: syncing open feature branches before review, pulling in upstream fixes,
   keeping worktrees up to date, preparing sessions for PR submission.
+  DO NOT USE FOR: one pull request branch with conflicts to resolve and push
+  (delivery:update-pr-branch).
 ---
 
 # Update Open Sessions
 
-## Purpose
+Inputs: source branch (default: the repository default branch), strategy `rebase` (default)
+or `merge`, sessions `all` (default) or a list, and on conflict `skip` (default) or `abort`
+(roll back the whole run).
+When the Copilot app manages the worktrees, list and update sessions with its session tools
+rather than raw git.
 
-Fetch the latest commits from the source branch and apply them to every open
-Copilot session branch, keeping all in-progress work in sync with the trunk.
+1. **Fetch** `origin/<source>` once, so every comparison runs against the remote state.
+2. **Compare** each session worktree: uncommitted changes (any `status --porcelain` output
+   marks it **Dirty — skipped**, never updated), commits behind `origin/<source>`, the
+   pre-update SHA (record it — the rollback point), and whether the branch has an upstream.
+3. **Confirm**: show this table and wait for the user's go-ahead before changing any branch.
 
-## Inputs
+   | Session | Branch | Behind by | Action |
+   |---------|--------|-----------|--------|
+   | `<name>` | `feature/x` | 3 commits | Will rebase |
+   | `<name>` | `feature/y` | 0 commits | Up to date — skip |
+   | `<name>` | `feature/w` | 2 commits | Dirty — skip |
 
-- Source branch to update from (default: repository default branch, usually `main` or `master`).
-- Update strategy: `rebase` (default) or `merge`.
-- Sessions to update: `all` (default) or a specific list of session branch names.
-- Conflict behaviour: `skip` (default — leave conflicted sessions untouched and report them)
-  or `abort` (roll back the update for any session with conflicts).
+4. **Update** each clean session that is behind, one at a time, inside its worktree. On a
+   conflict, abort that rebase or merge first, then: `skip` — mark it **Conflict — skipped**,
+   list its conflicting files, and continue; `abort` — `git -C <worktree> reset --hard
+   <pre-update-sha>` every session this run already updated (only clean worktrees were
+   touched, so this discards only this run's changes), report each, and stop.
+5. **Summarize**:
 
-## Workflow
+   | Session | Branch | Result | New HEAD |
+   |---------|--------|--------|----------|
+   | `<name>` | `feature/x` | ✅ Updated | `abc1234` |
+   | `<name>` | `feature/y` | ⏭ Already up to date | `def5678` |
+   | `<name>` | `feature/z` | ⚠️ Conflict — skipped | — |
+   | `<name>` | `feature/w` | ⏭ Dirty — skipped | — |
 
-### Phase 1 — Discover Open Sessions
+   Ask the user to resolve each conflicted session and to commit or set aside each dirty one
+   before re-running. Changes stay local: push nothing. For every rebased branch that already
+   had an upstream, say its history was rewritten and its next push needs
+   `--force-with-lease`.
 
-1. List all git worktrees to discover open session branches:
-   ```bash
-   git --no-pager worktree list
-   ```
-2. Identify the source branch HEAD:
-   ```bash
-   git --no-pager log <source-branch> -1 --oneline
-   ```
-3. For each worktree, check whether the source branch has new commits since the
-   session branched off:
-   ```bash
-   git --no-pager log <session-branch>..<source-branch> --oneline
-   ```
-4. Present the status table to the user and ask for confirmation before proceeding:
-
-| Session | Branch | Behind by | Action |
-|---------|--------|-----------|--------|
-| `<name>` | `feature/x` | 3 commits | Will rebase |
-| `<name>` | `feature/y` | 0 commits | Up to date — skip |
-
-### Phase 2 — Update Each Session
-
-5. For each session that is behind (in order):
-   a. Change into the worktree directory.
-   b. Fetch the latest source branch:
-      ```bash
-      git fetch origin <source-branch>
-      ```
-   c. Apply the chosen update strategy:
-
-   **Rebase:**
-   ```bash
-   git rebase origin/<source-branch>
-   ```
-
-   **Merge:**
-   ```bash
-   git merge --no-edit origin/<source-branch>
-   ```
-
-   d. If the operation exits with conflicts:
-      - If strategy is `skip`: run `git rebase --abort` or `git merge --abort`,
-        mark session as **Conflict — skipped**, and continue to the next session.
-      - If strategy is `abort`: roll back all changes made so far and stop.
-
-6. After a successful update, record the new HEAD for the session.
-
-### Phase 3 — Summary
-
-7. Output a final summary table:
-
-| Session | Branch | Result | New HEAD |
-|---------|--------|--------|----------|
-| `<name>` | `feature/x` | ✅ Updated | `abc1234` |
-| `<name>` | `feature/y` | ⏭ Already up to date | `def5678` |
-| `<name>` | `feature/z` | ⚠️ Conflict — skipped | — |
-
-8. For any session marked **Conflict — skipped**:
-   - List the conflicting files.
-   - Suggest the user open that session and resolve conflicts manually before
-     re-running this automation.
-
-## Canvas Interface
-
-This skill reports progress through the `orch-dashboard` canvas extension
-(`plugins/copilot-app/extensions/orch-dashboard/`). Follow the shared **Dashboard Reporting
-Contract** in `resources/dashboard-contract.md` to resolve the provider and for the
-availability fallback.
-
-- Open the dashboard per the shared contract, then call `start_run` with
-  `skillId: "update-open-sessions"` and these stages: Discover Open Sessions,
-  Update Each Session, Summary.
-- Call `finish_run` with the final status and a summary once every session has
-  been updated.
-
-See `plugins/copilot-app/extensions/orch-dashboard/README.md` for the full
-canvas action contract.
-
-## Output
-
-- All sessions behind the source branch are updated (rebased or merged).
-- Summary table with result per session.
-- Conflict report with file list for any sessions that could not be updated.
-
-## Notes
-
-- This automation only modifies local worktree branches; it does not push to remote.
-  Push manually or via the session's normal PR workflow after reviewing the update.
-- If worktrees are managed by the Copilot app rather than plain git, use the app's
-  session management tools to list sessions and update branches instead of raw git commands.
+Canvas: per [dashboard-contract.md](../../resources/dashboard-contract.md), `start_run` with
+`skillId: "update-open-sessions"` and stages Discover Open Sessions, Update Each Session,
+Summary; `finish_run` with the final status and the summary.

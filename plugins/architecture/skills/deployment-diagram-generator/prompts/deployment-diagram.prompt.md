@@ -5,10 +5,6 @@ description: Prompt for generating a Mermaid deployment or infrastructure diagra
 
 # Deployment Diagram Prompt
 
-## Purpose
-
-Produce a Mermaid deployment diagram that shows the physical or cloud infrastructure hosting the system, grouped by environment and network boundary.
-
 ## Pre-Draft Checklist
 
 Confirm the following before generating the diagram:
@@ -87,9 +83,5 @@ graph TD
 - Nodes named with role and technology.
 - Network groups shown as boundaries.
 - All relationships labelled with protocol and port where relevant.
-- Prose summary (3–5 sentences) covering hosting choices, scaling topology, and key security boundaries.
-- Note on Mermaid version required for the selected diagram type.
-- Traceability link to arc42 Section 7 (Deployment View).
-- Cross-reference to the C4 Level 2 Container diagram.
-- ADR references for cloud provider, region, and scaling decisions.
-- List of assumptions for any infrastructure detail not confirmed by the user.
+
+The summary, links, assumptions, and SVG follow [diagram-output.md](../../../resources/diagram-output.md).

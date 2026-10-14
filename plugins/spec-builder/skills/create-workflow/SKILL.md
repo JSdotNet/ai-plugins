@@ -1,6 +1,6 @@
 ---
 name: create-workflow
-description: Create or refine a GitHub Actions workflow file with secure, minimal, and traceable structure.
+description: 'Create or refine a GitHub Actions workflow file with a secure, minimal, and traceable structure. Use when: adding, extending, or hardening a .github/workflows file, pinning actions, or setting workflow permissions. DO NOT USE FOR: the workflow steps of a skill (create-skill).'
 ---
 
 # Create Workflow Skill

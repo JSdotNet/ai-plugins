@@ -9,10 +9,9 @@ Installable GitHub Copilot CLI plugin for GitHub platform workflows — issue sy
   - `skills/update-github-issue/SKILL.md`
   - `skills/github-actions/SKILL.md`
   - `skills/dependabot/SKILL.md`
-- Instructions:
-  - `resources/github-issues-sync.md`
-  - `resources/github-actions.md`
-  - `resources/markdown.md`
+- Contracts:
+  - `resources/github-issues-sync.md` — issue field mapping and content rules for create and update
+  - `resources/github-actions.md` — workflow security and authoring rules
 
 ## Scope
 
