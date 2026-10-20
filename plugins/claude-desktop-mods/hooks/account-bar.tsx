@@ -3,9 +3,9 @@
 // handoff band takes the slot while it holds a brief.
 
 import { atom, read, update } from 'claude-code'
-import type { EngineInterface, Register, SessionRateLimit } from 'claude-code'
+import type { Register, SessionRateLimit } from 'claude-code'
 
-import type { AccountIdentity, AccountWeek } from '../types'
+import type { AccountWeek } from '../types'
 
 const identity = atom({ plugin: 'claude-desktop-mods', key: 'accountIdentity' } as const, null)
 const week = atom({ plugin: 'claude-desktop-mods', key: 'accountWeek' } as const, null)
@@ -48,29 +48,17 @@ export function formatReset(iso: string | undefined): string {
   return `resets ${DAYS[at.getDay()]} ${hh}:${mm}`
 }
 
-async function readConfigIdentity($: EngineInterface): Promise<AccountIdentity | null> {
-  const dir = (await $.env.get('CLAUDE_CONFIG_DIR')) ?? (await $.env.get('USERPROFILE')) ?? (await $.env.get('HOME'))
-  if (!dir) return null
-  try {
-    const config = JSON.parse(await $.fs.read(`${dir}/.claude.json`)) as { oauthAccount?: { emailAddress?: string } }
-    const email = config.oauthAccount?.emailAddress
-    return email ? { email } : null
-  } catch {
-    return null
-  }
-}
-
 export const register: Register = (on, options) => {
   const label = typeof options.accountLabel === 'string' ? options.accountLabel.trim() : ''
   const custom =
     typeof options.accountColor === 'string' && /^#[0-9a-f]{6}$/i.test(options.accountColor) ? options.accountColor : ''
 
   // handoff.tsx owns the plugin's one unmatched session.start hook, so the band seeds itself
-  // on its first draw: the config file's account and the usage the session already has.
+  // on its first draw with the usage the session already has.
   let isSeeded = false
 
-  // The first message's context carries the account the session is signed in with:
-  // the authoritative source, and the one that tells desktop instances apart.
+  // The first message's context carries the account the desktop app is signed in with: the
+  // only source. ~/.claude.json names the standalone CLI's login, which can be another account.
   on('prompt.context', async ($, e, next) => {
     const block = e.blocks.find(b => b.name === 'userEmail')
     const email = block && emailFromContext(block.text)
@@ -91,8 +79,6 @@ export const register: Register = (on, options) => {
     if (e.props.hasSurvey || (await read($, brief)) !== null) return next(e)
     if (!isSeeded) {
       isSeeded = true
-      const found = (await read($, identity)) ?? (await readConfigIdentity($))
-      if (found) await update($, identity, () => found)
       const reading = weekFrom((await $.session.usage()).rateLimits)
       if (reading && (await read($, week)) === null) await update($, week, () => reading)
     }

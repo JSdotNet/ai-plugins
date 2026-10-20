@@ -113,7 +113,7 @@ declare module 'claude-code' {
       /** Folded sections of the overview, by id, and `instructions-all` when every instruction row shows. */
       contextFolded: Record<string, boolean>
       // hooks/account-bar.tsx
-      /** The signed-in account: from the first message's context, else the config file. */
+      /** The signed-in account: from the first message's userEmail context; null before it. */
       accountIdentity: AccountIdentity | null
       /** The weekly window the bar draws; null before the first reading. */
       accountWeek: AccountWeek | null
