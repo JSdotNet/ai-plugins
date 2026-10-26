@@ -57,7 +57,7 @@ plugin-namespaced or the bare server spelling and what each server does not expo
 | Server | Command | Used for |
 | --- | --- | --- |
 | `aspire` | `aspire agent mcp` | Resources, console and structured logs, traces, resource commands |
-| `playwright` | `npx -y @playwright/mcp@latest` | The `browser_*` tools: navigation, input, snapshots, screenshots |
+| `playwright` | `npx -y @playwright/mcp@latest --isolated` | The `browser_*` tools: navigation, input, snapshots, screenshots |
 
 Both are declared under `mcpServers` in both manifests, and the agents grant each server in
 the plugin-namespaced and the bare spelling —

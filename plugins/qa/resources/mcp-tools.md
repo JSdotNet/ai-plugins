@@ -36,6 +36,8 @@ shows; never assume one.
 
 ## Playwright
 
+- Started as `npx -y @playwright/mcp@latest --isolated`. `--isolated` keeps each browser
+  profile in memory, so parallel sessions never collide on one persistent profile's lock.
 - `@playwright/mcp` as of 0.0.79 exposes no tracing or video tools (`browser_start_tracing`
   and `browser_stop_tracing` do not exist) and no `--save-trace` or `--save-video` option;
   only screenshots and `--save-session` (a log of tool calls under `--output-dir`).
