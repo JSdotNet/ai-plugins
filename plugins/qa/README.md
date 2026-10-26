@@ -33,7 +33,7 @@ Two agent personas are included: `qa` drives the browser and produces the report
 | MCP Server | Purpose |
 |---|---|
 | Aspire MCP (`aspire agent mcp`) | Run the distributed app; query resource state, logs, and traces (no metrics tool) |
-| Playwright MCP (`@playwright/mcp`) | Drive a real browser: navigate, interact, snapshot, screenshot |
+| Playwright MCP (`npx -y @playwright/mcp@latest --isolated`) | Drive a real browser: navigate, interact, snapshot, screenshot |
 
 If either server is unavailable, the agent stops and names the missing server —
 see [resources/mcp-tools.md](./resources/mcp-tools.md).

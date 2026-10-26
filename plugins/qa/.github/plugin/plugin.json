@@ -1,7 +1,7 @@
 {
   "name": "qa",
   "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive Playwright browser scenarios with evidence for each, and monitor Aspire logs/traces during the test session.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "author": {
     "name": "Job Schepers"
   },
@@ -31,7 +31,8 @@
       "command": "npx",
       "args": [
         "-y",
-        "@playwright/mcp@latest"
+        "@playwright/mcp@latest",
+        "--isolated"
       ]
     }
   },
