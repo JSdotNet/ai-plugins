@@ -15,3 +15,4 @@ led to it.
 | [Plugin Contracts](plugin-contracts.md) | `resources/` contracts referenced by path; no plugin ships an `instructions/` folder. |
 | [Flow Control](flow-control.md) | A specialist holds none; sequencing, gates, and delegation belong to whatever consults it. |
 | [Model Pins](model-pins.md) | No agent pins a `model`; a preference goes in a `## Model` body section. |
+| [Browser Automation](browser-automation.md) | `qa` drives the browser with the Playwright CLI through the shell; no plugin declares a Playwright MCP server. |

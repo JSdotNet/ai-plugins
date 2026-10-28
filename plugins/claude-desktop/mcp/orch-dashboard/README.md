@@ -55,7 +55,8 @@ them in step when changing either copy.
   count badge.
 - An **Insight** panel: total tool calls, elapsed time, measured tool time, an estimated
   thinking remainder, and a time-by-category breakdown (Shell, Edit, Read,
-  `QA (Playwright/Aspire)`, MCP tool, Agent tasks, Other), captured from the session's own
+  `QA (Playwright/Aspire)` — Aspire tools and shell calls running `playwright-cli` — MCP tool,
+  Agent tasks, Other), captured from the session's own
   tool activity while a run is `in_progress`. No reporting is required from the orchestrating
   agent. Caveat: hook telemetry is session-wide, so any tool call made while a run is active
   is attributed to it, including unrelated work in the same session.
@@ -318,6 +319,14 @@ node plugins/claude-desktop/mcp/orch-dashboard/dev/subagent-telemetry-test.mjs
 ```
 
 Both use a throwaway state directory and exit non-zero on the first failed check.
+
+`dev/insight-category-test.mjs` checks the Insight categories of both dashboard copies — this
+server's and the `copilot-app` extension's — including that a shell call running
+`playwright-cli` counts as `QA (Playwright/Aspire)`:
+
+```bash
+node plugins/claude-desktop/mcp/orch-dashboard/dev/insight-category-test.mjs
+```
 
 Set `ORCH_DASHBOARD_TOKEN_LIMIT` to override the context window the gauge is a percentage of,
 for a session deliberately capped below its model's window. Left unset, the limit follows the

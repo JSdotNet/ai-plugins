@@ -849,6 +849,7 @@ session.on("tool.execution_start", (event) => {
     if (!data || !data.toolCallId) return;
     pendingToolCalls.set(data.toolCallId, {
         toolName: data.toolName,
+        input: data.arguments,
         mcpServerName: data.mcpServerName,
         model: data.model,
         startedAt: Date.now(),
@@ -870,7 +871,7 @@ session.on("tool.execution_complete", (event) => {
         if (!run) return;
         appendToolCall(run, {
             toolName,
-            category: categorizeTool(toolName),
+            category: categorizeTool(toolName, pending.input),
             durationMs,
             success: data.success !== false,
             endedAt: new Date().toISOString(),

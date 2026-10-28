@@ -1,7 +1,7 @@
 ---
 name: deployed-environment-validation
 description: >
-  Validate a feature or bug fix with Playwright against an already-deployed test
+  Validate a feature or bug fix with the Playwright CLI against an already-deployed test
   environment (staging, QA, UAT) instead of an app started locally via Aspire.
   Use when: testing a deployed staging/QA/UAT environment, validating a release
   candidate before promotion, smoke or regression checks against an environment
@@ -22,12 +22,12 @@ staging, QA, UAT — instead of starting the app locally. The evidence policy is
    was meant; testing the wrong environment is a serious mistake.
 2. **Check health.** Reach a health endpoint, status page, or a simple navigation first. When
    the environment is unreachable or unhealthy, stop and report it.
-3. **Skip local startup.** Do not apply `aspire-run`; take the Playwright endpoints from the
+3. **Skip local startup.** Do not apply `aspire-run`; point the Playwright CLI at the
    confirmed base URL.
 4. **Monitor logs, best effort.** This plugin's Aspire server sees only local AppHosts. When
    the person registered a server against the environment's dashboard (see
-   [mcp-tools.md](../../resources/mcp-tools.md)), apply `aspire-log-monitor` through it for the
-   whole session. Otherwise proceed on Playwright console and network evidence and say in the
+   [qa-tools.md](../../resources/qa-tools.md)), apply `aspire-log-monitor` through it for the
+   whole session. Otherwise proceed on the CLI's console and network evidence and say in the
    report that Aspire monitoring was not available. For deeper observability, recommend
    `csharp-coding:sre` rather than reaching into production logging from here; when the
    `csharp-coding` plugin is not installed, name the gap in the report.
