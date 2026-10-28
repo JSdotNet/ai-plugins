@@ -5,9 +5,9 @@ status: adopted
 ```
 
 The formats and protocols every layer builds on: what an asset is written in, and how a
-plugin reaches a tool server. The MCP servers recorded here are only the ones this
-repository's own manifests declare; what a specialist targets in a consuming repository is
-that repository's stack.
+plugin reaches a tool server. The tools recorded here are only the MCP servers this
+repository's own manifests declare and the Playwright CLI the `qa` plugin runs; what a
+specialist targets in a consuming repository is that repository's stack.
 
 ## Markdown
 
@@ -82,14 +82,30 @@ both manifests.
 - **Used for** — the `qa` agents read resources, logs, and traces of the application under
   test. The Aspire CLI itself is the consuming repository's, not this one's.
 
-## Playwright MCP server
+## Playwright CLI
 
 ```meta
 status: adopted
 type: tool
+depends-on: [".devbook/tech/tooling.md#nodejs"]
+```
+
+`@playwright/cli`, run as `playwright-cli` through the shell. The `qa` plugin declares no
+server for it: the person installs it, and a skill stops when `playwright-cli --version`
+does not answer.
+
+- **Used for** — the `qa` agents drive a browser and capture screenshot, video, and trace
+  evidence.
+
+## Playwright MCP server
+
+```meta
+status: retired
+type: tool
 depends-on: [".devbook/tech/shared.md#mcp", ".devbook/tech/tooling.md#nodejs"]
 ```
 
-`@playwright/mcp`, started through `npx`, declared by the `qa` plugin in both manifests.
+`@playwright/mcp`, which the `qa` plugin declared until 0.5.0. Replaced by the Playwright CLI —
+[Browser Automation](../arc42/adr/browser-automation.md).
 
-- **Used for** — the `qa` agents drive a browser and capture screenshot evidence.
+- **Used for** — nothing; kept for history.

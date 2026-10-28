@@ -1,12 +1,13 @@
 # qa
 
 ```meta
-related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/tech/shared.md#aspire-mcp-server", ".devbook/tech/shared.md#playwright-mcp-server", ".devbook/arc42/adr/flow-control.md"]
+related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/tech/shared.md#aspire-mcp-server", ".devbook/tech/shared.md#playwright-cli", ".devbook/arc42/adr/flow-control.md", ".devbook/arc42/adr/browser-automation.md"]
 ```
 
 The runtime validation specialist, and the exemplar for the specialists: a role filled by an
-agent, skills that carry the procedure, MCP servers the plugin declares itself, and no flow
-control. It starts an application through Aspire, drives browser scenarios through Playwright,
+agent, skills that carry the procedure, an MCP server the plugin declares itself, and no flow
+control. It starts an application through Aspire, drives browser scenarios through the
+Playwright CLI,
 watches Aspire logs and traces for the whole session, and returns a report whose every
 pass and fail carries an evidence path.
 
@@ -46,22 +47,25 @@ The caller settles monitoring ownership before `qa` starts: caller-owned means t
 ```
 
 Two `resources/` contracts the skills and agents read by path: `qa-evidence.md`, the evidence
-policy every validation follows, and `mcp-tools.md`, how a bare tool name resolves to the
-plugin-namespaced or the bare server spelling and what each server does not expose.
+policy every validation follows, and `qa-tools.md`, how a bare Aspire tool name resolves to
+the plugin-namespaced or the bare server spelling, which `playwright-cli` commands a skill
+runs, and what each tool does not expose.
 
-### MCP Servers
+### Tools
 
 ```meta
 ```
 
-| Server | Command | Used for |
+| Tool | Reached as | Used for |
 | --- | --- | --- |
-| `aspire` | `aspire agent mcp` | Resources, console and structured logs, traces, resource commands |
-| `playwright` | `npx -y @playwright/mcp@latest --isolated` | The `browser_*` tools: navigation, input, snapshots, screenshots |
+| `aspire` MCP server | `aspire agent mcp` | Resources, console and structured logs, traces, resource commands |
+| Playwright CLI | `playwright-cli`, through the shell | Navigation, input, snapshots, screenshots, video, traces |
 
-Both are declared under `mcpServers` in both manifests, and the agents grant each server in
-the plugin-namespaced and the bare spelling —
-[Tool Map](../08-crosscutting-concepts.md#tool-map).
+The Aspire server is declared under `mcpServers` in both manifests, and the agents grant it
+in the plugin-namespaced and the bare spelling —
+[Tool Map](../08-crosscutting-concepts.md#tool-map). The Playwright CLI is the person's to
+install; a skill checks `playwright-cli --version` first and stops when it does not answer —
+[Browser Automation](../adr/browser-automation.md).
 
 ### Hooks
 
@@ -88,7 +92,7 @@ flowchart LR
     qaMonitor[qa-monitor agent] --> monitor
     run --> aspire[(aspire MCP)]
     monitor --> aspire
-    validate --> playwright[(playwright MCP)]
+    validate --> playwright[[playwright-cli]]
     deployed --> validate
     fromIssue --> run
     fromIssue --> validate
@@ -109,7 +113,7 @@ the repository's existing Playwright conventions.
 | Depends on | Mechanism |
 | --- | --- |
 | Aspire CLI | Starts the application and serves the `aspire` MCP server |
-| Playwright MCP | Pulled by `npx` on first use |
+| Playwright CLI | Installed by the person (`npm install -g @playwright/cli@latest`), run through the shell |
 | `csharp-coding` | Named, not called: the `coding` agent for a runtime bug, the `sre` skill for repeated log errors |
 
 | Depended on by | Mechanism |

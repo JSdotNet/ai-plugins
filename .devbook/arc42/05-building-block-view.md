@@ -49,7 +49,7 @@ related: [".devbook/arc42/adr/flow-control.md"]
 | `architecture` | arc42 chapters, decision and debt records, C4, sequence, state, and deployment diagrams | agent `architect`; 7 skills; fills the `architecture` role |
 | `csharp-coding` | C# .NET implementation, TDD, refactoring, review, NuGet, Aspire, OpenTelemetry | agent `coding`; 13 skills; the `implement` and `verify` services |
 | `react-coding` | React and TypeScript implementation bound to a .NET API contract | agent `frontend`; 4 skills; the `implement` and `verify` services |
-| [`qa`](building-blocks/qa.md) | Runtime validation through Aspire and Playwright, with evidence and log monitoring | agents `qa`, `qa-monitor`; 6 skills; the `aspire` and `playwright` MCP servers |
+| [`qa`](building-blocks/qa.md) | Runtime validation through Aspire and Playwright, with evidence and log monitoring | agents `qa`, `qa-monitor`; 6 skills; the `aspire` MCP server and the Playwright CLI |
 | `domain-design` | Bounded contexts, ubiquitous language, domain models, context maps | agent `domain-architect`; 8 skills; the `domain` role |
 | `ux-design` | Wireframes, user flows, design guidelines, UI reviews | agent `ux-designer`; 4 skills; the `ux` role |
 | `documentation` | How-tos, explanations, articles, proposals, infographics, profiles | agents `documentation`, `profile`; 9 skills; the `docs` role |

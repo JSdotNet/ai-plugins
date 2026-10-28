@@ -8,13 +8,13 @@ status: adopted
 > runtime of its own: every plugin is Markdown and JSON loaded by two hosts, plus one MCP
 > server and three canvases. What a specialist targets — Aspire, Playwright, Aikido, Jira —
 > is the consuming repository's stack and is not recorded here, except for the MCP servers
-> this repository's own manifests declare.
+> this repository's own manifests declare and the Playwright CLI the `qa` plugin runs.
 
 ## Layers
 
 | File | Covers |
 | --- | --- |
-| [shared.md](shared.md) | The formats assets are written in, the protocols a plugin reaches a tool server through, and the MCP servers the manifests declare |
+| [shared.md](shared.md) | The formats assets are written in, the protocols a plugin reaches a tool server through, the MCP servers the manifests declare, and the Playwright CLI `qa` runs |
 | [hosts.md](hosts.md) | The plugin contracts of Claude Code and GitHub Copilot, the two apps the host plugins render in, and the function hooks the Claude mods run as |
 | [tooling.md](tooling.md) | The agents that author and load the assets, the runtime and shell the scripts run on, CI, and the plugins and apps a change is carried with |
 
@@ -28,7 +28,7 @@ graph LR
         mcp[MCP]
         mcp-apps[MCP Apps]
         aspire-mcp[Aspire MCP server]
-        playwright-mcp[Playwright MCP server]
+        playwright-cli[Playwright CLI]
     end
     subgraph hosts
         claude-api[Claude Code plugin API]
@@ -51,8 +51,7 @@ graph LR
     mermaid --> markdown
     mcp-apps --> mcp
     aspire-mcp --> mcp
-    playwright-mcp --> mcp
-    playwright-mcp --> node
+    playwright-cli --> node
     claude-api --> claude-code
     claude-api --> markdown
     claude-api --> mcp
