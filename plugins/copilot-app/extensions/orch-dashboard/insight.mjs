@@ -56,16 +56,22 @@ const CATEGORY_RULES = [
     { category: "Shell", test: /powershell|bash|shell/i },
     { category: "Edit", test: /^edit$|^create$/i },
     { category: "Read", test: /^view$|^glob$|^grep$/i },
-    // Playwright MCP (browser_*) and Aspire CLI MCP tool calls, used by the qa plugin's
-    // playwright-validation and aspire-log-monitor skills. Checked before the generic
+    // Aspire CLI MCP tool calls, used by the qa plugin's aspire-log-monitor skill, and the
+    // Playwright MCP browser_* names older run files still hold. Checked before the generic
     // "MCP tool" rule so QA activity gets its own bucket in the insight breakdown.
     { category: "QA (Playwright/Aspire)", test: new RegExp(`^browser_|playwright|aspire|${ASPIRE_TOOLS}`, "i") },
     { category: "MCP tool", test: /mcpserver|mcp[_-]/i },
     { category: "Agent tasks", test: /^task$/i },
 ];
 
-export function categorizeTool(toolName) {
+// The Playwright CLI runs through the shell, so its calls are told apart by command.
+const PLAYWRIGHT_CLI = /(^|[\s;&|(])(npx\s+(-y\s+)?)?(playwright-cli|@playwright\/cli)\b/;
+
+export function categorizeTool(toolName, input) {
     const name = toolName || "unknown";
+    if (/powershell|bash|shell/i.test(name) && PLAYWRIGHT_CLI.test(String(input?.command ?? ""))) {
+        return "QA (Playwright/Aspire)";
+    }
     for (const rule of CATEGORY_RULES) {
         if (rule.test.test(name)) return rule.category;
     }
