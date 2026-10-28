@@ -3,7 +3,7 @@
 Installable GitHub Copilot CLI plugin for runtime QA validation.
 
 Runs a project through **.NET Aspire**, validates features end-to-end with the
-**Playwright MCP server**, and continuously monitors **Aspire MCP** logs/traces for
+**Playwright CLI** (`playwright-cli`), and continuously monitors **Aspire MCP** logs/traces for
 the whole test session — so runtime errors are never missed just because the UI
 looked correct.
 
@@ -17,33 +17,34 @@ Two agent personas are included: `qa` drives the browser and produces the report
   - `agents/qa-monitor.agent.md` — dedicated Aspire log/trace monitoring persona
 - Skills:
   - `skills/aspire-run/SKILL.md` — start and confirm health of the app under test via Aspire
-  - `skills/playwright-validation/SKILL.md` — drive browser scenarios via Playwright MCP and capture evidence for each
+  - `skills/playwright-validation/SKILL.md` — drive browser scenarios with the Playwright CLI and capture evidence for each
   - `skills/aspire-log-monitor/SKILL.md` — continuously monitor Aspire logs/traces during testing
   - `skills/feature-test-from-issue/SKILL.md` — derive test scenarios from a GitHub issue or Jira ticket (reads the issue with the session's issue tooling or a pasted body; no GitHub/Jira-specific content here)
   - `skills/deployed-environment-validation/SKILL.md` — validate against a specific already-deployed test environment (staging/QA/UAT) instead of a local Aspire run
   - `skills/playwright-e2e-authoring/SKILL.md` — turn a validated scenario into a durable, committed Playwright test
 - Contracts:
-  - `resources/mcp-tools.md` — Aspire and Playwright MCP tool-name resolution and gaps
+  - `resources/qa-tools.md` — Aspire MCP tool-name resolution, Playwright CLI commands, and gaps
   - `resources/qa-evidence.md` — the evidence policy every validation follows
 - Hooks:
   - `hooks.json` (session-start reminder to always run, monitor, and record evidence)
 
-## MCP Servers (required for full capability)
+## Tools (required for full capability)
 
-| MCP Server | Purpose |
+| Tool | Purpose |
 |---|---|
 | Aspire MCP (`aspire agent mcp`) | Run the distributed app; query resource state, logs, and traces (no metrics tool) |
-| Playwright MCP (`npx -y @playwright/mcp@latest --isolated`) | Drive a real browser: navigate, interact, snapshot, screenshot |
+| Playwright CLI (`npm install -g @playwright/cli@latest`, run as `playwright-cli`) | Drive a real browser: navigate, interact, snapshot, screenshot, record video and traces |
 
-If either server is unavailable, the agent stops and names the missing server —
-see [resources/mcp-tools.md](./resources/mcp-tools.md).
+The plugin declares the Aspire server; install the Playwright CLI yourself. If either is
+unavailable, the agent stops and names what is missing —
+see [resources/qa-tools.md](./resources/qa-tools.md).
 
 ## What the QA Agent Can Do
 
 - **Test from a GitHub issue or Jira ticket** — derive confirmed test scenarios from acceptance criteria or repro steps via `feature-test-from-issue` (reads the issue with the session's issue tooling or a pasted body, and posts a result comment only after explicit confirmation; no GitHub/Jira-specific logic lives in this plugin).
 - **Run the app under test** — start an Aspire-orchestrated solution and confirm every resource is healthy before testing begins, or use `deployed-environment-validation` to target a specific already-deployed staging/QA/UAT environment instead.
-- **Validate features end-to-end** — use Playwright MCP to navigate, interact, and assert against the real running UI, not just source code.
-- **Capture evidence** — a screenshot per checkpoint and failure, and one per step for a multi-step flow; the form is resolved from the live Playwright tool list.
+- **Validate features end-to-end** — use the Playwright CLI to navigate, interact, and assert against the real running UI, not just source code.
+- **Capture evidence** — a screenshot per checkpoint and failure, and one per step or a video for a multi-step flow.
 - **Monitor logs continuously** — keep Aspire log/trace monitoring active for the entire session, catching backend errors a passing UI might hide, either directly or via the `qa-monitor` persona.
 - **Codify durable regression tests** — turn a scenario validated interactively into a committed, re-runnable Playwright test via `playwright-e2e-authoring`.
 - **Report findings** — structured Pass/Fail/Flaky results with severity, evidence paths, and correlated Aspire log/trace findings.

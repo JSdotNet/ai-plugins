@@ -7,7 +7,7 @@ description: 'Start a .NET Aspire-orchestrated application and confirm every res
 
 Start the app through its AppHost, so databases, caches, queues, and downstream services are
 wired as a real user gets them, and confirm it is healthy before any validation. Resolve
-tool names and the server start command per [mcp-tools.md](../../resources/mcp-tools.md).
+tool names and the server start command per [qa-tools.md](../../resources/qa-tools.md).
 
 ## Steps
 

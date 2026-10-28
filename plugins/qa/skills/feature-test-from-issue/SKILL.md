@@ -1,7 +1,7 @@
 ---
 name: feature-test-from-issue
 description: >
-  Derive Playwright test scenarios from a GitHub issue or Jira ticket (acceptance
+  Derive browser test scenarios from a GitHub issue or Jira ticket (acceptance
   criteria, repro steps), then validate the feature or bug fix against the running
   app with evidence and Aspire log monitoring.
   Use when: an issue/ticket number or link is the source of truth for what to test,

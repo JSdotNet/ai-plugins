@@ -23,12 +23,12 @@ and an Aspire log/trace review. Static code reading never validates a feature.
 - Every pass or fail finding from a browser scenario carries a concrete evidence path the
   user can open. A screenshot described without a path is not evidence.
 - Every scenario has at least one screenshot; a multi-step flow has one per state-changing
-  step, or a recording where the tool list exposes one.
+  step, or a video when one was recorded.
 - Every failure has a frame captured at the point of failure, before any recovery, plus the
   browser console and network output at that moment.
-- Name the form used. A screenshot sequence is a screenshot sequence: never call it a video
-  or a trace.
-- Browser-canvas or browser-pane snapshots and smoke output are not Playwright MCP evidence.
+- Name the form used — screenshot, screenshot sequence, video, or trace. Never call a
+  screenshot sequence a video or a trace.
+- Browser-canvas or browser-pane snapshots and smoke output are not Playwright CLI evidence.
   Cite them only as fallback evidence for a limited render check, labelled as such.
 
 ## Verdicts
@@ -44,7 +44,8 @@ and an Aspire log/trace review. Static code reading never validates a feature.
   that was not performed.
 - When monitoring was unavailable (no Aspire MCP server, or none reaching a deployed
   environment), say so in the report and name the evidence used instead. Never omit the gap.
-- When Playwright capture is unavailable, say so and claim no Playwright evidence.
+- When Playwright capture is unavailable (`playwright-cli` does not answer), say so and
+  claim no Playwright evidence.
 
 ## Where it is stored
 

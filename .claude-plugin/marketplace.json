@@ -74,8 +74,8 @@
     {
       "name": "qa",
       "source": "./plugins/qa",
-      "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive Playwright browser scenarios with evidence for each, and monitor Aspire logs/traces during the test session.",
-      "version": "0.4.3"
+      "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive browser scenarios through the Playwright CLI with evidence for each, and monitor Aspire logs/traces during the test session.",
+      "version": "0.5.0"
     },
     {
       "name": "react-coding",
