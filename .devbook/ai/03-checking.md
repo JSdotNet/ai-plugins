@@ -1,7 +1,7 @@
 # Checking an Asset
 
 ```meta
-status: trial
+rating: trial
 type: stage
 ```
 
@@ -11,9 +11,9 @@ type: stage
 ## check-assets Gate
 
 ```meta
-status: adopted
+rating: adopted
 type: guardrail
-stage: [code, test]
+stage: [code, verify]
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#github-actions"]
 date: 2026-09-14
 ```
@@ -35,9 +35,9 @@ a rule wrapper that drifted. It writes nothing.
 ## claude plugin validate
 
 ```meta
-status: candidate
+rating: candidate
 type: practice
-stage: [test]
+stage: [verify]
 depends-on: [".devbook/tech/tooling.md#claude-code"]
 date: 2026-09-26
 ```
@@ -56,9 +56,9 @@ a manifest Claude Code would refuse to load.
 ## Devbook Check
 
 ```meta
-status: trial
+rating: trial
 type: guardrail
-stage: [code, test]
+stage: [code, verify]
 depends-on: [".devbook/tech/tooling.md#devbook-plugin", ".devbook/tech/tooling.md#github-actions"]
 date: 2026-09-26
 ```

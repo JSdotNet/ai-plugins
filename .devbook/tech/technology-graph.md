@@ -1,7 +1,7 @@
 # Technology Graph
 
 ```meta
-status: adopted
+rating: adopted
 ```
 
 > The technologies this marketplace is built, carried, and checked with. It ships no

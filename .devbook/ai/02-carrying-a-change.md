@@ -1,7 +1,7 @@
 # Carrying a Change
 
 ```meta
-status: adopted
+rating: adopted
 type: stage
 ```
 
@@ -11,9 +11,9 @@ type: stage
 ## Backlog Plan Items
 
 ```meta
-status: adopted
+rating: adopted
 type: workflow
-stage: [plan, code]
+stage: [specify, code]
 depends-on: [".devbook/tech/tooling.md#backlog-tools-plugin"]
 date: 2026-09-24
 ```
@@ -34,9 +34,9 @@ before doing anything.
 ## Estimate Procedure
 
 ```meta
-status: candidate
+rating: candidate
 type: skill
-stage: [plan]
+stage: [specify]
 related: [".devbook/ai/02-carrying-a-change.md#backlog-plan-items"]
 date: 2026-09-28
 ```
@@ -57,9 +57,9 @@ from this repository.
 ## Flow Skills
 
 ```meta
-status: trial
+rating: trial
 type: skill
-stage: [plan, code, test]
+stage: [specify, code, verify]
 depends-on: [".devbook/tech/tooling.md#devbook-plugin"]
 date: 2026-10-06
 ```
@@ -84,7 +84,7 @@ request behind a Personal Validation gate.
 ## Worktree Sessions
 
 ```meta
-status: adopted
+rating: adopted
 type: practice
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code"]
@@ -104,9 +104,9 @@ branch, so several run in parallel against one clone.
 ## pr-jsdotnet Skill
 
 ```meta
-status: adopted
+rating: adopted
 type: skill
-stage: [release]
+stage: [integrate]
 depends-on: [".devbook/tech/tooling.md#github-cli"]
 date: 2026-08-06
 ```
@@ -126,9 +126,9 @@ the marketplace installs from it.
 ## Nightly Version Bump
 
 ```meta
-status: hold
+rating: hold
 type: hook
-stage: [release]
+stage: [integrate]
 depends-on: [".devbook/tech/tooling.md#github-actions"]
 date: 2026-09-26
 ```
@@ -149,9 +149,9 @@ changed without one — the backstop for an agent-authored change that left the 
 ## Scheduled Routines
 
 ```meta
-status: trial
+rating: trial
 type: workflow
-stage: [operate, monitor]
+stage: [operate]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/hosts.md#claude-desktop"]
 date: 2026-09-26
 ```
