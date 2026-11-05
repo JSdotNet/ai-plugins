@@ -29,6 +29,7 @@ graph LR
         mcp-apps[MCP Apps]
         aspire-mcp[Aspire MCP server]
         playwright-cli[Playwright CLI]
+        playwright-mcp[Playwright MCP server]
     end
     subgraph hosts
         claude-api[Claude Code plugin API]
@@ -52,6 +53,8 @@ graph LR
     mcp-apps --> mcp
     aspire-mcp --> mcp
     playwright-cli --> node
+    playwright-mcp --> mcp
+    playwright-mcp --> node
     claude-api --> claude-code
     claude-api --> markdown
     claude-api --> mcp
