@@ -106,7 +106,7 @@ ai-plugins
 |- .github/
 |  |- instructions/             Copilot wrappers, one per rule
 |  |- skills/                   repository-local skills and Copilot procedure wrappers
-|  \- workflows/                check-assets.yml, devbook-meta.yml, nightly-plugin-version-bump.yml
+|  \- workflows/                auto-merge.yml, check-assets.yml, devbook-meta.yml
 |- .claude-plugin/marketplace.json   the marketplace, one entry per plugin
 |- plugins/<name>/              one folder per plugin, each installable on its own
 |- docs/copilot/                Copilot reference and inventories

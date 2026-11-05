@@ -127,28 +127,30 @@ the marketplace installs from it.
 ## Nightly Version Bump
 
 ```meta
-rating: hold
+rating: retired
 type: hook
 stage: [integrate]
 depends-on: [".devbook/tech/tooling.md#github-actions"]
-date: 2026-09-26
+date: 2026-11-05
 ```
 
-`nightly-plugin-version-bump.yml` runs at 01:00 UTC to bump the version of every plugin that
-changed without one — the backstop for an agent-authored change that left the bump out.
+`nightly-plugin-version-bump.yml` was scheduled for 01:00 UTC to bump the version of every plugin
+that changed without one — the backstop for an agent-authored change that left the bump out. It
+was removed on 2026-11-05: no bump it made ever reached `main`, and sessions bump a plugin
+themselves.
 
-- **Used for** — nothing in practice. The workflow bumps each plugin whose `plugins/<name>/` tree
-  changed after its last manifest version commit, on the branch
-  `chore/nightly-plugin-version-bump`. The bump never lands, because GitHub refuses the pull
-  request: this repository does not let Actions create one.
+- **Used for** — nothing that landed. Until 2026-09-26 the workflow diffed `main` against its own
+  merge base, so it never found a change. After that it bumped the right plugins on a branch, and
+  GitHub refused the pull request, because this repository does not let Actions create one.
 - **Adopted by** — nobody; the version is bumped in the session with `bump-version.mjs`, which
   `AGENTS.md` requires.
-- **Evidence** — 18 runs from 2026-09-27 through 2026-10-14 failed on the pull request step. The
-  runs since then succeeded with "No plugin changed since its last version bump", because
-  sessions bumped those plugins themselves. No nightly bump pull request has ever been opened.
-- **Limits** — no model runs in it; it is recorded here because it exists to backstop agent
-  sessions. It returns to `adopted` once this repository lets Actions create a pull
-  request.
+- **Evidence** — 42 runs from 2026-08-16 through 2026-09-26 succeeded with "No changed files
+  detected". 18 runs from 2026-09-27 through 2026-10-14 failed with "GitHub Actions is not
+  permitted to create or approve pull requests". 22 runs from 2026-10-15 through 2026-11-05
+  succeeded with "No plugin changed since its last version bump", because sessions bumped those
+  plugins themselves. No nightly bump pull request was ever opened.
+- **Limits** — no model ran in it. Nothing now detects a plugin change that leaves the bump out:
+  `check-assets.mjs` catches versions that disagree, not a missing bump.
 
 ## Scheduled Routines
 
@@ -175,8 +177,7 @@ the Claude desktop app. Each run makes its own detached worktree off `origin/mai
 - **Evidence** — the instruction-review routine opened #166 on 2026-10-01, and it was merged
   the same day: the first run that published something a person acted on.
 - **Moves up when** — the other routines have done the same.
-- **Limits** — the nightly version bump is a CI schedule, not an agent routine, and is recorded
-  on its own. The routines run only while the desktop app is open on the maintainer's machine;
+- **Limits** — the routines run only while the desktop app is open on the maintainer's machine;
   one that comes due while it is closed runs on the next launch. They are not cloud routines
   because a cloud session needs a committed `.claude/settings.json` enabling the plugins, and
   this repository has none.
