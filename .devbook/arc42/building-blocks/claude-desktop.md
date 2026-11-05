@@ -89,7 +89,8 @@ two plugins' stage names and dashboard contract in step.
 | `mcp-server.mjs` | The MCP tools, the HTTP server, and the `ui://` resources |
 | `state.mjs` | Resolves the state directory and holds `active.json` |
 | `store.mjs` | One JSON file per run, under `runs/` |
-| `telemetry-hook.mjs`, `insight.mjs` | Turn Claude Code hook events into per-stage tool activity |
+| `telemetry-hook.mjs` | Records Claude Code hook events as tool activity on the run |
+| `insight.mjs` | Summarizes a run's recorded activity and context use |
 | `render.mjs`, `views/`, `app-bridge.js` | The dashboard shell, the diagram and document pages, and the MCP Apps bridge |
 | `report.mjs` | Markdown and self-contained HTML reports of a run |
 | `session-title.mjs` | Derives a session title from where a run's output landed |
