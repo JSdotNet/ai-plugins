@@ -56,9 +56,8 @@ version: "7"
 
 `pwsh` is the shell for the scripts that are not checkers.
 
-- **Used for** — `scripts/Build-DesktopExtension.ps1`, the version-bump step of
-  `nightly-plugin-version-bump.yml`, and the `scripts/*.ps1` that three plugins run from their
-  own root: architecture, domain-design, and fincent. The checkers stay on Node.js.
+- **Used for** — `scripts/Build-DesktopExtension.ps1` and the `scripts/*.ps1` that three plugins run
+  from their own root: architecture, domain-design, and fincent. The checkers stay on Node.js.
 
 ## GitHub Actions
 
@@ -70,12 +69,11 @@ depends-on: [".devbook/tech/tooling.md#nodejs"]
 
 GitHub Actions runs CI for this repository.
 
-- **Used for** — four workflows:
+- **Used for** — three workflows:
   - `check-assets.yml` runs on every pull request.
   - `devbook-meta.yml` runs on a devbook change.
   - `auto-merge.yml` merges a pull request that is not a draft once every other check on its
     head commit is green.
-  - `nightly-plugin-version-bump.yml` runs nightly.
 
 ## GitHub CLI
 

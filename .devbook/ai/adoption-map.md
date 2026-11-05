@@ -44,7 +44,7 @@ graph LR
     flows["Flow Skills · trial"]:::trial
     validate["claude plugin validate · candidate"]:::candidate
     skill["pr-jsdotnet Skill · adopted"]:::adopted
-    bump["Nightly Version Bump · hold"]:::hold
+    bump["Nightly Version Bump · retired"]:::retired
     routines["Scheduled Routines · trial"]:::trial
 
     specify --- backlog
@@ -70,6 +70,7 @@ graph LR
     classDef trial fill:#fff3c4,stroke:#b28704,color:#1b1b1b
     classDef candidate fill:#e3f2fd,stroke:#1565c0,color:#1b1b1b
     classDef hold fill:#eeeeee,stroke:#616161,color:#1b1b1b
+    classDef retired fill:#ffffff,stroke:#9e9e9e,stroke-dasharray:4,color:#616161
 ```
 
 `decide` and `release` are empty. No chapter records a usage at `decide`, and nothing here is

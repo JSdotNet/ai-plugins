@@ -33,7 +33,7 @@ Both read the same agents, skills, and contracts. How one file satisfies both is
 | Delivery engine: `delivery`, `delivery-schedule`, and their `delivery-*` surfaces | Staged flows, gates, the pull-request lane, schedules, model selection | Consults a specialist by role (`architecture`, `docs`, …) through the repository's `phases` maps. |
 | devbook and its `devbook-*` extensions | The `.devbook/` folder convention, its rules, and the `devbook-meta` check | The specialists write chapters to its rules. |
 | Backlog | Plans and work items for changes to this repository | Items are pasted into a session and run by `run-plan-item`. |
-| GitHub | The repository, pull requests, CI | Its workflows check, merge, and version the repository. |
+| GitHub | The repository, pull requests, CI | Its workflows check and merge pull requests. |
 
 - **Delivery engine:** It lives in `JSdotNet/devbook`. A specialist never names the engine.
 - **devbook:** It also lives in `JSdotNet/devbook`. The specialists write `arc42/`, `domain/`,
@@ -45,9 +45,6 @@ Both read the same agents, skills, and contracts. How one file satisfies both is
   - `check-assets.yml` gates every pull request.
   - `auto-merge.yml` merges a pull request that is not a draft once every other check on its
     head commit is green.
-  - The nightly workflow bumps the versions of changed plugins on a branch. GitHub refuses the
-    pull request it then opens:
-    [Nightly Version Bump](../ai/02-carrying-a-change.md#nightly-version-bump).
 
 The flow control that used to ship here moved to the engine on 2026-09-14, when the engine
 lived in `JSdotNet/ai-agent-stack`. The engine and devbook have since moved to
