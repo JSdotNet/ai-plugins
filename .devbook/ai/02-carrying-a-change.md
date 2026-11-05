@@ -137,15 +137,18 @@ date: 2026-09-26
 `nightly-plugin-version-bump.yml` runs at 01:00 UTC to bump the version of every plugin that
 changed without one — the backstop for an agent-authored change that left the bump out.
 
-- **Used for** — nothing in practice. On a schedule the workflow checks out `main` and diffs it
-  against its own merge base with `main`, so the diff is always empty and it never bumps a
-  plugin.
+- **Used for** — nothing in practice. The workflow bumps each plugin whose `plugins/<name>/` tree
+  changed after its last manifest version commit, on the branch
+  `chore/nightly-plugin-version-bump`. The bump never lands, because GitHub refuses the pull
+  request: this repository does not let Actions create one.
 - **Adopted by** — nobody; the version is bumped in the session with `bump-version.mjs`, which
   `AGENTS.md` requires.
-- **Evidence** — ten consecutive scheduled runs, 2026-09-17 through 2026-09-26, each succeeded
-  with "No changed files detected"; no nightly bump pull request has ever been opened.
+- **Evidence** — 18 runs from 2026-09-27 through 2026-10-14 failed on the pull request step. The
+  runs since then succeeded with "No plugin changed since its last version bump", because
+  sessions bumped those plugins themselves. No nightly bump pull request has ever been opened.
 - **Limits** — no model runs in it; it is recorded here because it exists to backstop agent
-  sessions. It returns to `adopted` once it diffs against the last release instead.
+  sessions. It returns to `adopted` once this repository lets Actions create a pull
+  request.
 
 ## Scheduled Routines
 

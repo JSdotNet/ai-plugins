@@ -45,7 +45,9 @@ Both read the same agents, skills, and contracts. How one file satisfies both is
   - `check-assets.yml` gates every pull request.
   - `auto-merge.yml` merges a pull request that is not a draft once every other check on its
     head commit is green.
-  - The nightly workflow bumps the versions of changed plugins.
+  - The nightly workflow bumps the versions of changed plugins on a branch. GitHub refuses the
+    pull request it then opens:
+    [Nightly Version Bump](../ai/02-carrying-a-change.md#nightly-version-bump).
 
 The flow control that used to ship here moved to the engine on 2026-09-14, when the engine
 lived in `JSdotNet/ai-agent-stack`. The engine and devbook have since moved to

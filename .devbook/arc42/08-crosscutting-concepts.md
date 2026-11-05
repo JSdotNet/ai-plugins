@@ -157,7 +157,8 @@ node tools/bump-version.mjs <plugin> [patch|minor|major]
 
 The checker fails on any disagreement, and on a name or description that differs between the
 two manifests. The nightly version-bump workflow runs the same script for each changed plugin
-and then the checker.
+and then the checker, but its result does not land:
+[Nightly Version Bump](../ai/02-carrying-a-change.md#nightly-version-bump).
 
 ## SessionStart Twin Hook
 
