@@ -1,22 +1,22 @@
 # Shared
 
 ```meta
-status: adopted
+rating: adopted
 ```
 
-The formats and protocols every layer builds on: what an asset is written in, and how a
-plugin reaches a tool server. The MCP servers recorded here are only the ones this
-repository's own manifests declare; what a specialist targets in a consuming repository is
-that repository's stack.
+This file records the formats and protocols every layer builds on: what an asset is written in, and how a
+plugin reaches a tool server. The tools recorded here are only the MCP servers this
+repository's own manifests declare and the Playwright CLI the `qa` plugin runs. What a
+specialist targets in a consuming repository is that repository's stack.
 
 ## Markdown
 
 ```meta
-status: adopted
+rating: adopted
 type: format
 ```
 
-The format of every asset: agents, skills, contracts, rules, READMEs, and these chapters.
+Markdown is the format of every asset: agents, skills, contracts, rules, READMEs, and these chapters.
 
 - **Used for** — `*.agent.md` and `SKILL.md` bodies under YAML frontmatter, `resources/`
   contracts, and the rules under `.agents/rules/`.
@@ -26,27 +26,29 @@ The format of every asset: agents, skills, contracts, rules, READMEs, and these 
 ## Mermaid
 
 ```meta
-status: adopted
+rating: adopted
 type: format
 version: "11"
 depends-on: [".devbook/tech/shared.md#markdown"]
 ```
 
-The diagram language inside Markdown that the diagram skills emit and the viewers render.
+Mermaid is the diagram language inside Markdown that the diagram skills emit and the viewers render.
 
-- **Used for** — the architecture and domain-design diagram skills, whose
-  `generate-diagram-svgs.ps1` renders SVGs through the Mermaid CLI (`mmdc`) when it is on the
-  path; the Mermaid viewer in the orch-dashboard server and the `diagram-canvas` extension,
-  which load `mermaid@11` from jsDelivr; and the graph in `technology-graph.md`.
+- **Used for** — three things:
+  - The architecture and domain-design diagram skills. Their `generate-diagram-svgs.ps1` renders
+    SVGs through the Mermaid CLI (`mmdc`) when it is on the path.
+  - The Mermaid viewer in the orch-dashboard server and the `diagram-canvas` extension, which
+    load `mermaid@11` from jsDelivr.
+  - The graph in `technology-graph.md`.
 
 ## MCP
 
 ```meta
-status: adopted
+rating: adopted
 type: protocol
 ```
 
-The Model Context Protocol, the way a plugin puts a tool server in front of either host.
+The Model Context Protocol is the way a plugin puts a tool server in front of either host.
 
 - **Used for** — `mcpServers` in `plugins/claude-desktop/.claude-plugin/plugin.json` and in
   both manifests of `plugins/qa`.
@@ -56,40 +58,56 @@ The Model Context Protocol, the way a plugin puts a tool server in front of eith
 ## MCP Apps
 
 ```meta
-status: trial
+rating: trial
 type: protocol
 depends-on: [".devbook/tech/shared.md#mcp"]
 ```
 
-The MCP extension that lets a server return an interactive page as a `ui://` resource,
+MCP Apps is the MCP extension that lets a server return an interactive page as a `ui://` resource,
 rendered inline by the host.
 
-- **Used for** — the orch-dashboard server's dashboard, diagram, and document views;
-  `app-bridge.js` speaks the 2026-01-26 postMessage protocol so the pages stay byte-identical
+- **Used for** — the orch-dashboard server's dashboard, diagram, and document views.
+  `app-bridge.js` speaks the 2026-01-26 postMessage protocol, so the pages stay byte-identical
   to the Copilot canvas versions.
 
 ## Aspire MCP server
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 depends-on: [".devbook/tech/shared.md#mcp"]
 ```
 
-The MCP server the Aspire CLI starts with `aspire agent mcp`, declared by the `qa` plugin in
-both manifests.
+This is the MCP server the Aspire CLI starts with `aspire agent mcp`. The `qa` plugin declares
+it in both manifests.
 
 - **Used for** — the `qa` agents read resources, logs, and traces of the application under
   test. The Aspire CLI itself is the consuming repository's, not this one's.
 
+## Playwright CLI
+
+```meta
+rating: adopted
+type: tool
+depends-on: [".devbook/tech/tooling.md#nodejs"]
+```
+
+`@playwright/cli` runs as `playwright-cli` through the shell. The `qa` plugin declares no
+server for it: the person installs it, and a skill stops when `playwright-cli --version`
+does not answer.
+
+- **Used for** — the `qa` agents drive a browser and capture screenshot, video, and trace
+  evidence.
+
 ## Playwright MCP server
 
 ```meta
-status: adopted
+rating: retired
 type: tool
 depends-on: [".devbook/tech/shared.md#mcp", ".devbook/tech/tooling.md#nodejs"]
 ```
 
-`@playwright/mcp`, started through `npx`, declared by the `qa` plugin in both manifests.
+`@playwright/mcp` is the server the `qa` plugin declared until 0.5.0. The Playwright CLI replaced it:
+[Browser Automation](../arc42/adr/browser-automation.md).
 
-- **Used for** — the `qa` agents drive a browser and capture screenshot evidence.
+- **Used for** — nothing; kept for history.

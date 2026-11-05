@@ -98,9 +98,9 @@ with the reset moment in local time:
 ● job@example.com ████████░░░░░░░░░░░░░░░░░░░░░░░░░░░ 16% · resets Thu 17:00
 ```
 
-- The account comes from the first message's `userEmail` context, which tells desktop
-  instances apart; until then from `oauthAccount` in `.claude.json` under
-  `CLAUDE_CONFIG_DIR` or the home folder.
+- The account comes only from the first message's `userEmail` context: the account the
+  desktop app is signed in with. Before that message the band shows no email.
+  `.claude.json` is never read: it names the standalone CLI's login, which can differ.
 - The weekly figure is the `seven_day` rate-limit window: read at session start, refreshed
   whenever a response moves it a whole point. Off a subscription the bar says `no reading yet`.
 - The accent is derived from the email and is never red, amber, or green, so it cannot be

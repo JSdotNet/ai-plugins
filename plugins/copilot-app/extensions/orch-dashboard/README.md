@@ -36,8 +36,8 @@ narration.
   available, and is reachable from the stage navigation.
 - An **Insight** panel showing total tool calls, elapsed time, measured tool
   time, an estimated thinking/reasoning remainder, and a time-by-category
-  breakdown (Shell, Edit, Read, `QA (Playwright/Aspire)`, MCP tool, Agent
-  tasks, Other) — the same categories the CLI's own agent-activity view
+  breakdown (Shell, Edit, Read, `QA (Playwright/Aspire)` — Aspire tools and
+  shell calls running `playwright-cli` — MCP tool, Agent tasks, Other) — the same categories the CLI's own agent-activity view
   uses. This is captured automatically from the session's own tool-call
   telemetry while a run is `in_progress`; no extra reporting is required
   from the orchestrating agent. Caveat: telemetry is session-wide, so any

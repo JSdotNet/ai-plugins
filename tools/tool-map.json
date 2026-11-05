@@ -123,9 +123,7 @@
     "get_resource_logs": "aspire",
     "get_traces": "aspire",
     "get_metrics": "aspire",
-    "get_console_logs": "aspire",
-    "browser_": "playwright",
-    "playwright-browser_": "playwright"
+    "get_console_logs": "aspire"
   },
   "$mcpPrefixesComment": [
     "The Aspire MCP server renamed its query tools from get_* to list_* (and dropped metrics",

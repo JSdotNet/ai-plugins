@@ -54,6 +54,8 @@ when a chapter has real content — do not scaffold empty placeholders):
   10-quality-requirements.md
   11-risks-and-technical-debt.md (links out to TDRs)
   12-glossary.md
+  workspace.dsl                  (the C4 model — the one non-Markdown file here)
+  c4/                            (files workspace.dsl includes, when it splits)
   adr/                           (decision records — one per technical concern)
   tdr/                           (technical debt records — one per item)
   building-blocks/               (one whitebox per building block that outgrows chapter 5)
@@ -67,12 +69,13 @@ instructions.
 
 - Keep the glossary aligned with the ubiquitous language defined per bounded
   context in `domain/`.
-- Draw the building-block and runtime views as diagrams, per
+- Show context, building blocks, runtime, and deployment as views of the C4
+  model, per "C4 model" below. Mermaid draws only inside one element, per
   `devbook-writing.md`.
 - Each file's top-level chapter, and any independently trackable ## section
   inside it, must carry the metadata block described in
-  `devbook-chapter-metadata.md` (status — optional here, see
-  below — cross-folder tags, issue link) — required for the derived index and
+  `devbook-chapter-metadata.md` (cross-folder tags) — required for the derived
+  index and
   graph tooling. There is no `depends-on` field in `arc42/` —
   architecture chapters describe standing structure, not sequenced work;
   cross-references use `related` instead.
@@ -80,21 +83,10 @@ instructions.
   chapter's metadata block also serves as the file's file-level metadata
   block described in `devbook-chapter-metadata.md`
   — do not add a second, duplicate block for the file.
-- The metadata block's `status` field uses `draft`, `proposed`, `active`, or
-  `deprecated` in this folder. Architecture documentation describes a
-  standing decision/structure, not a task, so there is no `done`. That is
-  the built-in ladder; a repository replaces its transitional rungs per file
-  in `.devbook/statuses.json`, per `devbook-chapter-metadata.md`.
-- **There is no `approved` or `accepted` rung here.** The two decision rungs
-  are `domain/`'s alone — see `devbook-domain.md`. An architecture chapter
-  records a standing structure, and the question those rungs answer is asked of
-  the model, not of it.
-- **`active` is this folder's resting value, so it is written by omitting the
-  field.** State `status` only while the chapter is in transition (`draft`,
-  `proposed`) or carries a standing warning (`deprecated`). A standing structure
-  is settled by definition, so `active` is where nearly every chapter here ends
-  up permanently, and stating it turns the field into noise the few moving
-  chapters hide behind. Writing `status: active` explicitly is reported.
+- A block carries no `status`, decision rung, or debt ladder: a merged
+  chapter is the standing structure. A decision record's `proposed` and a debt
+  record's state are the host's, per "Moved to tooling" in
+  `devbook-chapter-metadata.md`.
 - **Chapters are ordered by their number, not by their filename string.** The
   `<NN>-` prefix supplies it, so `10-quality-requirements.md` sorts after
   `09-architecture-decisions.md` rather than after `01-…`. Only add an explicit
@@ -104,11 +96,55 @@ instructions.
   `number` field — either way the number is what orders the folder, so an
   unpadded 10 still follows 7. Give each one a `date` for the day the debt was
   logged; it is content, not a modification timestamp. Decision records are not
-  numbered; the next section says why.
+  numbered; "Decision records" says why.
 - **Give `adr/`, `tdr/`, and `building-blocks/` an index document.** None of
   the three has a root document by convention, so mark the one that introduces
   the set — usually `README.md` — with `index: root` and it sorts first. Without
   it the folder is a bare list.
+
+## C4 model
+
+The folder's architecture is one Structurizr DSL workspace,
+`.devbook/arc42/workspace.dsl`, and it is the only place an element or a view is
+defined. Start it with `!identifiers hierarchical`. It may `!include` files under
+`.devbook/arc42/c4/`, to split a large model by building block, and nothing
+outside that folder.
+
+It holds the elements, their relationships, and the views:
+
+| Element | What it is |
+| --- | --- |
+| `person` | Someone outside the system who uses it. |
+| `softwareSystem` | A system of its own: this one, or one it talks to. |
+| `container` | A part of a system that runs or stores data on its own: an app, a service, a database. |
+| `component` | A part inside one container, behind one responsibility. |
+| `deploymentNode`, `infrastructureNode` | Where containers run, and what serves them there. |
+| `->` relationship | One element using another, with what it does and over what technology. |
+
+Give every element a `description` of one line saying what it is. The workspace
+never holds prose, decisions, debt, or code paths: the chapter that embeds a view
+explains it, `adr/` and `tdr/` hold the reasons, and a building block's `code`
+field holds its folders. No element carries a DSL `properties` block, so a code folder
+has nowhere to go but `code`.
+
+A chapter shows a view with an image embed addressed by the view's key,
+`![Containers](c4:containers)` — the same form as `shot:` and `scenario:`. Embed
+each view in exactly one section, in the chapter its kind belongs to:
+
+| View kind | Embedded in |
+| --- | --- |
+| `systemLandscape`, `systemContext` | `03-context-and-scope.md` |
+| `container`, `component` | `05-building-block-view.md` or a `building-blocks/<slug>.md` |
+| `dynamic` | `06-runtime-view.md` or a building block's `## Runtime` |
+| `deployment` | `07-deployment-view.md` |
+
+Any other chapter links to that section. Where the repository keeps derived
+indexes, a committed SVG of each view sits at `.devbook/arc42/_meta/c4/<view key>.svg`,
+written by the scheduled refresh; an embed names the key and never that path.
+
+A chapter in `arc42/` or `domain/` names workspace elements in `c4` and
+`c4-touches`, and a building block names its code folders in `code`, as
+`devbook-chapter-metadata.md` defines them.
 
 ## Decision records (`adr/`)
 
@@ -131,7 +167,7 @@ rewritten, the reasons and rejected alternatives are brought in line, and a row
 is added to its history. Open a new file only for a concern no record covers.
 Two concerns that are always decided together are one record; a record that
 keeps growing a second subject is two. A record for a concern the system no
-longer has is marked `status: deprecated` and says what happened; it is never
+longer has says so in its standing choice and a history row; it is never
 deleted, because the history is the part a reader most needs.
 
 Each record, in this order:
@@ -141,16 +177,22 @@ Each record, in this order:
 - `## Why` — the reasons that carry it, as they stand today.
 - `## Rejected` — each alternative considered and the reason it lost. Someone
   arriving to propose one of them should find it here.
-- `## History` — a table, newest first, one row per decision: the date, what
-  changed, and why in a clause. The bottom row is the concern's first choice.
+- `## History` — a table headed `| Date | Change | Why |`, newest first, one
+  row per decision: the date, what changed, and why in a clause. The bottom row
+  is the concern's first choice. The header is fixed, so a reader can list one
+  concern's decisions across every record. The check reports a record with
+  another header, or no History table, as a warning, never an error: a record
+  written before the header was fixed keeps validating until a person splits
+  each row's reason into its own column.
   The `date` field carries the newest row's date; it is content, not a
   modification timestamp.
 
-A proposed change to a concern lives in that record under `status: proposed`,
-in a `## Proposed` section stating the candidate choice against the standing
-one. Decided, it folds into the choice and a history row and the section goes;
-declined, it becomes a history row saying so. A proposal never sits as a loose
-document beside the set.
+A proposed change to a concern lives in that record, on the branch of its pull
+request, in a `## Proposed` section stating the candidate choice against the
+standing one; while the pull request is open the host keeps the record's
+`proposed` state, and the record carries none. Decided, it folds into the choice
+and a history row and the section goes; declined, it becomes a history row
+saying so. A proposal never sits as a loose document beside the set.
 
 The `adr/` index lists every concern with its standing choice in one line, and
 `09-architecture-decisions.md` links to the index and restates nothing.
@@ -179,16 +221,16 @@ PostgreSQL 16 through EF Core, one database per bounded context.
 \`\`\`meta
 \`\`\`
 
-| Date | Change |
-| --- | --- |
-| 2026-09-17 | SQL Server to PostgreSQL: the licence no longer covered the features in use. |
-| 2026-03-01 | SQL Server, because the team knew it. |
+| Date | Change | Why |
+| --- | --- | --- |
+| 2026-09-17 | SQL Server to PostgreSQL. | The licence no longer covered the features in use. |
+| 2026-03-01 | SQL Server. | The team knew it. |
 ```
 
 ## Building block records (`building-blocks/`)
 
 Chapter 5 holds what the whole system shares: the level 1 landscape, the shapes
-every block has in common, and the diagram of the edges between them. A block
+every block has in common, and the container view of the edges between them. A block
 whose whitebox — its responsibility, the interfaces it exposes, its internal
 structure, and its dependencies — is read on its own more often than beside the
 landscape gets a file of its own under `building-blocks/`, for the same reason
@@ -206,18 +248,33 @@ in this order:
   routes, contracts, or public API it exposes, one `###` per interface where
   each needs its own words.
 - `## Structure` — the parts inside it that carry a distinct responsibility,
-  with the invariants each one guarantees where the block has any, and a Mermaid
-  diagram where the parts relate.
-- `## Runtime` — optional: the flows that cross the block, as diagrams. A
-  runtime scenario that crosses several blocks belongs in
+  with the invariants each one guarantees where the block has any, and the
+  block's component view embedded where the parts relate.
+- `## Runtime` — optional: the flows that cross the block, as its dynamic
+  views. A runtime scenario that crosses several blocks belongs in
   `06-runtime-view.md`, which links here.
 - `## Dependencies` — what the block depends on and what depends on it, in
   their actual direction, one table each, with the mechanism and the contract.
 
 The rules of the folder apply unchanged: no `type`, no `depends-on`, `related`
 for every cross-reference, and the top-level block doubling as the file-level
-one. The folder's index (`README.md`, `index: root`) lists every block with
-its responsibility in one line.
+one. That block carries `c4`, the block's element, and `code`, its folders. The
+folder's index (`README.md`, `index: root`) lists every block with its
+responsibility in one line.
+
+## Debt records (`tdr/`)
+A debt record carries one field beyond `number` and `date`, in its top-level
+block:
+
+- `severity` — always stated, per `devbook-chapter-metadata.md`; a record
+  without it is reported as a warning, never an error. It ranks the set by cost;
+  the number still orders the folder.
+
+Where the debt stands — identified, planned, in progress, resolved — is the
+host's state for the record, never a field. A resolved record stays, and its
+prose says what resolved it.
+
+The `tdr/` index carries no `severity`.
 
 ## Template
 
@@ -225,7 +282,6 @@ its responsibility in one line.
 # <NN>. <Chapter Name>
 
 \`\`\`meta
-status: draft
 \`\`\`
 
 Chapter content.
@@ -233,13 +289,11 @@ Chapter content.
 ## <Section Name>
 
 \`\`\`meta
-status: draft
 \`\`\`
 
 Section content.
 ```
 
-`related` and `issue` are omitted above rather than written empty, per the
-omit-when-empty rule; add them when they carry a value. Once a chapter settles,
-its `status: draft` line comes out too and the fence is left empty — keep the
-fence, it is what makes the heading an addressable chapter.
+`related` is omitted above rather than written empty, per the omit-when-empty
+rule; add it when it carries a value. Keep the empty fence — it is what makes
+the heading an addressable chapter.

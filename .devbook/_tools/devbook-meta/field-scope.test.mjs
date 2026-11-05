@@ -13,6 +13,7 @@ const check = (ok, name, detail) => {
 };
 
 const fence = (body) => "```meta\n" + body + "```\n";
+// A retired `annotation` fence, which the check now reports.
 const note = (body) => "```annotation\n" + body + "```\n";
 const find = (issues, severity, needle) =>
     issues.find((i) => i.severity === severity && i.message.includes(needle));
@@ -301,8 +302,8 @@ const dump = (issues) => JSON.stringify(issues, null, 2);
 {
     const issues = validateDocument(
         ".devbook/ai/03-build.md",
-        `# Build\n\n${fence("status: adopted\ntype: stage\nstage: build\n")}\n## TDD with an agent\n\n` +
-            `${fence("status: trial\ntype: practice\nstage: build\n")}\nProse.\n`
+        `# Build\n\n${fence("rating: adopted\ntype: stage\nstage: verify\n")}\n## TDD with an agent\n\n` +
+            `${fence("rating: trial\ntype: practice\nstage: verify\n")}\nProse.\n\n- **Moves up when** — a second person works this way.\n`
     );
 
     check(
@@ -317,78 +318,46 @@ const dump = (issues) => JSON.stringify(issues, null, 2);
     );
 }
 
-// --- an open question means the chapter is not agreed -------------------
+// --- the annotation fence is retired --------------------------------
 
-// Reported only against an approval, which is the contradiction: a person
-// signed for content that still carries an unanswered question. An open
-// question on any other rung is the state the fence exists for.
+// A review note is a comment thread in the host since contract 38, so a fence
+// left in a chapter is reported, open or resolved, naming the migration.
 {
-    const approved = "type: aggregate\nstatus: approved\napproved-by: jobsc\napproved-at: 2026-09-01\n";
     const question = "kind: question\nauthor: jobsc\ndate: 2026-09-02\nbody: Does this still hold?\n";
+    const body = (inner) =>
+        `# Ordering\n\n${fence("type: domain\n")}\n## Order\n\n${fence("type: aggregate\n")}\n${inner}\nProse.\n`;
 
-    const issues = validateDocument(
-        ".devbook/domain/ordering/domain.md",
-        `# Ordering\n\n${fence("type: domain\n")}\n## Order\n\n${fence(approved)}\n${note(question)}\nProse.\n`
-    );
+    const active = validateDocument(".devbook/domain/ordering/domain.md", body(note(question)));
     check(
-        Boolean(find(issues, "error", "an open question means the chapter is not agreed")),
-        "an approval standing over an open question is an error",
-        dump(issues)
-    );
-
-    const resolved = validateDocument(
-        ".devbook/domain/ordering/domain.md",
-        `# Ordering\n\n${fence("type: domain\n")}\n## Order\n\n${fence(approved)}\n` +
-            `${note("kind: question\nstatus: resolved\n" + question.split("\n").slice(1).join("\n"))}\nProse.\n`
-    );
-    check(
-        resolved.length === 0,
-        "a resolved question under the same approval is silent",
-        dump(resolved)
-    );
-
-    const active = validateDocument(
-        ".devbook/domain/ordering/domain.md",
-        `# Ordering\n\n${fence("type: domain\n")}\n## Order\n\n${fence("type: aggregate\n")}\n${note(question)}\nProse.\n`
-    );
-    check(
-        active.length === 0,
-        "an open question on an unapproved chapter is silent — that is what the fence is for",
+        active.length === 1 &&
+            find(active, "error", "038-workflow-state-leaves-the-chapter") &&
+            find(active, "error", "`annotation` fence at line 13"),
+        "an annotation fence is an error naming the migration that deletes it",
         dump(active)
     );
 
-    // Position is the anchor: the note under the sub-chapter is the
-    // sub-chapter's, so the approved parent above it stays clean.
-    const nested = validateDocument(
-        ".devbook/domain/ordering/domain.md",
-        `# Ordering\n\n${fence("type: domain\n")}\n## Order\n\n${fence(approved)}\nProse.\n\n` +
-            `### Line\n\n${fence("type: entity\n")}\n${note(question)}\nProse.\n`
-    );
-    check(
-        !find(nested, "error", "not agreed"),
-        "a question under a sub-chapter does not indict its approved parent",
-        dump(nested)
-    );
+    const quoted = validateDocument(".devbook/domain/ordering/domain.md", body("````text\n" + note(question) + "````\n"));
+    check(quoted.length === 0, "an annotation fence quoted inside another fence is that fence's content", dump(quoted));
 }
 
-// --- scenario page field scope -----------------------------------------
+// --- journey field scope ---------------------------------------------
 
-// A scenario page is the one file whose block carries the six setup fields and
-// `aliases`, and the one block that may not carry `tests`: the page is the test.
+// A journey is the one block that carries the six setup fields, and the one
+// block that may not carry `tests`: the journey is the test.
 {
     const page = (meta) =>
-        `# Set up\n\n${fence("type: scenario\n" + meta)}\nLead.\n\n## Done\n\n- **Then** it is done\n`;
+        `# Scenarios\n\n${fence("type: scenarios\n")}\nLead.\n\n## Set up\n\n${fence("type: scenario\n" + meta)}\nLead.\n\n### Done\n\n- **Then** it is done\n`;
     const legal = validateDocument(
-        ".devbook/domain/work/set-up.md",
+        ".devbook/domain/work/scenarios.md",
         page("aliases: [Backlog setup]\nstart: /backlog\nactor: actors.md#po\ndata: [empty]\nprofile: default\nflags: [context.md#a]\nsettings: [context.md#b=1]\n")
     );
-    check(legal.length === 0, "aliases and the setup fields are legal on a scenario page", dump(legal));
+    check(legal.length === 0, "aliases and the setup fields are legal on a journey", dump(legal));
 
-    const tests = validateDocument(".devbook/domain/work/set-up.md", page("tests: [e2e:playwright:x.spec.ts]\n"));
-    check(Boolean(find(tests, "error", "`tests` on a scenario page")), "`tests` on a scenario page is an error", dump(tests));
+    const tests = validateDocument(".devbook/domain/work/scenarios.md", page("tests: [e2e:playwright:x.spec.ts]\n"));
+    check(Boolean(find(tests, "error", "`tests` on a journey")), "`tests` on a journey is an error", dump(tests));
 
-    const depends = validateDocument(".devbook/domain/work/set-up.md", page("depends-on: [.devbook/domain/work/features.md#a]\n"));
-    check(Boolean(find(depends, "error", "`depends-on` on the file-level block")), "a chapter-only field stays refused on a scenario page", dump(depends));
+    const fileLevel = validateDocument(".devbook/domain/work/scenarios.md", page("").replace("type: scenarios\n", "type: scenarios\naliases: [x]\n"));
+    check(Boolean(find(fileLevel, "error", "`aliases` on the file-level block")), "a chapter-only field stays refused on the scenarios file's own block", dump(fileLevel));
 
     for (const field of ["start: /x", "actor: actors.md#po", "data: [empty]", "profile: default", "flags: [context.md#a]", "settings: [context.md#b=1]"]) {
         const key = field.split(":")[0];
@@ -396,7 +365,7 @@ const dump = (issues) => JSON.stringify(issues, null, 2);
             ".devbook/domain/work/features.md",
             `# Features\n\n${fence("type: features\n")}\n## Board\n\n${fence("type: feature\n" + field + "\n")}\nProse.\n`
         );
-        check(Boolean(find(elsewhere, "error", "`" + key + "`, a setup field")), `\`${key}\` off a scenario page is an error`, dump(elsewhere));
+        check(Boolean(find(elsewhere, "error", "`" + key + "`, a setup field")), `\`${key}\` off a journey is an error`, dump(elsewhere));
     }
 }
 

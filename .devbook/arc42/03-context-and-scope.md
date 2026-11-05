@@ -4,35 +4,10 @@
 related: [".devbook/tech/hosts.md", ".devbook/tech/tooling.md", ".devbook/arc42/adr/flow-control.md"]
 ```
 
+![System context](c4:context)
+
 The marketplace is a set of files. Nothing here runs on its own: a host loads a plugin, and a
 person or a flow consults what it loaded.
-
-```mermaid
-flowchart LR
-    maintainer([Maintainer])
-    subgraph repo[jsdotnet-ai-plugins]
-        specialists[Specialist plugins]
-        trackers[Tracker plugins]
-        hostplugins[Host plugins]
-    end
-    copilot[GitHub Copilot]
-    claude[Claude Code / Claude Desktop]
-    subgraph stack[JSdotNet/devbook — jsdotnet-devbook marketplace]
-        engine[delivery · delivery-schedule]
-        devbook[devbook]
-    end
-    backlog[Backlog]
-    github[GitHub]
-
-    maintainer -- authors --> repo
-    copilot -- loads --> repo
-    claude -- loads --> repo
-    engine -- consults a role --> specialists
-    specialists -- write chapters per --> devbook
-    trackers -- sync issues --> github
-    maintainer -- plans changes in --> backlog
-    github -- runs check-assets on every PR --> repo
-```
 
 ## Hosts
 
@@ -42,10 +17,10 @@ related: [".devbook/tech/hosts.md#copilot-cli-plugin-api", ".devbook/tech/hosts.
 
 | Host | Reads | Only it has |
 | --- | --- | --- |
-| GitHub Copilot (CLI and app) | `.github/plugin/plugin.json`, root `hooks.json`, agents by their Copilot tool ids | canvas extensions — `copilot-app` builds on them |
-| Claude Code, and Claude Desktop through it | `.claude-plugin/plugin.json`, `hooks/hooks.json`, agents by their Claude tool names, `.claude-plugin/marketplace.json` | MCP Apps and `.mcpb` extensions — `claude-desktop` builds on them |
+| GitHub Copilot (CLI and app) | `.github/plugin/plugin.json`, root `hooks.json`, agents by their Copilot tool ids | canvas extensions, which `copilot-app` builds on |
+| Claude Code, and Claude Desktop through it | `.claude-plugin/plugin.json`, `hooks/hooks.json`, agents by their Claude tool names, `.claude-plugin/marketplace.json` | MCP Apps and `.mcpb` extensions, which `claude-desktop` builds on |
 
-Both read the same agents, skills, and contracts; how one file satisfies both is
+Both read the same agents, skills, and contracts. How one file satisfies both is in
 [08 — One File, Two Hosts](08-crosscutting-concepts.md#one-file-two-hosts).
 
 ## Outside the Marketplace
@@ -55,11 +30,22 @@ Both read the same agents, skills, and contracts; how one file satisfies both is
 
 | Neighbour | What it owns | The interface |
 | --- | --- | --- |
-| Delivery engine — `delivery`, `delivery-schedule`, and their `delivery-*` surfaces in `JSdotNet/devbook` | Staged flows, gates, the pull-request lane, schedules, model selection | Consults a specialist by role (`architecture`, `docs`, …) through the repository's `bindings`; a specialist never names the engine. |
-| devbook and its `devbook-*` extensions, in `JSdotNet/devbook` | The `.devbook/` folder convention, its rules, and the `devbook-meta` check | The specialists write `arc42/`, `domain/`, and `design/` chapters to its rules; this repository adopts it for its own `arc42/`, `tech/`, and `ai/`. |
-| Backlog | Plans and work items for changes to this repository | Items are pasted into a session and run by `backlog-run-plan-item`; nothing in a plugin depends on it. |
-| GitHub | The repository, pull requests, CI | `check-assets.yml` gates every pull request; `auto-merge.yml` merges a non-draft pull request once every other check on its head commit is green; the nightly workflow bumps changed plugins' versions. |
+| Delivery engine: `delivery`, `delivery-schedule`, and their `delivery-*` surfaces | Staged flows, gates, the pull-request lane, schedules, model selection | Consults a specialist by role (`architecture`, `docs`, …) through the repository's `phases` maps. |
+| devbook and its `devbook-*` extensions | The `.devbook/` folder convention, its rules, and the `devbook-meta` check | The specialists write chapters to its rules. |
+| Backlog | Plans and work items for changes to this repository | Items are pasted into a session and run by `run-plan-item`. |
+| GitHub | The repository, pull requests, CI | Its workflows check and merge pull requests. |
 
-The flow control that used to ship here moved to the engine, then in `JSdotNet/ai-agent-stack`,
-on 2026-09-14; the engine and devbook have since moved to `JSdotNet/devbook`. See
-[the flow-control decision](adr/flow-control.md).
+- **Delivery engine:** It lives in `JSdotNet/devbook`. A specialist never names the engine.
+- **devbook:** It also lives in `JSdotNet/devbook`. The specialists write `arc42/`, `domain/`,
+  and `design/` chapters to its rules. This repository adopts it for its own `arc42/`, `tech/`,
+  and `ai/`.
+- **Backlog:** `run-plan-item` is a skill of the `backlog-tools` plugin. Nothing in a plugin
+  here depends on Backlog.
+- **GitHub:** These workflows carry the interface:
+  - `check-assets.yml` gates every pull request.
+  - `auto-merge.yml` merges a pull request that is not a draft once every other check on its
+    head commit is green.
+
+The flow control that used to ship here moved to the engine on 2026-09-14, when the engine
+lived in `JSdotNet/ai-agent-stack`. The engine and devbook have since moved to
+`JSdotNet/devbook`. See [the flow-control decision](adr/flow-control.md).

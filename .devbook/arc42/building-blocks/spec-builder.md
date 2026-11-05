@@ -1,16 +1,23 @@
 # spec-builder
 
 ```meta
+c4: [marketplace.specBuilder]
+code: [plugins/spec-builder]
 related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/arc42/08-crosscutting-concepts.md#one-file-two-hosts", ".devbook/arc42/08-crosscutting-concepts.md#rule-layering", ".devbook/arc42/adr/plugin-contracts.md"]
 ```
 
-The authoring specialist, and the block every other block is written against. Its `create-*`
-contracts say what an agent, a skill, a rule or contract, a plugin, a canvas, and a workflow
-file must carry to load in both hosts from one copy; `spec-conciseness.md` holds the body
-budgets. The rest of the repository points at these files by path instead of restating them,
-so a change to an authoring rule is a change here.
+`spec-builder` is the authoring specialist, and the block every other block is written against.
 
-It fills a role and holds no flow control: its agent plans, edits, and self-checks in one
+**Owns**
+
+- The `create-*` contracts. They say what each asset type must carry to load in both hosts from
+  one copy: an agent, a skill, a rule or contract, a plugin, a canvas, and a workflow file.
+- `spec-conciseness.md`, which holds the body budgets.
+
+The rest of the repository points at these files by path instead of restating them, so a change
+to an authoring rule is a change here.
+
+It fills a role and holds no flow control. Its agent plans, edits, and self-checks in one
 conversation, and delegates only read-only search.
 
 ## Interfaces
@@ -39,9 +46,14 @@ conversation, and delegates only read-only search.
 ```meta
 ```
 
-Agent `spec-builder`, with the skills `create-agent`, `create-instruction`, `create-plugin`,
-`create-skill`, and `create-workflow`. The `create-*` skills are model-invocable on purpose:
-the agent dispatches them by name.
+The agent is `spec-builder`, and it dispatches five skills by name, so they are model-invocable
+on purpose:
+
+- `create-agent`
+- `create-instruction`
+- `create-plugin`
+- `create-skill`
+- `create-workflow`
 
 ### Hooks
 
@@ -49,36 +61,29 @@ the agent dispatches them by name.
 ```
 
 A `sessionStart` prompt in `hooks.json` states the naming, frontmatter, dual-host, and
-conciseness rules, and its Claude twin is a command hook printing
-`hooks/session-start-context.md` —
-[SessionStart Twin Hook](../08-crosscutting-concepts.md#sessionstart-twin-hook).
+conciseness rules. Its Claude twin is a command hook printing `hooks/session-start-context.md`.
+See [SessionStart Twin Hook](../08-crosscutting-concepts.md#sessionstart-twin-hook).
 
-A Claude-only function-hook module, `hooks/budget-status.ts`, enforces nothing and reports
-the budgets as an author works: after every Write or Edit of a budgeted asset it pins the body
-count against `spec-conciseness.md`'s budget in the status line, amber within 10% and red
-over, `(exempt)` when the file states why, and toasts once when a file first crosses. It reads
-the asset by its filename, not by repository, so it serves every repository with the same
-budgets. Copilot has no counterpart; `check-assets.mjs --budgets` is the one both share.
+A Claude-only function-hook module, `hooks/budget-status.ts`, reports the budgets as an author
+works and enforces nothing. It reads the asset by its filename, not by repository, so it serves
+every repository with the same budgets. After every Write or Edit of a budgeted asset, it does
+the following:
+
+- It pins the body count against `spec-conciseness.md`'s budget in the status line.
+- It shows amber within 10% and red over, and `(exempt)` when the file states why.
+- It toasts once when a file first crosses.
+
+Copilot has no counterpart. `check-assets.mjs --budgets` is the one both share.
 
 ## Structure
 
 ```meta
 ```
 
-```mermaid
-flowchart LR
-    agent[spec-builder.agent.md] --> skills[skills/create-*]
-    agent --> canvas[resources/create-canvas.md]
-    agent --> workflow[resources/agent-spec-workflow.md]
-    skills --> contracts[resources/create-*.md]
-    skills --> concise[resources/spec-conciseness.md]
-    agent --> concise
-    hook[hooks.json · hooks/] -. states the rules the contracts hold .-> contracts
-    budget[hooks/budget-status.ts] -. reports the budgets of .-> concise
-```
+![The spec-builder agent, its skills, contracts, and hooks](c4:spec-builder-structure)
 
 Each `create-*` skill reads its own contract and `spec-conciseness.md`, and nothing else in
-the plugin. A canvas has a contract and no skill: the agent reads `create-canvas.md`
+the plugin. A canvas has a contract and no skill, so the agent reads `create-canvas.md`
 directly.
 
 ## Dependencies
@@ -99,4 +104,4 @@ directly.
 | `.agents/rules/skill-invocation.md` | Names the `create-*` skills as agent-dispatched, so none may be marked user-invoked |
 
 Neither host auto-applies a contract from inside a plugin, so every dependency on this block
-is a path reference — [plugin contracts](../adr/plugin-contracts.md).
+is a path reference. See [plugin contracts](../adr/plugin-contracts.md).

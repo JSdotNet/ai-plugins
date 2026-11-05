@@ -2,7 +2,7 @@
 // sections, not chapters, so a heading there without a `meta` block is what the
 // folder rules ask for and draws no warning.
 //
-// The rules name the files: `context-map.md`, `model.md`, `flow.md`, their
+// The rules name the files: `context-map.md`, `model.md`, its
 // splits, `dependencies.md`, and any additional page in `domain/`;
 // `technology-graph.md` in `tech/`; `adoption-map.md` in `ai/`. Everywhere else
 // a heading without a block is still reported.
@@ -29,7 +29,6 @@ for (const [path, fileMeta] of [
     [".devbook/domain/context-map.md", "index: root\ntype: context-map\n"],
     [".devbook/domain/ordering/model.md", "type: model\n"],
     [".devbook/domain/ordering/model.order.md", "type: model\n"],
-    [".devbook/domain/ordering/flow.md", "type: flow\n"],
     [".devbook/domain/ordering/dependencies.md", "type: dependencies\n"],
     [".devbook/domain/ordering/import.md", "type: import\n"],
 ]) {
@@ -53,16 +52,17 @@ for (const [path, fileMeta] of [
 check(!isStructuralDocument(".devbook/tech/sub/technology-graph.md"), "technology-graph.md below the tech root is not structural");
 check(!isStructuralDocument(".devbook/ai/sub/adoption-map.md"), "adoption-map.md below the ai root is not structural");
 
-// A scenario page's `##` parts are sections too, at any depth inside a bounded
-// context, although no file name marks the page: its `type: scenario` does.
-for (const path of [".devbook/domain/work/set-up.md", ".devbook/domain/work/journeys/set-up.md"]) {
-    const m = missing(path, "type: scenario\n");
-    check(m.length === 0, `${path}: a scenario page's part without a block is not reported`, dump(m));
+// A journey's `###` parts are sections too, although the file is not
+// structural: its `##` journeys are chapters and carry a block.
+{
+    const journeys = "# Scenarios\n\n```meta\ntype: scenarios\n```\n\nProse.\n\n## Set up\n\n```meta\ntype: scenario\n```\n\n### A part\n\n- **Then** done\n\n#### A note\n\nProse.\n";
+    const m = validateDocument(".devbook/domain/work/scenarios.md", journeys).filter((i) => i.message.includes("has no `meta` block"));
+    check(m.length === 0, "a journey's part, and a heading under it, without a block is not reported", dump(m));
 }
-check(!isStructuralDocument(".devbook/domain/work/journeys/set-up.md"), "the path alone does not make a deeper page structural");
+check(!isStructuralDocument(".devbook/domain/work/scenarios.md"), "a scenarios file is not structural: its journeys are chapters");
 {
     const m = missing(".devbook/domain/work/journeys/notes.md", "type: notes\n");
-    check(m.length === 1, "a deeper page that is no scenario page still reports a section without a block", dump(m));
+    check(m.length === 1, "a deeper page still reports a section without a block", dump(m));
 }
 
 // A section that does carry a block is still validated: a `bounded-context`
@@ -73,6 +73,13 @@ check(!isStructuralDocument(".devbook/domain/work/journeys/set-up.md"), "the pat
     check(e.length === 1 && e[0].message.includes("nonsense"), "a block on a structural section is still validated", dump(e));
 }
 
+
+// The flow page is retired by contract 37: a file typed `flow` is an error that
+// names the migration, split or not.
+for (const path of [".devbook/domain/ordering/flow.md", ".devbook/domain/ordering/flow.fulfilment.md"]) {
+    const errors = validateDocument(path, doc("type: flow\n")).filter((i) => i.severity === "error" && i.message.includes("037-flows-in-their-chapters"));
+    check(errors.length === 1, `${path}: a flow page is an error naming the migration`, dump(errors));
+}
 if (failed) {
     console.log(`\n${failed} failed`);
     process.exit(1);

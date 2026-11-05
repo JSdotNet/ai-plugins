@@ -1,25 +1,25 @@
 # Authoring an Asset
 
 ```meta
-status: adopted
+rating: adopted
 type: stage
 ```
 
-> How an agent, skill, contract, hook, or manifest gets written here: in the host that loads
+> This file records how an agent, skill, contract, hook, or manifest gets written here: in the host that loads
 > it, from spec-builder's contracts, with the repository's rules applied on the read.
 
 ## Authoring in the Loading Host
 
 ```meta
-status: adopted
+rating: adopted
 type: practice
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#github-copilot"]
 date: 2026-08-15
 ```
 
-An asset is written by an agent session running in a host that loads it, and one file serves
-both Claude Code and GitHub Copilot, so there is no generator step.
+An agent session running in a host that loads the asset writes it. One file serves both Claude
+Code and GitHub Copilot, so there is no generator step.
 
 - **Used for** — every plugin asset under `plugins/`: the agent drafts, the person reviews, and
   the asset is loaded from the same file by both hosts.
@@ -33,30 +33,31 @@ both Claude Code and GitHub Copilot, so there is no generator step.
 ## spec-builder Create Skills
 
 ```meta
-status: trial
+rating: trial
 type: skill
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#github-copilot"]
 date: 2026-09-14
 ```
 
-`create-agent`, `create-skill`, `create-instruction`, `create-plugin`, and `create-workflow`,
-each reading its `plugins/spec-builder/resources/create-*.md` contract before writing.
+Each create skill reads its `plugins/spec-builder/resources/create-*.md` contract before writing.
 
+- **Skills** — `create-agent`, `create-skill`, `create-instruction`, `create-plugin`, and
+  `create-workflow`.
 - **Used for** — drafting a new asset of a given type to the shape both hosts accept, within
   the body budgets in `spec-conciseness.md`.
 - **Adopted by** — the contracts are read by path on every authoring change, as `AGENTS.md`
-  requires; the skills themselves are invoked from Copilot sessions and no Claude Code session
+  requires. The skills themselves are invoked from Copilot sessions, and no Claude Code session
   transcript records one.
-- **Evidence** — the contracts moved to `resources/` on 2026-09-14. Promotion needs a recorded
-  run of a create skill that produced a merged asset.
+- **Evidence** — the contracts moved to `resources/` on 2026-09-14.
+- **Moves up when** — a recorded run of a create skill produces a merged asset.
 - **Limits** — editing an existing asset goes straight to the file and its contract, not
   through a create skill.
 
 ## Path-scoped Rule Trio
 
 ```meta
-status: adopted
+rating: adopted
 type: guardrail
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#github-copilot"]

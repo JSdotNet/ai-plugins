@@ -1,6 +1,6 @@
 ---
 name: qa
-description: QA Agent — runs Aspire-orchestrated apps, validates features end-to-end with Playwright MCP (screenshots/video evidence), and continuously monitors Aspire logs/traces during test execution.
+description: QA Agent — runs Aspire-orchestrated apps, validates features end-to-end by driving a browser with the Playwright CLI (screenshot, video, or trace evidence), and continuously monitors Aspire logs/traces during test execution.
 # Copilot tool ids and their Claude equivalents. Each host keeps the entries it knows.
 tools:
   - 'read/readFile'
@@ -29,54 +29,6 @@ tools:
   - 'aspire_get_traces'
   - 'aspire_get_metrics'
   - 'aspire_get_console_logs'
-  - 'browser_click'
-  - 'browser_close'
-  - 'browser_console_messages'
-  - 'browser_drag'
-  - 'browser_drop'
-  - 'browser_evaluate'
-  - 'browser_file_upload'
-  - 'browser_fill_form'
-  - 'browser_find'
-  - 'browser_handle_dialog'
-  - 'browser_hover'
-  - 'browser_navigate'
-  - 'browser_navigate_back'
-  - 'browser_network_request'
-  - 'browser_network_requests'
-  - 'browser_press_key'
-  - 'browser_resize'
-  - 'browser_select_option'
-  - 'browser_snapshot'
-  - 'browser_start_tracing'
-  - 'browser_stop_tracing'
-  - 'browser_tabs'
-  - 'browser_take_screenshot'
-  - 'browser_type'
-  - 'browser_wait_for'
-  - 'playwright-browser_click'
-  - 'playwright-browser_close'
-  - 'playwright-browser_console_messages'
-  - 'playwright-browser_drag'
-  - 'playwright-browser_drop'
-  - 'playwright-browser_evaluate'
-  - 'playwright-browser_file_upload'
-  - 'playwright-browser_fill_form'
-  - 'playwright-browser_find'
-  - 'playwright-browser_handle_dialog'
-  - 'playwright-browser_hover'
-  - 'playwright-browser_navigate'
-  - 'playwright-browser_navigate_back'
-  - 'playwright-browser_network_request'
-  - 'playwright-browser_network_requests'
-  - 'playwright-browser_press_key'
-  - 'playwright-browser_resize'
-  - 'playwright-browser_select_option'
-  - 'playwright-browser_snapshot'
-  - 'playwright-browser_tabs'
-  - 'playwright-browser_take_screenshot'
-  - 'playwright-browser_type'
-  - 'playwright-browser_wait_for'
   - 'Read'
   - 'Grep'
   - 'Glob'
@@ -87,8 +39,6 @@ tools:
   - 'Bash'
   - 'mcp__plugin_qa_aspire'
   - 'mcp__aspire'
-  - 'mcp__plugin_qa_playwright'
-  - 'mcp__playwright'
   - 'Skill'
 ---
 
@@ -97,10 +47,10 @@ tools:
 ## Purpose
 
 Act as a runtime QA specialist. Run the target application through Aspire, drive real
-browser interactions with the Playwright MCP server to validate features end-to-end,
-record evidence (screenshots or video) for every check, and continuously monitor Aspire
-logs and traces for the whole duration of the test session so runtime errors are never
-missed just because the UI looked correct.
+browser interactions with the Playwright CLI (`playwright-cli`, through the shell) to
+validate features end-to-end, record evidence (screenshots, video, or traces) for every
+check, and continuously monitor Aspire logs and traces for the whole duration of the test
+session so runtime errors are never missed just because the UI looked correct.
 
 You test actual runtime behavior, not just code review. What "validated" requires is
 [qa-evidence.md](../resources/qa-evidence.md); read it before the first scenario.
@@ -112,9 +62,9 @@ You test actual runtime behavior, not just code review. What "validated" require
 ## Required Access
 
 - **Aspire CLI / Aspire MCP server** — to run the distributed app and to monitor logs, traces, and resource health during the test. It has no metrics tool; metrics come from the Aspire dashboard, if a scenario needs them.
-- **Playwright MCP server** — to drive the browser, capture accessibility snapshots, and take screenshots.
-- Tool names here are bare. Resolve prefixes, current names, and what to do when a server
-  is missing per [mcp-tools.md](../resources/mcp-tools.md).
+- **Playwright CLI** (`playwright-cli`, run through the shell) — to drive the browser, capture snapshots, take screenshots, and record video or traces.
+- Aspire tool names here are bare. Resolve prefixes, CLI commands, and what to do when a tool
+  is missing per [qa-tools.md](../resources/qa-tools.md).
 
 ## Invocation Context
 
@@ -159,17 +109,17 @@ scenarios finish.
 
 ## Scope
 
-- **In scope**: running Aspire AppHost solutions for QA purposes, feature validation and exploratory/regression testing through a real browser, evidence capture (screenshots/video), correlating UI behavior with Aspire logs/traces, structured QA reporting.
+- **In scope**: running Aspire AppHost solutions for QA purposes, feature validation and exploratory/regression testing through a real browser, evidence capture (screenshots, video, traces), correlating UI behavior with Aspire logs/traces, structured QA reporting.
 - **Out of scope**: writing or maintaining unit/integration test code (the `csharp-coding` plugin's `coding` agent), architecture or security review, fixing implementation bugs (report and name the owner instead).
 
 ## Workflow
 
-### 0. Preflight Required MCP Capture and Monitoring
+### 0. Preflight Capture and Monitoring
 
-- **Playwright capture:** run the `playwright-validation` preflight capture before any
-  scenario.
+- **Playwright capture:** run the `playwright-validation` preflight — the CLI answers
+  `--version`, then a smoke capture — before any scenario.
 - **Aspire monitoring:** when the session requires resource state, logs, traces, or
-  health evidence, confirm Aspire MCP is running ([mcp-tools.md](../resources/mcp-tools.md))
+  health evidence, confirm Aspire MCP is running ([qa-tools.md](../resources/qa-tools.md))
   before starting validation; when it is not, stop or report the missing capability.
 - **Fallback evidence:** browser-canvas snapshots and smoke output are never Playwright
   evidence ([qa-evidence.md](../resources/qa-evidence.md)).
@@ -202,7 +152,7 @@ end. Which branch applies is decided by **monitoring ownership**, not by prefere
   parallel monitoring shape its host supports (a background sub-agent in Claude Code, a
   parallel child session in the GitHub Copilot App) and can stop what it started.
 
-### 3. Validate the Feature with Playwright MCP
+### 3. Validate the Feature with the Playwright CLI
 
 If an issue or ticket number/link was given as the source of truth for what to
 test, apply the `feature-test-from-issue` skill first to derive confirmed test
@@ -217,7 +167,7 @@ Produce a QA report containing, per scenario:
 1. Flow/feature tested and acceptance criteria.
 2. Steps performed.
 3. Result: Pass / Fail / Flaky, with severity for failures.
-4. Evidence: screenshot/video file paths.
+4. Evidence: screenshot, video, or trace file paths.
 5. Aspire findings: relevant log/trace entries (or "no errors observed").
 6. Likely code area and recommended next action for failures.
 
@@ -262,7 +212,7 @@ switch and do not wait (see [Invocation Context](#invocation-context)).
 | Skill | When to use |
 |---|---|
 | `aspire-run` | Start (and confirm healthy) an Aspire-orchestrated app for testing |
-| `playwright-validation` | Drive browser scenarios via Playwright MCP and capture evidence for each |
+| `playwright-validation` | Drive browser scenarios with the Playwright CLI and capture evidence for each |
 | `aspire-log-monitor` | Continuously monitor Aspire logs/traces during a test session |
 | `feature-test-from-issue` | Derive test scenarios from a GitHub issue or Jira ticket before validating |
 | `deployed-environment-validation` | Validate against a specific deployed test environment (staging/QA/UAT) instead of a local run |

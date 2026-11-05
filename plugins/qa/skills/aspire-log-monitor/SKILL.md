@@ -9,7 +9,7 @@ Watch the app's logs and traces for the whole session, so a runtime error is cau
 the UI looks correct. Start before `playwright-validation` interacts with the app; stop after
 its last scenario.
 
-Before the first call, read [mcp-tools.md](../../resources/mcp-tools.md) to resolve tool names.
+Before the first call, read [qa-tools.md](../../resources/qa-tools.md) to resolve tool names.
 When the Aspire MCP tools stay unavailable, report the missing capability and claim no log,
 trace, or resource-state evidence. The policy this monitoring serves is
 [qa-evidence.md](../../resources/qa-evidence.md).

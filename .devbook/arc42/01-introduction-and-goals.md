@@ -4,19 +4,21 @@
 related: [".devbook/tech/technology-graph.md", ".devbook/arc42/03-context-and-scope.md"]
 ```
 
-`jsdotnet-ai-plugins` is a plugin marketplace: the specialist agents, skills, and contracts
-that fill the roles a delivery flow consults — architecture, coding, QA, domain, UX,
-documentation, product, security — plus three host plugins and the issue trackers. One folder
-per plugin under `plugins/`, each installable on its own, in GitHub Copilot and in Claude
-Code alike.
+`jsdotnet-ai-plugins` is a plugin marketplace. Each plugin is one folder under `plugins/` and
+installs on its own, in GitHub Copilot and in Claude Code alike. The marketplace holds:
+
+- **Specialists:** agents, skills, and contracts that fill the roles a delivery flow consults.
+  The roles are architecture, coding, QA, domain, UX, documentation, product, and security.
+- **Host plugins:** three plugins, each built on one host.
+- **Trackers:** the plugins for the issue trackers.
 
 The delivery flows themselves are not built here. They ship as `delivery` and
 `delivery-schedule` in the `jsdotnet-devbook` marketplace (`JSdotNet/devbook`), beside the
-`devbook` folder convention; a specialist here fills a role for that engine, or for
-a person working without it, and holds no flow control.
+`devbook` folder convention. A specialist here fills a role for that engine, or for a person
+working without it, and holds no flow control.
 
-The people it serves are the maintainer, who authors every asset, and whoever installs a
-plugin — in practice the same maintainer across their own repositories.
+The marketplace serves the maintainer, who authors every asset, and whoever installs a plugin.
+In practice both are the same maintainer across their own repositories.
 
 ## Quality Goals
 
@@ -26,9 +28,17 @@ related: [".devbook/arc42/adr/manifests.md", ".devbook/arc42/adr/flow-control.md
 
 In priority order:
 
-| Goal | Means here |
-| --- | --- |
-| One file serves two hosts | Every asset is authored once and loads in both GitHub Copilot and Claude Code; no host gets a copy of its own, and `node tools/check-assets.mjs` fails when the two hosts' files disagree. See [08 — One File, Two Hosts](08-crosscutting-concepts.md#one-file-two-hosts). |
-| A specialist holds no flow control | A specialist never sequences stages, holds a gate, spawns a session, or delegates, so any flow — or a person — can consult it. See [the flow-control decision](adr/flow-control.md). |
-| Installable on its own | A plugin carries everything it reads — contracts under `resources/`, referenced by path — and declares its dependencies. |
-| Cheap to load | An asset is read on every load, so bodies stay inside their budgets and each rule is stated in exactly one file. Budgets are reported, not enforced: [TDR 1](tdr/1-body-budgets-reported.md). |
+| Goal | Means here | See |
+| --- | --- | --- |
+| One file serves two hosts | Every asset is authored once and loads in both hosts. | [08 — One File, Two Hosts](08-crosscutting-concepts.md#one-file-two-hosts) |
+| A specialist holds no flow control | Any flow, or a person, can consult a specialist. | [the flow-control decision](adr/flow-control.md) |
+| Installable on its own | A plugin carries everything it reads and declares its dependencies. | |
+| Cheap to load | Bodies stay inside their budgets, and each rule sits in exactly one file. | [TDR 1](tdr/1-body-budgets-reported.md) |
+
+- **One file serves two hosts:** No host gets a copy of its own, and
+  `node tools/check-assets.mjs` fails when the two hosts' files disagree.
+- **A specialist holds no flow control:** A specialist never sequences stages, holds a gate,
+  spawns a session, or delegates.
+- **Installable on its own:** A plugin's contracts live under `resources/`, and its assets
+  reference them by path.
+- **Cheap to load:** An asset is read on every load. Budgets are reported, not enforced.

@@ -40,7 +40,8 @@ aspire start
 
 - `jsdotnet-guidelines-mcpserver` — repository conventions and governed asset guidance.
 - `microsoft-learn` — official .NET, Azure, and Aspire documentation.
-- `playwright` — browser automation for QA validation.
+- `aspire` — resource state, logs, and traces for QA validation; the browser is driven by
+  the Playwright CLI (`playwright-cli`), not an MCP server.
 
 <!-- Informational only; `.mcp.json` remains the source of truth. -->
 

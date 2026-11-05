@@ -6,7 +6,7 @@ description: >
   in CI instead of only existing as one-off evidence.
   Use when: a validated scenario should become a permanent regression test,
   adding lasting E2E coverage for a feature or bug fix, turning an interactive
-  Playwright MCP session into a checked-in test file.
+  Playwright CLI session into a checked-in test file.
 ---
 
 # Playwright E2E Test Authoring
@@ -28,7 +28,8 @@ test never substitutes for the session's evidence.
 3. **Ask before scaffolding.** When no Playwright project exists, ask the user for language,
    directory, and whether to wire it into CI before creating anything; introduce no new test
    framework or tooling without their approval.
-4. **Write the test.** Use the role-based or `data-testid` locators found in the session.
+4. **Write the test.** Use the role-based or `data-testid` locators found in the session
+   (`playwright-cli generate-locator <ref>` turns a snapshot ref into one).
    Map each acceptance criterion or repro step onto setup, actions, and assertions so the
    test traces to its source; comment only where the name and structure do not show it.
 5. **Run it.** Run the new file with the repository's own test command (its package script

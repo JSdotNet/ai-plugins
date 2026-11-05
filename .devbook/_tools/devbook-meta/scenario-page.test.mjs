@@ -1,13 +1,15 @@
-// scenario-page.test.mjs — the scenario page: one end-to-end journey written
-// as a `.domain` page of its own, typed `scenario` on its file-level block.
+// scenario-page.test.mjs — the journey: one end-to-end walk written as a `##`
+// chapter typed `scenario` in a bounded context's scenarios file, its `###`
+// headings the parts.
 //
 // The per-document rules are validateDocument's: where the type may sit, the
-// parts that owe no block, the fixed status set, the field set with `tests`
-// refused, the setup fields only there, the step keywords, and the shape of a
-// `Proved by:` case. The corpus-wide rules are the graph build's: the stem
-// register, the setup fields resolved against chapters and the profile file,
-// `scenario:` image references, `Proved by:` resolved to a part, the parts no
-// case claims, and the `e2e` entry a pointer derives from its spec.
+// parts that owe no block, the anchors unique in a file, a journey's state moved to tooling,
+// the field set with `tests` refused, the setup fields only on a journey, the
+// step keywords, and the shape of a `Proved by:` case. The corpus-wide rules
+// are the graph build's: the setup fields resolved against chapters and the
+// profile file, `scenario:` image references, `Proved by:` resolved to a part,
+// the parts no case claims, the journey in the wrong context, and the `e2e`
+// entry a pointer derives from its spec.
 //
 // Run: node plugins/devbook/tools/devbook-meta/scenario-page.test.mjs
 import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
@@ -15,7 +17,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { documentDigest, testIssues, validateDocument } from "./metadata.mjs";
 import { buildGraph, CONTRACT_VERSION } from "./graph.mjs";
-import { parseScenarioPage } from "../scenarios/parse.mjs";
+import { parseScenariosFile } from "../scenarios/parse.mjs";
 import { signatureOf } from "../scenarios/signature.mjs";
 
 let failed = 0;
@@ -29,104 +31,125 @@ const errors = (issues) => issues.filter((i) => i.severity === "error");
 const warnings = (issues) => issues.filter((i) => i.severity === "warning");
 const has = (issues, needle) => issues.some((i) => i.message.includes(needle));
 
-const PAGE = ".devbook/domain/work/set-up-and-fill-the-backlog.md";
-const page = (meta, body = "") =>
-    `# Set up and fill the backlog\n\n${fence(meta)}\nA product owner sets up the backlog and moves the first item.\n\n` +
-    `## Statuses are set up\n\n- **Given** a product with no statuses\n- **When** I create "New", "Doing" and "Done"\n- **Then** they appear as columns in that order\n\n` +
-    `![The board](shot:statuses-set-up)\n\n## An item is moved\n\n- **Given** an item in "New"\n- **When** I drag it to "Doing"\n- **And** I reload the board\n- **Then** it stays in "Doing"\n` +
+const FILE = ".devbook/domain/work/scenarios.md";
+const JOURNEY = `${FILE}#set-up-and-fill-the-backlog`;
+const scenarios = (meta, body = "") =>
+    `# Scenarios\n\n${fence("type: scenarios\n")}\nThe journeys of the work context.\n\n` +
+    `## Set up and fill the backlog\n\n${fence(meta)}\nA product owner sets up the backlog and moves the first item.\n\n` +
+    `### Statuses are set up\n\n- **Given** a product with no statuses\n- **When** I create "New", "Doing" and "Done"\n- **Then** they appear as columns in that order\n\n` +
+    `![The board](shot:statuses-set-up)\n\n### An item is moved\n\n- **Given** an item in "New"\n- **When** I drag it to "Doing"\n- **And** I reload the board\n- **Then** it stays in "Doing"\n` +
     body;
 
-// ── DB1: the type, by folder and by level ──────────────────────────────────
+// ── DB1: the type, by file, level, and folder ──────────────────────────────
 
 {
-    const issues = validateDocument(PAGE, page("type: scenario\n"));
-    check(errors(issues).length === 0 && warnings(issues).length === 0, "a scenario page in a bounded context is clean", dump(issues));
+    const issues = validateDocument(FILE, scenarios("type: scenario\n"));
+    check(errors(issues).length === 0 && warnings(issues).length === 0, "a journey in a scenarios file is clean", dump(issues));
 }
 {
-    const issues = validateDocument(".devbook/domain/work/journeys/backlog/set-up.md", page("type: scenario\n"));
-    check(errors(issues).length === 0, "a scenario page at any depth inside a bounded context is clean", dump(issues));
+    const issues = validateDocument(".devbook/domain/work/scenarios.returns.md", scenarios("type: scenario\n"));
+    check(errors(issues).length === 0 && warnings(issues).length === 0, "a journey in a split scenarios file is clean", dump(issues));
 }
 {
-    const issues = validateDocument(".devbook/domain/set-up.md", page("type: scenario\n"));
-    check(has(errors(issues), "outside a bounded context"), "a scenario page at the domain/ root is an error", dump(issues));
+    const issues = validateDocument(".devbook/domain/work/scenarios.returns.courier.md", scenarios("type: scenario\n"));
+    check(errors(issues).length === 0 && warnings(issues).length === 0, "a journey in a subpage of a split scenarios file is clean", dump(issues));
+}
+{
+    const issues = validateDocument(".devbook/domain/work/scenarios.returns.courier.late.md", scenarios("type: scenario\n"));
+    check(has(errors(issues), "outside a scenarios file"), "a scenarios file three suffixes deep is none, and its journey is an error", dump(issues));
+}
+{
+    const issues = validateDocument(".devbook/domain/work/set-up.md", `# Set up\n\n${fence("type: scenario\n")}\n## A part\n\n- **Given** a\n`);
+    check(has(errors(issues), "032-scenarios-md"), "a whole file typed scenario is an error naming the migration", dump(issues));
+}
+{
+    const issues = validateDocument(".devbook/domain/work/journeys/scenarios.md", scenarios("type: scenario\n"));
+    check(has(errors(issues), "outside a scenarios file"), "a scenarios file below the context folder is none, and its journey is an error", dump(issues));
 }
 for (const [folder, relPath, meta] of [
     ["arc42", ".devbook/arc42/set-up.md", "type: scenario\n"],
     ["design", ".devbook/design/set-up.md", "type: scenario\n"],
-    ["tech", ".devbook/tech/set-up.md", "type: scenario\nstatus: trial\n"],
-    ["ai", ".devbook/ai/set-up.md", "type: scenario\nstatus: trial\n"],
+    ["tech", ".devbook/tech/set-up.md", "type: scenario\nrating: trial\n"],
+    ["ai", ".devbook/ai/set-up.md", "type: scenario\nrating: trial\n"],
 ]) {
     const issues = validateDocument(relPath, `# Set up\n\n${fence(meta)}\nProse.\n`);
     check(has(errors(issues), `has type "scenario" in .${folder}`), `type: scenario in .${folder} is an error`, dump(issues));
 }
-for (const relPath of [".devbook/domain/work/features.md", ".devbook/arc42/05-building-block-view.md"]) {
-    const fileMeta = relPath.includes("domain") ? "type: features\n" : "";
-    const issues = validateDocument(relPath, `# Features\n\n${fence(fileMeta)}\n## Set up\n\n${fence("type: scenario\n")}\nProse.\n`);
-    check(has(errors(issues), `has type "scenario" on a chapter`), `type: scenario on a chapter is an error (${relPath})`, dump(issues));
+{
+    const issues = validateDocument(".devbook/domain/work/features.md", `# Features\n\n${fence("type: features\n")}\n## Set up\n\n${fence("type: scenario\n")}\nProse.\n`);
+    check(has(errors(issues), "outside a scenarios file"), "a journey chapter in another domain file is an error", dump(issues));
+}
+{
+    const issues = validateDocument(FILE, scenarios("type: scenario\n", `\n## Notes\n\nProse.\n`));
+    check(has(errors(issues), "without `type: scenario`"), "a ## of a scenarios file that is no journey is an error", dump(issues));
+}
+{
+    const issues = validateDocument(FILE, scenarios("type: scenario\n").replace("### An item is moved\n", `### An item is moved\n\n${fence("type: sub-feature\n")}\n`));
+    check(has(errors(issues), "carries a `meta` block"), "a part carrying a block is an error", dump(issues));
+}
+{
+    const issues = validateDocument(FILE, scenarios("type: scenario\n", "\n### Statuses are set up\n\n- **Given** again\n"));
+    check(has(errors(issues), 'the anchor "#statuses-are-set-up"'), "a part anchor repeated in the file is an error", dump(issues));
 }
 
 // ── DB2: parts owe no block ────────────────────────────────────────────────
 
 {
-    const issues = validateDocument(".devbook/domain/work/journeys/set-up.md", page("type: scenario\n"));
-    check(!has(issues, "has no `meta` block"), "a part without a block is not reported, at any depth", dump(issues));
+    const issues = validateDocument(FILE, scenarios("type: scenario\n", "\n#### A note under the part\n\nProse.\n"));
+    check(!has(issues, "has no `meta` block"), "a part, and a heading under it, without a block is not reported", dump(issues));
 }
 
-// ── DB3: status ────────────────────────────────────────────────────────────
+// ── DB3: a journey carries no status ───────────────────────────────────────
 
 for (const status of ["draft", "proposed"]) {
-    const issues = validateDocument(PAGE, page(`type: scenario\nstatus: ${status}\n`));
-    check(errors(issues).length === 0 && warnings(issues).length === 0, `status: ${status} is accepted`, dump(issues));
-}
-for (const status of ["active", "approved", "deprecated", "nonsense"]) {
-    const issues = validateDocument(PAGE, page(`type: scenario\nstatus: ${status}\n`));
-    check(has(errors(issues), `has status "${status}" on a scenario page`), `status: ${status} is an error`, dump(issues));
+    const issues = validateDocument(FILE, scenarios(`type: scenario\nstatus: ${status}\n`));
+    check(errors(issues).length === 1 && has(errors(issues), "038-workflow-state-leaves-the-chapter"), `status: ${status} on a journey is moved to tooling`, dump(issues));
 }
 
 // ── DB4: the field set ─────────────────────────────────────────────────────
 
 {
     const meta =
-        "type: scenario\nrelated: [.devbook/domain/work/features.md#backlog-board]\nroadmap: [scenario-pages]\n" +
-        "issue: \"#12\"\neffort: 3\ndate: 2026-10-07\nchange: add-scenarios\naliases: [Backlog setup]\next.spec-manager.pinned: yes\n";
-    const issues = validateDocument(PAGE, page(meta));
-    check(errors(issues).length === 0 && warnings(issues).length === 0, "the common fields, aliases, and ext.* are accepted", dump(issues));
+        "type: scenario\nrelated: [.devbook/domain/work/features.md#backlog-board]\n" +
+        "date: 2026-10-07\naliases: [Backlog setup]\next.spec-manager.pinned: yes\n";
+    const issues = validateDocument(FILE, scenarios(meta));
+    check(errors(issues).length === 0 && warnings(issues).length === 0, "the common fields, aliases, and ext.* are accepted on a journey", dump(issues));
 }
 {
-    const issues = validateDocument(PAGE, page("type: scenario\ntests: [e2e:playwright:tests/x.spec.ts]\n"));
-    check(errors(issues).length === 1 && has(errors(issues), "`tests` on a scenario page"), "tests on a scenario page is one error", dump(issues));
+    const issues = validateDocument(FILE, scenarios("type: scenario\ntests: [e2e:playwright:tests/x.spec.ts]\n"));
+    check(errors(issues).length === 1 && has(errors(issues), "`tests` on a journey"), "tests on a journey is one error", dump(issues));
 }
 {
-    // `aliases` stays chapter-only on every other file.
     const issues = validateDocument(".devbook/domain/work/features.md", `# Features\n\n${fence("type: features\naliases: [x]\n")}\nProse.\n`);
-    check(has(errors(issues), "`aliases` on the file-level block"), "aliases on another file-level block is still an error", dump(issues));
+    check(has(errors(issues), "`aliases` on the file-level block"), "aliases on a file-level block is an error", dump(issues));
 }
 
-// ── DB11: the setup fields, on the page alone ──────────────────────────────
+// ── DB11: the setup fields, on a journey alone ─────────────────────────────
 
 {
     const meta =
         "type: scenario\nstart: admin:/products/webshop/backlog\nactor: [admin:actors.md#product-owner, customer:actors.md#shopper]\n" +
         "data: [webshop-without-statuses]\nprofile: tenant-acme\nflags: [context.md#new-board, -context.md#legacy-filters]\n" +
         "settings: [context.md#backlog-max-columns=5]\n";
-    const issues = validateDocument(PAGE, page(meta));
-    check(errors(issues).length === 0 && warnings(issues).length === 0, "the six setup fields are accepted on a scenario page", dump(issues));
+    const issues = validateDocument(FILE, scenarios(meta));
+    check(errors(issues).length === 0 && warnings(issues).length === 0, "the six setup fields are accepted on a journey", dump(issues));
 }
 for (const [meta, needle, name] of [
     ["start: [/a, /b]\n", "`start` as a list", "start is a single value"],
-    ["profile: [a, b]\n", "`profile` as a list", "profile is a single value: one profile per page"],
+    ["profile: [a, b]\n", "`profile` as a list", "profile is a single value: one profile per journey"],
     ["start: products/backlog\n", "`start` \"products/backlog\"", "start is a route"],
     ["actor: product-owner\n", "`actor` entry \"product-owner\"", "actor is a chapter reference"],
     ["flags: [new-board]\n", "`flags` entry \"new-board\"", "a flag is a chapter reference"],
     ["settings: [context.md#max]\n", "`settings` entry \"context.md#max\"", "a setting carries a value"],
     ["data: [Webshop Data]\n", "`data` entry \"Webshop Data\"", "a data set is a kebab-case name"],
 ]) {
-    const issues = validateDocument(PAGE, page(`type: scenario\n${meta}`));
+    const issues = validateDocument(FILE, scenarios(`type: scenario\n${meta}`));
     check(has(errors(issues), needle), name, dump(issues));
 }
 for (const [relPath, markdown, where] of [
     [".devbook/domain/work/features.md", `# Features\n\n${fence("type: features\n")}\n## Board\n\n${fence("type: feature\nactor: actors.md#po\n")}\nProse.\n`, "a domain chapter"],
     [".devbook/domain/work/features.md", `# Features\n\n${fence("type: features\nstart: /x\n")}\nProse.\n`, "another domain file"],
+    [FILE, scenarios("type: scenario\n").replace("type: scenarios\n", "type: scenarios\nstart: /x\n"), "a scenarios file's own block"],
     [".devbook/arc42/01-introduction.md", `# Introduction\n\n${fence("profile: default\n")}\nProse.\n`, "an arc42 file"],
 ]) {
     const issues = validateDocument(relPath, markdown);
@@ -143,14 +166,14 @@ for (const [line, ok, name] of [
     ["1. **When** I create a status", true, "an ordered step with a keyword is accepted"],
     ["  - a note under the step above", true, "a nested item belongs to the step above"],
 ]) {
-    const issues = validateDocument(PAGE, page("type: scenario\n", `${line}\n`));
+    const issues = validateDocument(FILE, scenarios("type: scenario\n", `${line}\n`));
     const stepErrors = errors(issues).filter((i) => i.message.includes("step"));
     check(ok ? stepErrors.length === 0 : stepErrors.length === 1, name, dump(issues));
 }
 {
-    const md = page("type: scenario\n").replace("A product owner", "- a lead list item\n\nA product owner") + "\n```text\n- inside a fence\n```\n";
-    const issues = validateDocument(PAGE, md);
-    check(errors(issues).length === 0, "list items in the lead and inside fences are not steps", dump(issues));
+    const md = scenarios("type: scenario\n").replace("A product owner", "- a lead list item\n\nA product owner").replace("The journeys of", "- a file lead item\n\nThe journeys of") + "\n```text\n- inside a fence\n```\n";
+    const issues = validateDocument(FILE, md);
+    check(errors(issues).length === 0, "list items in the leads and inside fences are not steps", dump(issues));
 }
 
 // ── DB13: a Proved by case, on the requirement's page ──────────────────────
@@ -160,7 +183,7 @@ const requirements = (caseBody) =>
     `# Requirements\n\n${fence("type: requirements\n")}\n## Backlog board\n\n${fence("type: requirements\nrelated: [.devbook/domain/work/features.md#backlog-board]\n")}\n` +
     `### Requirement: Columns follow the status order\n\n${fence("type: requirement\n")}\nThe board SHALL show one column per status.\n\n#### Scenario: Statuses are set up\n${caseBody}`;
 {
-    const issues = validateDocument(REQUIREMENTS, requirements("Proved by: set-up-and-fill-the-backlog.md#statuses-are-set-up\n"));
+    const issues = validateDocument(REQUIREMENTS, requirements("Proved by: scenarios.md#statuses-are-set-up\n"));
     check(errors(issues).length === 0 && warnings(issues).length === 0, "a Proved by case satisfies the coverage warning", dump(issues));
 }
 {
@@ -172,14 +195,14 @@ const requirements = (caseBody) =>
     check(has(errors(issues), "and its own Given/When/Then"), "a Proved by line beside Given/When/Then is an error", dump(issues));
 }
 {
-    const issues = validateDocument(REQUIREMENTS, requirements("Proved by: set-up-and-fill-the-backlog\n"));
-    check(has(errors(issues), "names one part of a scenario page"), "a Proved by line without a part is an error", dump(issues));
+    const issues = validateDocument(REQUIREMENTS, requirements("Proved by: scenarios\n"));
+    check(has(errors(issues), "names one part of a journey"), "a Proved by line without a part is an error", dump(issues));
 }
 
 // ── DB6: screenshot images are no diagrams ─────────────────────────────────
 
 {
-    const md = "# T\n\nLead.\n\n![a](shot:x) ![b](scenario:page#x)\n\n![c](diagram.svg)\n\n```mermaid\ngraph TD\n```\n";
+    const md = "# T\n\nLead.\n\n![a](shot:x) ![b](scenario:work/scenarios.md#x)\n\n![c](diagram.svg)\n\n```mermaid\ngraph TD\n```\n";
     check(documentDigest(md).diagrams === 2, "shot: and scenario: images are not counted as diagrams", JSON.stringify(documentDigest(md)));
 }
 
@@ -190,7 +213,7 @@ const requirements = (caseBody) =>
     check(issues.length === 1 && issues[0].message.includes("which is a chapter reference"), "a .devbook/ path in tests is reported as a chapter reference", dump(issues));
 }
 
-check(CONTRACT_VERSION === 30, "the contract is 30");
+check(CONTRACT_VERSION >= 32, "the contract is at least 32");
 
 // ── The corpus-wide rules, through the graph build ─────────────────────────
 
@@ -200,8 +223,7 @@ const CONTEXT =
 const ACTORS = `# Actors\n\n${fence("type: actors\n")}\nWho works here.\n\n## Product Owner\n\n${fence("type: user\n")}\nOwns the backlog.\n`;
 const FEATURES = (extra = "") =>
     `# Features\n\n${fence("type: features\n")}\nWhat it does.\n\n## Backlog Board\n\n${fence("type: feature\n")}\nThe board.\n${extra}`;
-const NESTED = ".devbook/domain/work/journeys/set-up-and-fill-the-backlog.md";
-const SPEC = "e2e/tests/set-up-and-fill-the-backlog.spec.ts";
+const SPEC = "e2e/tests/work/scenarios/set-up-and-fill-the-backlog.spec.ts";
 const PROFILES = JSON.stringify({
     default: { portals: { app: "env:APP_URL" } },
     "tenant-acme": { portals: { admin: "env:ADMIN_URL", customer: "env:SHOP_URL" } },
@@ -219,11 +241,11 @@ async function graphOf(files) {
         await rm(root, { recursive: true, force: true });
     }
 }
-const base = (pageMeta, extra = {}) => ({
+const base = (journeyMeta, extra = {}) => ({
     ".devbook/domain/work/context.md": CONTEXT,
     ".devbook/domain/work/actors.md": ACTORS,
     ".devbook/domain/work/features.md": FEATURES(),
-    [NESTED]: page(pageMeta),
+    [FILE]: scenarios(journeyMeta),
     ...extra,
 });
 const problemsAbout = (graph, needle) => graph.problems.filter((p) => p.message.includes(needle));
@@ -232,8 +254,9 @@ const problemsAbout = (graph, needle) => graph.problems.filter((p) => p.message.
     const graph = await graphOf(base("type: scenario\nactor: actors.md#product-owner\nflags: [context.md#new-board, -context.md#new-board]\nsettings: [context.md#backlog-max-columns=5]\n"));
     const setup = graph.problems.filter((p) => /`(actor|flags|settings)` entry/.test(p.message));
     check(setup.length === 0, "actor, flags, and settings resolve from the bounded context", dump(setup));
-    check(errors(graph.problems).length === 0, "a corpus with a scenario page has no errors", dump(errors(graph.problems)));
-    check(graph.nodes.some((n) => n.id === NESTED && n.kind === "scenario"), "the page is a file node of kind scenario");
+    check(errors(graph.problems).length === 0, "a corpus with a journey has no errors", dump(errors(graph.problems)));
+    check(graph.nodes.some((n) => n.id === JOURNEY && n.kind === "scenario"), "the journey is a chapter node of kind scenario");
+    check(graph.nodes.some((n) => n.id === FILE && n.kind === "scenarios"), "the file is a node of kind scenarios");
 }
 {
     const graph = await graphOf(base("type: scenario\nactor: features.md#backlog-board\nflags: [context.md#backlog-max-columns]\nsettings: [context.md#nowhere=5]\n"));
@@ -263,81 +286,154 @@ const problemsAbout = (graph, needle) => graph.problems.filter((p) => p.message.
     check(problemsAbout(graph, "names portal \"shop\" in `actor`").length === 1, "an actor portal the profile lacks is an error", dump(graph.problems));
 }
 
-// DB5: the stem is unique across every bounded context.
+// A journey's anchor is its own file's: two files may hold a journey of the same name.
 {
-    const graph = await graphOf(base("type: scenario\n", { ".devbook/domain/shop/set-up-and-fill-the-backlog.md": page("type: scenario\n") }));
-    check(problemsAbout(graph, "has the stem \"set-up-and-fill-the-backlog\"").length === 1, "a stem duplicated across contexts is an error", dump(graph.problems));
-}
-{
-    const graph = await graphOf(base("type: scenario\n", { ".devbook/domain/shop/move-an-item.md": page("type: scenario\n") }));
-    check(problemsAbout(graph, "has the stem").length === 0, "distinct stems are accepted", dump(graph.problems));
+    const graph = await graphOf(base("type: scenario\n", { ".devbook/domain/shop/scenarios.md": scenarios("type: scenario\n").replace("work context", "shop context") }));
+    check(errors(graph.problems).length === 0, "the same journey name in two files is no conflict", dump(errors(graph.problems)));
 }
 
-// DB2: a part is addressable as a structural anchor.
+// DB2: a journey and a part are addressable, so any number of chapters point at either.
 {
     const graph = await graphOf(base("type: scenario\n", {
-        ".devbook/domain/work/features.md": FEATURES().replace("type: feature\n", `type: feature\nrelated: [${NESTED}#statuses-are-set-up]\n`),
+        ".devbook/domain/work/features.md": FEATURES().replace("type: feature\n", `type: feature\nrelated: [${JOURNEY}, ${FILE}#statuses-are-set-up]\n`),
     }));
-    check(problemsAbout(graph, "does not resolve").length === 0, "related into a part resolves", dump(graph.problems));
-    check(graph.edges.some((e) => e.type === "related" && e.target === `${NESTED}#statuses-are-set-up`), "the part is a related edge target");
+    check(problemsAbout(graph, "does not resolve").length === 0, "related into a journey and into a part resolves", dump(graph.problems));
+    check(graph.edges.some((e) => e.type === "related" && e.target === JOURNEY), "the journey is a related edge target");
+    check(graph.edges.some((e) => e.type === "related" && e.target === `${FILE}#statuses-are-set-up`), "the part is a related edge target");
 }
 
-// DB6: a `scenario:` image names a page, and a label on it.
+// DB6: a `scenario:` image names a scenarios file, and a label in it.
 {
     const images =
-        "\n![Board](scenario:set-up-and-fill-the-backlog#statuses-set-up)\n\n![Gone](scenario:no-such-page#x)\n\n![Typo](scenario:set-up-and-fill-the-backlog#missing)\n";
+        "\n![Board](scenario:work/scenarios.md#statuses-set-up)\n\n![Gone](scenario:work/nowhere.md#x)\n\n![Typo](scenario:.devbook/domain/work/scenarios.md#missing)\n\n![Bare](scenario:nope)\n";
     const graph = await graphOf(base("type: scenario\n", { ".devbook/domain/work/features.md": FEATURES(images) }));
-    check(problemsAbout(graph, "no scenario page has the stem \"no-such-page\"").filter((p) => p.severity === "error").length === 1, "a scenario: reference to an unknown stem is an error", dump(graph.problems));
+    check(problemsAbout(graph, ".devbook/domain/work/nowhere.md is no scenarios file").filter((p) => p.severity === "error").length === 1, "a scenario: reference to no scenarios file is an error", dump(graph.problems));
     check(problemsAbout(graph, "has no screenshot point `shot:missing`").filter((p) => p.severity === "warning").length === 1, "an unknown label is a warning", dump(graph.problems));
-    check(problemsAbout(graph, "#statuses-set-up").length === 0, "a known stem and label are accepted", dump(graph.problems));
+    check(problemsAbout(graph, "a screenshot elsewhere is `scenario:<scenarios file>#<label>`").length === 1, "a reference without a label is an error", dump(graph.problems));
+    check(problemsAbout(graph, "#statuses-set-up").length === 0, "a known file and label are accepted", dump(graph.problems));
 }
 
 // DB13: Proved by resolves to a part, derives the e2e entry, and claims the part.
-const proved = (target) => ({
-    [REQUIREMENTS]: requirements(`Proved by: ${target}\n`),
-    [SPEC]: `// scenario: ${NESTED}\n// signature: 9c41e2a0\nimport { scenario } from "x";\n`,
+const proved = (target, requirementsPath = REQUIREMENTS) => ({
+    [requirementsPath]: requirements(`Proved by: ${target}\n`),
+    [SPEC]: `// scenario: ${JOURNEY}\n// signature: 9c41e2a0\nimport { scenario } from "x";\n`,
 });
 {
-    const graph = await graphOf(base("type: scenario\n", proved("set-up-and-fill-the-backlog.md#statuses-are-set-up")));
+    const graph = await graphOf(base("type: scenario\n", proved("scenarios.md#statuses-are-set-up")));
     const requirement = graph.nodes.find((n) => n.id === `${REQUIREMENTS}#requirement-columns-follow-the-status-order`);
-    check(problemsAbout(graph, "has `Proved by:").length === 0, "a Proved by pointer to a part resolves by stem", dump(graph.problems));
+    check(problemsAbout(graph, "has `Proved by:").length === 0, "a Proved by pointer from the requirement's folder resolves", dump(graph.problems));
     check(
         JSON.stringify(requirement?.tests) === JSON.stringify([`e2e:playwright:${SPEC}#Statuses are set up`]),
         "the requirement's e2e tests entry is derived from the spec header",
         JSON.stringify(requirement)
     );
-    check(problemsAbout(graph, "part \"#statuses-are-set-up\" is an unclaimed journey").length === 0, "a claimed part is not reported");
-    check(problemsAbout(graph, "part \"#an-item-is-moved\" is an unclaimed journey").filter((p) => p.severity === "warning").length === 1, "a part no requirement points at is an unclaimed journey", dump(graph.problems));
+    check(problemsAbout(graph, "part \"#statuses-are-set-up\" of journey").length === 0, "a claimed part is not reported");
+    check(problemsAbout(graph, "part \"#an-item-is-moved\" of journey \"#set-up-and-fill-the-backlog\" is unclaimed").filter((p) => p.severity === "warning").length === 1, "a part no requirement points at is unclaimed", dump(graph.problems));
 }
 {
-    const graph = await graphOf(base("type: scenario\n", proved(`${NESTED}#statuses-are-set-up`)));
+    const graph = await graphOf(base("type: scenario\n", proved(`${FILE}#statuses-are-set-up`)));
     check(problemsAbout(graph, "has `Proved by:").length === 0, "a Proved by pointer by repository path resolves", dump(graph.problems));
 }
 {
-    const graph = await graphOf(base("type: scenario\n", { [REQUIREMENTS]: requirements("Proved by: set-up-and-fill-the-backlog.md#statuses-are-set-up\n") }));
+    const SUBPAGE = ".devbook/domain/work/scenarios.returns.courier.md";
+    const graph = await graphOf(
+        base("type: scenario\n", {
+            [SUBPAGE]: scenarios("type: scenario\n"),
+            [REQUIREMENTS]: requirements("Proved by: scenarios.returns.courier.md#statuses-are-set-up\n"),
+            [SPEC]: `// scenario: ${SUBPAGE}#set-up-and-fill-the-backlog\n// signature: 9c41e2a0\nimport { scenario } from "x";\n`,
+        })
+    );
     const requirement = graph.nodes.find((n) => n.id === `${REQUIREMENTS}#requirement-columns-follow-the-status-order`);
-    check(requirement && requirement.tests === undefined, "without a spec naming the page, nothing is derived", JSON.stringify(requirement));
+    check(problemsAbout(graph, "has `Proved by:").length === 0, "a Proved by pointer into a scenarios subpage resolves", dump(graph.problems));
+    check(graph.nodes.some((n) => n.id === `${SUBPAGE}#set-up-and-fill-the-backlog` && n.kind === "scenario"), "a subpage's journey is a chapter node of kind scenario");
+    check(JSON.stringify(requirement?.tests) === JSON.stringify([`e2e:playwright:${SPEC}#Statuses are set up`]), "a pointer into a subpage derives the e2e entry from the spec naming its journey", JSON.stringify(requirement));
 }
 {
-    const graph = await graphOf(base("type: scenario\n", proved("set-up-and-fill-the-backlog.md#no-such-part")));
+    const graph = await graphOf(base("type: scenario\n", { [REQUIREMENTS]: requirements("Proved by: scenarios.md#statuses-are-set-up\n") }));
+    const requirement = graph.nodes.find((n) => n.id === `${REQUIREMENTS}#requirement-columns-follow-the-status-order`);
+    check(requirement && requirement.tests === undefined, "without a spec naming the journey, nothing is derived", JSON.stringify(requirement));
+}
+{
+    const graph = await graphOf(base("type: scenario\n", proved("scenarios.md#no-such-part")));
     check(problemsAbout(graph, "has no part \"#no-such-part\"").filter((p) => p.severity === "error").length === 1, "a pointer to a missing part is an error", dump(graph.problems));
 }
 {
+    const graph = await graphOf(base("type: scenario\n", proved("scenarios.md#set-up-and-fill-the-backlog")));
+    check(problemsAbout(graph, "which names the journey \"#set-up-and-fill-the-backlog\"").filter((p) => p.severity === "error").length === 1, "a pointer to a journey rather than a part is an error", dump(graph.problems));
+}
+{
     const graph = await graphOf(base("type: scenario\n", proved("features.md#backlog-board")));
-    check(problemsAbout(graph, "no scenario page has the stem \"features\"").filter((p) => p.severity === "error").length === 1, "a pointer to a page that is no scenario page is an error", dump(graph.problems));
+    check(problemsAbout(graph, "features.md is not a scenarios file").filter((p) => p.severity === "error").length === 1, "a pointer to a file that is no scenarios file is an error", dump(graph.problems));
+}
+{
+    const graph = await graphOf(base("type: scenario\n", proved("../work/scenarios.md#statuses-are-set-up", ".devbook/domain/shop/requirements.md")));
+    check(problemsAbout(graph, "has `Proved by:").length === 0, "a pointer into another context's scenarios file resolves", dump(graph.problems));
+}
+
+// An inline case in a context with journeys is reported, as info only.
+const INLINE = "\n- **Given** a product with no statuses\n- **When** I create a status\n- **Then** a column appears\n";
+{
+    const graph = await graphOf(base("type: scenario\n", { [REQUIREMENTS]: requirements(INLINE) }));
+    const candidates = problemsAbout(graph, "is written inline");
+    check(
+        candidates.length === 1 && candidates[0].severity === "info" && candidates[0].path === REQUIREMENTS && candidates[0].message.includes("`#### Scenario: Statuses are set up`"),
+        "an inline case in a context with journeys is an info candidate",
+        dump(graph.problems)
+    );
+}
+{
+    const files = base("type: scenario\n", { [REQUIREMENTS]: requirements(INLINE) });
+    delete files[FILE];
+    const graph = await graphOf(files);
+    check(problemsAbout(graph, "is written inline").length === 0, "an inline case in a context with no journey is not reported", dump(graph.problems));
+}
+{
+    const graph = await graphOf(base("type: scenario\n", { [REQUIREMENTS.replace("/work/", "/shop/")]: requirements(INLINE) }));
+    check(problemsAbout(graph, "is written inline").length === 0, "a journey in another context does not make a case a candidate", dump(graph.problems));
+}
+{
+    const graph = await graphOf(base("type: scenario\n", proved("scenarios.md#statuses-are-set-up")));
+    check(problemsAbout(graph, "is written inline").length === 0, "a Proved by case is not a candidate", dump(graph.problems));
+}
+
+// A journey lives in the context holding most of the requirements it proves.
+const SHOP_REQUIREMENTS = ".devbook/domain/shop/requirements.md";
+const shopRequirements = (cases) =>
+    `# Requirements\n\n${fence("type: requirements\n")}\n## Checkout\n\n${fence("type: requirements\n")}\n` +
+    cases.map((part, i) => `### Requirement: Rule ${i + 1}\n\n${fence("type: requirement\n")}\nThe shop SHALL keep rule ${i + 1}.\n\n#### Scenario: Case ${i + 1}\nProved by: ../work/scenarios.md#${part}\n\n`).join("");
+const MISPLACED = "a journey lives in the context holding most of the requirements it proves";
+{
+    const graph = await graphOf(base("type: scenario\n", proved("scenarios.md#statuses-are-set-up")));
+    check(problemsAbout(graph, MISPLACED).length === 0, "a journey in the context of the requirements it proves is not reported", dump(graph.problems));
+}
+{
+    const graph = await graphOf(base("type: scenario\n", { [SHOP_REQUIREMENTS]: shopRequirements(["statuses-are-set-up"]) }));
+    const found = problemsAbout(graph, MISPLACED);
+    check(
+        found.length === 1 && found[0].severity === "warning" && found[0].path === FILE && found[0].message.includes("1 of the 1 requirements it proves are in .devbook/domain/shop"),
+        "a journey proving only another context's requirements is a warning naming that context",
+        dump(graph.problems)
+    );
 }
 {
     const graph = await graphOf(base("type: scenario\n", {
-        ...proved("set-up-and-fill-the-backlog.md#statuses-are-set-up"),
-        ".devbook/domain/shop/set-up-and-fill-the-backlog.md": page("type: scenario\n"),
+        ...proved("scenarios.md#statuses-are-set-up"),
+        [SHOP_REQUIREMENTS]: shopRequirements(["statuses-are-set-up", "an-item-is-moved"]),
     }));
-    check(problemsAbout(graph, "the stem is ambiguous").length === 1, "a pointer by a duplicated stem is ambiguous", dump(graph.problems));
+    check(problemsAbout(graph, "2 of the 3 requirements it proves are in .devbook/domain/shop").length === 1, "a journey across contexts belongs where most of its requirements are", dump(graph.problems));
+}
+{
+    const graph = await graphOf(base("type: scenario\n", {
+        ...proved("scenarios.md#statuses-are-set-up"),
+        [SHOP_REQUIREMENTS]: shopRequirements(["an-item-is-moved"]),
+    }));
+    check(problemsAbout(graph, MISPLACED).length === 0, "a tie keeps the journey where it is", dump(graph.problems));
 }
 
 // ── Linked walkthroughs: a demo walkthrough sharing a part's journey ───────
 
 const DEMO = ".devbook/domain/work/features.demo.html";
-const SIGNATURE = signatureOf(parseScenarioPage(page("type: scenario\n"), NESTED));
+const SIGNATURE = signatureOf(parseScenariosFile(scenarios("type: scenario\n"), FILE).journeys[0]);
 const demoHtml = (walkthroughs) =>
     `<!doctype html>\n<html><head><title>Work</title>\n<!-- template:begin -->\n<style>body{margin:0}</style>\n<!-- template:end -->\n` +
     `<script type="application/json" id="demo-meta">{"question":"Does the board read?"}</script>\n` +
@@ -348,7 +444,7 @@ const demoHtml = (walkthroughs) =>
 const linkedWalkthrough = (over = {}) => ({
     id: "set-up-statuses",
     title: "Set up statuses",
-    part: "set-up-and-fill-the-backlog.md#statuses-are-set-up",
+    part: "scenarios.md#statuses-are-set-up",
     signature: SIGNATURE,
     steps: [
         { screen: "statuses", step: 1, text: "a product with no statuses" },
@@ -358,12 +454,12 @@ const linkedWalkthrough = (over = {}) => ({
     ...over,
 });
 const linkedCorpus = (walkthroughs, extra = {}) =>
-    base("type: scenario\n", { ...proved("set-up-and-fill-the-backlog.md#statuses-are-set-up"), [DEMO]: demoHtml(walkthroughs), ...extra });
+    base("type: scenario\n", { ...proved("scenarios.md#statuses-are-set-up"), [DEMO]: demoHtml(walkthroughs), ...extra });
 const walkthroughProblems = (graph) => graph.problems.filter((p) => p.path === DEMO || /walkthrough/.test(p.message));
 {
     const graph = await graphOf(linkedCorpus([linkedWalkthrough()]));
     const requirement = graph.nodes.find((n) => n.id === `${REQUIREMENTS}#requirement-columns-follow-the-status-order`);
-    check(walkthroughProblems(graph).length === 0, "a linked walkthrough at the page's signature, its text the part's, is clean", dump(walkthroughProblems(graph)));
+    check(walkthroughProblems(graph).length === 0, "a linked walkthrough at the journey's signature, its text the part's, is clean", dump(walkthroughProblems(graph)));
     check(
         JSON.stringify(requirement?.demo) === JSON.stringify([`${DEMO}#walkthrough/set-up-statuses`]),
         "the Proved by requirement's demo entry is derived from the walkthrough linked to its part",
@@ -372,19 +468,19 @@ const walkthroughProblems = (graph) => graph.problems.filter((p) => p.path === D
     check(requirement?.tests?.length === 1, "the derived demo entry sits beside the derived tests entry", JSON.stringify(requirement));
 }
 {
-    const graph = await graphOf(linkedCorpus([linkedWalkthrough({ part: `${NESTED}#an-item-is-moved` })]));
+    const graph = await graphOf(linkedCorpus([linkedWalkthrough({ part: `${FILE}#an-item-is-moved` })]));
     const requirement = graph.nodes.find((n) => n.id === `${REQUIREMENTS}#requirement-columns-follow-the-status-order`);
     check(requirement && requirement.demo === undefined, "a walkthrough linked to another part derives nothing onto the requirement", JSON.stringify(requirement));
-    const unresolved = walkthroughProblems(graph).filter((p) => /names no scenario page part|has no part/.test(p.message));
+    const unresolved = walkthroughProblems(graph).filter((p) => /names no journey part/.test(p.message));
     check(unresolved.length === 0 && problemsAbout(graph, "drifted from part step").length === 3, "a part by repository path resolves and is checked step by step", dump(walkthroughProblems(graph)));
 }
 {
-    const graph = await graphOf(linkedCorpus([linkedWalkthrough({ part: "set-up-and-fill-the-backlog.md#no-such-part" })]));
-    check(problemsAbout(graph, 'has no part "#no-such-part"').some((p) => p.severity === "error" && p.path === DEMO), "a part the page does not have is an error", dump(graph.problems));
+    const graph = await graphOf(linkedCorpus([linkedWalkthrough({ part: "scenarios.md#no-such-part" })]));
+    check(problemsAbout(graph, 'has no part "#no-such-part"').some((p) => p.severity === "error" && p.path === DEMO), "a part the file does not have is an error", dump(graph.problems));
 }
 {
-    const graph = await graphOf(linkedCorpus([linkedWalkthrough({ part: "no-such-page.md#statuses-are-set-up" })]));
-    check(problemsAbout(graph, 'no scenario page has the stem "no-such-page"').some((p) => p.severity === "error" && p.path === DEMO), "a part on no scenario page is an error", dump(graph.problems));
+    const graph = await graphOf(linkedCorpus([linkedWalkthrough({ part: "nowhere.md#statuses-are-set-up" })]));
+    check(problemsAbout(graph, ".devbook/domain/work/nowhere.md is not a scenarios file").some((p) => p.severity === "error" && p.path === DEMO), "a part in no scenarios file is an error", dump(graph.problems));
 }
 {
     const steps = [{ screen: "statuses", step: 1, text: "a product with no statuses" }, { screen: "board", step: 4, text: "they appear" }];
@@ -393,7 +489,7 @@ const walkthroughProblems = (graph) => graph.problems.filter((p) => p.path === D
 }
 {
     const graph = await graphOf(linkedCorpus([linkedWalkthrough({ signature: "00000000" })]));
-    check(problemsAbout(graph, `at signature 00000000, but ${NESTED} is at ${SIGNATURE}`).some((p) => p.severity === "warning"), "a walkthrough at an older signature is stale", dump(graph.problems));
+    check(problemsAbout(graph, `at signature 00000000, but ${JOURNEY} is at ${SIGNATURE}`).some((p) => p.severity === "warning"), "a walkthrough at an older signature is stale", dump(graph.problems));
 }
 {
     const steps = [{ screen: "statuses", step: 1, text: "a product with one status" }];
@@ -407,7 +503,7 @@ const walkthroughProblems = (graph) => graph.problems.filter((p) => p.path === D
     const free = { id: "statuses-are-set-up", title: "Free", steps: [{ screen: "statuses", text: "Statuses" }] };
     const graph = await graphOf(
         linkedCorpus([linkedWalkthrough(), free], {
-            [REQUIREMENTS]: requirements("Proved by: set-up-and-fill-the-backlog.md#statuses-are-set-up\n").replace(
+            [REQUIREMENTS]: requirements("Proved by: scenarios.md#statuses-are-set-up\n").replace(
                 "type: requirement\n",
                 `type: requirement\ndemo: [${DEMO}#walkthrough/statuses-are-set-up]\n`
             ),
@@ -415,6 +511,81 @@ const walkthroughProblems = (graph) => graph.problems.filter((p) => p.path === D
     );
     const entry = problemsAbout(graph, "#walkthrough/statuses-are-set-up");
     check(entry.length === 1 && entry[0].severity === "warning" && entry[0].message.includes("only an inline case's is written by hand"), "a hand-written walkthrough on a Proved by requirement warns", dump(graph.problems));
+}
+
+// ── Playthroughs: a demo walkthrough playing a whole journey ──────────────
+
+const playthrough = (over = {}) => ({
+    id: "set-up-and-fill",
+    title: "Set up and fill the backlog",
+    journey: "scenarios.md#set-up-and-fill-the-backlog",
+    signature: SIGNATURE,
+    steps: [
+        { screen: "statuses", part: "statuses-are-set-up", step: 1, text: "Given a product with no statuses" },
+        { screen: "statuses", part: "statuses-are-set-up", step: 2, text: 'When I create "New", "Doing" and "Done"' },
+        { screen: "board", part: "an-item-is-moved", step: 2, text: 'When I drag it to "Doing"' },
+        { screen: "board", part: "an-item-is-moved", step: 4, text: 'Then it stays in "Doing"' },
+    ],
+    ...over,
+});
+const FEATURE = ".devbook/domain/work/features.md#backlog-board";
+const playCorpus = (walkthroughs, { field = `playthrough: [${DEMO}#walkthrough/set-up-and-fill]\n`, journeyMeta = `type: scenario\nrelated: [${FEATURE}]\n` } = {}) =>
+    base(journeyMeta, {
+        ".devbook/domain/work/features.md": FEATURES().replace("type: feature\n", `type: feature\nrelated: [${JOURNEY}]\n${field}`),
+        [DEMO]: demoHtml(walkthroughs),
+    });
+const playProblems = (graph) => graph.problems.filter((p) => /playthrough/i.test(p.message));
+{
+    const graph = await graphOf(playCorpus([playthrough()]));
+    check(playProblems(graph).length === 0, "a playthrough of every part, in order, at the journey's signature, named by its feature, is clean", dump(playProblems(graph)));
+    const feature = graph.nodes.find((n) => n.id === FEATURE);
+    check(JSON.stringify(feature?.playthrough) === JSON.stringify([`${DEMO}#walkthrough/set-up-and-fill`]), "the feature node carries its playthrough for the host that shows the page", JSON.stringify(feature));
+}
+{
+    const graph = await graphOf(playCorpus([playthrough({ steps: playthrough().steps.slice(0, 2) })]));
+    check(problemsAbout(graph, 'shows no step of part(s) "#an-item-is-moved"').some((p) => p.severity === "warning"), "a playthrough that skips a part warns", dump(graph.problems));
+}
+{
+    const [a, b, c, d] = playthrough().steps;
+    const graph = await graphOf(playCorpus([playthrough({ steps: [a, c, b, d] })]));
+    check(problemsAbout(graph, "a playthrough plays the journey in its own order").some((p) => p.severity === "error"), "a step out of the journey's order is an error", dump(graph.problems));
+}
+{
+    const steps = [...playthrough().steps.slice(0, 3), { screen: "board", part: "no-such-part", step: 1, text: "x" }];
+    const graph = await graphOf(playCorpus([playthrough({ steps })]));
+    check(problemsAbout(graph, 'names part "#no-such-part"').some((p) => p.severity === "error"), "a step naming a part the journey lacks is an error", dump(graph.problems));
+}
+{
+    const steps = [...playthrough().steps.slice(0, 3), { screen: "board", part: "an-item-is-moved", step: 4, text: "Then it vanishes" }];
+    const graph = await graphOf(playCorpus([playthrough({ steps })]));
+    check(problemsAbout(graph, 'drifted from part "#an-item-is-moved" step 4').some((p) => p.severity === "error"), "edited text at the current signature is an error", dump(graph.problems));
+    const stale = await graphOf(playCorpus([playthrough({ steps, signature: "00000000" })]));
+    check(problemsAbout(stale, "at signature 00000000").some((p) => p.severity === "warning"), "a playthrough at an older signature is stale", dump(stale.problems));
+}
+{
+    const graph = await graphOf(playCorpus([playthrough({ journey: "scenarios.md#no-such-journey" })]));
+    check(problemsAbout(graph, 'has no journey "#no-such-journey"').some((p) => p.severity === "error" && p.path === DEMO), "a journey the file does not have is an error", dump(graph.problems));
+}
+{
+    const graph = await graphOf(playCorpus([playthrough()], { journeyMeta: "type: scenario\n" }));
+    check(problemsAbout(graph, "a journey whose `related` does not name this feature").some((p) => p.severity === "warning"), "a playthrough of a journey that does not name the feature warns", dump(graph.problems));
+}
+{
+    const graph = await graphOf(playCorpus([linkedWalkthrough(), playthrough()], { field: `playthrough: [${DEMO}#walkthrough/set-up-statuses]\n` }));
+    check(problemsAbout(graph, 'walkthrough "set-up-statuses"').some((p) => p.severity === "error" && p.message.includes("plays no journey")), "a playthrough field naming a walkthrough that plays no journey is an error", dump(graph.problems));
+}
+{
+    const graph = await graphOf(playCorpus([playthrough()], { field: `playthrough: [${DEMO}#walkthrough/set-up-and-fill/2]\n` }));
+    check(problemsAbout(graph, "is no playthrough address").some((p) => p.severity === "error"), "a playthrough field naming a step is an error", dump(graph.problems));
+}
+{
+    const issues = validateDocument(REQUIREMENTS, requirements("Proved by: scenarios.md#statuses-are-set-up\n").replace("type: requirement\n", `type: requirement\nplaythrough: [${DEMO}#walkthrough/set-up-and-fill]\n`));
+    check(has(errors(issues), "scopes the field to `feature`, `sub-feature`"), "a playthrough field off a feature is an error", dump(issues));
+}
+{
+    const both = playthrough({ part: "scenarios.md#statuses-are-set-up" });
+    const graph = await graphOf(playCorpus([both]));
+    check(problemsAbout(graph, "has both `part` and `journey`").length === 1, "a walkthrough with both part and journey is refused", dump(graph.problems));
 }
 
 console.log(`\n${failed ? `${failed} failed` : "all passed"}`);

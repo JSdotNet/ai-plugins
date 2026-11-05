@@ -1,17 +1,17 @@
 # Tooling
 
 ```meta
-status: trial
+rating: trial
 ```
 
 ## Claude Code
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
-The agent host most changes here are authored and carried in, and one of the two hosts that
+Claude Code is the agent host most changes here are authored and carried in, and one of the two hosts that
 loads every plugin.
 
 - **Used for** — authoring and reviewing assets in worktree sessions, and loading each
@@ -22,11 +22,11 @@ loads every plugin.
 ## GitHub Copilot
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
-The second host that loads every plugin, through `.github/plugin/plugin.json`.
+GitHub Copilot is the second host that loads every plugin, through `.github/plugin/plugin.json`.
 
 - **Used for** — loading and exercising the same assets in the Copilot CLI and app; the
   `copilot-app` plugin's canvases run only here.
@@ -35,12 +35,12 @@ The second host that loads every plugin, through `.github/plugin/plugin.json`.
 ## Node.js
 
 ```meta
-status: adopted
+rating: adopted
 type: runtime
 version: "22"
 ```
 
-The runtime every checker and script in the repository runs on, dependency-free.
+Node.js is the runtime every checker and script in the repository runs on, with no dependencies.
 
 - **Used for** — `tools/check-assets.mjs`, `tools/bump-version.mjs`, and the devbook check
   under `.devbook/_tools/`.
@@ -49,39 +49,40 @@ The runtime every checker and script in the repository runs on, dependency-free.
 ## PowerShell
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 version: "7"
 ```
 
-`pwsh`, the shell for the scripts that are not checkers.
+`pwsh` is the shell for the scripts that are not checkers.
 
-- **Used for** — `scripts/Build-DesktopExtension.ps1`, the version-bump step of
-  `nightly-plugin-version-bump.yml`, and the `scripts/*.ps1` the architecture, domain-design,
-  and fincent plugins run from their own root. The checkers stay on Node.js.
+- **Used for** — `scripts/Build-DesktopExtension.ps1` and the `scripts/*.ps1` that three plugins run
+  from their own root: architecture, domain-design, and fincent. The checkers stay on Node.js.
 
 ## GitHub Actions
 
 ```meta
-status: adopted
+rating: adopted
 type: service
 depends-on: [".devbook/tech/tooling.md#nodejs"]
 ```
 
-CI for this repository.
+GitHub Actions runs CI for this repository.
 
-- **Used for** — `check-assets.yml` on every pull request, `devbook-meta.yml` on a devbook
-  change, `auto-merge.yml`, which merges a pull request that is not a draft once every other
-  check on its head commit is green, and the nightly `nightly-plugin-version-bump.yml`.
+- **Used for** — three workflows:
+  - `check-assets.yml` runs on every pull request.
+  - `devbook-meta.yml` runs on a devbook change.
+  - `auto-merge.yml` merges a pull request that is not a draft once every other check on its
+    head commit is green.
 
 ## GitHub CLI
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
-`gh`, the command line every pull request here is opened with.
+`gh` is the command line every pull request here is opened with.
 
 - **Used for** — the `pr-jsdotnet` skill opens pull requests as the JSdotNet account through
   it, and sessions read runs and pull requests with it.
@@ -89,20 +90,20 @@ type: tool
 ## devbook plugin
 
 ```meta
-status: trial
+rating: trial
 type: package
-version: "1.26.0"
+version: "1.34.0"
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#claude-code"]
 ```
 
-The devbook convention from the `jsdotnet-devbook` marketplace (`JSdotNet/devbook`, which it
-moved to from `JSdotNet/ai-agent-stack`): the `arc42/`, `tech/`, and `ai/` folders, their
+This plugin is the devbook convention from the `jsdotnet-devbook` marketplace (`JSdotNet/devbook`). It moved
+there from `JSdotNet/ai-agent-stack`. It brings the `arc42/`, `tech/`, and `ai/` folders, their
 rules, and the checker copied to `.devbook/_tools/`.
 
 - **Used for** — this folder, `.devbook/arc42/`, and `.devbook/ai/`, installed by `devbook:init`
-  on 2026-09-26 and extended to `arc42/` the same day. It is stamped at 1.26.0, contract 30,
-  with the `estimate` procedure recorded under `components.devbook`. The delivery engine and
-  `delivery-schedule` are stamped at 1.26.0; the engine reads the `phases` maps for `flow-code`
+  on 2026-09-26 and extended to `arc42/` the same day. It is stamped at 1.34.0, contract 38,
+  with the `estimate` procedure recorded under `components.devbook`. The delivery engine is stamped at
+  1.34.0 and `delivery-schedule` at 1.26.0. The engine reads the `phases` maps for `flow-code`
   and `flow-spec` in `.devbook/config.json`, which replaced `extensions` and `delivery.roles`.
 - **Why** — the marketplace's specialists write devbook chapters in other repositories;
   keeping its own record in the same shape is how the convention gets exercised here.
@@ -110,11 +111,11 @@ rules, and the checker copied to `.devbook/_tools/`.
 ## Backlog
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
-The JSdotNet Backlog app, where import plans live as entries that are copied out one at a time
+Backlog is the JSdotNet app where import plans live as entries that are copied out one at a time
 into an agent session.
 
 - **Used for** — holding the plans multi-step changes to this repository are cut into, such as
@@ -123,12 +124,12 @@ into an agent session.
 ## backlog-tools plugin
 
 ```meta
-status: adopted
+rating: adopted
 type: package
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#backlog"]
 ```
 
-The plugin that turns a Backlog plan into prompts and runs a pasted entry.
+This plugin turns a Backlog plan into prompts and runs a pasted entry.
 
-- **Used for** — `backlog-import-plan` to write a plan and `backlog-run-plan-item` to run one
-  item in a session, checking first whether it has already landed.
+- **Used for** — `import-plan` writes a plan, and `run-plan-item` runs one item in a session
+  after checking whether it has already landed.

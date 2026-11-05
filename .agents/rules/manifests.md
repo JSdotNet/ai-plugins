@@ -26,8 +26,7 @@ generates one from the other; `node tools/check-assets.mjs` fails on any disagre
 
 A version lives in four places — both manifests, the marketplace entry, and the
 `copilot-plugins.md` row — and all four agree. `node tools/bump-version.mjs <plugin>
-[patch|minor|major|x.y.z]` writes the same value into all four; the nightly workflow runs it
-for every plugin whose tree changed. Write what a consumer would notice into the table's
+[patch|minor|major|x.y.z]` writes the same value into all four. Write what a consumer would notice into the table's
 Notes column.
 
 `description` is the first thing a host shows: say what the plugin is, which role or service

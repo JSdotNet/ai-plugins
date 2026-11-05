@@ -18,7 +18,7 @@ hold gates, spawn sessions, or delegate.
 | `architecture` | specialist | arc42 chapters, ADRs, technical debt records, C4/sequence/state/deployment diagrams |
 | `csharp-coding` | specialist | C# .NET implementation, review, optimization, TDD, NuGet |
 | `react-coding` | specialist | React and TypeScript implementation bound to a .NET contract |
-| `qa` | specialist | Runtime validation with Aspire, Playwright evidence, log/trace monitoring |
+| `qa` | specialist | Runtime validation with Aspire, Playwright CLI evidence, log/trace monitoring |
 | `domain-design` | specialist | Bounded contexts, ubiquitous language, domain models, context maps |
 | `ux-design` | specialist | Wireframes, user flows, design guidelines, UI reviews |
 | `documentation` | specialist | How-tos, explanations, articles, proposals, infographics, profiles |
@@ -106,7 +106,7 @@ ai-plugins
 |- .github/
 |  |- instructions/             Copilot wrappers, one per rule
 |  |- skills/                   repository-local skills and Copilot procedure wrappers
-|  \- workflows/                check-assets.yml, devbook-meta.yml, nightly-plugin-version-bump.yml
+|  \- workflows/                auto-merge.yml, check-assets.yml, devbook-meta.yml
 |- .claude-plugin/marketplace.json   the marketplace, one entry per plugin
 |- plugins/<name>/              one folder per plugin, each installable on its own
 |- docs/copilot/                Copilot reference and inventories

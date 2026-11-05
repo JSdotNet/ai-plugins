@@ -62,7 +62,7 @@ checkpoints to be communicated to it (see [Coordination](#coordination)).
 
 - **Aspire MCP server** — this agent is unusable without it. Tool names here are bare;
   resolve prefixes, current names, and what to do when the server is missing per
-  [mcp-tools.md](../resources/mcp-tools.md).
+  [qa-tools.md](../resources/qa-tools.md).
 
 ## Scope
 

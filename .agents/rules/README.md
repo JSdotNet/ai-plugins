@@ -65,8 +65,8 @@ in `.devbook/config.json` — govern the devbook folders:
 | `devbook-tech` | `.devbook/tech/**` — the technology graph |
 | `devbook-ai` | `.devbook/ai/**` — the AI adoption record |
 | `devbook-chapter-metadata` | every devbook chapter's `meta` block |
-| `devbook-annotations` | `annotation` fences in a devbook chapter |
 | `devbook-naming` | file and chapter names under `.devbook/` |
+| `devbook-writing` | prose in every devbook chapter |
 
 A rule fires when a host **reads** a matching file, so authoring one from scratch may not
 trigger it. Open a sibling first, or read the rule directly.
