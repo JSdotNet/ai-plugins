@@ -1,7 +1,7 @@
 # Shared
 
 ```meta
-status: adopted
+rating: adopted
 ```
 
 The formats and protocols every layer builds on: what an asset is written in, and how a
@@ -12,7 +12,7 @@ specialist targets in a consuming repository is that repository's stack.
 ## Markdown
 
 ```meta
-status: adopted
+rating: adopted
 type: format
 ```
 
@@ -26,7 +26,7 @@ The format of every asset: agents, skills, contracts, rules, READMEs, and these 
 ## Mermaid
 
 ```meta
-status: adopted
+rating: adopted
 type: format
 version: "11"
 depends-on: [".devbook/tech/shared.md#markdown"]
@@ -42,7 +42,7 @@ The diagram language inside Markdown that the diagram skills emit and the viewer
 ## MCP
 
 ```meta
-status: adopted
+rating: adopted
 type: protocol
 ```
 
@@ -56,7 +56,7 @@ The Model Context Protocol, the way a plugin puts a tool server in front of eith
 ## MCP Apps
 
 ```meta
-status: trial
+rating: trial
 type: protocol
 depends-on: [".devbook/tech/shared.md#mcp"]
 ```
@@ -71,7 +71,7 @@ rendered inline by the host.
 ## Aspire MCP server
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 depends-on: [".devbook/tech/shared.md#mcp"]
 ```
@@ -85,7 +85,7 @@ both manifests.
 ## Playwright CLI
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 depends-on: [".devbook/tech/tooling.md#nodejs"]
 ```
@@ -100,7 +100,7 @@ does not answer.
 ## Playwright MCP server
 
 ```meta
-status: retired
+rating: retired
 type: tool
 depends-on: [".devbook/tech/shared.md#mcp", ".devbook/tech/tooling.md#nodejs"]
 ```

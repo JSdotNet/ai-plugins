@@ -1,7 +1,7 @@
 # Hosts
 
 ```meta
-status: adopted
+rating: adopted
 ```
 
 The surfaces a plugin here is loaded into, and the contracts it is written against. The
@@ -10,7 +10,7 @@ agents that load them are in `tooling.md`.
 ## Claude Code plugin API
 
 ```meta
-status: adopted
+rating: adopted
 type: platform
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/shared.md#markdown", ".devbook/tech/shared.md#mcp"]
 ```
@@ -27,7 +27,7 @@ explicitly, skills, command hooks, `mcpServers`, and the marketplace in
 ## Copilot CLI plugin API
 
 ```meta
-status: adopted
+rating: adopted
 type: platform
 depends-on: [".devbook/tech/tooling.md#github-copilot", ".devbook/tech/shared.md#markdown", ".devbook/tech/shared.md#mcp"]
 ```
@@ -42,7 +42,7 @@ tool ids, skills, `hooks.json` prompt hooks, and `mcpServers`.
 ## Claude Desktop
 
 ```meta
-status: trial
+rating: trial
 type: platform
 depends-on: [".devbook/tech/shared.md#mcp-apps", ".devbook/tech/tooling.md#nodejs"]
 ```
@@ -56,7 +56,7 @@ The desktop app that renders MCP Apps inline and installs a `.mcpb` extension.
 ## Copilot app extension SDK
 
 ```meta
-status: trial
+rating: trial
 type: package
 version: "latest"
 depends-on: [".devbook/tech/tooling.md#github-copilot", ".devbook/tech/tooling.md#nodejs"]
@@ -73,7 +73,7 @@ depends-on: [".devbook/tech/tooling.md#github-copilot", ".devbook/tech/tooling.m
 ## Claude Code function hooks
 
 ```meta
-status: trial
+rating: trial
 type: platform
 depends-on: [".devbook/tech/tooling.md#claude-code"]
 ```

@@ -1,7 +1,7 @@
 # Authoring an Asset
 
 ```meta
-status: adopted
+rating: adopted
 type: stage
 ```
 
@@ -11,7 +11,7 @@ type: stage
 ## Authoring in the Loading Host
 
 ```meta
-status: adopted
+rating: adopted
 type: practice
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#github-copilot"]
@@ -33,7 +33,7 @@ both Claude Code and GitHub Copilot, so there is no generator step.
 ## spec-builder Create Skills
 
 ```meta
-status: trial
+rating: trial
 type: skill
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#github-copilot"]
@@ -56,7 +56,7 @@ each reading its `plugins/spec-builder/resources/create-*.md` contract before wr
 ## Path-scoped Rule Trio
 
 ```meta
-status: adopted
+rating: adopted
 type: guardrail
 stage: [code]
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#github-copilot"]

@@ -1,7 +1,7 @@
 # AI Adoption Map
 
 ```meta
-status: trial
+rating: trial
 type: adoption-map
 ```
 

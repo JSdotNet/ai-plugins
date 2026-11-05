@@ -1,13 +1,13 @@
 # Tooling
 
 ```meta
-status: trial
+rating: trial
 ```
 
 ## Claude Code
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
@@ -22,7 +22,7 @@ loads every plugin.
 ## GitHub Copilot
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
@@ -35,7 +35,7 @@ The second host that loads every plugin, through `.github/plugin/plugin.json`.
 ## Node.js
 
 ```meta
-status: adopted
+rating: adopted
 type: runtime
 version: "22"
 ```
@@ -49,7 +49,7 @@ The runtime every checker and script in the repository runs on, dependency-free.
 ## PowerShell
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 version: "7"
 ```
@@ -63,7 +63,7 @@ version: "7"
 ## GitHub Actions
 
 ```meta
-status: adopted
+rating: adopted
 type: service
 depends-on: [".devbook/tech/tooling.md#nodejs"]
 ```
@@ -77,7 +77,7 @@ CI for this repository.
 ## GitHub CLI
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
@@ -89,7 +89,7 @@ type: tool
 ## devbook plugin
 
 ```meta
-status: trial
+rating: trial
 type: package
 version: "1.20.1"
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#claude-code"]
@@ -110,7 +110,7 @@ rules, and the checker copied to `.devbook/_tools/`.
 ## Backlog
 
 ```meta
-status: adopted
+rating: adopted
 type: tool
 ```
 
@@ -123,7 +123,7 @@ into an agent session.
 ## backlog-tools plugin
 
 ```meta
-status: adopted
+rating: adopted
 type: package
 depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#backlog"]
 ```
