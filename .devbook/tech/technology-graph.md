@@ -4,19 +4,19 @@
 rating: adopted
 ```
 
-> The technologies this marketplace is built, carried, and checked with. It ships no
+> This graph records the technologies this marketplace is built, carried, and checked with. It ships no
 > runtime of its own: every plugin is Markdown and JSON loaded by two hosts, plus one MCP
-> server and three canvases. What a specialist targets — Aspire, Playwright, Aikido, Jira —
-> is the consuming repository's stack and is not recorded here, except for the MCP servers
-> this repository's own manifests declare and the Playwright CLI the `qa` plugin runs.
+> server and three canvases. What a specialist targets, such as Aspire, Playwright, Aikido, or
+> Jira, is the consuming repository's stack and is not recorded here. The exceptions are the
+> MCP servers this repository's own manifests declare and the Playwright CLI the `qa` plugin runs.
 
 ## Layers
 
 | File | Covers |
 | --- | --- |
-| [shared.md](shared.md) | The formats assets are written in, the protocols a plugin reaches a tool server through, the MCP servers the manifests declare, and the Playwright CLI `qa` runs |
-| [hosts.md](hosts.md) | The plugin contracts of Claude Code and GitHub Copilot, the two apps the host plugins render in, and the function hooks the Claude mods run as |
-| [tooling.md](tooling.md) | The agents that author and load the assets, the runtime and shell the scripts run on, CI, and the plugins and apps a change is carried with |
+| [shared.md](shared.md) | Asset formats, tool server protocols, the declared MCP servers, and the Playwright CLI |
+| [hosts.md](hosts.md) | Both hosts' plugin contracts, the host plugins' two apps, and Claude Code function hooks |
+| [tooling.md](tooling.md) | Authoring and loading agents, script runtime and shell, CI, and the plugins and apps carrying a change |
 
 ## Graph
 
@@ -72,9 +72,15 @@ graph LR
 
 ## Reading and extending
 
-`status` is the tech-radar ladder in `devbook-tech.md`: `candidate`, `trial`, `adopted`,
-`hold`, `retired`, rating each technology in this repository. Add a technology as a `##`
-chapter in the layer that owns it, add its node and its `depends-on` edges here in the same
-change, and run `node .devbook/_tools/devbook-meta/build.mjs --scope tech --check`. Package
-facts come from the inventory scripts under `.devbook/_tools/devbook-tech/`; this repository
-has no .NET projects and three `package.json` files, only the canvases carrying a dependency.
+`rating` is the tech-radar ladder in `devbook-tech.md`: `candidate`, `trial`, `adopted`,
+`hold`, `retired`. It rates each technology in this repository.
+
+To add a technology:
+
+1. Add a `##` chapter in the layer that owns it.
+2. Add its node and its `depends-on` edges here in the same change.
+3. Run `node .devbook/_tools/devbook-meta/build.mjs --scope tech --check`.
+
+Package facts come from the inventory scripts under `.devbook/_tools/devbook-tech/`. This
+repository has no .NET projects and three `package.json` files, and only the canvases carry a
+dependency.
