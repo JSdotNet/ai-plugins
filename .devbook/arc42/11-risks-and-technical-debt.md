@@ -22,8 +22,9 @@ related: [".devbook/arc42/08-crosscutting-concepts.md#one-file-two-hosts"]
   know. If a host starts to reject unknown keys or tool names, or changes where it discovers
   hooks, assets break without warning. The dead `SessionStart` prompt hooks showed that a
   failure can be silent.
-- **What limits it:** The checker encodes every difference found so far. `claude plugin
-  validate` and a reinstall are part of each change.
+- **What limits it:** The checker encodes every difference found so far. No workflow runs
+  `claude plugin validate`, and only the rule for a function-hook module asks for it:
+  [claude plugin validate](../ai/03-checking.md#claude-plugin-validate).
 
 ### The tool map goes stale
 

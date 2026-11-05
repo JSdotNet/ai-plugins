@@ -52,9 +52,10 @@ date: 2026-09-26
 `claude plugin validate --strict` runs over the marketplace and every plugin manifest, and
 catches a manifest Claude Code would refuse to load.
 
-- **Used for** — nothing in this repository yet. The sibling `JSdotNet/devbook` repository runs it
-  beside its own checks.
-- **Adopted by** — nobody here; no workflow or instruction in this repository runs it.
+- **Used for** — nothing routine in this repository. `.agents/rules/hooks.md` asks for it after a
+  function-hook module changes, and the `claude-desktop-mods` and `spec-builder` READMEs list
+  the command. The sibling `JSdotNet/devbook` repository runs it beside its own checks.
+- **Adopted by** — nobody here; no workflow runs it.
 - **Evidence** — none yet.
 - **Moves up when** — it has run over this marketplace and its result has been compared with
   `check-assets.mjs`.
