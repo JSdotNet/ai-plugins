@@ -5,15 +5,15 @@ rating: trial
 type: adoption-map
 ```
 
-> How this marketplace is built with AI. Agents author every asset here, so the record is about
+> This map records how this marketplace is built with AI. Agents author every asset here, so the record is about
 > which parts of that are the settled way of working and which are still being tried.
 
 ## How the Loop Reads Here
 
-This repository ships Markdown and JSON that two hosts load; it deploys and operates nothing.
-Merging to `main` is the release, because the marketplace installs from `main`. So the loop's
-dev half carries almost everything: `code` is authoring an asset, `test` is checking it, and
-`release` is the pull request and the version.
+This repository ships Markdown and JSON that two hosts load, and it deploys and operates
+nothing. Merging to `main` is the release, because the marketplace installs from `main`. So
+`code` through `integrate` carry almost everything: `code` is authoring an asset, `verify` is
+checking it, and `integrate` is the pull request and the version.
 
 | File | Covers |
 | --- | --- |
@@ -24,53 +24,71 @@ dev half carries almost everything: `code` is authoring an asset, `test` is chec
 ## Adoption Picture
 
 ```mermaid
-flowchart LR
-    subgraph dev[Dev half]
-        plan[plan]
-        code[code]
-        build[build]
-        test[test]
-    end
-    subgraph ops[Ops half]
-        release[release]
-        deploy[deploy]
-        operate[operate]
-        monitor[monitor]
-    end
-    plan --> code --> build --> test --> release --> deploy --> operate --> monitor --> plan
+graph LR
+    decide --> specify --> code --> verify --> pr[pull request] --> integrate --> release --> operate --> decide
 
-    plan -.- backlog["Backlog Plan Items · adopted"]
-    plan -.- estimate["Estimate Procedure · candidate"]
-    code -.- backlog
-    code -.- host["Authoring in the Loading Host · adopted"]
-    code -.- create["spec-builder Create Skills · trial"]
-    code -.- trio["Path-scoped Rule Trio · adopted"]
-    code -.- worktree["Worktree Sessions · adopted"]
-    code -.- gate["check-assets Gate · adopted"]
-    code -.- devbook["Devbook Check · trial"]
-    plan -.- flows["Flow Skills · trial"]
-    code -.- flows
-    test -.- flows
-    test -.- gate
-    test -.- devbook
-    test -.- validate["claude plugin validate · candidate"]
-    release -.- pr["pr-jsdotnet Skill · adopted"]
-    release -.- bump["Nightly Version Bump · hold"]
-    operate -.- routines["Scheduled Routines · trial"]
-    monitor -.- routines
+    subgraph layers[Layers]
+        thread
+        upkeep
+        harness
+    end
+
+    backlog["Backlog Plan Items · adopted"]:::adopted
+    estimate["Estimate Procedure · candidate"]:::candidate
+    host["Authoring in the Loading Host · adopted"]:::adopted
+    create["spec-builder Create Skills · trial"]:::trial
+    trio["Path-scoped Rule Trio · adopted"]:::adopted
+    worktree["Worktree Sessions · adopted"]:::adopted
+    gate["check-assets Gate · adopted"]:::adopted
+    devbook["Devbook Check · trial"]:::trial
+    flows["Flow Skills · trial"]:::trial
+    validate["claude plugin validate · candidate"]:::candidate
+    skill["pr-jsdotnet Skill · adopted"]:::adopted
+    bump["Nightly Version Bump · hold"]:::hold
+    routines["Scheduled Routines · trial"]:::trial
+
+    specify --- backlog
+    code --- backlog
+    specify --- estimate
+    code --- host
+    code --- create
+    code --- trio
+    code --- worktree
+    code --- gate
+    verify --- gate
+    code --- devbook
+    verify --- devbook
+    specify --- flows
+    code --- flows
+    verify --- flows
+    verify --- validate
+    integrate --- skill
+    integrate --- bump
+    operate --- routines
+
+    classDef adopted fill:#c8e6c9,stroke:#2e7d32,color:#1b1b1b
+    classDef trial fill:#fff3c4,stroke:#b28704,color:#1b1b1b
+    classDef candidate fill:#e3f2fd,stroke:#1565c0,color:#1b1b1b
+    classDef hold fill:#eeeeee,stroke:#616161,color:#1b1b1b
 ```
 
-`build` and `deploy` are empty: nothing here is compiled or deployed. `operate` and `monitor`
-hold one usage on trial: the local scheduled routines, of which one has published so far.
+`decide` and `release` are empty. No chapter records a usage at `decide`, and nothing here is
+compiled or deployed, so `release` has no work beyond the merge. `operate` holds one usage on
+trial: the local scheduled routines, of which one has published so far. The three layers hold no
+chapter yet.
 
-Not recorded: `claude plugin eval`. No plugin here has an eval suite and no session has run one,
-so it gets a chapter when one does.
+`claude plugin eval` is not recorded. No plugin here has an eval suite and no session has run
+one, so it gets a chapter when one does.
 
 ## Reading and Extending
 
-`status` is the adoption ladder in `devbook-ai.md` — `candidate`, `trial`, `adopted`, `hold`,
-`retired` — rating the way of working, not the tool; the tool's own rating is in
-`.devbook/tech/`. `date` is the day the current rating was set. Add a usage as a `##` chapter in
-the file for the part of the flow it serves, point `depends-on` at its `tech/` chapter, add its
-box to the picture above in the same change, and run
-`node .devbook/_tools/devbook-meta/build.mjs --check`.
+`rating` is the adoption ladder in `devbook-ai.md`: `candidate`, `trial`, `adopted`, `hold`,
+`retired`. It rates the way of working, not the tool. The tool's own rating is in
+`.devbook/tech/`. `date` is the day the current rating was set.
+
+To add a usage:
+
+1. Add a `##` chapter in the file for the part of the flow it serves.
+2. Point `depends-on` at its `tech/` chapter.
+3. Add its box to the picture above in the same change.
+4. Run `node .devbook/_tools/devbook-meta/build.mjs --check`.

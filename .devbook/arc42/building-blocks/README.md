@@ -5,7 +5,7 @@ index: root
 related: [".devbook/arc42/05-building-block-view.md", ".devbook/arc42/building-blocks/claude-desktop.md", ".devbook/arc42/building-blocks/copilot-app.md", ".devbook/arc42/building-blocks/spec-builder.md", ".devbook/arc42/building-blocks/qa.md"]
 ```
 
-The plugins whose inside is read more often than their row in chapter 5.
+This index lists the plugins whose inside is read more often than their row in chapter 5.
 
 | Block | Responsibility |
 | --- | --- |
