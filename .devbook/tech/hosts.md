@@ -83,8 +83,8 @@ Claude Code mods are TypeScript and TSX modules a plugin names under `modules` i
 `hooks/hooks.json`. They run inside a session and add commands, panes, bands above the prompt,
 and status line entries. Copilot has no equivalent.
 
-- **Used for** — the `claude-desktop-mods` plugin's `/handoff-to` band and pane and its
-  `/context-view` pane. `hooks/register.ts` registers them. They are typed against the
+- **Used for** — the `claude-desktop-mods` plugin's `/handoff-to` band and pane, its
+  `/context-view` pane, and its account bar. `hooks/register.ts` registers them. They are typed against the
   manifest's `types` and tested with the `claude-code/testing` runner.
 - **Why** — the only way a plugin draws its own interface inside a Claude Code session. It
   ships apart from `claude-desktop` so the hooks hot-reload on their own.
