@@ -11,11 +11,11 @@ related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/arc4
 **Owns**
 
 - The `create-*` contracts. They say what each asset type must carry to load in both hosts from
-  one copy: an agent, a skill, a rule or contract, a plugin, a canvas, and a workflow file.
+  one copy.
 - `spec-conciseness.md`, which holds the body budgets.
 
-The rest of the repository points at these files by path instead of restating them, so a change
-to an authoring rule is a change here.
+The rest of the repository points at these files by path instead of restating them. A change to an
+authoring rule is a change here.
 
 It fills a role and holds no flow control. Its agent plans, edits, and self-checks in one
 conversation, and delegates only read-only search.
@@ -34,7 +34,7 @@ conversation, and delegates only read-only search.
 | --- | --- |
 | `create-agent.md` | `*.agent.md`: frontmatter, the union tools list, handoffs documented in the body |
 | `create-skill.md` | `SKILL.md`: name, description, trigger, workflow, outputs |
-| `create-instruction.md` | Where a rule lives: a repository rule with one wrapper per host, or a plugin contract in `resources/` |
+| `create-instruction.md` | Where a rule lives: a repository rule with one wrapper per host, or a `resources/` contract |
 | `create-plugin.md` | A plugin package: both manifests and their component paths |
 | `create-canvas.md` | A Copilot canvas extension |
 | `create-workflow.md` | A GitHub Actions workflow file |
@@ -66,12 +66,11 @@ See [SessionStart Twin Hook](../08-crosscutting-concepts.md#sessionstart-twin-ho
 
 A Claude-only function-hook module, `hooks/budget-status.ts`, reports the budgets as an author
 works and enforces nothing. It reads the asset by its filename, not by repository, so it serves
-every repository with the same budgets. After every Write or Edit of a budgeted asset, it does
-the following:
+every repository with the same budgets. After every Write or Edit of a budgeted asset, it:
 
-- It pins the body count against `spec-conciseness.md`'s budget in the status line.
-- It shows amber within 10% and red over, and `(exempt)` when the file states why.
-- It toasts once when a file first crosses.
+- pins the body count against `spec-conciseness.md`'s budget in the status line;
+- shows amber within 10% and red over, and `(exempt)` when the file states why;
+- toasts once when a file first crosses.
 
 Copilot has no counterpart. `check-assets.mjs --budgets` is the one both share.
 

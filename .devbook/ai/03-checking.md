@@ -5,8 +5,8 @@ rating: trial
 type: stage
 ```
 
-> This file records how an agent-authored asset is shown to do what it says before it merges: the repository's
-> own checker, the host's validator, and the devbook check.
+> Before merging, an agent-authored asset is shown to do what it says by the repository's checker, the host's
+> validator, and the devbook check.
 
 ## check-assets Gate
 

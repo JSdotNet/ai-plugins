@@ -35,17 +35,15 @@ Both read the same agents, skills, and contracts. How one file satisfies both is
 | Backlog | Plans and work items for changes to this repository | Items are pasted into a session and run by `run-plan-item`. |
 | GitHub | The repository, pull requests, CI | Its workflows check and merge pull requests. |
 
-- **Delivery engine:** It lives in `JSdotNet/devbook`. A specialist never names the engine.
-- **devbook:** It also lives in `JSdotNet/devbook`. The specialists write `arc42/`, `domain/`,
-  and `design/` chapters to its rules. This repository adopts it for its own `arc42/`, `tech/`,
-  and `ai/`.
-- **Backlog:** `run-plan-item` is a skill of the `backlog-tools` plugin. Nothing in a plugin
-  here depends on Backlog.
-- **GitHub:** These workflows carry the interface:
-  - `check-assets.yml` gates every pull request.
-  - `auto-merge.yml` merges a pull request that is not a draft once every other check on its
-    head commit is green.
+The engine and devbook both live in `JSdotNet/devbook`. A specialist never names the engine. The
+specialists write `arc42/`, `domain/`, and `design/` chapters, and this repository adopts devbook
+for its own `arc42/`, `tech/`, and `ai/`.
 
-The flow control that used to ship here moved to the engine on 2026-09-14, when the engine
-lived in `JSdotNet/ai-agent-stack`. The engine and devbook have since moved to
-`JSdotNet/devbook`. See [the flow-control decision](adr/flow-control.md).
+`run-plan-item` is a skill of the `backlog-tools` plugin. Nothing in a plugin here depends on
+Backlog.
+
+`check-assets.yml` gates every pull request. `auto-merge.yml` merges a pull request that is not a
+draft once every other check on its head commit is green.
+
+The flow control that used to ship here moved to the engine on 2026-09-14, when the engine and devbook
+lived in `JSdotNet/ai-agent-stack`. See [the flow-control decision](adr/flow-control.md).
