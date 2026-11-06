@@ -5,8 +5,8 @@ rating: adopted
 type: stage
 ```
 
-> This file records how an agent, skill, contract, hook, or manifest gets written here. It uses the host that
-> loads it, spec-builder's contracts, and the repository's rules, applied on the read.
+> Agents, skills, contracts, hooks, and manifests get written here in the host that loads them, from
+> spec-builder's contracts, with the repository's rules applied on the read.
 
 ## Authoring in the Loading Host
 
@@ -64,7 +64,7 @@ depends-on: [".devbook/tech/tooling.md#claude-code", ".devbook/tech/tooling.md#g
 date: 2026-09-07
 ```
 
-A rule is authored once in `.agents/rules/` and wrapped per host. The host applies it, unasked,
+A rule is authored once in `.agents/rules/` and wrapped per host. The wrapper makes the host apply it, unasked,
 when a session reads a matching file.
 
 - **Used for** — the eight topics in `.agents/rules/README.md`, from `agents` to `markdown`,

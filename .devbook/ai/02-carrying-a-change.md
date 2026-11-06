@@ -7,9 +7,10 @@ type: stage
 
 ```mermaid
 flowchart LR
-    idea[Idea] --> plan[Backlog plan]
-    plan --> session[One worktree session per item]
-    session --> pr[Pull request under the organization account]
+    idea[Idea] -->|too big for one session| plan[Backlog plan]
+    idea -->|one session| session[Worktree session]
+    plan -->|one session per item| session
+    session -->|once the person asks| pr[Pull request under the organization account]
     pr --> main[main]
 ```
 
