@@ -5,8 +5,15 @@ rating: adopted
 type: stage
 ```
 
-> This file records how a change gets from an idea to `main`: cut into a Backlog plan, run one item per worktree
-> session, opened as a pull request under the organization account, and versioned.
+```mermaid
+flowchart LR
+    idea[Idea] --> plan[Backlog plan]
+    plan --> session[One worktree session per item]
+    session --> pr[Pull request under the organization account]
+    pr --> main[main]
+```
+
+> This file records how a change gets from an idea to `main`, and how it is versioned.
 
 ## Backlog Plan Items
 
@@ -134,10 +141,9 @@ depends-on: [".devbook/tech/tooling.md#github-actions"]
 date: 2026-11-05
 ```
 
-`nightly-plugin-version-bump.yml` was scheduled for 01:00 UTC to bump the version of every plugin
-that changed without one — the backstop for an agent-authored change that left the bump out. It
-was removed on 2026-11-05: no bump it made ever reached `main`, and sessions bump a plugin
-themselves.
+`nightly-plugin-version-bump.yml` was scheduled for 01:00 UTC to bump every plugin that changed
+without a bump. It was the backstop for an agent-authored change that left the bump out. It was
+removed on 2026-11-05: no bump it made ever reached `main`, and sessions bump a plugin themselves.
 
 - **Used for** — nothing that landed. Until 2026-09-26 the workflow diffed `main` against its own
   merge base, so it never found a change. After that it bumped the right plugins on a branch, and
@@ -177,7 +183,7 @@ the Claude desktop app. Each run makes its own detached worktree off `origin/mai
 - **Evidence** — the instruction-review routine opened #166 on 2026-10-01, and it was merged
   the same day: the first run that published something a person acted on.
 - **Moves up when** — the other routines have done the same.
-- **Limits** — the routines run only while the desktop app is open on the maintainer's machine;
-  one that comes due while it is closed runs on the next launch. They are not cloud routines
+- **Limits** — the routines run only while the desktop app is open on the maintainer's machine.
+  One that comes due while it is closed runs on the next launch. They are not cloud routines
   because a cloud session needs a committed `.claude/settings.json` enabling the plugins, and
   this repository has none.
