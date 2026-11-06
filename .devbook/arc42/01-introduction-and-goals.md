@@ -30,15 +30,9 @@ In priority order:
 
 | Goal | Means here | See |
 | --- | --- | --- |
-| One file serves two hosts | Every asset is authored once and loads in both hosts. | [08 — One File, Two Hosts](08-crosscutting-concepts.md#one-file-two-hosts) |
+| One file serves two hosts | One authored copy loads in both hosts; `check-assets.mjs` fails when their files disagree. | [08 — One File, Two Hosts](08-crosscutting-concepts.md#one-file-two-hosts) |
 | A specialist holds no flow control | Any flow, or a person, can consult a specialist. | [the flow-control decision](adr/flow-control.md) |
-| Installable on its own | A plugin carries everything it reads and declares its dependencies. | |
+| Installable on its own | A plugin carries everything it reads, contracts by path under `resources/`, and declares its dependencies. | |
 | Cheap to load | Bodies stay inside their budgets, and each rule sits in exactly one file. | [TDR 1](tdr/1-body-budgets-reported.md) |
 
-- **One file serves two hosts:** No host gets a copy of its own, and
-  `node tools/check-assets.mjs` fails when the two hosts' files disagree.
-- **A specialist holds no flow control:** A specialist never sequences stages, holds a gate,
-  spawns a session, or delegates.
-- **Installable on its own:** A plugin's contracts live under `resources/`, and its assets
-  reference them by path.
-- **Cheap to load:** An asset is read on every load. Budgets are reported, not enforced.
+An asset is read on every load. Budgets are reported, not enforced.

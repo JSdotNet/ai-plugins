@@ -38,7 +38,7 @@ never hands it off.
 | Agent | Role |
 | --- | --- |
 | `qa` | Runs the application or targets a deployed one, validates scenarios, writes the report under `.wip/qa/<feature>/` |
-| `qa-monitor` | A second persona of `qa`: watches logs and traces of a running application, returns a monitoring summary |
+| `qa-monitor` | A second `qa` persona: watches a running application's logs and traces, returns a monitoring summary |
 
 `qa-monitor` correlates its findings to scenario checkpoints.
 
@@ -65,9 +65,10 @@ runs `qa-monitor` and merges its summary. Otherwise `qa` monitors inline, which 
 The skills and agents read two `resources/` contracts by path:
 
 - **`qa-evidence.md`:** the evidence policy every validation follows.
-- **`qa-tools.md`:** how a bare Aspire tool name resolves to the plugin-namespaced or the bare
-  server spelling, which `playwright-cli` commands a skill runs, and what each tool does not
-  expose.
+- **`qa-tools.md`:**
+  - how a bare Aspire tool name resolves to the plugin-namespaced or the bare server spelling;
+  - which `playwright-cli` commands a skill runs;
+  - what each tool does not expose.
 
 ### Tools
 
@@ -120,10 +121,10 @@ A local run goes `aspire-run` → monitoring → `playwright-validation`.
 | --- | --- |
 | Aspire CLI | Starts the application and serves the `aspire` MCP server |
 | Playwright CLI | Installed by the person (`npm install -g @playwright/cli@latest`), run through the shell |
-| `csharp-coding` | Named, not called: the `coding` agent for a runtime bug, the `sre` skill for repeated log errors |
+| `csharp-coding` | Named, not called: `coding` agent for a runtime bug, `sre` skill for repeated log errors |
 
 | Depended on by | Mechanism |
 | --- | --- |
-| A delivery flow's validation stage | Invokes `qa` as a delegate with the resolved run context and QA depth, and owns the user turn |
+| A delivery flow's validation stage | Invokes `qa` as a delegate with resolved run context and QA depth; owns the user turn |
 | `react-coding` | Its `frontend` agent names `qa` for runtime validation |
 | `claude-desktop`, `copilot-app` dashboards | Render a `qa` stage's per-scenario results and serve its evidence paths from the caller's worktree |

@@ -79,11 +79,11 @@ branch, and reports the sessions it left untouched on conflict.
 
 | Part | Responsibility |
 | --- | --- |
-| `orch-dashboard/extension.mjs` | Joins the session, registers the canvas and actions, serves the panel over HTTP, subscribes to session telemetry |
+| `orch-dashboard/extension.mjs` | Joins the session, registers canvas and actions, serves the panel over HTTP, subscribes to telemetry |
 | `store.mjs` | One JSON file per run, under the session workspace's `orchestration-runs/` |
 | `insight.mjs` | Turns tool, sub-agent, usage, compaction, and truncation events into per-stage activity and the context gauge |
 | `render.mjs`, `report.mjs` | The dashboard shell, and Markdown and self-contained HTML reports of a run |
-| `diagram-canvas`, `markdown-canvas` | One canvas each: an HTTP page per instance, pushed updates over Server-Sent Events, and the render actions |
+| `diagram-canvas`, `markdown-canvas` | One canvas each: an HTTP page per instance, Server-Sent Events updates, the render actions |
 
 `store.mjs` writes under the Copilot home when the session has no workspace.
 
