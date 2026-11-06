@@ -45,5 +45,5 @@ Backlog.
 `check-assets.yml` gates every pull request. `auto-merge.yml` merges a pull request that is not a
 draft once every other check on its head commit is green.
 
-The flow control that used to ship here moved to the engine on 2026-09-14, when the engine
+The flow control that used to ship here moved to the engine on 2026-09-14, when the engine and devbook
 lived in `JSdotNet/ai-agent-stack`. See [the flow-control decision](adr/flow-control.md).

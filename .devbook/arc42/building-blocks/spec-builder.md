@@ -14,8 +14,8 @@ related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/arc4
   one copy.
 - `spec-conciseness.md`, which holds the body budgets.
 
-The rest of the repository points at these files by path instead of restating them. An authoring
-rule changes here.
+The rest of the repository points at these files by path instead of restating them. A change to an
+authoring rule is a change here.
 
 It fills a role and holds no flow control. Its agent plans, edits, and self-checks in one
 conversation, and delegates only read-only search.
@@ -34,7 +34,7 @@ conversation, and delegates only read-only search.
 | --- | --- |
 | `create-agent.md` | `*.agent.md`: frontmatter, the union tools list, handoffs documented in the body |
 | `create-skill.md` | `SKILL.md`: name, description, trigger, workflow, outputs |
-| `create-instruction.md` | Where a rule lives: a repository rule with per-host wrappers, or a `resources/` contract |
+| `create-instruction.md` | Where a rule lives: a repository rule with one wrapper per host, or a `resources/` contract |
 | `create-plugin.md` | A plugin package: both manifests and their component paths |
 | `create-canvas.md` | A Copilot canvas extension |
 | `create-workflow.md` | A GitHub Actions workflow file |
@@ -92,7 +92,7 @@ directly.
 
 | Depends on | Mechanism |
 | --- | --- |
-| `tools/check-assets.mjs`, `tools/tool-map.json` | The agent runs the checker before reporting an asset complete; tools follow the map |
+| `tools/check-assets.mjs`, `tools/tool-map.json` | The agent runs the checker before reporting an asset complete; the tools list follows the map |
 | [08 — Crosscutting Concepts](../08-crosscutting-concepts.md) | The agent points at it for the dual-host rules |
 | Copilot extension tools | `extensions_manage` and `extensions_reload` scaffold and reload a canvas |
 
