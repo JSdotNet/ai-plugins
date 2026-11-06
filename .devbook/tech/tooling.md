@@ -92,7 +92,7 @@ type: tool
 ```meta
 rating: trial
 type: package
-version: "1.34.0"
+version: "1.35.0"
 depends-on: [".devbook/tech/tooling.md#nodejs", ".devbook/tech/tooling.md#claude-code"]
 ```
 
@@ -101,7 +101,7 @@ there from `JSdotNet/ai-agent-stack`. It brings the `arc42/`, `tech/`, and `ai/`
 rules, and the checker copied to `.devbook/_tools/`.
 
 - **Used for** — this folder, `.devbook/arc42/`, and `.devbook/ai/`, installed by `devbook:init`
-  on 2026-09-26 and extended to `arc42/` the same day. It is stamped at 1.34.0, contract 38,
+  on 2026-09-26 and extended to `arc42/` the same day. It is stamped at 1.35.0, contract 38,
   with the `estimate` procedure recorded under `components.devbook`. The delivery engine is stamped at
   1.34.0 and `delivery-schedule` at 1.26.0. The engine reads the `phases` maps for `flow-code`
   and `flow-spec` in `.devbook/config.json`, which replaced `extensions` and `delivery.roles`.
