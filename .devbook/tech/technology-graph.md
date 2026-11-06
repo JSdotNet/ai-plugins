@@ -16,7 +16,7 @@ rating: adopted
 | --- | --- |
 | [shared.md](shared.md) | Asset formats, tool server protocols, the declared MCP servers, and the Playwright CLI |
 | [hosts.md](hosts.md) | Both hosts' plugin contracts, the host plugins' two apps, and Claude Code function hooks |
-| [tooling.md](tooling.md) | Authoring and loading agents, script runtime and shell, CI, and the plugins and apps carrying a change |
+| [tooling.md](tooling.md) | Authoring and loading agents, runtime and shell, CI, and plugins and apps carrying a change |
 
 ## Graph
 
