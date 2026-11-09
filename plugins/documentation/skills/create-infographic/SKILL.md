@@ -9,7 +9,7 @@ Turn a Markdown file or a direct prompt into one self-contained infographic. Gen
 SVG** by default: portable, embeddable in documentation, and reviewable in source control.
 
 Follow [document-authoring.md](../../resources/document-authoring.md) for asking, what may be
-published, and saving; its Markdown format step does not apply to an SVG. Inputs:
+published, and saving; its picture-first and Markdown format steps do not apply to an SVG. Inputs:
 
 - **Source:** a Markdown file path to summarize, or a prompt describing goal and content.
 - **Audience** and the one **primary message** it must carry at a glance.
