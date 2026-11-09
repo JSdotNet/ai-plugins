@@ -48,12 +48,11 @@ description: Quality standards for technical proposals in the .wip convention.
 
 ### Options
 
-- Present 2-4 viable options.
-- For each option, include:
-  - Brief description
-  - Pros
-  - Cons
-- Keep descriptions concise and comparable.
+- Present 2-4 viable options in one table, one row per option, with the columns
+  `Option | Description | Pros | Cons`.
+- Keep each cell short so the rows compare at a glance, and separate points in a cell with
+  `;`. Detail an option below the table only
+  when the decision needs it.
 
 ### Recommendation
 
@@ -91,26 +90,11 @@ description: Quality standards for technical proposals in the .wip convention.
 
 ## Options
 
-### Option 1: <Name>
-
-<Brief description>
-
-- **Pros:** <list>
-- **Cons:** <list>
-
-### Option 2: <Name>
-
-<Brief description>
-
-- **Pros:** <list>
-- **Cons:** <list>
-
-### Option 3: <Name> (optional)
-
-<Brief description>
-
-- **Pros:** <list>
-- **Cons:** <list>
+| Option | Description | Pros | Cons |
+| --- | --- | --- | --- |
+| 1. <Name> | <brief description> | <pros> | <cons> |
+| 2. <Name> | <brief description> | <pros> | <cons> |
+| 3. <Name> (optional) | <brief description> | <pros> | <cons> |
 
 ## Recommendation
 

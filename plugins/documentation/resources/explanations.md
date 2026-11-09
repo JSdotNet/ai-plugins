@@ -27,5 +27,5 @@ Use this section order when it improves clarity.
 - Explain a term before using project-specific shorthand.
 - Use cause-and-effect phrasing so the reasoning is explicit.
 - Include at least one trade-off or alternative whenever a decision is described.
-- Split a dense topic into short subsections; use bullets for comparisons and key points.
+- Split a dense topic into short subsections; use bullets for key points.
 - Keep the explanation aligned with the project's current conventions.

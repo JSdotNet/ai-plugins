@@ -15,5 +15,7 @@ by architects.
 - Say each thing once. Link to the section, decision record, or debt record that already
   covers a term, decision, or constraint instead of repeating it.
 - Drop a section that has nothing to say rather than writing that it has nothing.
-- A diagram carries the structure; the prose beside it carries what the diagram cannot show —
-  why it is this way, and what to watch out for. Never narrate the boxes in text.
+- Put the diagram before the prose that explains it; only the template's one- or two-sentence
+  lead comes first. The diagram carries the structure; the prose after it carries what the
+  diagram cannot show — why it is this way, and what to watch out for. Never narrate the boxes
+  in text.
