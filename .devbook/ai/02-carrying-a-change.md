@@ -174,13 +174,16 @@ the Claude desktop app. Each run makes its own detached worktree off `origin/mai
 `D:\Repos\Copilot` clone.
 
 - **Used for** — seven routines against JSdotNet/ai-plugins.
-  - Daily: devbook-validate.
   - Weekdays: merge-review.
-  - Sunday, one per hour: tech-update, devbook-verify, prose-check, instruction-review, and
-    weekly-update. These moved to Sunday on 2026-10-06 with `delivery-schedule` 1.18.0.
+  - Sunday, one per hour: devbook-validate, tech-update, devbook-verify, prose-check,
+    instruction-review, and weekly-update. The last five moved to Sunday on 2026-10-06 with
+    `delivery-schedule` 1.18.0. devbook-validate was daily until 2026-11-10. Its cron override,
+    `0 3 * * 0` UTC (04:00 Amsterdam time in winter), runs it in the Sunday slot the devbook
+    review bundle is to take over. The `devbook-meta.yml` pull-request check covers the other
+    days.
 - **Adopted by** — the maintainer's desktop app. The seven were created on 2026-09-26 and are
-  recorded under `components.schedule` in `.devbook/config.json`. The eleven JSdotNet/Backlog
-  routines are unchanged.
+  recorded under `components.schedule` in `.devbook/config.json`, along with the
+  devbook-validate override. The eleven JSdotNet/Backlog routines are unchanged.
 - **Evidence** — the instruction-review routine opened #166 on 2026-10-01, and it was merged
   the same day: the first run that published something a person acted on.
 - **Moves up when** — the other routines have done the same.
