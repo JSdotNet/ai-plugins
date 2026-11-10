@@ -308,7 +308,12 @@
         "merge-review",
         "instruction-review",
         "weekly-update"
-      ]
+      ],
+      "overrides": {
+        "devbook-validate": {
+          "cron": "0 3 * * 0"
+        }
+      }
     }
   }
 }
