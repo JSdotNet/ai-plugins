@@ -79,7 +79,7 @@ type: platform
 depends-on: [".devbook/tech/tooling.md#claude-code"]
 ```
 
-Claude Code mods are TypeScript and TSX modules a plugin names under `modules` in
+Claude Code function hooks are TypeScript and TSX modules a plugin names under `modules` in
 `hooks/hooks.json`. They run inside a session and add commands, panes, bands above the prompt,
 and status line entries. Copilot has no equivalent.
 
