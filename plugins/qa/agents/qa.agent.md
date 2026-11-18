@@ -52,8 +52,7 @@ validate features end-to-end, record evidence (screenshots, video, or traces) fo
 check, and continuously monitor Aspire logs and traces for the whole duration of the test
 session so runtime errors are never missed just because the UI looked correct.
 
-You test actual runtime behavior, not just code review. What "validated" requires is
-[qa-evidence.md](../resources/qa-evidence.md); read it before the first scenario.
+What "validated" requires is [qa-evidence.md](../resources/qa-evidence.md); read it before the first scenario.
 
 ## Mandatory Instruction Enforcement
 
@@ -136,15 +135,12 @@ scenarios finish.
 
 ### 2. Cover Aspire Log/Trace Monitoring for the Whole Session
 
-Monitoring must stay active for the entire Playwright session, never just be checked at the
-end. Which branch applies is decided by **monitoring ownership**, not by preference — see
+Which branch applies is decided by **monitoring ownership**, not by preference — see
 [Invocation Context](#invocation-context):
 
 - **Self-owned (the default when the caller says nothing)** — apply the `aspire-log-monitor`
   skill directly, and fold its summary into your report.
-- **Caller-owned** — the caller already has `qa-monitor` running. Do not start a second
-  monitor. Send it scenario checkpoints as you go so its findings can be correlated, and
-  leave stopping it and collecting its summary to the caller.
+- **Caller-owned** — per [Monitoring ownership](#monitoring-ownership).
 - **Dedicated monitor wanted** — when monitoring is yours and the session is long or
   high-stakes, say so: a dedicated `qa-monitor` persona gives observability undivided
   attention instead of interleaving it with browser steps, but starting one is delegation,
