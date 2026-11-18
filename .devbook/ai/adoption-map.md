@@ -5,8 +5,8 @@ rating: trial
 type: adoption-map
 ```
 
-> This map records how this marketplace is built with AI. Agents author every asset here, so the record is about
-> which parts of that are the settled way of working and which are still being tried.
+> This map records how this marketplace is built with AI. Agents author every asset here, so the record says
+> which ways of working are settled and which are still being tried.
 
 ## How the Loop Reads Here
 
@@ -17,8 +17,8 @@ checking it, and `integrate` is the pull request and the version.
 
 | File | Covers |
 | --- | --- |
-| [01-authoring.md](01-authoring.md) | Writing an asset in the host that loads it, with spec-builder's contracts and the rule trio |
-| [02-carrying-a-change.md](02-carrying-a-change.md) | Backlog plans and their estimates, the delivery flows, worktree sessions, the pull request, the version, and scheduled routines |
+| [01-authoring.md](01-authoring.md) | Writing an asset: the loading host, spec-builder's contracts, the rule trio |
+| [02-carrying-a-change.md](02-carrying-a-change.md) | Backlog plans and estimates, delivery flows, worktree sessions, the pull request, the version, scheduled routines |
 | [03-checking.md](03-checking.md) | `check-assets.mjs`, `claude plugin validate`, and the devbook check |
 
 ## Adoption Picture

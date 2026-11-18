@@ -5,8 +5,16 @@ rating: adopted
 type: stage
 ```
 
-> This file records how a change gets from an idea to `main`: cut into a Backlog plan, run one item per worktree
-> session, opened as a pull request under the organization account, and versioned.
+```mermaid
+flowchart LR
+    idea[Idea] -->|too big for one session| plan[Backlog plan]
+    idea -->|one session| session[Worktree session]
+    plan -->|one session per item| session
+    session -->|once the person asks| pr[Pull request under the organization account]
+    pr --> main[main]
+```
+
+> This file records how a change gets from an idea to `main`, and how it is versioned.
 
 ## Backlog Plan Items
 
@@ -134,10 +142,9 @@ depends-on: [".devbook/tech/tooling.md#github-actions"]
 date: 2026-11-05
 ```
 
-`nightly-plugin-version-bump.yml` was scheduled for 01:00 UTC to bump the version of every plugin
-that changed without one — the backstop for an agent-authored change that left the bump out. It
-was removed on 2026-11-05: no bump it made ever reached `main`, and sessions bump a plugin
-themselves.
+`nightly-plugin-version-bump.yml` was scheduled for 01:00 UTC to bump every plugin that changed
+without a bump. It was the backstop for an agent-authored change that left the bump out. It was
+removed on 2026-11-05: no bump it made ever reached `main`, and sessions bump a plugin themselves.
 
 - **Used for** — nothing that landed. Until 2026-09-26 the workflow diffed `main` against its own
   merge base, so it never found a change. After that it bumped the right plugins on a branch, and
@@ -167,17 +174,20 @@ the Claude desktop app. Each run makes its own detached worktree off `origin/mai
 `D:\Repos\Copilot` clone.
 
 - **Used for** — seven routines against JSdotNet/ai-plugins.
-  - Daily: devbook-validate.
   - Weekdays: merge-review.
-  - Sunday, one per hour: tech-update, devbook-verify, prose-check, instruction-review, and
-    weekly-update. These moved to Sunday on 2026-10-06 with `delivery-schedule` 1.18.0.
+  - Sunday, one per hour: devbook-validate, tech-update, devbook-verify, prose-check,
+    instruction-review, and weekly-update. The last five moved to Sunday on 2026-10-06 with
+    `delivery-schedule` 1.18.0. devbook-validate was daily until 2026-11-10. Its cron override,
+    `0 3 * * 0` UTC (04:00 Amsterdam time in winter), runs it in the Sunday slot the devbook
+    review bundle is to take over. The `devbook-meta.yml` pull-request check covers the other
+    days.
 - **Adopted by** — the maintainer's desktop app. The seven were created on 2026-09-26 and are
-  recorded under `components.schedule` in `.devbook/config.json`. The eleven JSdotNet/Backlog
-  routines are unchanged.
+  recorded under `components.schedule` in `.devbook/config.json`, along with the
+  devbook-validate override. The eleven JSdotNet/Backlog routines are unchanged.
 - **Evidence** — the instruction-review routine opened #166 on 2026-10-01, and it was merged
   the same day: the first run that published something a person acted on.
 - **Moves up when** — the other routines have done the same.
-- **Limits** — the routines run only while the desktop app is open on the maintainer's machine;
-  one that comes due while it is closed runs on the next launch. They are not cloud routines
+- **Limits** — the routines run only while the desktop app is open on the maintainer's machine.
+  One that comes due while it is closed runs on the next launch. They are not cloud routines
   because a cloud session needs a committed `.claude/settings.json` enabling the plugins, and
   this repository has none.

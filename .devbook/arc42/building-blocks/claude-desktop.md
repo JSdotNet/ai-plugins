@@ -62,7 +62,7 @@ two plugins' stage names and dashboard contract in step.
 
 | `copilot-app` | `claude-desktop` |
 | --- | --- |
-| `orch-dashboard` canvas panel | An MCP App panel inline in Claude Desktop, and a page on `127.0.0.1` in other hosts |
+| `orch-dashboard` canvas panel | An inline MCP App panel in Claude Desktop; a page on `127.0.0.1` in other hosts |
 | Canvas actions (`invoke_canvas_action`) | MCP tools with the same names and arguments |
 | The `diagram-canvas` and `markdown-canvas` extensions | The `/mermaid` and `/markdown` routes, driven by `render_diagram` and `render_markdown` |
 | Host session telemetry events | The telemetry hooks, plus the session transcript |
@@ -116,4 +116,4 @@ They are not kept in step: [TDR 3](../tdr/3-dashboard-code-copied.md).
 
 | Depended on by | Mechanism |
 | --- | --- |
-| `delivery@jsdotnet-devbook` flows | Resolve the server as a delivery surface from the live tool list and call its run tools |
+| `delivery@jsdotnet-devbook` flows | Resolve the server as a delivery surface from the live tool list; call its run tools |

@@ -1,6 +1,6 @@
 ---
 name: document-authoring
-description: The authoring procedure every documentation and profile create-* skill shares — inputs, gap markers, what may be published, format, and saving.
+description: The authoring procedure every documentation and profile create-* skill shares — inputs, gap markers, what may be published, picture first, format, and saving.
 ---
 
 # Document authoring
@@ -19,8 +19,14 @@ inputs, its default path, and its type contract; this file holds everything they
    secrets, tokens, credentials, private endpoints, internal-only details, private contact
    details, compensation, and confidential client or roadmap information unless the person
    explicitly asks for that item to be published.
-5. **Format.** Write lint-safe Markdown: ATX headings with one blank line before and after,
+5. **Picture first.** Put the picture before the prose it replaces: a Mermaid diagram for
+   parts that connect, states, or a flow between parts, and a table for options compared on
+   the same points. The prose says only what the picture cannot: the reasons, the
+   exceptions, the limits. Assume Mermaid renders unless the person names a target that does
+   not; there, use a table. Where the type contract or its template fixes a section's form,
+   keep that form. Skip this step for an article, a profile, and an idea.
+6. **Format.** Write lint-safe Markdown: ATX headings with one blank line before and after,
    one blank line between blocks, short paragraphs, numbered lists only where order matters,
    and commands, paths, environment variables, and file names in backticks.
-6. **Save and report.** Save to the agreed path, creating the folder when it is missing.
+7. **Save and report.** Save to the agreed path, creating the folder when it is missing.
    Report the path and every `[TODO: …]` marker left in the document.

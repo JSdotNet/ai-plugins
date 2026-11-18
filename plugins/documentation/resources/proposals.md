@@ -36,5 +36,4 @@ pages.
 - **Next Steps** — exactly one path: approve and begin, refine with stakeholder input,
   request further analysis, or reject and document the reasoning.
 
-Keep paragraphs to 2-3 sentences, use bullets for comparisons, and cut background that does
-not influence the decision.
+Keep paragraphs to 2-3 sentences, and cut background that does not influence the decision.

@@ -14,8 +14,8 @@ related: [".devbook/arc42/adr/manifests.md", ".devbook/arc42/adr/model-pins.md",
 ```
 
 There is one copy of every agent, skill, and contract, and no parallel Claude tree. It works
-because both hosts ignore frontmatter keys they do not know, and both drop tool names they
-cannot resolve, so one agent file carries both vocabularies. The manifest and the hook shape do
+because both hosts ignore frontmatter keys they do not know and drop tool names they cannot
+resolve. So one agent file carries both vocabularies. The manifest and the hook shape do
 differ, so each is one hand-authored file per host, checked against its twin.
 
 | Path | Read by |
@@ -27,7 +27,7 @@ differ, so each is one hand-authored file per host, checked against its twin.
 | `.claude-plugin/marketplace.json` | Claude |
 | `AGENTS.md`, `.agents/rules/` and the two wrapper folders | both, see [Rule Layering](#rule-layering) |
 
-An agent's frontmatter resolves per host like this:
+An agent's frontmatter resolves per host:
 
 | Field | Copilot | Claude Code | Here |
 | --- | --- | --- | --- |
@@ -74,9 +74,11 @@ is a guard saying so. The blocks are in [chapter 5](05-building-block-view.md#ho
 related: [".devbook/arc42/tdr/2-tool-ids-in-prose-unchecked.md"]
 ```
 
-An agent's `tools` is one list: the Copilot tool ids the author chose, then the Claude names
-`tools/tool-map.json` derives from them, then `Skill`, which Claude needs listed and Copilot
-grants implicitly. Each host filters the list to what it knows.
+An agent's `tools` is one list, which each host filters to what it knows:
+
+1. the Copilot tool ids the author chose;
+2. the Claude names `tools/tool-map.json` derives from them;
+3. `Skill`, which Claude needs listed and Copilot grants implicitly.
 
 ```yaml
 tools:

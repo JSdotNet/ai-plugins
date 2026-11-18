@@ -15,7 +15,7 @@
       "name": "architecture",
       "source": "./plugins/architecture",
       "description": "Architecture documentation through the `architect` agent: arc42 sections, architectural decision records, technical debt records, and C4, sequence, state-machine, and deployment diagrams. Fills the `architecture` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.6.2"
+      "version": "0.7.0"
     },
     {
       "name": "claude-desktop",
@@ -39,7 +39,7 @@
       "name": "documentation",
       "source": "./plugins/documentation",
       "description": "Documentation and profile artifacts through the `documentation` and `profile` agents: how-to guides, explanations, articles, proposals, ideas, and SVG infographics, plus GitHub, LinkedIn, and project profiles. Fills the `docs` role a flow consults, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.5.2"
+      "version": "0.6.0"
     },
     {
       "name": "domain-design",
@@ -105,7 +105,7 @@
       "name": "wip-convention",
       "source": "./plugins/wip-convention",
       "description": "Encapsulates the .wip folder convention for storing work-in-progress artifacts. Provides skills and instructions to align agents with the .wip workflow.",
-      "version": "0.3.2"
+      "version": "0.4.0"
     }
   ]
 }
