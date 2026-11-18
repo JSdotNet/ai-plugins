@@ -59,8 +59,8 @@ under `/api/runs/`.
 
 Each carries its own `.github/plugin/plugin.json` and installs as a plugin of its own,
 independently of `copilot-app` and of each other. `resources/canvas-usage.md` says when a flow
-opens them. The file artifact stays the source of truth, a canvas is a preview beside it, and a
-missing canvas never blocks a stage.
+opens them. The file artifact stays the source of truth, and a canvas is a preview beside it.
+A missing canvas never blocks a stage.
 
 ### Skill
 
