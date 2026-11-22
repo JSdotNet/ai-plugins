@@ -96,7 +96,7 @@ Include these only when the information is known and adds value:
 ## Conciseness Rules
 
 - Keep epic to roughly 1-2 screens.
-- Use short paragraphs and one-line bullets when possible.
+- Use short paragraphs and one-line bullets.
 - Remove background that does not influence prioritization or delivery.
 
 ## Epic Readiness Check
