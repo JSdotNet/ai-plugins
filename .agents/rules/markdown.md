@@ -24,11 +24,5 @@ paths:
 
 ## Code and Commands
 - Wrap inline commands, paths, env vars, and identifiers in backticks.
-- Use fenced code blocks with language tags when possible.
+- Give every fenced code block a language tag.
 - Example: use ```` ```bash ```` for shell commands.
-
-## Quality Checklist
-- [ ] One `#` heading per file.
-- [ ] No trailing spaces.
-- [ ] Code blocks are fenced.
-- [ ] Links and lists render correctly.
