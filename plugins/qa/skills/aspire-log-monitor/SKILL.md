@@ -17,20 +17,22 @@ this monitoring serves is [qa-evidence.md](../../resources/qa-evidence.md).
 ## Baseline — before the first browser interaction
 
 1. `aspire describe`: confirm every required resource is running and healthy.
-2. `aspire otel logs <resource> --severity Warning` for each resource, and
-   `aspire logs <frontend>-browser-logs` for each frontend: note what already exists, so it
-   is not attributed to the test run later.
+2. `aspire otel logs <resource> --severity Warning` for each resource: note what already
+   exists, so it is not attributed to the test run later.
 3. Record the baseline timestamp.
 
 ## During validation
 
-1. After each scenario (each step where you can), run `aspire otel logs --severity Error` for
-   the resources involved and `aspire logs <frontend>-browser-logs --tail 50`; diff against
-   the baseline.
+1. After each scenario (each step where you can), run
+   `aspire otel logs <resource> --severity Error` for each resource involved and diff against
+   the baseline. Read
+   `aspire logs <frontend>-browser-logs` too only when Aspire's tracked browser ran (see
+   qa-tools.md); the Playwright browser's console is `playwright-validation`'s evidence.
 2. Flag every new Error or Critical entry at once, with the scenario and step that triggered
    it, even when the browser showed success. Note a Warning only when it is new since the
    baseline or recurs across scenarios.
-3. For a flow across services, find its trace with `aspire otel traces --has-error`, then
+3. For a flow across services, find its trace with `aspire otel traces <resource>`
+   (`--has-error` for a failure, `--search` to narrow a slow one), then
    `aspire otel logs --trace-id <id>` for the logs of every span in order.
 4. Answer a performance question from trace durations; metrics come only from the dashboard.
 5. When `aspire describe` shows a resource unhealthy, read `aspire logs <resource>` at once:
@@ -39,7 +41,7 @@ this monitoring serves is [qa-evidence.md](../../resources/qa-evidence.md).
 
 ## Summary for the QA report
 
-- New Error/Critical entries with resource, timestamp, and message, browser logs included.
+- New Error/Critical entries with resource, timestamp, and message.
 - Failed or abnormally slow traces with the correlated scenario.
 - Metric anomalies only when a metrics source was actually available.
 - Or, exactly: "No new errors observed in Aspire logs/traces during this session."

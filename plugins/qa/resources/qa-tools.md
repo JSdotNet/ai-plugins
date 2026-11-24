@@ -16,9 +16,11 @@ that has no shell.
   `--format Json` where you parse the output.
 - `aspire describe [<resource>]` — state, health, and endpoint URLs of every resource.
 - `aspire logs <resource> [--tail <n>] [--search <text>]` — console output.
-- `aspire logs <frontend>-browser-logs` — the browser console, failed requests, and
-  screenshots a frontend sends through `.WithBrowserLogs()`. A frontend without it has no
-  such resource; say so rather than claim browser logs were checked.
+- `aspire logs <frontend>-browser-logs` — console output and network events of Aspire's own
+  tracked browser, on a frontend with `.WithBrowserLogs()`. It sees only a session opened with
+  `aspire resource <frontend>-browser-logs open-tracked-browser`, never the browser the
+  Playwright CLI drives: that browser's evidence is `playwright-cli console` and `requests`.
+  Read it only when the tracked browser ran this session, and never cite it otherwise.
 - `aspire otel logs [<resource>] [--severity Error] [--trace-id <id>]` — structured logs.
 - `aspire otel traces [<resource>] [--has-error]` — traces, with duration and status.
 - `aspire start`, `aspire wait <resource>`, `aspire stop`, and
