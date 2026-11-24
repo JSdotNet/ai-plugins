@@ -69,13 +69,13 @@
       "name": "product-owner",
       "source": "./plugins/product-owner",
       "description": "Copilot plugin for product backlog authoring — epics, stories, and bugs as Markdown artifacts.",
-      "version": "0.3.2"
+      "version": "0.3.3"
     },
     {
       "name": "qa",
       "source": "./plugins/qa",
       "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive browser scenarios through the Playwright CLI with evidence for each, and monitor Aspire logs/traces during the test session.",
-      "version": "0.5.0"
+      "version": "0.5.1"
     },
     {
       "name": "react-coding",

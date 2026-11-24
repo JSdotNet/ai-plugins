@@ -5,10 +5,6 @@ description: Baseline markdown formatting rules for Product Owner plugin files.
 
 # Markdown Instructions
 
-## Purpose
-
-- Apply baseline Markdown quality rules across this plugin.
-
 ## Rules
 
 - Use ATX headings only (`#`, `##`, `###`, ...) with one space after `#`.
@@ -16,6 +12,6 @@ description: Baseline markdown formatting rules for Product Owner plugin files.
 - Use `-` for unordered lists.
 - Use ordered lists as `1.`, `2.`, `3.` when sequence matters.
 - Wrap inline commands, paths, env vars, and identifiers in backticks.
-- Use fenced code blocks with language tags when possible.
+- Give every fenced code block a language tag.
 - Strip trailing whitespace.
 - End every file with exactly one newline.
