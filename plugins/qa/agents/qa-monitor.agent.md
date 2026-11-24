@@ -122,11 +122,9 @@ Produce a summary containing:
   finished. Keep polling until then.
 - Do not attempt to fix issues found — report them; fixes are the `csharp-coding:coding`
   agent's responsibility after a handoff.
-- Run only the read commands: `aspire describe`, `aspire logs`, `aspire otel`. Never
-  `aspire start`, `aspire stop`, `aspire resource <name> <command>`, or the MCP
-  `execute_resource_command`: the shell and the MCP server are reachable from here even
-  though this persona is read-only, and restarting the app under test would destroy the
-  log/trace timeline the `qa` agent's session depends on.
+- Run only `aspire describe`, `aspire logs`, and `aspire otel` — never `aspire start`,
+  `stop`, `resource`, or the MCP `execute_resource_command`. Both are reachable from here,
+  and restarting the app would destroy the timeline the `qa` session depends on.
 
 ## Handoffs
 
