@@ -1,34 +1,43 @@
 ---
 name: qa-tools
-description: How a QA skill or agent reaches its two tools — the Aspire MCP server by tool name, the Playwright CLI through the shell — what each does not expose, and what to do when one is missing.
+description: How a QA skill or agent reaches its two tools — the Aspire CLI and the Playwright CLI, both through the shell, with the Aspire MCP server as the fallback for a host without one — what each does not expose, and what to do when one is missing.
 ---
 
 # QA tools
 
-Aspire is an MCP server this plugin declares; its tools are named bare here
-(`list_resources`). The browser is driven by the Playwright CLI, `playwright-cli`, run
-through the shell — there is no browser MCP server.
+Both tools run through the shell: the Aspire CLI, `aspire` (17 or later), and the Playwright
+CLI, `playwright-cli`. The Aspire MCP server this plugin declares is the fallback for a host
+that has no shell.
 
-## Aspire
+## Aspire CLI
 
-- Its tools normally surface plugin-namespaced, `mcp__plugin_qa_aspire__<tool>`; registered
-  in a repository's own MCP configuration they surface as `mcp__aspire__<tool>`. Prepend
-  whichever prefix your tool list shows; never assume one.
-- Started as `aspire agent mcp`; an older Aspire CLI names it `aspire mcp start`. The plugin
-  declares it, so the host starts it with the session.
-- Query tools: `list_resources`, `list_structured_logs` (optionally one resource and/or a
-  search term), `list_console_logs` (`resourceName` required), `list_traces` (duration and
-  whether it errored), `list_trace_structured_logs` (the logs of one trace id), `doctor`
-  (works with no AppHost running), `list_apphosts`.
-- These replaced an earlier `get_*` set (`get_resources`, `get_resource_logs`, `get_traces`,
-  `get_console_logs`) that an older CLI may still expose. A name missing from your list
-  means look up its current spelling there, not that the server is unavailable.
-- There is no metrics tool: `get_metrics` is gone with no `list_*` replacement. Metrics come
-  from the Aspire dashboard; never report metrics as monitored through this server.
-- It sees only AppHosts on this machine. A deployed environment's dashboard is reachable
-  only through a server the person registered against it
-  (`aspire agent mcp --dashboard-url <url> --api-key <key>`), which exposes the
-  structured-log and trace tools but not resource state.
+- Check `aspire --version` before the first call. Pass `--apphost <path>` on every command
+  when `aspire ps` lists more than one AppHost, so it reaches this checkout's app; add
+  `--format Json` where you parse the output.
+- `aspire describe [<resource>]` — state, health, and endpoint URLs of every resource.
+- `aspire logs <resource> [--tail <n>] [--search <text>]` — console output.
+- `aspire logs <frontend>-browser-logs` — the browser console, failed requests, and
+  screenshots a frontend sends through `.WithBrowserLogs()`. A frontend without it has no
+  such resource; say so rather than claim browser logs were checked.
+- `aspire otel logs [<resource>] [--severity Error] [--trace-id <id>]` — structured logs.
+- `aspire otel traces [<resource>] [--has-error]` — traces, with duration and status.
+- `aspire start`, `aspire wait <resource>`, `aspire stop`, and
+  `aspire resource <resource> <command>` start and change the app; a read-only persona never
+  runs them.
+- There are no metrics: `aspire otel` reads logs, spans, and traces only. Metrics come from
+  the dashboard; never report metrics as monitored.
+- A deployed environment's dashboard answers `aspire otel logs|traces --dashboard-url <url>
+  --api-key <key>`, which the person supplies; resource state and console logs stay local.
+- The `aspire` skill that `aspire agent init --skills aspire` installs covers the rest of the
+  CLI; follow it, and the repository's own run recipe, where they say more.
+
+## Aspire MCP fallback — a host without a shell
+
+- Its tools surface as `mcp__plugin_qa_aspire__<tool>`, or `mcp__aspire__<tool>` when the
+  repository registers the server itself; prepend whichever prefix your tool list shows.
+- `list_resources` answers `aspire describe`, `list_console_logs` `aspire logs`,
+  `list_structured_logs` `aspire otel logs`, `list_traces` `aspire otel traces`,
+  `list_trace_structured_logs` a trace id. An older CLI exposes `get_*` names instead.
 
 ## Playwright CLI
 
@@ -49,13 +58,10 @@ through the shell — there is no browser MCP server.
   example `run-code "async page => await page.getByText('Saved').waitFor()"`.
 - Snapshots and default output land under `.playwright-cli/` in the working directory. Keep
   that folder out of the change set; write evidence to the evidence folder with `--filename`.
-- Video and traces are available, so a multi-step flow may be recorded rather than
-  screenshotted step by step.
 
 ## Missing tools
 
-After an MCP configuration change, restart the session or reload MCP tools before QA starts.
-When the Aspire tools are still absent, stop and name the missing server and tool family;
-when it is configured for normal sessions but absent here, report a child-agent tool
-exposure problem instead of asking the user to rerun the same validation. When the shell
-itself is unavailable, report that the browser cannot be driven.
+When `aspire` does not answer, stop and name the Aspire CLI as missing; never install it.
+With no shell, use the MCP fallback; when its tools are absent too, name the missing server,
+and report a child-agent tool exposure problem when it is configured for normal sessions.
+Without a shell the browser cannot be driven: say so.

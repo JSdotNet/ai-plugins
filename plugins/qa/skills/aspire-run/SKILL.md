@@ -6,8 +6,8 @@ description: 'Start a .NET Aspire-orchestrated application and confirm every res
 # Aspire Run
 
 Start the app through its AppHost, so databases, caches, queues, and downstream services are
-wired as a real user gets them, and confirm it is healthy before any validation. Resolve
-tool names and the server start command per [qa-tools.md](../../resources/qa-tools.md).
+wired as a real user gets them, and confirm it is healthy before any validation. The commands
+and the MCP fallback are in [qa-tools.md](../../resources/qa-tools.md).
 
 ## Steps
 
@@ -15,29 +15,30 @@ tool names and the server start command per [qa-tools.md](../../resources/qa-too
    project ending in `.AppHost`. Ask for the path only when discovery found nothing and you
    have a user turn; invoked by an orchestration (a sub-agent or child session), return the
    question and your best candidate to the caller instead of stalling.
-2. **Build and start.** Build the AppHost if needed, then start it with `aspire run` (or
-   `dotnet run --project <AppHost>.csproj` without the Aspire CLI) as a background process.
-3. **Confirm health.** Call `list_resources` until every required resource is running and
-   healthy. For one stuck starting or failed, read its `list_console_logs` before going on;
-   never validate against a partially started app.
-4. **Without the Aspire MCP server**, continue only for a startup-only check that needs no
-   resource-state, log, trace, or health evidence. For validation that needs that evidence,
-   the missing server blocks the phase: report that Aspire MCP must be started or configured
-   first — to the user with a user turn, otherwise to the caller as a blocked result.
-5. **Resolve endpoints.** Read the frontend and API base URLs from the dashboard or console
-   output and record the exact URLs for the report.
+2. **Start it detached.** Follow the repository's run recipe or its `aspire` skill when it
+   has one. Otherwise run `aspire start --apphost <path>`, adding `--isolated` when
+   `aspire ps` already lists this AppHost from another checkout, so the two get separate
+   ports.
+3. **Confirm health.** `aspire wait <resource>` for every required resource, then
+   `aspire describe` to see them all healthy. For one stuck starting or failed, read
+   `aspire logs <resource>` before going on; never validate against a partially started app.
+4. **Without the Aspire CLI**, or on a host without a shell and without the MCP fallback,
+   continue only for a startup-only check that needs no resource-state, log, trace, or health
+   evidence. Otherwise the missing tool blocks the phase: report it — to the user with a user
+   turn, otherwise to the caller as a blocked result.
+5. **Resolve endpoints.** Read the frontend and API URLs from `aspire describe --format Json`,
+   never a hard-coded port, and record the exact URLs for the report.
 6. **Keep it running for the whole session.** A restart between scenarios changes state and
-   breaks the log/trace timeline `aspire-log-monitor` depends on. Stop it only after
+   breaks the log/trace timeline `aspire-log-monitor` depends on. Run `aspire stop` only after
    monitoring and validation are complete and the report exists.
-7. **After a code change**, refresh before validating again: keep the running instance when
-   its command hot-reloads and resources stay healthy, otherwise restart and wait for
-   healthy. Re-resolve endpoint URLs, since ports may change, and record whether the refresh
-   was hot reload or a full restart.
+7. **After a code change**, refresh before validating again the way the repository's `aspire`
+   skill says (a resource rebuild, or a full restart for an AppHost change), wait for healthy,
+   re-resolve the URLs, and record which refresh it was.
 
 ## Failure modes
 
 | Symptom | Likely cause | Check |
 |---|---|---|
-| Resource stuck in Starting | Dependency container not pulled | `list_console_logs` for it |
+| Resource stuck in Starting | Dependency container not pulled | `aspire logs <resource>` |
 | Frontend loads, API calls fail | Service discovery misconfigured | `ConnectionStrings__*`, `services__*__http__0` |
-| App exits immediately | Missing config or secret | Startup console output |
+| App exits immediately | Missing config or secret | `aspire logs` for the AppHost's resources |
