@@ -6,7 +6,7 @@ type: stage
 ```
 
 > Agents, skills, contracts, hooks, and manifests get written here in the host that loads them, from
-> spec-builder's contracts, with the repository's rules applied on the read.
+> spec-builder's contracts. The repository's rules apply on the read.
 
 ## Authoring in the Loading Host
 
