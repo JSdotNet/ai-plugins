@@ -44,7 +44,7 @@ Use these MCP servers to ground responses in official documentation:
 | MCP Server | When to use |
 |---|---|
 | **Microsoft Learn** (`microsoft-learn`) | Look up .NET/C# API docs, code samples, and best practices from official sources. |
-| **Aspire MCP** (`aspire`, started by `aspire agent mcp`) | Query Aspire orchestration docs, integrations, and AppHost patterns. |
+| **Aspire CLI** (`aspire docs search`, `aspire docs get`, through the shell) | Aspire orchestration docs and integrations; the Aspire MCP server only on a host without a shell. |
 | **JSdotNet Project Guideline MCP** (`jsdotnet-guidelines`) | Retrieve project-specific coding standards and conventions. |
 
 When an MCP server is unavailable, fetch the pages at `https://learn.microsoft.com` or `https://aspire.dev` directly.
@@ -102,7 +102,7 @@ When asked to explain a concept or find resources:
 - Read TFM and C# version from `global.json` or `.csproj` before writing code.
 - Nullable enabled? (`<Nullable>enable</Nullable>`)
 - Repo config: `Directory.Build.*`, `Directory.Packages.props`.
-- Modern C# features: file-scoped namespaces, primary constructors, record types, switch expressions.
+- Modern C# features: file-scoped namespaces, primary constructors, record types, switch expressions; on C# 15, unions (the union `Result<T>`) and `closed` hierarchies, per [../skills/code-review/SKILL.md](../skills/code-review/SKILL.md).
 - Async end-to-end: no sync-over-async.
 - House conventions — null guards, exception handling, least exposure: [../skills/code-review/SKILL.md](../skills/code-review/SKILL.md).
 - Test framework and libraries: the ones already in the solution, per [../skills/csharp-xunit/SKILL.md](../skills/csharp-xunit/SKILL.md).
@@ -121,9 +121,9 @@ When asked to explain a concept or find resources:
 | `microsoft-code-reference` | Official API verification via Microsoft Learn MCP |
 | `feature-proposal` | Propose and document new features or improvements |
 | `azure` | Azure SDK integration patterns for .NET |
-| `aspire` | Aspire AppHost orchestration and distributed apps |
+| `aspire` | Aspire 17 AppHost code: `AddDotnetProject`, wiring, browser logs, tests |
 | `open-telemetry` | OpenTelemetry setup — tracing, metrics, logging in .NET |
-| `aspire-logging` | Retrieve and analyze structured logs via Aspire MCP |
+| `aspire-logging` | Diagnose a running app through the Aspire CLI |
 | `sre` | SRE practices — error budgets, runbooks, incident context |
 
 ## Handoffs
