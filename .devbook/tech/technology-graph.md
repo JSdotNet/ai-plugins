@@ -8,13 +8,13 @@ rating: adopted
 > runtime of its own: every plugin is Markdown and JSON loaded by two hosts, plus one MCP
 > server and three canvases. What a specialist targets, such as Aspire, Playwright, Aikido, or
 > Jira, is the consuming repository's stack and is not recorded here. The exceptions are the
-> MCP servers this repository's own manifests declare and the Playwright CLI the `qa` plugin runs.
+> MCP servers this repository's own manifests declare and the Aspire and Playwright CLIs the `qa` plugin runs.
 
 ## Layers
 
 | File | Covers |
 | --- | --- |
-| [shared.md](shared.md) | Asset formats, tool server protocols, the declared MCP servers, and the Playwright CLI |
+| [shared.md](shared.md) | Asset formats, tool server protocols, the declared MCP servers, and the Aspire and Playwright CLIs |
 | [hosts.md](hosts.md) | Both hosts' plugin contracts, the host plugins' two apps, and Claude Code function hooks |
 | [tooling.md](tooling.md) | Authoring and loading agents, runtime and shell, CI, and plugins and apps carrying a change |
 
@@ -27,6 +27,7 @@ graph LR
         mermaid[Mermaid]
         mcp[MCP]
         mcp-apps[MCP Apps]
+        aspire-cli[Aspire CLI]
         aspire-mcp[Aspire MCP server]
         playwright-cli[Playwright CLI]
         playwright-mcp[Playwright MCP server]
@@ -52,6 +53,7 @@ graph LR
     mermaid --> markdown
     mcp-apps --> mcp
     aspire-mcp --> mcp
+    aspire-mcp --> aspire-cli
     playwright-cli --> node
     playwright-mcp --> mcp
     playwright-mcp --> node
