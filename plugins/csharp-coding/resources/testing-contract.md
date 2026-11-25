@@ -39,7 +39,7 @@ Good and bad xUnit examples: [../skills/tdd/tests.md](../skills/tdd/tests.md).
 |---|---|
 | `WebApplicationFactory<TProgram>` | HTTP endpoints in-process; swap boundary services in `ConfigureTestServices` |
 | Testcontainers (`Testcontainers.PostgreSql`, `.MsSql`, …) | A real database or broker per test class via `IAsyncLifetime` |
-| `DistributedApplicationTestingBuilder` (`Aspire.Hosting.Testing`) | The whole AppHost; call resources with `app.CreateHttpClient("<resource>")` |
+| `aspire start --isolated` in a Playwright global setup | End-to-end only: the one suite that runs through the AppHost; an integration test never starts it ([../skills/aspire/SKILL.md](../skills/aspire/SKILL.md)) |
 
 ## Running a subset
 

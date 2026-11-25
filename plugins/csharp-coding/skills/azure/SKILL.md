@@ -9,7 +9,7 @@ description: 'Azure SDK for .NET integration patterns — credentials, client re
   client, and no account key, connection string, or SAS in code or config.
 - Use `DefaultAzureCredential` for local development and a deterministic credential in
   production: `ManagedIdentityCredential`, or `DefaultAzureCredential` with
-  `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` (Azure.Identity 1.16+; Aspire 13 sets it
+  `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` (Azure.Identity 1.16+; Aspire sets it
   on Container Apps and App Service). Build one credential and reuse it for every client.
 - Register each client once, as a singleton: under Aspire through its client integration
   (`Aspire.Azure.*`, added with `aspire add`); otherwise through `AddAzureClients`

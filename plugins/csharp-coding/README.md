@@ -31,14 +31,14 @@ A focused, single-agent plugin for writing, reviewing, optimizing, and testing C
 | MCP Server | Purpose |
 |---|---|
 | Microsoft Learn | Official .NET/C# API docs and code samples |
-| Aspire MCP | Aspire orchestration and integration docs |
+| Aspire CLI (`aspire docs`) | Aspire orchestration and integration docs; the Aspire MCP server only on a host without a shell |
 | JSdotNet Project Guideline MCP | Project-specific coding standards |
 
 The agent works without MCP servers by fetching the official docs directly.
 
 ## What the Coding Agent Can Do
 
-- **Write code** — idiomatic C# with SOLID, async/await, and proper error handling.
+- **Write code** — idiomatic C# for .NET 11 and C# 15 (unions, the union `Result<T>`, `closed` hierarchies) with SOLID, async/await, and proper error handling.
 - **Review code** — structured review with Blocking / Important / Suggestion severity levels.
 - **Optimize code** — measured performance and allocation improvements.
 - **TDD** — Red-Green-Refactor cycle with test framework detection.
@@ -49,9 +49,9 @@ The agent works without MCP servers by fetching the official docs directly.
 - **Learning resources** — official docs via Microsoft Learn MCP or web fetch.
 
 - **Azure SDK** — Azure service integrations with `DefaultAzureCredential`.
-- **Aspire** — AppHost wiring, service discovery, and integration tests.
+- **Aspire** — Aspire 17 AppHost code (`Microsoft.NET.Sdk`, `AddDotnetProject`, browser logs) and where tests meet it. Run `aspire agent init --skills aspire` for the Aspire CLI skill this plugin defers to.
 - **OpenTelemetry** — tracing, metrics, and logging setup.
-- **Aspire logging** — retrieve and analyze logs/traces via Aspire MCP.
+- **Aspire logging** — diagnose a running app from its logs, traces, and browser logs through the Aspire CLI.
 - **SRE** — error budgets, resilience patterns, health checks, and runbooks.
 
 ## Handoffs

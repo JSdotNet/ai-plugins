@@ -24,10 +24,11 @@ staging, QA, UAT — instead of starting the app locally. The evidence policy is
    the environment is unreachable or unhealthy, stop and report it.
 3. **Skip local startup.** Do not apply `aspire-run`; point the Playwright CLI at the
    confirmed base URL.
-4. **Monitor logs, best effort.** This plugin's Aspire server sees only local AppHosts. When
-   the person registered a server against the environment's dashboard (see
-   [qa-tools.md](../../resources/qa-tools.md)), apply `aspire-log-monitor` through it for the
-   whole session. Otherwise proceed on the CLI's console and network evidence and say in the
+4. **Monitor logs, best effort.** The Aspire CLI reaches a deployed environment only through
+   its dashboard. When the person supplies the dashboard URL and API key, apply
+   `aspire-log-monitor` with `aspire otel logs|traces --dashboard-url <url> --api-key <key>`
+   for the whole session (see [qa-tools.md](../../resources/qa-tools.md)); there is no
+   resource state or console log there. Otherwise proceed on the CLI's console and network evidence and say in the
    report that Aspire monitoring was not available. For deeper observability, recommend
    `csharp-coding:sre` rather than reaching into production logging from here; when the
    `csharp-coding` plugin is not installed, name the gap in the report.

@@ -1,13 +1,15 @@
 ---
 name: microsoft-code-reference
-description: 'Verify Microsoft .NET and Azure API signatures and pull official code samples from Microsoft Learn before writing code against them. Use when: calling an unfamiliar .NET, ASP.NET Core, EF Core, or Azure SDK API, checking that a method or overload exists or is deprecated, finding the right NuGet package, or confirming the C# version a language feature needs. DO NOT USE FOR: Aspire docs (aspire).'
+description: 'Verify Microsoft .NET and Azure API signatures and pull official code samples from Microsoft Learn before writing code against them. Use when: calling an unfamiliar .NET, ASP.NET Core, EF Core, or Azure SDK API, checking that a method or overload exists or is deprecated, finding the right NuGet package, or confirming the C# version a language feature needs. DO NOT USE FOR: Aspire docs (aspire docs search, from the Aspire skill aspire agent init installs).'
 ---
 
 # Microsoft Code Reference
 
 Verify every .NET or Azure API you are unsure of, or that may be newer than your training
 cutoff, before writing code against it: that it exists, its namespace and package, its
-overloads, and whether it is deprecated.
+overloads, and whether it is deprecated. .NET 11 and C# 15 — unions, `closed` hierarchies,
+collection expression arguments — are newer than most training data: verify their syntax
+before writing it.
 
 1. `microsoft_docs_search` with `query: "<type or method> <context>"` — confirm it exists.
 2. `microsoft_docs_fetch` with the result's `url` — read the overloads, parameters, and return type.

@@ -60,9 +60,9 @@ checkpoints to be communicated to it (see [Coordination](#coordination)).
 
 ## Required Access
 
-- **Aspire MCP server** — this agent is unusable without it. Tool names here are bare;
-  resolve prefixes, current names, and what to do when the server is missing per
-  [qa-tools.md](../resources/qa-tools.md).
+- **Aspire CLI** (`aspire`, run through the shell) — this agent is unusable without it, or,
+  on a host without a shell, without the Aspire MCP server as its fallback. The commands and
+  what to do when one is missing: [qa-tools.md](../resources/qa-tools.md).
 
 ## Scope
 
@@ -113,7 +113,7 @@ Produce a summary containing:
 
 ## Constraints
 
-- Report only what the Aspire MCP tools returned, per
+- Report only what the Aspire CLI or its MCP fallback returned, per
   [qa-evidence.md](../resources/qa-evidence.md).
 - Do not stop monitoring just because the UI under test looked correct — that
   correlation is exactly what this agent exists to check independently. This is about not
@@ -122,10 +122,9 @@ Produce a summary containing:
   finished. Keep polling until then.
 - Do not attempt to fix issues found — report them; fixes are the `csharp-coding:coding`
   agent's responsibility after a handoff.
-- Do not run resource commands (`start`, `stop`, `restart` via `execute_resource_command`).
-  Claude grants MCP access per server, so that tool is reachable from here even though this
-  persona is read-only; restarting the app under test would destroy the log/trace timeline
-  the `qa` agent's session depends on.
+- Run only `aspire describe`, `aspire logs`, and `aspire otel` — never `aspire start`,
+  `stop`, `resource`, or the MCP `execute_resource_command`. Both are reachable from here,
+  and restarting the app would destroy the timeline the `qa` session depends on.
 
 ## Handoffs
 
