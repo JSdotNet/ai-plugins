@@ -86,9 +86,9 @@ Example:
 
 ## Conciseness Rules
 
-- Aim for a one-screen story whenever possible.
+- Fit a story on one screen.
 - Keep paragraphs ≤2 sentences.
-- Keep bullets one line when possible.
+- Keep each bullet to one line.
 - Remove duplicate context across sections.
 - Avoid solution design unless needed for clarity.
 

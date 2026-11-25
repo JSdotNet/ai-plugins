@@ -88,9 +88,9 @@ description: Bug writing standards for Product Owner backlog artifacts.
 
 ## Conciseness Rules
 
-- Keep bug descriptions to roughly one screen when possible.
+- Fit a bug description on one screen.
 - Keep paragraphs ≤2 sentences.
-- Keep bullets one line when possible.
+- Keep each bullet to one line.
 - Remove duplicate context across sections.
 
 ## Bug Readiness Check
