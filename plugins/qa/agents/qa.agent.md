@@ -60,10 +60,10 @@ What "validated" requires is [qa-evidence.md](../resources/qa-evidence.md); read
 
 ## Required Access
 
-- **Aspire CLI / Aspire MCP server** — to run the distributed app and to monitor logs, traces, and resource health during the test. It has no metrics tool; metrics come from the Aspire dashboard, if a scenario needs them.
+- **Aspire CLI** (`aspire`, run through the shell) — to run the distributed app and to read resource health, logs, traces, and browser logs during the test. It has no metrics; metrics come from the Aspire dashboard, if a scenario needs them.
 - **Playwright CLI** (`playwright-cli`, run through the shell) — to drive the browser, capture snapshots, take screenshots, and record video or traces.
-- Aspire tool names here are bare. Resolve prefixes, CLI commands, and what to do when a tool
-  is missing per [qa-tools.md](../resources/qa-tools.md).
+- **Aspire MCP server** — the fallback on a host without a shell only. The commands, the MCP
+  tool behind each, and what to do when a tool is missing: [qa-tools.md](../resources/qa-tools.md).
 
 ## Invocation Context
 
@@ -118,8 +118,9 @@ scenarios finish.
 - **Playwright capture:** run the `playwright-validation` preflight — the CLI answers
   `--version`, then a smoke capture — before any scenario.
 - **Aspire monitoring:** when the session requires resource state, logs, traces, or
-  health evidence, confirm Aspire MCP is running ([qa-tools.md](../resources/qa-tools.md))
-  before starting validation; when it is not, stop or report the missing capability.
+  health evidence, confirm `aspire --version` answers — or, on a host without a shell, that
+  the MCP fallback is present ([qa-tools.md](../resources/qa-tools.md)) — before starting
+  validation; when neither is, stop or report the missing capability.
 - **Fallback evidence:** browser-canvas snapshots and smoke output are never Playwright
   evidence ([qa-evidence.md](../resources/qa-evidence.md)).
 

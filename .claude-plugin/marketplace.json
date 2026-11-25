@@ -21,7 +21,7 @@
       "name": "claude-desktop",
       "source": "./plugins/claude-desktop",
       "description": "Claude Code host plugin: the start, session-handoff, and create-pull-request skills plus the orch-dashboard MCP server that renders a run dashboard, Mermaid diagrams, and Markdown documents inline. The orchestration lane it used to ship continues as delivery@jsdotnet.",
-      "version": "0.13.0"
+      "version": "0.14.0"
     },
     {
       "name": "claude-desktop-mods",
@@ -33,7 +33,7 @@
       "name": "csharp-coding",
       "source": "./plugins/csharp-coding",
       "description": "C# .NET implementation through the `coding` agent: test-driven development, refactoring, code review and optimization, NuGet management, Aspire wiring, OpenTelemetry, and Azure SDK patterns. Fills the `implement` and `verify` services a flow runs its code stages through, and is usable on its own. Holds no flow control: sequencing, approval, and delegation belong to whatever consults it.",
-      "version": "0.3.2"
+      "version": "0.4.0"
     },
     {
       "name": "documentation",
@@ -74,8 +74,8 @@
     {
       "name": "qa",
       "source": "./plugins/qa",
-      "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive browser scenarios through the Playwright CLI with evidence for each, and monitor Aspire logs/traces during the test session.",
-      "version": "0.5.1"
+      "description": "Copilot plugin for runtime QA validation — run Aspire-orchestrated apps, drive browser scenarios through the Playwright CLI with evidence for each, and monitor Aspire logs/traces through the Aspire CLI during the test session.",
+      "version": "0.6.0"
     },
     {
       "name": "react-coding",

@@ -3,7 +3,7 @@
 ```meta
 c4: [marketplace.qa]
 code: [plugins/qa]
-related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/tech/shared.md#aspire-mcp-server", ".devbook/tech/shared.md#playwright-cli", ".devbook/arc42/adr/flow-control.md", ".devbook/arc42/adr/browser-automation.md"]
+related: [".devbook/arc42/05-building-block-view.md#specialists", ".devbook/tech/shared.md#aspire-cli", ".devbook/tech/shared.md#aspire-mcp-server", ".devbook/tech/shared.md#playwright-cli", ".devbook/arc42/adr/flow-control.md", ".devbook/arc42/adr/browser-automation.md"]
 ```
 
 `qa` is the runtime validation specialist, and the exemplar for the specialists. It shows the
@@ -11,7 +11,7 @@ shape they share:
 
 - A role filled by an agent.
 - Skills that carry the procedure.
-- An MCP server the plugin declares itself.
+- The CLIs it runs through the shell, and an MCP server it declares as a fallback.
 - No flow control.
 
 **Owns**
@@ -66,7 +66,8 @@ The skills and agents read two `resources/` contracts by path:
 
 - **`qa-evidence.md`:** the evidence policy every validation follows.
 - **`qa-tools.md`:**
-  - how a bare Aspire tool name resolves to the plugin-namespaced or the bare server spelling;
+  - which `aspire` commands read health, logs, traces, and browser logs;
+  - which MCP tool answers each on a host without a shell, in the plugin-namespaced or the bare spelling;
   - which `playwright-cli` commands a skill runs;
   - what each tool does not expose.
 
@@ -77,11 +78,15 @@ The skills and agents read two `resources/` contracts by path:
 
 | Tool | Reached as | Used for |
 | --- | --- | --- |
-| `aspire` MCP server | `aspire agent mcp` | Resources, console and structured logs, traces, resource commands |
+| Aspire CLI | `aspire`, through the shell | Start and stop; `describe` for health and endpoints; `logs` for console and `<frontend>-browser-logs`; `otel logs` and `otel traces` |
+| `aspire` MCP server | `aspire agent mcp` | The same reads on a host without a shell |
 | Playwright CLI | `playwright-cli`, through the shell | Navigation, input, snapshots, screenshots, video, traces |
 
-- **Aspire server:** Both manifests declare it under `mcpServers`, and the agents grant it in
-  the plugin-namespaced and the bare spelling. See [Tool Map](../08-crosscutting-concepts.md#tool-map).
+- **Aspire CLI:** The person installs it, 17 or later. The skills defer to the `aspire` skill
+  that `aspire agent init --skills aspire` installs for every command they do not use.
+- **Aspire server:** The fallback only. Both manifests declare it under `mcpServers`, and the
+  agents grant it in the plugin-namespaced and the bare spelling. See
+  [Tool Map](../08-crosscutting-concepts.md#tool-map).
 - **Playwright CLI:** The person installs it. A skill checks `playwright-cli --version` first
   and stops when it does not answer. See [Browser Automation](../adr/browser-automation.md).
 
@@ -94,7 +99,7 @@ A `sessionStart` prompt holds the evidence rule, and its Claude twin sits under 
 rule asks for:
 
 - Aspire for every run.
-- Monitoring for the whole session.
+- Monitoring for the whole session, through the Aspire CLI, and the MCP server only without a shell.
 - An evidence path on every browser finding.
 - A shallower depth recorded as such.
 
@@ -119,7 +124,7 @@ A local run goes `aspire-run` → monitoring → `playwright-validation`.
 
 | Depends on | Mechanism |
 | --- | --- |
-| Aspire CLI | Starts the application and serves the `aspire` MCP server |
+| Aspire CLI | Starts the application, reads its health, logs, and traces, and serves the fallback `aspire` MCP server |
 | Playwright CLI | Installed by the person (`npm install -g @playwright/cli@latest`), run through the shell |
 | `csharp-coding` | Named, not called: `coding` agent for a runtime bug, `sre` skill for repeated log errors |
 

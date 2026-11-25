@@ -23,6 +23,12 @@ Beyond correctness, async, error handling, security, and tests, check:
   library code uses `ConfigureAwait(false)`.
 - An exception is handled, or bubbles to the boundary that logs it once; a log-and-rethrow
   logs it twice.
+- On C# 15, an expected outcome is a union `Result<T>` (`public union Result<T>(Ok<T>,
+  NotFound, Invalid);`) matched by an exhaustive `switch` with no discard arm, and a fixed set
+  of domain states or events is a `closed` hierarchy; a class-based `Result` with a readable
+  `Value`, a marker interface, or an open base type matched with `_ =>` is Important.
+  Unexpected faults stay exceptions.
+- Code reads the time through an injected `TimeProvider`, never `DateTime.Now` or `UtcNow`.
 - An outbound HTTP call carries the resilience default in [../sre/SKILL.md](../sre/SKILL.md).
 - Abstractions only at boundaries and seams (I/O, external services, time); a single in-process
   implementation stays a concrete type, and no layer is added without a need.

@@ -86,7 +86,8 @@ workspace "ai-plugins" {
         devbook = softwareSystem "devbook" "The .devbook/ folder convention and its check, from the jsdotnet-devbook marketplace."
         backlog = softwareSystem "Backlog" "Plans and work items for changes to this repository."
         gitHub = softwareSystem "GitHub" "The repository, its pull requests, and CI."
-        aspireMcp = softwareSystem "Aspire MCP server" "Serves the resources, logs, and traces of the application under test."
+        aspireCli = softwareSystem "Aspire CLI" "Starts the application under test and reads its health, logs, traces, and browser logs from the shell."
+        aspireMcp = softwareSystem "Aspire MCP server" "Serves the same reads to a host without a shell."
         playwrightCli = softwareSystem "Playwright CLI" "Drives a browser from the shell."
 
         maintainer -> marketplace "Authors"
@@ -128,8 +129,9 @@ workspace "ai-plugins" {
         marketplace.qa.fromIssue -> marketplace.qa.aspireRun "Starts the application with"
         marketplace.qa.fromIssue -> marketplace.qa.validation "Hands the scenarios to"
         marketplace.qa.e2eAuthoring -> marketplace.qa.validation "Codifies a passed scenario of"
-        marketplace.qa.aspireRun -> aspireMcp "Uses" "MCP"
-        marketplace.qa.logMonitor -> aspireMcp "Reads logs and traces from" "MCP"
+        marketplace.qa.aspireRun -> aspireCli "Starts the application with" "Shell"
+        marketplace.qa.logMonitor -> aspireCli "Reads logs and traces with" "Shell"
+        marketplace.qa.logMonitor -> aspireMcp "Falls back to, without a shell," "MCP"
         marketplace.qa.validation -> playwrightCli "Drives the browser with" "Shell"
 
         marketplace.claudeDesktop.telemetryHook -> marketplace.claudeDesktop.state "Reads and writes the active run in"

@@ -16,4 +16,7 @@ goes through [../code-optimization/SKILL.md](../code-optimization/SKILL.md).
 
 Readability targets: long methods become named helpers, magic numbers named constants,
 complex conditions named predicates, and if-else or cast chains switch expressions and
-pattern matching.
+pattern matching. On C# 15, a class-based `Result` becomes a union `Result<T>`, and an
+abstract base or marker interface whose subtypes are all known becomes a union or a
+`closed` hierarchy, so the switch over it needs no discard arm; migrate one module's callers
+per step.

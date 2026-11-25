@@ -13,7 +13,8 @@ evidence cannot be captured, name the install command from qa-tools.md, and stop
 
 ## Preconditions
 
-- The app is running and healthy (`aspire-run`, or a confirmed deployed URL).
+- The app is running and healthy (`aspire-run`, or a confirmed deployed URL); take the
+  entry URL from `aspire describe`, never a hard-coded port.
 - Aspire log/trace monitoring is already active (`aspire-log-monitor`, or the caller's
   `qa-monitor`).
 
@@ -43,6 +44,7 @@ evidence cannot be captured, name the install command from qa-tools.md, and stop
 7. On failure, capture the frame first, then console and network output, and only then try
    any recovery.
 8. Assert the outcome from the final snapshot or screenshot, cross-check the Aspire stream
-   for the same window, and record Pass / Fail / Flaky with evidence paths and findings.
+   for the same window (`aspire otel logs`, per qa-tools.md), and record Pass / Fail / Flaky
+   with evidence paths and findings.
 9. Start the next independent scenario with a fresh `goto` or `reload`; `close` the session
    after the last one.

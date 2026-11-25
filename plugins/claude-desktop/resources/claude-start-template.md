@@ -9,7 +9,7 @@ Read by the `start` skill: ../skills/start/SKILL.md
 ## Start
 
 ```bash
-aspire run
+aspire start
 ```
 
 ## Open
@@ -44,8 +44,9 @@ aspire run
 
 ## Stop
 
-- `Ctrl+C` stops every resource; volumes persist.
+- `aspire stop` stops every resource; volumes persist.
 
 ## Troubleshooting
 
-- Port in use — another worktree's app is running; stop that one first.
+- Port in use — another worktree's app is running; `aspire start --isolated` gives this one
+  its own ports, or stop that one first.

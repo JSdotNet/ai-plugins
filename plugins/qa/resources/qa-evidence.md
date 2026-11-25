@@ -15,8 +15,8 @@ and an Aspire log/trace review. Static code reading never validates a feature.
 - Start Aspire log/trace monitoring before the first browser interaction and keep it active
   until the last scenario finishes. A UI that looks correct can still be logging errors, and
   a single check at the end misses entries lost to rotation or buffer limits.
-- Report only what the Aspire MCP tools returned; never write log or trace content you did
-  not read.
+- Report only what the Aspire CLI (or its MCP fallback) returned; never write log or trace
+  content you did not read.
 
 ## What counts as evidence
 
@@ -42,8 +42,8 @@ and an Aspire log/trace review. Static code reading never validates a feature.
 - When the caller selects a shallower depth — startup-only for a dependency update, or no
   runnable application at all — record that depth and its result; never claim validation
   that was not performed.
-- When monitoring was unavailable (no Aspire MCP server, or none reaching a deployed
-  environment), say so in the report and name the evidence used instead. Never omit the gap.
+- When monitoring was unavailable (no Aspire CLI and no MCP fallback, or no dashboard URL
+  for a deployed environment), say so in the report and name the evidence used instead. Never omit the gap.
 - When Playwright capture is unavailable (`playwright-cli` does not answer), say so and
   claim no Playwright evidence.
 

@@ -6,7 +6,7 @@ rating: adopted
 
 This file records the formats and protocols every layer builds on: what an asset is written in, and how a
 plugin reaches a tool server. The tools recorded here are only the MCP servers this
-repository's own manifests declare and the Playwright CLI the `qa` plugin runs. What a
+repository's own manifests declare and the Aspire and Playwright CLIs the `qa` plugin runs. What a
 specialist targets in a consuming repository is that repository's stack.
 
 ## Markdown
@@ -70,19 +70,37 @@ rendered inline by the host.
   `app-bridge.js` speaks the 2026-01-26 postMessage protocol, so the pages stay byte-identical
   to the Copilot canvas versions.
 
-## Aspire MCP server
+## Aspire CLI
 
 ```meta
 rating: adopted
 type: tool
-depends-on: [".devbook/tech/shared.md#mcp"]
+version: "17"
+```
+
+`aspire` runs through the shell. The person installs it; the `qa` plugin declares nothing for
+it, and a skill stops when `aspire --version` does not answer.
+
+- **Used for** — the `qa` agents start the application under test (`aspire start`) and read
+  it: `aspire describe` for health and endpoints, `aspire logs` for console and browser logs,
+  `aspire otel logs` and `aspire otel traces`. The `csharp-coding` skills read a running
+  app the same way.
+- **Why** — the CLI is the route Aspire 17 gives agents with a shell; the skills defer to the
+  `aspire` skill `aspire agent init --skills aspire` installs for every other command.
+
+## Aspire MCP server
+
+```meta
+rating: hold
+type: tool
+depends-on: [".devbook/tech/shared.md#mcp", ".devbook/tech/shared.md#aspire-cli"]
 ```
 
 This is the MCP server the Aspire CLI starts with `aspire agent mcp`. The `qa` plugin declares
 it in both manifests.
 
-- **Used for** — the `qa` agents read resources, logs, and traces of the application under
-  test. The Aspire CLI itself is the consuming repository's, not this one's.
+- **Used for** — the fallback for a host without a shell: the `qa` agents read resources,
+  logs, and traces of the application under test through it. Nothing new uses it.
 
 ## Playwright CLI
 

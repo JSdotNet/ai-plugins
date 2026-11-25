@@ -3,7 +3,7 @@
 Installable GitHub Copilot CLI plugin for runtime QA validation.
 
 Runs a project through **.NET Aspire**, validates features end-to-end with the
-**Playwright CLI** (`playwright-cli`), and continuously monitors **Aspire MCP** logs/traces for
+**Playwright CLI** (`playwright-cli`), and continuously monitors Aspire logs/traces through the **Aspire CLI** for
 the whole test session — so runtime errors are never missed just because the UI
 looked correct.
 
@@ -23,7 +23,7 @@ Two agent personas are included: `qa` drives the browser and produces the report
   - `skills/deployed-environment-validation/SKILL.md` — validate against a specific already-deployed test environment (staging/QA/UAT) instead of a local Aspire run
   - `skills/playwright-e2e-authoring/SKILL.md` — turn a validated scenario into a durable, committed Playwright test
 - Contracts:
-  - `resources/qa-tools.md` — Aspire MCP tool-name resolution, Playwright CLI commands, and gaps
+  - `resources/qa-tools.md` — the Aspire CLI monitoring commands, the MCP fallback, Playwright CLI commands, and gaps
   - `resources/qa-evidence.md` — the evidence policy every validation follows
 - Hooks:
   - `hooks.json` (session-start reminder to always run, monitor, and record evidence)
@@ -32,10 +32,11 @@ Two agent personas are included: `qa` drives the browser and produces the report
 
 | Tool | Purpose |
 |---|---|
-| Aspire MCP (`aspire agent mcp`) | Run the distributed app; query resource state, logs, and traces (no metrics tool) |
+| Aspire CLI (`aspire`, 17 or later) | Run the distributed app; read resource state, console, structured, and browser logs, and traces (no metrics) |
+| Aspire MCP (`aspire agent mcp`) | Fallback for a host without a shell; the plugin declares it |
 | Playwright CLI (`npm install -g @playwright/cli@latest`, run as `playwright-cli`) | Drive a real browser: navigate, interact, snapshot, screenshot, record video and traces |
 
-The plugin declares the Aspire server; install the Playwright CLI yourself. If either is
+Install the Aspire CLI and the Playwright CLI yourself; `aspire agent init --skills aspire` adds the Aspire skill the QA skills defer to. If either is
 unavailable, the agent stops and names what is missing —
 see [resources/qa-tools.md](./resources/qa-tools.md).
 
