@@ -6,7 +6,7 @@ description: "Start this repository's application the way the repository says to
 # Start the Application
 
 Start the app from the repository's own startup instruction, then open it. Usually that is
-`aspire run` plus a browser on the front end.
+`aspire start` plus a browser on the front end.
 
 ## Find the Instruction
 
@@ -17,28 +17,36 @@ The first source that answers wins; say which one was used.
 2. `.claude/orch-context.md` — `## How to Run`, `## Base URLs`, `## Healthy Startup`.
 3. The repository's getting-started docs — `README.md`, `CONTRIBUTING.md`,
    `.github/instructions/`.
-4. Inference — an `*.AppHost` project means `aspire run`; otherwise `package.json` scripts,
-   `compose.yaml`, `.claude/launch.json`. Say that this was a guess.
+4. Inference — an `*.AppHost` project means `aspire start --apphost <path>`; otherwise
+   `package.json` scripts, `compose.yaml`, `.claude/launch.json`. Say that this was a guess.
 
 `**Runnable application:** none` in `.claude/orch-context.md` means there is nothing to
 start. Say so and stop.
 
 ## Run It
 
-1. Check whether it already runs — worktrees share ports. Reuse a running instance and say
-   so; restart one only after saying you will.
-2. Run the declared command in the background. When it fails, report the failure and keep to
-   the declared command rather than trying another.
-3. Wait for the declared readiness signal, or `list_resources` on the Aspire MCP server when
-   there is an AppHost. Stop waiting on a fatal error or after two minutes of silence.
-4. Open the URL from `## Open`, else the front end from `## Base URLs`, else the one the
-   startup output printed — in the inline browser pane (`preview_start`), else as a plain
-   URL. Re-read the port on every start; it changes.
-5. Follow `## Sign In` and `## Go To` when present; `## Go To` lands on the area the branch
+1. Check whether it already runs — worktrees share ports; `aspire ps` lists every running
+   AppHost. Reuse this checkout's running instance and say so; restart one only after saying
+   you will.
+2. Run the declared command. For an AppHost that is `aspire start`, which returns once the
+   app runs detached; add `--isolated` only when `aspire ps` lists the same AppHost from
+   another checkout, and pass `--apphost <path>` when it lists more than one. Run any other
+   command in the background. When it fails, report the failure and keep to the declared
+   command rather than trying another.
+3. Wait for the declared readiness signal, or `aspire wait <resource>` for the front end and
+   every resource it needs. Stop waiting on a fatal error or after two minutes of silence;
+   `aspire logs <resource>` says why one is stuck.
+4. Open the URL from `## Open`, else the front end from `## Base URLs`, else its endpoint in
+   `aspire describe --format Json`, else the one the startup output printed — in the inline
+   browser pane (`preview_start`), else as a plain URL. Re-read the port on every start; it
+   changes.
+5. On a host without a shell nothing can be started: say so. When the app already runs and
+   the tool list has the Aspire MCP server, `list_resources` answers readiness and the URL.
+6. Follow `## Sign In` and `## Go To` when present; `## Go To` lands on the area the branch
    changes (match `git diff --name-only` against its entries). For a credential, open the page,
    name where the credential lives, and let the user sign in — typing passwords, tokens, and
    keys is theirs.
-6. Propose destructive setup (database drop, volume prune, `git clean`) for the user to run;
+7. Propose destructive setup (database drop, volume prune, `git clean`) for the user to run;
    starting runs none of it.
 
 Report in a couple of lines: instruction source, command, health, open URL. Leave the app
