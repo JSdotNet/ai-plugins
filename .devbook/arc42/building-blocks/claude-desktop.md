@@ -52,6 +52,11 @@ It renders two ways from one implementation, negotiated per host:
 
 `start`, `session-handoff`, and `create-pull-request`.
 
+`start` starts an AppHost through the Aspire CLI: `aspire start` detached, `--isolated` only
+when another checkout runs the same AppHost, `aspire wait` for readiness, and `aspire describe`
+for the front-end URL. The Aspire MCP server answers only on a host without a shell; this
+plugin declares none, so `start` uses one the session already has.
+
 ### Counterparts in copilot-app
 
 ```meta
@@ -110,6 +115,7 @@ They are not kept in step: [TDR 3](../tdr/3-dashboard-code-copied.md).
 | Depends on | Mechanism |
 | --- | --- |
 | Node.js | Runs the server and every hook |
+| Aspire CLI 17 | `start` starts, waits on, and describes an AppHost |
 | Claude Code plugin API | `mcpServers` in `.claude-plugin/plugin.json`, command hooks |
 | MCP Apps | Inline rendering in Claude Desktop |
 | MCPB CLI | `scripts/Build-DesktopExtension.ps1` packs the server as a Desktop extension |
